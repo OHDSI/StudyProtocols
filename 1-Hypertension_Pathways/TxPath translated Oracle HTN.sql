@@ -947,8 +947,8 @@ from HTN_drug_seq_summary
 
 --2.  count total persons with a treatment, by year
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  TxPath_source_name_HTN_person_count_year';
-  EXECUTE IMMEDIATE 'DROP TABLE  TxPath_source_name_HTN_person_count_year';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  TxPath_source_name_HTN_person_ct_yr';
+  EXECUTE IMMEDIATE 'DROP TABLE  TxPath_source_name_HTN_person_ct_yr';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
@@ -956,13 +956,13 @@ EXCEPTION
     END IF;
 END;
 
-create table results_schema.TxPath_source_name_HTN_person_count_year
+create table results_schema.TxPath_source_name_HTN_person_ct_yr
 (
 	index_year int,
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_person_count_year (index_year, num_persons)
+insert into results_schema.TxPath_source_name_HTN_person_ct_yr (index_year, num_persons)
 SELECT   index_year, num_persons
  FROM 
 (
