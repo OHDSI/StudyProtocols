@@ -26,9 +26,11 @@ You have two options to execute this analysis:
 - Open the dialect-specific version of the SQL in your SQL developer console.
 - Find/replace the default values for th following parameters:
  
-cdm_schema  :  replace with schema name of your CDM
-results_schema  : replace with schema where you want to store temp tables and results tables
-source_name  :  replace with shortname that'll be in result table name (e.g. CCAE, INPC, Optum)
+-- cdm_schema  :  replace with schema name of your CDM
+
+-- results_schema  : replace with schema where you want to store temp tables and results tables
+
+-- source_name  :  replace with shortname that'll be in result table name (e.g. CCAE, INPC, Optum)
 
 - Export the 4 results tables from your resultSchema into .csv files.
 - Email the results files to the study coordinator.
