@@ -23,7 +23,7 @@ library(DatabaseConnector)
 # Parameters: Please change these to the correct values:  #
 ###########################################################
 
-folder        = "C:/Users/mschuemi/Desktop/Treatment patterns" # Folder containing the R and SQL files
+folder        = "C:/Users/mschuemi/Desktop/Treatment patterns" # Folder containing the R and SQL files, use forward slashes
 minCellCount  = 5
 cdmSchema     = "cdm_truven_ccae_6k"
 resultsSchema = "scratch"
