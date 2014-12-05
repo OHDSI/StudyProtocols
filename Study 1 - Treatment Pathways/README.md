@@ -7,7 +7,7 @@ You have two options to execute this analysis, using R or via SQL console.
 
 **R Version**
 
-- Open MainAnalysis.R
+- Open MainAnalysis.R in your R console
 - Modify the parameters near the top of the script
     -	folder        = "C:/Users/mschuemi/Desktop/Treatment patterns" # Folder containing the R files and parameterized SQL script from this repo, make sure to use forward slashes /
     -	minCellCount  = 5   # all cell counts lower than this value will be removed from the final results table
