@@ -768,15 +768,15 @@ SET search_path TO  results_schema;
 
 --1.  count total persons with a treatment
 
-DROP TABLE IF EXISTS  TxPath_source_name_HTN_person_count;
+DROP TABLE IF EXISTS  HTN_source_name_person_count;
 
-create table results_schema.TxPath_source_name_HTN_person_count
+create table results_schema.HTN_source_name_person_count
 (
 	num_persons int
 );
 
 
-insert into results_schema.TxPath_source_name_HTN_person_count (num_persons)
+insert into results_schema.HTN_source_name_person_count (num_persons)
 select num_persons
 from
 (
@@ -786,15 +786,15 @@ from HTN_drug_seq_summary
 where num_persons > 5;
 
 --2.  count total persons with a treatment, by year
-DROP TABLE IF EXISTS  TxPath_source_name_HTN_person_count_year;
+DROP TABLE IF EXISTS  HTN_source_name_person_count_year;
 
-create table results_schema.TxPath_source_name_HTN_person_count_year
+create table results_schema.HTN_source_name_person_count_year
 (
 	index_year int,
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_person_count_year (index_year, num_persons)
+insert into results_schema.HTN_source_name_person_count_year (index_year, num_persons)
 select index_year, num_persons
 from
 (
@@ -805,9 +805,9 @@ group by index_year
 where num_persons > 5;
 
 --3.  overall summary (group by year):   edit the where clause if you need to remove cell counts < minimum number (here 1 as example)
-DROP TABLE IF EXISTS  TxPath_source_name_HTN_seq_count;
+DROP TABLE IF EXISTS  HTN_source_name_seq_count;
 
-create table results_schema.TxPath_source_name_HTN_seq_count
+create table results_schema.HTN_source_name_seq_count
 (
 	d1_concept_id int, 
 	d2_concept_id int, 
@@ -852,7 +852,7 @@ create table results_schema.TxPath_source_name_HTN_seq_count
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_seq_count (d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into results_schema.HTN_source_name_seq_count (d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select *
 from
 (
@@ -864,10 +864,10 @@ group by d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_
 where num_persons > 5;
 
 --4.  summary by year:   edit the where clause if you need to remove cell counts < minimum number
-DROP TABLE IF EXISTS  TxPath_source_name_HTN_seq_count_year;
+DROP TABLE IF EXISTS  HTN_source_name_seq_count_year;
 
 
-create table results_schema.TxPath_source_name_HTN_seq_count_year
+create table results_schema.HTN_source_name_seq_count_year
 (
 	index_year int,
 	d1_concept_id int, 
@@ -913,7 +913,7 @@ create table results_schema.TxPath_source_name_HTN_seq_count_year
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into results_schema.HTN_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons
 from HTN_drug_seq_summary
 where num_persons > 5;

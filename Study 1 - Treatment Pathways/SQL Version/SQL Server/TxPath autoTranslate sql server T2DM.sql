@@ -40,79 +40,79 @@ the results queries allow you to remove small cell counts before producing the f
 
 *************************/
 
-{DEFAULT @cdmSchema = 'cdmSchema'}  /*cdmSchema:  @cdmSchema*/
-{DEFAULT @resultsSchema = 'resultsSchema'}  /*resultsSchema:  @resultsSchema*/
-{DEFAULT @studyName = 'TxPath'} /*studyName:  @studyName*/
-{DEFAULT @sourceName = 'source'} /*sourceName:  @sourceName*/
-{DEFAULT @txlist = '21600381,21601461,21601560,21601664,21601744,21601782'} /*txlist:  @txlist*/
-{DEFAULT @dxlist = '316866'} /*dxlist: @dxlist*/
-{DEFAULT @excludedxlist = '444094'} /*excludedxlist:  @excludedxlist*/
-{DEFAULT @smallcellcount = 0} /*smallcellcount:  @smallcellcount*/
+  /*cdmSchema:  cdm_schema*/
+  /*resultsSchema:  results_schema*/
+ /*studyName:  T2DM*/
+ /*sourceName:  source_name*/
+ /*txlist:  21600712,21500148*/
+ /*dxlist: 201820*/
+ /*excludedxlist:  444094,35506621*/
+ /*smallcellcount:  5*/
 
 
 --create index population (persons with >1 treatment with >365d observation prior and >1095d observation after)
 
-USE @resultsSchema;
+USE results_schema;
 
 --For Oracle: drop temp tables if they already exist
-IF OBJECT_ID('#@studyName_indexcohort', 'U') IS NOT NULL
-	DROP TABLE #@studyName_indexcohort;
+IF OBJECT_ID('#T2DM_indexcohort', 'U') IS NOT NULL
+	DROP TABLE #T2DM_indexcohort;
 
-IF OBJECT_ID('#@studyName_e0', 'U') IS NOT NULL
-	DROP TABLE #@studyName_e0;
+IF OBJECT_ID('#T2DM_e0', 'U') IS NOT NULL
+	DROP TABLE #T2DM_e0;
 
-IF OBJECT_ID('#@studyName_t0', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t0;
+IF OBJECT_ID('#T2DM_t0', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t0;
 
-IF OBJECT_ID('#@studyName_t1', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t1;
+IF OBJECT_ID('#T2DM_t1', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t1;
 
-IF OBJECT_ID('#@studyName_t2', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t2;
+IF OBJECT_ID('#T2DM_t2', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t2;
 
-IF OBJECT_ID('#@studyName_t3', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t3;
+IF OBJECT_ID('#T2DM_t3', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t3;
 
-IF OBJECT_ID('#@studyName_t4', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t4;
+IF OBJECT_ID('#T2DM_t4', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t4;
 
-IF OBJECT_ID('#@studyName_t5', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t5;
+IF OBJECT_ID('#T2DM_t5', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t5;
 
-IF OBJECT_ID('#@studyName_t6', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t6;
+IF OBJECT_ID('#T2DM_t6', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t6;
 
-IF OBJECT_ID('#@studyName_t7', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t7;
+IF OBJECT_ID('#T2DM_t7', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t7;
 
-IF OBJECT_ID('#@studyName_t8', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t8;
+IF OBJECT_ID('#T2DM_t8', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t8;
 
-IF OBJECT_ID('#@studyName_t9', 'U') IS NOT NULL
-	DROP TABLE #@studyName_t9;
+IF OBJECT_ID('#T2DM_t9', 'U') IS NOT NULL
+	DROP TABLE #T2DM_t9;
 
-IF OBJECT_ID('#@studyName_matchcohort', 'U') IS NOT NULL
-	DROP TABLE #@studyName_matchcohort;
+IF OBJECT_ID('#T2DM_matchcohort', 'U') IS NOT NULL
+	DROP TABLE #T2DM_matchcohort;
 
-IF OBJECT_ID('#@studyName_drug_seq', 'U') IS NOT NULL
-	DROP TABLE #@studyName_drug_seq;
+IF OBJECT_ID('#T2DM_drug_seq', 'U') IS NOT NULL
+	DROP TABLE #T2DM_drug_seq;
 
-IF OBJECT_ID('#@studyName_drug_seq_summary', 'U') IS NOT NULL
-	DROP TABLE #@studyName_drug_seq_summary;
+IF OBJECT_ID('#T2DM_drug_seq_summary', 'U') IS NOT NULL
+	DROP TABLE #T2DM_drug_seq_summary;
 
-IF OBJECT_ID('@studyName_person_count', 'U') IS NOT NULL
-	DROP TABLE @studyName_person_count;
+IF OBJECT_ID('T2DM_person_count', 'U') IS NOT NULL
+	DROP TABLE T2DM_person_count;
 
-IF OBJECT_ID('@studyName_person_count_year', 'U') IS NOT NULL
-	DROP TABLE @studyName_person_count_year;
+IF OBJECT_ID('T2DM_person_count_year', 'U') IS NOT NULL
+	DROP TABLE T2DM_person_count_year;
 
-IF OBJECT_ID('@studyName_seq_count', 'U') IS NOT NULL
-	DROP TABLE @studyName_seq_count;	
+IF OBJECT_ID('T2DM_seq_count', 'U') IS NOT NULL
+	DROP TABLE T2DM_seq_count;	
 
-IF OBJECT_ID('@studyName_seq_count_year', 'U') IS NOT NULL
-	DROP TABLE @studyName_seq_count_year;
+IF OBJECT_ID('T2DM_seq_count_year', 'U') IS NOT NULL
+	DROP TABLE T2DM_seq_count_year;
 	
-create table #@studyName_IndexCohort
+create table #T2DM_IndexCohort
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
@@ -121,7 +121,7 @@ create table #@studyName_IndexCohort
 	OBSERVATION_PERIOD_END_DATE date not null
 );
 
-INSERT INTO #@studyName_IndexCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
+INSERT INTO #T2DM_IndexCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
 select  person_id, INDEX_DATE,COHORT_END_DATE, observation_period_start_date, observation_period_end_date
 FROM 
 (
@@ -137,14 +137,14 @@ FROM
 				select d.PERSON_ID, d.DRUG_CONCEPT_ID, d.DRUG_EXPOSURE_START_DATE,
 				COALESCE(d.DRUG_EXPOSURE_END_DATE, DATEADD(dd,d.DAYS_SUPPLY,d.DRUG_EXPOSURE_START_DATE), DATEADD(dd,1,d.DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE,
 				ROW_NUMBER() OVER (PARTITION BY d.PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as RowNumber
-				FROM @cdmSchema.dbo.DRUG_EXPOSURE d
-				JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca 
-				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+				FROM cdm_schema.dbo.DRUG_EXPOSURE d
+				JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca 
+				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 			) de
-			JOIN @cdmSchema.dbo.PERSON p on p.PERSON_ID = de.PERSON_ID
+			JOIN cdm_schema.dbo.PERSON p on p.PERSON_ID = de.PERSON_ID
 			WHERE de.RowNumber = 1
 		) dt
-		JOIN @cdmSchema.dbo.observation_period op 
+		JOIN cdm_schema.dbo.observation_period op 
 			on op.PERSON_ID = dt.PERSON_ID and (dt.DRUG_EXPOSURE_START_DATE between op.OBSERVATION_PERIOD_START_DATE and op.OBSERVATION_PERIOD_END_DATE)
 		WHERE DATEADD(dd,365, op.OBSERVATION_PERIOD_START_DATE) <= dt.DRUG_EXPOSURE_START_DATE AND DATEADD(dd,1095, dt.DRUG_EXPOSURE_START_DATE) <= op.OBSERVATION_PERIOD_END_DATE
 
@@ -166,9 +166,9 @@ FROM
 					select d.PERSON_ID, d.DRUG_CONCEPT_ID, d.DRUG_EXPOSURE_START_DATE,
 					COALESCE(d.DRUG_EXPOSURE_END_DATE, DATEADD(dd,d.DAYS_SUPPLY,d.DRUG_EXPOSURE_START_DATE), DATEADD(dd,1,d.DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE,
 					ROW_NUMBER() OVER (PARTITION BY d.PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as RowNumber
-					FROM @cdmSchema.dbo.DRUG_EXPOSURE d
-					JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca 
-						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+					FROM cdm_schema.dbo.DRUG_EXPOSURE d
+					JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca 
+						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 				)
 				cteExposureData
 				UNION ALL
@@ -178,9 +178,9 @@ FROM
 					select d.PERSON_ID, d.DRUG_CONCEPT_ID, d.DRUG_EXPOSURE_START_DATE,
 					COALESCE(d.DRUG_EXPOSURE_END_DATE, DATEADD(dd,d.DAYS_SUPPLY,d.DRUG_EXPOSURE_START_DATE), DATEADD(dd,1,d.DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE,
 					ROW_NUMBER() OVER (PARTITION BY d.PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as RowNumber
-					FROM @cdmSchema.dbo.DRUG_EXPOSURE d
-					JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca 
-						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+					FROM cdm_schema.dbo.DRUG_EXPOSURE d
+					JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca 
+						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 				) cteExposureData
 			) RAWDATA
 		) E
@@ -195,7 +195,7 @@ WHERE r.RowNumber = 1
 
 
 --find persons with no excluding conditions
-create table #@studyName_E0
+create table #T2DM_E0
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
@@ -203,15 +203,15 @@ create table #@studyName_E0
 );
 
 
-INSERT INTO #@studyName_E0
+INSERT INTO #T2DM_E0
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select co.PERSON_ID, co.CONDITION_CONCEPT_ID
-	FROM @cdmSchema.dbo.condition_occurrence co
-	JOIN #@studyName_IndexCohort ip on co.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on co.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@excludedxlist)
+	FROM cdm_schema.dbo.condition_occurrence co
+	JOIN #T2DM_IndexCohort ip on co.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on co.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (444094,35506621)
 	WHERE (co.CONDITION_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 ) dt on dt.PERSON_ID = ip.PERSON_ID
 GROUP BY  ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
@@ -222,7 +222,7 @@ HAVING COUNT(dt.CONDITION_CONCEPT_ID) <= 0
 
 
 --find persons in indexcohort with no treatments before index
-create table #@studyName_T0
+create table #T2DM_T0
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
@@ -230,15 +230,15 @@ create table #@studyName_T0
 );
 
 
-INSERT INTO #@studyName_T0
+INSERT INTO #T2DM_T0
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and DATEADD(dd,-1,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -247,22 +247,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) <= 0
 ;
 
 --find persons in indexcohort with diagnosis
-create table #@studyName_T1
+create table #T2DM_T1
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T1
+INSERT INTO #T2DM_T1
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN 
 (
 	select ce.PERSON_ID, ce.CONDITION_CONCEPT_ID
-	FROM @cdmSchema.dbo.CONDITION_ERA ce
-	JOIN #@studyName_IndexCohort ip on ce.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on ce.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@dxlist)
+	FROM cdm_schema.dbo.CONDITION_ERA ce
+	JOIN #T2DM_IndexCohort ip on ce.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on ce.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (201820)
 	WHERE (ce.CONDITION_ERA_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		--cteConditionTargetClause	
 ) ct on ct.PERSON_ID = ip.PERSON_ID
@@ -271,22 +271,22 @@ HAVING COUNT(ct.CONDITION_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T2
+create table #T2DM_T2
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T2
+INSERT INTO #T2DM_T2
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,121,ip.INDEX_DATE) and DATEADD(dd,240,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -295,22 +295,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T3
+create table #T2DM_T3
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T3
+INSERT INTO #T2DM_T3
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,241,ip.INDEX_DATE) and DATEADD(dd,360,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -319,22 +319,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T4
+create table #T2DM_T4
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T4
+INSERT INTO #T2DM_T4
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,361,ip.INDEX_DATE) and DATEADD(dd,480,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -343,22 +343,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T5
+create table #T2DM_T5
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T5
+INSERT INTO #T2DM_T5
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,481,ip.INDEX_DATE) and DATEADD(dd,600,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -367,22 +367,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T6
+create table #T2DM_T6
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T6
+INSERT INTO #T2DM_T6
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,601,ip.INDEX_DATE) and DATEADD(dd,720,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -392,22 +392,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T7
+create table #T2DM_T7
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T7
+INSERT INTO #T2DM_T7
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,721,ip.INDEX_DATE) and DATEADD(dd,840,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -416,22 +416,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T8
+create table #T2DM_T8
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T8
+INSERT INTO #T2DM_T8
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,841,ip.INDEX_DATE) and DATEADD(dd,960,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -440,22 +440,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-create table #@studyName_T9
+create table #T2DM_T9
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 );
 
-INSERT INTO #@studyName_T9
+INSERT INTO #T2DM_T9
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from #@studyName_IndexCohort ip
+from #T2DM_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
-	FROM @cdmSchema.dbo.DRUG_EXPOSURE de
-	JOIN #@studyName_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
+	FROM cdm_schema.dbo.DRUG_EXPOSURE de
+	JOIN #T2DM_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.dbo.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600712,21500148)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between DATEADD(dd,961,ip.INDEX_DATE) and DATEADD(dd,1080,ip.INDEX_DATE)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -465,7 +465,7 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 
 
 --find persons that qualify for final cohort (meeting all inclusion criteria)
-create table #@studyName_MatchCohort
+create table #T2DM_MatchCohort
 (
 	PERSON_ID bigint not null primary key,
 	INDEX_DATE date not null,
@@ -475,35 +475,35 @@ create table #@studyName_MatchCohort
 );
 
 
-INSERT INTO #@studyName_MatchCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
+INSERT INTO #T2DM_MatchCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
 select c.person_id, c.index_date, c.cohort_end_date, c.observation_period_start_date, c.observation_period_end_date
-FROM #@studyName_IndexCohort C
+FROM #T2DM_IndexCohort C
 INNER JOIN
 (
 SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID
 FROM
 (
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_E0
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_E0
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T0
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T0
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T1
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T1
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T2
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T2
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T3
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T3
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T4
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T4
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T5
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T5
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T6
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T6
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T7
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T7
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T8
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T8
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #@studyName_T9
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM #T2DM_T9
 ) TopGroup
 ) I 
 ON C.PERSON_ID = I.PERSON_ID
@@ -513,7 +513,7 @@ and c.index_date = i.INDEX_DATE
 
 
 --find all drugs that the matching cohort had taken
-create table #@studyName_drug_seq
+create table #T2DM_drug_seq
 (
 	person_id bigint,
 	index_year int,
@@ -522,17 +522,17 @@ create table #@studyName_drug_seq
 	drug_seq int
 );
 
-insert into #@studyName_drug_seq (person_id, index_year, drug_concept_id, concept_name, drug_seq)
+insert into #T2DM_drug_seq (person_id, index_year, drug_concept_id, concept_name, drug_seq)
 select de1.person_id, de1.index_year, de1.drug_concept_id, c1.concept_name, row_number() over (partition by de1.person_id order by de1.drug_start_date, de1.drug_concept_id) as rn1
 from
 (select de0.person_id, de0.drug_concept_id, year(c1.index_date) as index_year, min(de0.drug_era_start_date) as drug_start_date
-from @cdmSchema.dbo.drug_era de0
-inner join #@studyName_MatchCohort c1
+from cdm_schema.dbo.drug_era de0
+inner join #T2DM_MatchCohort c1
 on de0.person_id = c1.person_id
-where drug_concept_id in (select descendant_concept_id from @cdmSchema.dbo.concept_ancestor where ancestor_concept_id in (@txlist))
+where drug_concept_id in (select descendant_concept_id from cdm_schema.dbo.concept_ancestor where ancestor_concept_id in (21600712,21500148))
 group by de0.person_id, de0.drug_concept_id, year(c1.index_date)
 ) de1
-inner join @cdmSchema.dbo.concept c1
+inner join cdm_schema.dbo.concept c1
 on de1.drug_concept_id = c1.concept_id
 ;
 
@@ -540,7 +540,7 @@ on de1.drug_concept_id = c1.concept_id
 
 
 --summarize the unique treatment sequences observed
-create table #@studyName_drug_seq_summary
+create table #T2DM_drug_seq_summary
 (
 	index_year int,
 	d1_concept_id int,
@@ -586,7 +586,7 @@ create table #@studyName_drug_seq_summary
 	num_persons int
 );
 
-insert into #@studyName_drug_seq_summary (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into #T2DM_drug_seq_summary (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select d1.index_year,
 	d1.drug_concept_id as d1_concept_id,
 	d2.drug_concept_id as d2_concept_id,
@@ -631,101 +631,101 @@ select d1.index_year,
 	count(distinct d1.person_id) as num_persons
 from
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 1) d1
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 2) d2
 on d1.person_id = d2.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 3) d3
 on d1.person_id = d3.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 4) d4
 on d1.person_id = d4.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 5) d5
 on d1.person_id = d5.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 6) d6
 on d1.person_id = d6.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 7) d7
 on d1.person_id = d7.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 8) d8
 on d1.person_id = d8.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 9) d9
 on d1.person_id = d9.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 10) d10
 on d1.person_id = d10.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 11) d11
 on d1.person_id = d11.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 12) d12
 on d1.person_id = d12.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 13) d13
 on d1.person_id = d13.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 14) d14
 on d1.person_id = d14.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 15) d15
 on d1.person_id = d15.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 16) d16
 on d1.person_id = d16.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 17) d17
 on d1.person_id = d17.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 18) d18
 on d1.person_id = d18.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 19) d19
 on d1.person_id = d19.person_id
 left join
 (select *
-from #@studyName_drug_seq
+from #T2DM_drug_seq
 where drug_seq = 20) d20
 on d1.person_id = d20.person_id
 group by 
@@ -783,53 +783,53 @@ save these results and report back with the central coordinating center
 *****/
 
 
-USE @resultsSchema;
+USE results_schema;
 
 --1.  count total persons with a treatment
 
-IF OBJECT_ID('TxPath_@sourceName_@studyName_person_count', 'U') IS NOT NULL
-	DROP TABLE TxPath_@sourceName_@studyName_person_count;
+IF OBJECT_ID('T2DM_source_name_person_count', 'U') IS NOT NULL
+	DROP TABLE T2DM_source_name_person_count;
 
-create table @resultsSchema.dbo.TxPath_@sourceName_@studyName_person_count
+create table results_schema.dbo.T2DM_source_name_person_count
 (
 	num_persons int
 );
 
 
-insert into @resultsSchema.dbo.TxPath_@sourceName_@studyName_person_count (num_persons)
+insert into results_schema.dbo.T2DM_source_name_person_count (num_persons)
 select num_persons
 from
 (
 select sum(num_persons) as num_persons
-from #@studyName_drug_seq_summary
+from #T2DM_drug_seq_summary
 ) t1
-where num_persons > @smallcellcount;
+where num_persons > 5;
 
 --2.  count total persons with a treatment, by year
-IF OBJECT_ID('TxPath_@sourceName_@studyName_person_count_year', 'U') IS NOT NULL
-	DROP TABLE TxPath_@sourceName_@studyName_person_count_year;
+IF OBJECT_ID('T2DM_source_name_person_count_year', 'U') IS NOT NULL
+	DROP TABLE T2DM_source_name_person_count_year;
 
-create table @resultsSchema.dbo.TxPath_@sourceName_@studyName_person_count_year
+create table results_schema.dbo.T2DM_source_name_person_count_year
 (
 	index_year int,
 	num_persons int
 );
 
-insert into @resultsSchema.dbo.TxPath_@sourceName_@studyName_person_count_year (index_year, num_persons)
+insert into results_schema.dbo.T2DM_source_name_person_count_year (index_year, num_persons)
 select index_year, num_persons
 from
 (
 select index_year, sum(num_persons) as num_persons
-from #@studyName_drug_seq_summary
+from #T2DM_drug_seq_summary
 group by index_year
 ) t1
-where num_persons > @smallcellcount;
+where num_persons > 5;
 
 --3.  overall summary (group by year):   edit the where clause if you need to remove cell counts < minimum number (here 1 as example)
-IF OBJECT_ID('TxPath_@sourceName_@studyName_seq_count', 'U') IS NOT NULL
-	DROP TABLE TxPath_@sourceName_@studyName_seq_count;
+IF OBJECT_ID('T2DM_source_name_seq_count', 'U') IS NOT NULL
+	DROP TABLE T2DM_source_name_seq_count;
 
-create table @resultsSchema.dbo.TxPath_@sourceName_@studyName_seq_count
+create table results_schema.dbo.T2DM_source_name_seq_count
 (
 	d1_concept_id int, 
 	d2_concept_id int, 
@@ -874,23 +874,23 @@ create table @resultsSchema.dbo.TxPath_@sourceName_@studyName_seq_count
 	num_persons int
 );
 
-insert into @resultsSchema.dbo.TxPath_@sourceName_@studyName_seq_count (d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into results_schema.dbo.T2DM_source_name_seq_count (d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select *
 from
 (
 select d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, 
 	sum(num_persons) as num_persons
-from #@studyName_drug_seq_summary
+from #T2DM_drug_seq_summary
 group by d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name
 ) t1
-where num_persons > @smallcellcount;
+where num_persons > 5;
 
 --4.  summary by year:   edit the where clause if you need to remove cell counts < minimum number
-IF OBJECT_ID('TxPath_@sourceName_@studyName_seq_count_year', 'U') IS NOT NULL
-	DROP TABLE TxPath_@sourceName_@studyName_seq_count_year;
+IF OBJECT_ID('T2DM_source_name_seq_count_year', 'U') IS NOT NULL
+	DROP TABLE T2DM_source_name_seq_count_year;
 
 
-create table @resultsSchema.dbo.TxPath_@sourceName_@studyName_seq_count_year
+create table results_schema.dbo.T2DM_source_name_seq_count_year
 (
 	index_year int,
 	d1_concept_id int, 
@@ -936,39 +936,39 @@ create table @resultsSchema.dbo.TxPath_@sourceName_@studyName_seq_count_year
 	num_persons int
 );
 
-insert into @resultsSchema.dbo.TxPath_@sourceName_@studyName_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into results_schema.dbo.T2DM_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons
-from #@studyName_drug_seq_summary
-where num_persons > @smallcellcount;
+from #T2DM_drug_seq_summary
+where num_persons > 5;
 
 --For Oracle: cleanup temp tables:
-TRUNCATE TABLE #@studyName_indexcohort;
-DROP TABLE #@studyName_indexcohort;
-TRUNCATE TABLE #@studyName_e0;
-DROP TABLE #@studyName_e0;
-TRUNCATE TABLE #@studyName_t0;
-DROP TABLE #@studyName_t0;
-TRUNCATE TABLE #@studyName_t1;
-DROP TABLE #@studyName_t1;
-TRUNCATE TABLE #@studyName_t2;
-DROP TABLE #@studyName_t2;
-TRUNCATE TABLE #@studyName_t3;
-DROP TABLE #@studyName_t3;
-TRUNCATE TABLE #@studyName_t4;
-DROP TABLE #@studyName_t4;
-TRUNCATE TABLE #@studyName_t5;
-DROP TABLE #@studyName_t5;
-TRUNCATE TABLE #@studyName_t6;
-DROP TABLE #@studyName_t6;
-TRUNCATE TABLE #@studyName_t7;
-DROP TABLE #@studyName_t7;
-TRUNCATE TABLE #@studyName_t8;
-DROP TABLE #@studyName_t8;
-TRUNCATE TABLE #@studyName_t9;
-DROP TABLE #@studyName_t9;
-TRUNCATE TABLE #@studyName_matchcohort;
-DROP TABLE #@studyName_matchcohort;
-TRUNCATE TABLE #@studyName_drug_seq;
-DROP TABLE #@studyName_drug_seq;
-TRUNCATE TABLE #@studyName_drug_seq_summary;
-DROP TABLE #@studyName_drug_seq_summary;
+TRUNCATE TABLE #T2DM_indexcohort;
+DROP TABLE #T2DM_indexcohort;
+TRUNCATE TABLE #T2DM_e0;
+DROP TABLE #T2DM_e0;
+TRUNCATE TABLE #T2DM_t0;
+DROP TABLE #T2DM_t0;
+TRUNCATE TABLE #T2DM_t1;
+DROP TABLE #T2DM_t1;
+TRUNCATE TABLE #T2DM_t2;
+DROP TABLE #T2DM_t2;
+TRUNCATE TABLE #T2DM_t3;
+DROP TABLE #T2DM_t3;
+TRUNCATE TABLE #T2DM_t4;
+DROP TABLE #T2DM_t4;
+TRUNCATE TABLE #T2DM_t5;
+DROP TABLE #T2DM_t5;
+TRUNCATE TABLE #T2DM_t6;
+DROP TABLE #T2DM_t6;
+TRUNCATE TABLE #T2DM_t7;
+DROP TABLE #T2DM_t7;
+TRUNCATE TABLE #T2DM_t8;
+DROP TABLE #T2DM_t8;
+TRUNCATE TABLE #T2DM_t9;
+DROP TABLE #T2DM_t9;
+TRUNCATE TABLE #T2DM_matchcohort;
+DROP TABLE #T2DM_matchcohort;
+TRUNCATE TABLE #T2DM_drug_seq;
+DROP TABLE #T2DM_drug_seq;
+TRUNCATE TABLE #T2DM_drug_seq_summary;
+DROP TABLE #T2DM_drug_seq_summary;

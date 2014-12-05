@@ -42,11 +42,11 @@ the results queries allow you to remove small cell counts before producing the f
 
   /*cdmSchema:  cdm_schema*/
   /*resultsSchema:  results_schema*/
- /*studyName:  HTN*/
+ /*studyName:  Depression*/
  /*sourceName:  source_name*/
- /*txlist:  21600381,21601461,21601560,21601664,21601744,21601782*/
- /*dxlist: 316866*/
- /*excludedxlist:  444094*/
+ /*txlist:  21604686, 21500526*/
+ /*dxlist: 440383*/
+ /*excludedxlist:  444094,432876,435783*/
  /*smallcellcount:  5*/
 
 
@@ -56,196 +56,215 @@ ALTER SESSION SET current_schema =  results_schema;
 
 --For Oracle: drop temp tables if they already exist
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_indexcohort';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_indexcohort';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_indexcohort';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_indexcohort';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_e0';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_e0';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_e0';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_e0';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t0';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t0';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t0';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t0';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t1';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t1';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t1';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t1';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t2';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t2';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t2';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t2';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t3';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t3';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t3';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t3';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t4';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t4';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t4';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t4';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t5';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t5';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t5';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t5';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t6';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t6';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t6';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t6';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t7';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t7';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t7';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t7';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t8';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t8';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t8';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t8';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_t9';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_t9';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_t9';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_t9';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_matchcohort';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_matchcohort';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_matchcohort';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_matchcohort';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_drug_seq';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_drug_seq';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_drug_seq';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_drug_seq';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_drug_seq_summary';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_drug_seq_summary';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_drug_seq_summary';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_drug_seq_summary';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_person_count';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_person_count';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_person_count';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_person_count';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_person_count_year';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_person_count_year';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_person_count_year';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_person_count_year';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_seq_count';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_seq_count';
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE != -942 THEN
-      RAISE;
-    END IF;
-END;	
-
-BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  HTN_seq_count_year';
-  EXECUTE IMMEDIATE 'DROP TABLE  HTN_seq_count_year';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_seq_count';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_seq_count';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/	
+
+BEGIN
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_seq_count_year';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_seq_count_year';
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -942 THEN
+      RAISE;
+    END IF;
+END;
+/
 	
-CREATE GLOBAL TEMPORARY TABLE HTN_IndexCohort
+CREATE GLOBAL TEMPORARY TABLE Depression_IndexCohort
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
@@ -254,7 +273,7 @@ CREATE GLOBAL TEMPORARY TABLE HTN_IndexCohort
 	OBSERVATION_PERIOD_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_IndexCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
+INSERT INTO Depression_IndexCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
 SELECT    person_id, INDEX_DATE,COHORT_END_DATE, observation_period_start_date, observation_period_end_date
  FROM  
 (
@@ -272,7 +291,7 @@ SELECT    person_id, INDEX_DATE,COHORT_END_DATE, observation_period_start_date, 
 				ROW_NUMBER() OVER (PARTITION BY d.PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as RowNumber
 				FROM cdm_schema.DRUG_EXPOSURE d
 				JOIN cdm_schema.CONCEPT_ANCESTOR ca 
-				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 			) de
 			JOIN cdm_schema.PERSON p on p.PERSON_ID = de.PERSON_ID
 			WHERE de.RowNumber = 1
@@ -301,7 +320,7 @@ SELECT    person_id, INDEX_DATE,COHORT_END_DATE, observation_period_start_date, 
 					ROW_NUMBER() OVER (PARTITION BY d.PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as RowNumber
 					FROM cdm_schema.DRUG_EXPOSURE d
 					JOIN cdm_schema.CONCEPT_ANCESTOR ca 
-						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 				)
 				cteExposureData
 				UNION ALL
@@ -313,7 +332,7 @@ SELECT    person_id, INDEX_DATE,COHORT_END_DATE, observation_period_start_date, 
 					ROW_NUMBER() OVER (PARTITION BY d.PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as RowNumber
 					FROM cdm_schema.DRUG_EXPOSURE d
 					JOIN cdm_schema.CONCEPT_ANCESTOR ca 
-						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+						on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 				) cteExposureData
 			) RAWDATA
 		) E
@@ -328,7 +347,7 @@ SELECT    person_id, INDEX_DATE,COHORT_END_DATE, observation_period_start_date, 
 
 
 --find persons with no excluding conditions
-CREATE GLOBAL TEMPORARY TABLE HTN_E0
+CREATE GLOBAL TEMPORARY TABLE Depression_E0
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
@@ -336,15 +355,15 @@ CREATE GLOBAL TEMPORARY TABLE HTN_E0
 ) ON COMMIT PRESERVE ROWS;
 
 
-INSERT INTO HTN_E0
+INSERT INTO Depression_E0
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select co.PERSON_ID, co.CONDITION_CONCEPT_ID
 	FROM cdm_schema.condition_occurrence co
-	JOIN HTN_IndexCohort ip on co.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on co.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (444094)
+	JOIN Depression_IndexCohort ip on co.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on co.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (444094,432876,435783)
 	WHERE (co.CONDITION_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 ) dt on dt.PERSON_ID = ip.PERSON_ID
 GROUP BY  ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
@@ -355,7 +374,7 @@ HAVING COUNT(dt.CONDITION_CONCEPT_ID) <= 0
 
 
 --find persons in indexcohort with no treatments before index
-CREATE GLOBAL TEMPORARY TABLE HTN_T0
+CREATE GLOBAL TEMPORARY TABLE Depression_T0
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
@@ -363,15 +382,15 @@ CREATE GLOBAL TEMPORARY TABLE HTN_T0
 ) ON COMMIT PRESERVE ROWS;
 
 
-INSERT INTO HTN_T0
+INSERT INTO Depression_T0
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and (ip.INDEX_DATE + -1)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -380,22 +399,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) <= 0
 ;
 
 --find persons in indexcohort with diagnosis
-CREATE GLOBAL TEMPORARY TABLE HTN_T1
+CREATE GLOBAL TEMPORARY TABLE Depression_T1
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T1
+INSERT INTO Depression_T1
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN 
 (
 	select ce.PERSON_ID, ce.CONDITION_CONCEPT_ID
 	FROM cdm_schema.CONDITION_ERA ce
-	JOIN HTN_IndexCohort ip on ce.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on ce.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (316866)
+	JOIN Depression_IndexCohort ip on ce.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on ce.CONDITION_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (440383)
 	WHERE (ce.CONDITION_ERA_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		--cteConditionTargetClause	
 ) ct on ct.PERSON_ID = ip.PERSON_ID
@@ -404,22 +423,22 @@ HAVING COUNT(ct.CONDITION_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T2
+CREATE GLOBAL TEMPORARY TABLE Depression_T2
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T2
+INSERT INTO Depression_T2
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 121) and (ip.INDEX_DATE + 240)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -428,22 +447,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T3
+CREATE GLOBAL TEMPORARY TABLE Depression_T3
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T3
+INSERT INTO Depression_T3
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 241) and (ip.INDEX_DATE + 360)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -452,22 +471,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T4
+CREATE GLOBAL TEMPORARY TABLE Depression_T4
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T4
+INSERT INTO Depression_T4
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 361) and (ip.INDEX_DATE + 480)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -476,22 +495,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T5
+CREATE GLOBAL TEMPORARY TABLE Depression_T5
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T5
+INSERT INTO Depression_T5
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 481) and (ip.INDEX_DATE + 600)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -500,22 +519,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T6
+CREATE GLOBAL TEMPORARY TABLE Depression_T6
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T6
+INSERT INTO Depression_T6
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 601) and (ip.INDEX_DATE + 720)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -525,22 +544,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T7
+CREATE GLOBAL TEMPORARY TABLE Depression_T7
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T7
+INSERT INTO Depression_T7
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 721) and (ip.INDEX_DATE + 840)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -549,22 +568,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T8
+CREATE GLOBAL TEMPORARY TABLE Depression_T8
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T8
+INSERT INTO Depression_T8
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 841) and (ip.INDEX_DATE + 960)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -573,22 +592,22 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 ;
 
 --find persons in indexcohort with >1 treatments in 4mo interval after index
-CREATE GLOBAL TEMPORARY TABLE HTN_T9
+CREATE GLOBAL TEMPORARY TABLE Depression_T9
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
 	OBSERVATION_END_DATE date not null
 ) ON COMMIT PRESERVE ROWS;
 
-INSERT INTO HTN_T9
+INSERT INTO Depression_T9
 select ip.PERSON_ID, ip.INDEX_DATE, ip.COHORT_END_DATE
-from HTN_IndexCohort ip
+from Depression_IndexCohort ip
 LEFT JOIN
 (
 	select de.PERSON_ID, de.DRUG_CONCEPT_ID
 	FROM cdm_schema.DRUG_EXPOSURE de
-	JOIN HTN_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
-	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21600381,21601461,21601560,21601664,21601744,21601782)
+	JOIN Depression_IndexCohort ip on de.PERSON_ID = ip.PERSON_ID
+	JOIN cdm_schema.CONCEPT_ANCESTOR ca on de.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
 	WHERE (de.DRUG_EXPOSURE_START_DATE between ip.OBSERVATION_PERIOD_START_DATE and ip.OBSERVATION_PERIOD_END_DATE)
 		 AND de.DRUG_EXPOSURE_START_DATE between (ip.INDEX_DATE + 961) and (ip.INDEX_DATE + 1080)	
 ) dt on dt.PERSON_ID = ip.PERSON_ID
@@ -598,7 +617,7 @@ HAVING COUNT(dt.DRUG_CONCEPT_ID) >= 1
 
 
 --find persons that qualify for final cohort (meeting all inclusion criteria)
-CREATE GLOBAL TEMPORARY TABLE HTN_MatchCohort
+CREATE GLOBAL TEMPORARY TABLE Depression_MatchCohort
  (
 	PERSON_ID NUMBER(19) not null primary key,
 	INDEX_DATE date not null,
@@ -608,35 +627,35 @@ CREATE GLOBAL TEMPORARY TABLE HTN_MatchCohort
 ) ON COMMIT PRESERVE ROWS;
 
 
-INSERT INTO HTN_MatchCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
+INSERT INTO Depression_MatchCohort (PERSON_ID, INDEX_DATE, COHORT_END_DATE, OBSERVATION_PERIOD_START_DATE, OBSERVATION_PERIOD_END_DATE)
 select c.person_id, c.index_date, c.cohort_end_date, c.observation_period_start_date, c.observation_period_end_date
-FROM HTN_IndexCohort C
+FROM Depression_IndexCohort C
 INNER JOIN
 (
 SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID
 FROM
 (
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_E0
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_E0
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T0
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T0
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T1
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T1
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T2
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T2
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T3
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T3
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T4
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T4
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T5
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T5
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T6
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T6
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T7
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T7
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T8
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T8
 	INTERSECT
-	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM HTN_T9
+	SELECT INDEX_DATE, OBSERVATION_END_DATE, PERSON_ID FROM Depression_T9
 ) TopGroup
 ) I 
 ON C.PERSON_ID = I.PERSON_ID
@@ -646,7 +665,7 @@ and c.index_date = i.INDEX_DATE
 
 
 --find all drugs that the matching cohort had taken
-CREATE GLOBAL TEMPORARY TABLE HTN_drug_seq
+CREATE GLOBAL TEMPORARY TABLE Depression_drug_seq
  (
 	person_id NUMBER(19),
 	index_year int,
@@ -655,14 +674,14 @@ CREATE GLOBAL TEMPORARY TABLE HTN_drug_seq
 	drug_seq int
 ) ON COMMIT PRESERVE ROWS;
 
-insert into HTN_drug_seq (person_id, index_year, drug_concept_id, concept_name, drug_seq)
+insert into Depression_drug_seq (person_id, index_year, drug_concept_id, concept_name, drug_seq)
 select de1.person_id, de1.index_year, de1.drug_concept_id, c1.concept_name, row_number() over (partition by de1.person_id order by de1.drug_start_date, de1.drug_concept_id) as rn1
 from
 (select de0.person_id, de0.drug_concept_id, EXTRACT(YEAR FROM c1.index_date) as index_year, min(de0.drug_era_start_date) as drug_start_date
 from cdm_schema.drug_era de0
-inner join HTN_MatchCohort c1
+inner join Depression_MatchCohort c1
 on de0.person_id = c1.person_id
-where drug_concept_id in (select descendant_concept_id from cdm_schema.concept_ancestor where ancestor_concept_id in (21600381,21601461,21601560,21601664,21601744,21601782))
+where drug_concept_id in (select descendant_concept_id from cdm_schema.concept_ancestor where ancestor_concept_id in (21604686, 21500526))
 group by de0.person_id, de0.drug_concept_id, EXTRACT(YEAR FROM c1.index_date)
 ) de1
 inner join cdm_schema.concept c1
@@ -673,7 +692,7 @@ on de1.drug_concept_id = c1.concept_id
 
 
 --summarize the unique treatment sequences observed
-CREATE GLOBAL TEMPORARY TABLE HTN_drug_seq_summary
+CREATE GLOBAL TEMPORARY TABLE Depression_drug_seq_summary
  (
 	index_year int,
 	d1_concept_id int,
@@ -719,7 +738,7 @@ CREATE GLOBAL TEMPORARY TABLE HTN_drug_seq_summary
 	num_persons int
 ) ON COMMIT PRESERVE ROWS;
 
-insert into HTN_drug_seq_summary (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into Depression_drug_seq_summary (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select d1.index_year,
 	d1.drug_concept_id as d1_concept_id,
 	d2.drug_concept_id as d2_concept_id,
@@ -764,101 +783,101 @@ select d1.index_year,
 	count(distinct d1.person_id) as num_persons
 from
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 1) d1
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 2) d2
 on d1.person_id = d2.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 3) d3
 on d1.person_id = d3.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 4) d4
 on d1.person_id = d4.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 5) d5
 on d1.person_id = d5.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 6) d6
 on d1.person_id = d6.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 7) d7
 on d1.person_id = d7.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 8) d8
 on d1.person_id = d8.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 9) d9
 on d1.person_id = d9.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 10) d10
 on d1.person_id = d10.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 11) d11
 on d1.person_id = d11.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 12) d12
 on d1.person_id = d12.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 13) d13
 on d1.person_id = d13.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 14) d14
 on d1.person_id = d14.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 15) d15
 on d1.person_id = d15.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 16) d16
 on d1.person_id = d16.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 17) d17
 on d1.person_id = d17.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 18) d18
 on d1.person_id = d18.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 19) d19
 on d1.person_id = d19.person_id
 left join
 (select *
-from HTN_drug_seq
+from Depression_drug_seq
 where drug_seq = 20) d20
 on d1.person_id = d20.person_id
 group by 
@@ -921,69 +940,72 @@ ALTER SESSION SET current_schema =  results_schema;
 --1.  count total persons with a treatment
 
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  TxPath_source_name_HTN_person_count';
-  EXECUTE IMMEDIATE 'DROP TABLE  TxPath_source_name_HTN_person_count';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_source_name_person_count';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_source_name_person_count';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
-create table results_schema.TxPath_source_name_HTN_person_count
+create table results_schema.Depression_source_name_person_count
 (
 	num_persons int
 );
 
 
-insert into results_schema.TxPath_source_name_HTN_person_count (num_persons)
+insert into results_schema.Depression_source_name_person_count (num_persons)
 SELECT   num_persons
  FROM 
 (
 select sum(num_persons) as num_persons
-from HTN_drug_seq_summary
+from Depression_drug_seq_summary
 ) t1
   WHERE  num_persons > 5;
 
 --2.  count total persons with a treatment, by year
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  TxPath_source_name_HTN_person_ct_yr';
-  EXECUTE IMMEDIATE 'DROP TABLE  TxPath_source_name_HTN_person_ct_yr';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_source_name_person_count_year';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_source_name_person_count_year';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
-create table results_schema.TxPath_source_name_HTN_person_ct_yr
+create table results_schema.Depression_source_name_person_count_year
 (
 	index_year int,
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_person_ct_yr (index_year, num_persons)
+insert into results_schema.Depression_source_name_person_count_year (index_year, num_persons)
 SELECT   index_year, num_persons
  FROM 
 (
 select index_year, sum(num_persons) as num_persons
-from HTN_drug_seq_summary
+from Depression_drug_seq_summary
 group by index_year
 ) t1
   WHERE  num_persons > 5;
 
 --3.  overall summary (group by year):   edit the where clause if you need to remove cell counts < minimum number (here 1 as example)
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  TxPath_source_name_HTN_seq_count';
-  EXECUTE IMMEDIATE 'DROP TABLE  TxPath_source_name_HTN_seq_count';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_source_name_seq_count';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_source_name_seq_count';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
-create table results_schema.TxPath_source_name_HTN_seq_count
+create table results_schema.Depression_source_name_seq_count
 (
 	d1_concept_id int, 
 	d2_concept_id int, 
@@ -1028,30 +1050,31 @@ create table results_schema.TxPath_source_name_HTN_seq_count
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_seq_count (d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into results_schema.Depression_source_name_seq_count (d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 SELECT   *
  FROM 
 (
 select d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, 
 	sum(num_persons) as num_persons
-from HTN_drug_seq_summary
+from Depression_drug_seq_summary
 group by d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name
 ) t1
   WHERE  num_persons > 5;
 
 --4.  summary by year:   edit the where clause if you need to remove cell counts < minimum number
 BEGIN
-  EXECUTE IMMEDIATE 'TRUNCATE TABLE  TxPath_source_name_HTN_seq_count_year';
-  EXECUTE IMMEDIATE 'DROP TABLE  TxPath_source_name_HTN_seq_count_year';
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_source_name_seq_count_year';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_source_name_seq_count_year';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -942 THEN
       RAISE;
     END IF;
 END;
+/
 
 
-create table results_schema.TxPath_source_name_HTN_seq_count_year
+create table results_schema.Depression_source_name_seq_count_year
 (
 	index_year int,
 	d1_concept_id int, 
@@ -1097,39 +1120,39 @@ create table results_schema.TxPath_source_name_HTN_seq_count_year
 	num_persons int
 );
 
-insert into results_schema.TxPath_source_name_HTN_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into results_schema.Depression_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 SELECT   index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons
- FROM  HTN_drug_seq_summary
+ FROM  Depression_drug_seq_summary
   WHERE  num_persons > 5;
 
 --For Oracle: cleanup temp tables:
-TRUNCATE TABLE HTN_indexcohort;
-DROP TABLE HTN_indexcohort;
-TRUNCATE TABLE HTN_e0;
-DROP TABLE HTN_e0;
-TRUNCATE TABLE HTN_t0;
-DROP TABLE HTN_t0;
-TRUNCATE TABLE HTN_t1;
-DROP TABLE HTN_t1;
-TRUNCATE TABLE HTN_t2;
-DROP TABLE HTN_t2;
-TRUNCATE TABLE HTN_t3;
-DROP TABLE HTN_t3;
-TRUNCATE TABLE HTN_t4;
-DROP TABLE HTN_t4;
-TRUNCATE TABLE HTN_t5;
-DROP TABLE HTN_t5;
-TRUNCATE TABLE HTN_t6;
-DROP TABLE HTN_t6;
-TRUNCATE TABLE HTN_t7;
-DROP TABLE HTN_t7;
-TRUNCATE TABLE HTN_t8;
-DROP TABLE HTN_t8;
-TRUNCATE TABLE HTN_t9;
-DROP TABLE HTN_t9;
-TRUNCATE TABLE HTN_matchcohort;
-DROP TABLE HTN_matchcohort;
-TRUNCATE TABLE HTN_drug_seq;
-DROP TABLE HTN_drug_seq;
-TRUNCATE TABLE HTN_drug_seq_summary;
-DROP TABLE HTN_drug_seq_summary;
+TRUNCATE TABLE Depression_indexcohort;
+DROP TABLE Depression_indexcohort;
+TRUNCATE TABLE Depression_e0;
+DROP TABLE Depression_e0;
+TRUNCATE TABLE Depression_t0;
+DROP TABLE Depression_t0;
+TRUNCATE TABLE Depression_t1;
+DROP TABLE Depression_t1;
+TRUNCATE TABLE Depression_t2;
+DROP TABLE Depression_t2;
+TRUNCATE TABLE Depression_t3;
+DROP TABLE Depression_t3;
+TRUNCATE TABLE Depression_t4;
+DROP TABLE Depression_t4;
+TRUNCATE TABLE Depression_t5;
+DROP TABLE Depression_t5;
+TRUNCATE TABLE Depression_t6;
+DROP TABLE Depression_t6;
+TRUNCATE TABLE Depression_t7;
+DROP TABLE Depression_t7;
+TRUNCATE TABLE Depression_t8;
+DROP TABLE Depression_t8;
+TRUNCATE TABLE Depression_t9;
+DROP TABLE Depression_t9;
+TRUNCATE TABLE Depression_matchcohort;
+DROP TABLE Depression_matchcohort;
+TRUNCATE TABLE Depression_drug_seq;
+DROP TABLE Depression_drug_seq;
+TRUNCATE TABLE Depression_drug_seq_summary;
+DROP TABLE Depression_drug_seq_summary;
