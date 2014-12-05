@@ -1,30 +1,29 @@
-Hypertension Pathway Protocol
+Treatment Pathways Study Protocol
 ===============
 
-Protocol is available on OHDSI wiki at:  http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_hypertension.
+This is a study of treatment pathways in hypertension, diabetes, and depression.  Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_hypertension).
 
-The SQL code in this directory was rendered using the Treatment Pathway R script available in the Treatment_Pathways folder within this StudyProtocols github repository.
+You have two options to execute this analysis, using R or via SQL console.
 
-You have two options to execute this analysis:
+**R Version**
 
-1)  Working within R
-- Open MainAnalysis.r, within Treatment_Pathways subfolder.
+- Open MainAnalysis.R
 - Modify the parameters near the top of the script
-	folder        = "C:/Users/mschuemi/Desktop/Treatment patterns" # Folder containing the R and SQL files
-	minCellCount  = 5   # all cell counts lower than this value will be removed from the final results table
-	cdmSchema     = "cdm_truven_ccae_6k"   # schema name where your patient-level data in OMOP CDM format resides
-	resultsSchema = "scratch"  # schema where you'd like the results tables to be created (requires user to have create/write access)
-	sourceName    = "CCAE_6k"  # short name that will be appeneded to results table name
-	dbms          = "postgresql"  	  # Should be "sql server", "oracle", "postgresql" or "redshift"
+    -	folder        = "C:/Users/mschuemi/Desktop/Treatment patterns" # Folder containing the R files and parameterized SQL script from this repo, make sure to use forward slashes /
+    -	minCellCount  = 5   # all cell counts lower than this value will be removed from the final results table
+    -	cdmSchema     = "cdm_truven_ccae_6k"   # schema name where your patient-level data in OMOP CDM format resides
+    -	resultsSchema = "scratch"  # schema where you'd like the results tables to be created (requires user to have create/write access)
+    -	sourceName    = "CCAE_6k"  # short name that will be appeneded to results table name
+    -  	dbms          = "postgresql"  	  # Should be "sql server", "oracle", "postgresql" or "redshift"
  
 - Execute the script.
 	MainAnalysis.r will render the SQL, translate it to your environment dialect (SQL Server, Oracle, PostgresQL), execute the SQL, and export the resulting summary statistics as .csv files.   As written, this script will complete the analysis for all 3 study requests:  hypertension, type 2 diabetes mellitus, and depression.
-- Email the results files to study coordinator.
+- 4 CSV files will be generated for each of the 3 studies and placed in the "folder" defined above.  Email the results files to study coordinator.
 
+**SQL Version**
 
-2) Use the SQL code 
-- Open the dialect-specific version of the SQL in your SQL developer console.
-- Find/replace the default values for the following parameters:
+- Open the dialect-specific version of the SQL script in your SQL console of choice.
+- Perform find/replace on the following parameters:
  
     - cdm_schema  :  replace with schema name of your CDM
 
@@ -32,5 +31,8 @@ You have two options to execute this analysis:
 
     - source_name  :  replace with shortname that'll be in result table name (e.g. CCAE, INPC, Optum)
 
-- Export the 4 results tables from your resultSchema into .csv files.
+- Execute SQL (may take a few hours)
+- Export the results tables from your resultSchema into .csv files.
 - Email the results files to the study coordinator.
+
+Note that the SQL version runs one study at a time, so the above should be repeated to perform all three studies.
