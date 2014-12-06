@@ -25,11 +25,11 @@ renderStudySpecificSql <- function(studyName, minCellCount, cdmSchema, resultsSc
   }
   
   extractAndWriteToFile <- function(connection, tableName, resultsSchema, sourceName, studyName, dbms){
-    parameterizedSql <- "SELECT * FROM @resultsSchema.dbo.TxPath_@sourceName_@studyName_@tableName"
+    parameterizedSql <- "SELECT * FROM @resultsSchema.dbo.@studyName_@sourceName_@tableName"
     renderedSql <- renderSql(parameterizedSql, cdmSchema=cdmSchema, resultsSchema=resultsSchema, studyName=studyName, sourceName=sourceName, tableName=tableName)$sql
     translatedSql <- translateSql(renderedSql, sourceDialect = "sql server", targetDialect = dbms)$sql
     data <- querySql(connection, translatedSql)
-    outputFile <- paste("TxPath_",sourceName,"_",studyName,"_",tableName,".csv") 
+    outputFile <- paste(studyName,"_",sourceName,"_",tableName,".csv") 
     write.csv(data,file=outputFile)
     writeLines(paste("Created file '",outputFile,"'",sep=""))
   }
