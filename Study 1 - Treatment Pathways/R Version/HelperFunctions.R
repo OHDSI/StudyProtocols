@@ -28,7 +28,7 @@ renderStudySpecificSql <- function(studyName, minCellCount, cdmSchema, resultsSc
     parameterizedSql <- "SELECT * FROM @resultsSchema.dbo.@studyName_@sourceName_@tableName"
     renderedSql <- renderSql(parameterizedSql, cdmSchema=cdmSchema, resultsSchema=resultsSchema, studyName=studyName, sourceName=sourceName, tableName=tableName)$sql
     translatedSql <- translateSql(renderedSql, sourceDialect = "sql server", targetDialect = dbms)$sql
-    data <- querySql(connection, translatedSql)
+    data <- dbGetQuery.ffdf(connection, translatedSql)
     outputFile <- paste(studyName,"_",sourceName,"_",tableName,".csv",sep='') 
     write.csv(data,file=outputFile)
     writeLines(paste("Created file '",outputFile,"'",sep=""))
