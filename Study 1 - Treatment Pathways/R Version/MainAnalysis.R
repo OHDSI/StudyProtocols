@@ -24,10 +24,10 @@ library(DatabaseConnector)
 ###########################################################
 
 folder        = "F:/Documents/OHDSI/StudyProtocols/Study 1 - Treatment Pathways/R Version" # Folder containing the R and SQL files, use forward slashes
-minCellCount  = 1   # the smallest allowable cell count, 1 means all counts are allowed
-cdmSchema     = "cdm_optum"
-resultsSchema = "cdm_optum"
-sourceName    = "JNJ_OPTUM"
+minCellCount  = 2   # the smallest allowable cell count, 1 means all counts are allowed
+cdmSchema     = "cdm_schema"
+resultsSchema = "results_schema"
+sourceName    = "source_name"
 dbms          = "sql server"  	  # Should be "sql server", "oracle", "postgresql" or "redshift"
 
 # If you want to use R to run the SQL and extract the results tables, please create a connectionDetails 
@@ -38,7 +38,7 @@ dbms          = "sql server"  	  # Should be "sql server", "oracle", "postgresql
 dbms <- "sql server"
 user <- NULL
 pw <- NULL
-server <- "RNDUSRDHIT05"
+server <- "server_name"
 port <- NULL
 
 connectionDetails <- createConnectionDetails(dbms=dbms, 
