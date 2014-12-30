@@ -23,20 +23,31 @@ library(DatabaseConnector)
 # Parameters: Please change these to the correct values:  #
 ###########################################################
 
-folder        = "C:/Users/mschuemi/Desktop/Treatment patterns" # Folder containing the R and SQL files, use forward slashes
-minCellCount  = 5
-cdmSchema     = "cdm_truven_ccae_6k"
-resultsSchema = "scratch"
-sourceName    = "CCAE_6k"
-dbms          = "postgresql"  	  # Should be "sql server", "oracle", "postgresql" or "redshift"
+folder        = "F:/Documents/OHDSI/StudyProtocols/Study 1 - Treatment Pathways/R Version" # Folder containing the R and SQL files, use forward slashes
+minCellCount  = 1   # the smallest allowable cell count, 1 means all counts are allowed
+cdmSchema     = "cdm_optum"
+resultsSchema = "cdm_optum"
+sourceName    = "JNJ_OPTUM"
+dbms          = "sql server"  	  # Should be "sql server", "oracle", "postgresql" or "redshift"
 
 # If you want to use R to run the SQL and extract the results tables, please create a connectionDetails 
 # object. See ?createConnectionDetails for details on how to configure for your DBMS.
 
-connectionDetails <- createConnectionDetails(dbms     = dbms,
-                                             user     = "postgres", 
-                                             password = "F1r3starter", 
-                                             server   = "localhost/ohdsi")
+
+
+dbms <- "sql server"
+user <- NULL
+pw <- NULL
+server <- "RNDUSRDHIT05"
+port <- NULL
+
+connectionDetails <- createConnectionDetails(dbms=dbms, 
+                                              server=server, 
+                                              user=user, 
+                                              password=pw, 
+                                              schema=cdmSchema,
+                                              port=port)
+
 
 ###########################################################
 # End of parameters. Make no changes after this           #
@@ -58,19 +69,13 @@ executeSql(conn,readSql(t2dmSqlFile))
 executeSql(conn,readSql(depSqlFile))
 
 # Extract tables to CSV files:
-extractAndWriteToFile(conn, "person_count", resultsSchema, sourceName, "HTN", dbms)
 extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "HTN", dbms)
-extractAndWriteToFile(conn, "seq_count", resultsSchema, sourceName, "HTN", dbms)
 extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "HTN", dbms)
 
-extractAndWriteToFile(conn, "person_count", resultsSchema, sourceName, "T2DM", dbms)
 extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "T2DM", dbms)
-extractAndWriteToFile(conn, "seq_count", resultsSchema, sourceName, "T2DM", dbms)
 extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "T2DM", dbms)
 
-extractAndWriteToFile(conn, "person_count", resultsSchema, sourceName, "Depression", dbms)
 extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "Depression", dbms)
-extractAndWriteToFile(conn, "seq_count", resultsSchema, sourceName, "Depression", dbms)
 extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "Depression", dbms)
 
 dbDisconnect(conn)
