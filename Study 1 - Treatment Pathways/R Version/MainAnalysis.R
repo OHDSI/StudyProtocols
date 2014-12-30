@@ -24,7 +24,7 @@ library(DatabaseConnector)
 ###########################################################
 
 folder        = "F:/Documents/OHDSI/StudyProtocols/Study 1 - Treatment Pathways/R Version" # Folder containing the R and SQL files, use forward slashes
-minCellCount  = 2   # the smallest allowable cell count, 1 means all counts are allowed
+minCellCount  = 1   # the smallest allowable cell count, 1 means all counts are allowed
 cdmSchema     = "cdm_schema"
 resultsSchema = "results_schema"
 sourceName    = "source_name"
