@@ -48,7 +48,7 @@ the results queries allow you to remove small cell counts before producing the f
 *************************/
 
   /*cdmSchema:  cdm_schema*/
-  /*resultsSchema:  results_schema*/
+  /*resultsSchema:  resuts_schema*/
  /*studyName:  Depression*/
  /*sourceName:  source_name*/
  /*txlist:  21604686, 21500526*/
@@ -59,7 +59,7 @@ the results queries allow you to remove small cell counts before producing the f
 
 --create index population (persons with >1 treatment with >365d observation prior and >1095d observation after)
 
-ALTER SESSION SET current_schema =  results_schema;
+ALTER SESSION SET current_schema =  resuts_schema;
 
 --For Oracle: drop temp tables if they already exist
 BEGIN
@@ -251,7 +251,13 @@ EXCEPTION
       RAISE;
     END IF;
 END;
-	
+
+
+
+
+
+
+
 CREATE GLOBAL TEMPORARY TABLE Depression_IndexCohort
  (
 	PERSON_ID NUMBER(19) not null primary key,
@@ -2634,7 +2640,71 @@ save these results and report back with the central coordinating center
 *****/
 
 
-ALTER SESSION SET current_schema =  results_schema;
+--0.  count total persons for attrition table
+BEGIN
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE  Depression_source_name_population_summary';
+  EXECUTE IMMEDIATE 'DROP TABLE  Depression_source_name_population_summary';
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -942 THEN
+      RAISE;
+    END IF;
+END;
+
+create table resuts_schema.Depression_source_name_population_summary
+(
+	count_type varchar(500),
+	num_persons int
+);
+
+
+insert into resuts_schema.Depression_source_name_population_summary (count_type, num_persons)
+CREATE TABLE  resuts_schema.Depression_source_name_population_summary (count_type, num_persons)
+CREATE TABLE  resuts_schema.Depression_source_name_population_summary (count_type, num_persons)
+SELECT  'Number of persons with at least one drug exposure and >1 year of prior observation and >3 years of follow-up observation' as count_type, count(distinct t1.PERSON_ID) as num_persons
+				 AS
+SELECT
+  'Number of persons with at least one drug exposure' as count_type, count(distinct d.PERSON_ID) as num_persons
+  			 AS
+SELECT
+  'Number of persons' as count_type, count(distinct p.PERSON_ID) as num_persons
+    		FROM cdm_schema.PERSON p
+
+
+insert 
+FROM
+ cdm_schema.DRUG_EXPOSURE d
+				JOIN cdm_schema.CONCEPT_ANCESTOR ca 
+				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
+        
+
+insert 
+FROM
+
+(SELECT d.person_id, min(drug_exposure_start_date) as first_drug
+        FROM cdm_schema.DRUG_EXPOSURE d
+				JOIN cdm_schema.CONCEPT_ANCESTOR ca 
+				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (21604686, 21500526)
+GROUP BY d.person_id) t1
+JOIN cdm_schema.OBSERVATION_PERIOD op
+on t1.person_id = op.person_id
+ FROM
+  DUAL
+ FROM
+  DUAL
+ FROM
+  DUAL
+WHERE ( op.OBSERVATION_PERIOD_START_DATE + 365) <= t1.first_drug AND ( t1.first_drug + 1095) <= op.OBSERVATION_PERIOD_END_DATE 
+;
+
+insert into resuts_schema.Depression_source_name_population_summary (count_type, num_persons)
+select 'Number of persons in final qualifying cohort' as count_type, count(distinct person_id) as num_persons
+from Depression_MatchCohort
+;
+
+
+
+ALTER SESSION SET current_schema =  resuts_schema;
 
 
 --1.  count total persons with a treatment, by year
@@ -2648,13 +2718,13 @@ EXCEPTION
     END IF;
 END;
 
-create table results_schema.Depression_source_name_person_count_year
+create table resuts_schema.Depression_source_name_person_count_year
 (
 	index_year int,
 	num_persons int
 );
 
-insert into results_schema.Depression_source_name_person_count_year (index_year, num_persons)
+insert into resuts_schema.Depression_source_name_person_count_year (index_year, num_persons)
 select index_year, num_persons
 from
 (
@@ -2667,7 +2737,7 @@ group by index_year
 
 --2.  count total persons with a treatment, overall (29Dec2014:  now add to year summary table)
 
-insert into results_schema.Depression_source_name_person_count_year (index_year, num_persons)
+insert into resuts_schema.Depression_source_name_person_count_year (index_year, num_persons)
 select 9999 as index_year, num_persons
 from
 (
@@ -2693,7 +2763,7 @@ EXCEPTION
 END;
 
 
-create table results_schema.Depression_source_name_seq_count_year
+create table resuts_schema.Depression_source_name_seq_count_year
 (
 	index_year int,
 	d1_concept_id int, 
@@ -2739,7 +2809,7 @@ create table results_schema.Depression_source_name_seq_count_year
 	num_persons int
 );
 
-insert into results_schema.Depression_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into resuts_schema.Depression_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons
 from Depression_drug_seq_summary
 ;
@@ -2748,7 +2818,7 @@ from Depression_drug_seq_summary
 
 
 --4.  overall summary (group by year):   edit the where clause if you need to remove cell counts < minimum number (here 1 as example)
-insert into results_schema.Depression_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into resuts_schema.Depression_source_name_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select *
 from
 (
