@@ -2508,29 +2508,29 @@ save these results and report back with the central coordinating center
 
 
 --0.  count total persons for attrition table
-IF OBJECT_ID('@studyName_@sourceName_population_summary', 'U') IS NOT NULL
-  DROP TABLE @studyName_@sourceName_population_summary;
+IF OBJECT_ID('@studyName_@sourceName_summary', 'U') IS NOT NULL
+  DROP TABLE @studyName_@sourceName_summary;
 
-create table @resultsSchema.dbo.@studyName_@sourceName_population_summary
+create table @resultsSchema.dbo.@studyName_@sourceName_summary
 (
 	count_type varchar(500),
 	num_persons int
 );
 
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_population_summary (count_type, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons' as count_type, count(distinct p.PERSON_ID) as num_persons
     		FROM @cdmSchema.dbo.PERSON p
 
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_population_summary (count_type, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons with at least one drug exposure' as count_type, count(distinct d.PERSON_ID) as num_persons
   			FROM @cdmSchema.dbo.DRUG_EXPOSURE d
 				JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca 
 				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
         
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_population_summary (count_type, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons with at least one drug exposure and >1 year of prior observation and >3 years of follow-up observation' as count_type, count(distinct t1.PERSON_ID) as num_persons
 				from
 (SELECT d.person_id, min(drug_exposure_start_date) as first_drug
@@ -2543,7 +2543,7 @@ on t1.person_id = op.person_id
 WHERE DATEADD(dd,365, op.OBSERVATION_PERIOD_START_DATE) <= t1.first_drug AND DATEADD(dd,1095, t1.first_drug) <= op.OBSERVATION_PERIOD_END_DATE 
 ;
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_population_summary (count_type, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons in final qualifying cohort' as count_type, count(distinct person_id) as num_persons
 from #@studyName_MatchCohort
 ;

@@ -24,7 +24,7 @@ library(DatabaseConnector)
 ###########################################################
 
 folder        = "F:/Documents/OHDSI/StudyProtocols/Study 1 - Treatment Pathways/R Version" # Folder containing the R and SQL files, use forward slashes
-minCellCount  = 2   # the smallest allowable cell count, 1 means all counts are allowed
+minCellCount  = 1   # the smallest allowable cell count, 1 means all counts are allowed
 cdmSchema     = "cdm_schema"
 resultsSchema = "resuts_schema"
 sourceName    = "source_name"
@@ -68,15 +68,15 @@ executeSql(conn,readSql(t2dmSqlFile))
 executeSql(conn,readSql(depSqlFile))
 
 # Extract tables to CSV files:
-extractAndWriteToFile(conn, "population_summary", resultsSchema, sourceName, "HTN", dbms)
+extractAndWriteToFile(conn, "summary", resultsSchema, sourceName, "HTN", dbms)
 extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "HTN", dbms)
 extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "HTN", dbms)
 
-extractAndWriteToFile(conn, "population_summary", resultsSchema, sourceName, "T2DM", dbms)
+extractAndWriteToFile(conn, "summary", resultsSchema, sourceName, "T2DM", dbms)
 extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "T2DM", dbms)
 extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "T2DM", dbms)
 
-extractAndWriteToFile(conn, "population_summary", resultsSchema, sourceName, "Depression", dbms)
+extractAndWriteToFile(conn, "summary", resultsSchema, sourceName, "Depression", dbms)
 extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "Depression", dbms)
 extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "Depression", dbms)
 
