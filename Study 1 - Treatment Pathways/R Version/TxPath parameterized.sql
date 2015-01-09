@@ -17,34 +17,21 @@
 
 
 /************************                                                                     
-
 script to create treatment patterns among patients with a disease
-
-last revised: 29 December 2014
-
+last revised: 8 Jan 2015
 author:  Patrick Ryan
-
 description:
-
 create cohort of patients with index at first treatment.  
 patients must have >365d prior observation and >1095d of follow-up. 
 patients must have >1 diagnosis during their observation. 
 patients must have >1 treatment every 120d from index through 1095d.
-
 for each patient, we summarize the sequence of treatments (active ingredients, ordered by first date of dispensing)
-
 we then count the number of persons with the same sequence of treatments
-
 the results queries allow you to remove small cell counts before producing the final summary tables as needed
-
-
 --update 29 Dec 2014:
 ***changed the handling of small cell counts to aggregate treatment sequences until cell count is achieved (rather than removing full sequence)
 ***changed mincellcount default = 0
 ***changed to create only 2 output files.   both stratified by year, but overall is set with year = 9999
-
-
-
 *************************/
 
 {DEFAULT @cdmSchema = 'cdmSchema'}  /*cdmSchema:  @cdmSchema*/
@@ -63,7 +50,7 @@ USE @resultsSchema;
 
 --For Oracle: drop temp tables if they already exist
 IF OBJECT_ID('#@studyName_indexcohort', 'U') IS NOT NULL
-	DROP TABLE #@studyName_indexcohort;
+  DROP TABLE #@studyName_indexcohort;
 
 IF OBJECT_ID('#@studyName_e0', 'U') IS NOT NULL
 	DROP TABLE #@studyName_e0;
@@ -107,17 +94,15 @@ IF OBJECT_ID('#@studyName_drug_seq', 'U') IS NOT NULL
 IF OBJECT_ID('#@studyName_drug_seq_summary', 'U') IS NOT NULL
 	DROP TABLE #@studyName_drug_seq_summary;
 
-IF OBJECT_ID('@studyName_person_count', 'U') IS NOT NULL
-	DROP TABLE @studyName_person_count;
+IF OBJECT_ID('@studyName_@sourceName_summary', 'U') IS NOT NULL
+	DROP TABLE @studyName_@sourceName_summary;
 
-IF OBJECT_ID('@studyName_person_count_year', 'U') IS NOT NULL
-	DROP TABLE @studyName_person_count_year;
+IF OBJECT_ID('@studyName_@sourceName_person_cnt', 'U') IS NOT NULL
+	DROP TABLE @studyName_@sourceName_person_cnt;
 
-IF OBJECT_ID('@studyName_seq_count', 'U') IS NOT NULL
-	DROP TABLE @studyName_seq_count;	
 
-IF OBJECT_ID('@studyName_seq_count_year', 'U') IS NOT NULL
-	DROP TABLE @studyName_seq_count_year;
+IF OBJECT_ID('@studyName_@sourceName_seq_cnt', 'U') IS NOT NULL
+	DROP TABLE @studyName_@sourceName_seq_cnt;
 
 
 
@@ -788,10 +773,8 @@ group by
 
 
 /****
-
 added 29Dec2014:
 modify table to remove small cell counts
-
 *****/
 
 {@smallcellcount != 1} ? {
@@ -2499,11 +2482,8 @@ DROP TABLE #@studyName_drug_seq_summary_temp;
 
 
 /*****
-
 Final tables for export:  
-
 save these results and report back with the central coordinating center
-
 *****/
 
 
@@ -2521,14 +2501,14 @@ create table @resultsSchema.dbo.@studyName_@sourceName_summary
 insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons' as count_type, count(distinct p.PERSON_ID) as num_persons
     		FROM @cdmSchema.dbo.PERSON p
-
+;
 
 insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons with at least one drug exposure' as count_type, count(distinct d.PERSON_ID) as num_persons
   			FROM @cdmSchema.dbo.DRUG_EXPOSURE d
 				JOIN @cdmSchema.dbo.CONCEPT_ANCESTOR ca 
 				on d.DRUG_CONCEPT_ID = ca.DESCENDANT_CONCEPT_ID and ca.ANCESTOR_CONCEPT_ID in (@txlist)
-        
+;        
 
 insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
 select 'Number of persons with at least one drug exposure and >1 year of prior observation and >3 years of follow-up observation' as count_type, count(distinct t1.PERSON_ID) as num_persons
@@ -2554,16 +2534,16 @@ USE @resultsSchema;
 
 
 --1.  count total persons with a treatment, by year
-IF OBJECT_ID('@studyName_@sourceName_person_count_year', 'U') IS NOT NULL
-	DROP TABLE @studyName_@sourceName_person_count_year;
+IF OBJECT_ID('@studyName_@sourceName_person_cnt', 'U') IS NOT NULL
+	DROP TABLE @studyName_@sourceName_person_cnt;
 
-create table @resultsSchema.dbo.@studyName_@sourceName_person_count_year
+create table @resultsSchema.dbo.@studyName_@sourceName_person_cnt
 (
 	index_year int,
 	num_persons int
 );
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_person_count_year (index_year, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_person_cnt (index_year, num_persons)
 select index_year, num_persons
 from
 (
@@ -2576,7 +2556,7 @@ group by index_year
 
 --2.  count total persons with a treatment, overall (29Dec2014:  now add to year summary table)
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_person_count_year (index_year, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_person_cnt (index_year, num_persons)
 select 9999 as index_year, num_persons
 from
 (
@@ -2591,11 +2571,11 @@ from #@studyName_drug_seq_summary
 
 
 --3.  summary by year:   edit the where clause if you need to remove cell counts < minimum number
-IF OBJECT_ID('@studyName_@sourceName_seq_count_year', 'U') IS NOT NULL
-	DROP TABLE @studyName_@sourceName_seq_count_year;
+IF OBJECT_ID('@studyName_@sourceName_seq_cnt', 'U') IS NOT NULL
+	DROP TABLE @studyName_@sourceName_seq_cnt;
 
 
-create table @resultsSchema.dbo.@studyName_@sourceName_seq_count_year
+create table @resultsSchema.dbo.@studyName_@sourceName_seq_cnt
 (
 	index_year int,
 	d1_concept_id int, 
@@ -2641,7 +2621,7 @@ create table @resultsSchema.dbo.@studyName_@sourceName_seq_count_year
 	num_persons int
 );
 
-insert into @resultsSchema.dbo.@studyName_@sourceName_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_seq_cnt (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons
 from #@studyName_drug_seq_summary
 ;
@@ -2650,7 +2630,7 @@ from #@studyName_drug_seq_summary
 
 
 --4.  overall summary (group by year):   edit the where clause if you need to remove cell counts < minimum number (here 1 as example)
-insert into @resultsSchema.dbo.@studyName_@sourceName_seq_count_year (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
+insert into @resultsSchema.dbo.@studyName_@sourceName_seq_cnt (index_year, d1_concept_id, d2_concept_id, d3_concept_id, d4_concept_id, d5_concept_id, d6_concept_id, d7_concept_id, d8_concept_id, d9_concept_id, d10_concept_id, d11_concept_id, d12_concept_id, d13_concept_id, d14_concept_id, d15_concept_id, d16_concept_id, d17_concept_id, d18_concept_id, d19_concept_id, d20_concept_id, d1_concept_name, d2_concept_name, d3_concept_name, d4_concept_name, d5_concept_name, d6_concept_name, d7_concept_name, d8_concept_name, d9_concept_name, d10_concept_name, d11_concept_name, d12_concept_name, d13_concept_name, d14_concept_name, d15_concept_name, d16_concept_name, d17_concept_name, d18_concept_name, d19_concept_name, d20_concept_name, num_persons)
 select *
 from
 (

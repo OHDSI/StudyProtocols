@@ -69,16 +69,16 @@ executeSql(conn,readSql(depSqlFile))
 
 # Extract tables to CSV files:
 extractAndWriteToFile(conn, "summary", resultsSchema, sourceName, "HTN", dbms)
-extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "HTN", dbms)
-extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "HTN", dbms)
+extractAndWriteToFile(conn, "person_cnt", resultsSchema, sourceName, "HTN", dbms)
+extractAndWriteToFile(conn, "seq_cnt", resultsSchema, sourceName, "HTN", dbms)
 
 extractAndWriteToFile(conn, "summary", resultsSchema, sourceName, "T2DM", dbms)
-extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "T2DM", dbms)
-extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "T2DM", dbms)
+extractAndWriteToFile(conn, "person_cnt", resultsSchema, sourceName, "T2DM", dbms)
+extractAndWriteToFile(conn, "seq_cnt", resultsSchema, sourceName, "T2DM", dbms)
 
 extractAndWriteToFile(conn, "summary", resultsSchema, sourceName, "Depression", dbms)
-extractAndWriteToFile(conn, "person_count_year", resultsSchema, sourceName, "Depression", dbms)
-extractAndWriteToFile(conn, "seq_count_year", resultsSchema, sourceName, "Depression", dbms)
+extractAndWriteToFile(conn, "person_cnt", resultsSchema, sourceName, "Depression", dbms)
+extractAndWriteToFile(conn, "seq_cnt", resultsSchema, sourceName, "Depression", dbms)
 
 dbDisconnect(conn)
 
