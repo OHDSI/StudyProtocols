@@ -31,7 +31,9 @@ the results queries allow you to remove small cell counts before producing the f
 --update 29 Dec 2014:
 ***changed the handling of small cell counts to aggregate treatment sequences until cell count is achieved (rather than removing full sequence)
 ***changed mincellcount default = 0
-***changed to create only 2 output files.   both stratified by year, but overall is set with year = 9999
+***changed to create only 2 output files, plus new summary.   both stratified by year, but overall is set with year = 9999
+--update 8 jan 2015:
+***changed table names to be shorter to work with Oracle
 *************************/
 
 {DEFAULT @cdmSchema = 'cdmSchema'}  /*cdmSchema:  @cdmSchema*/
