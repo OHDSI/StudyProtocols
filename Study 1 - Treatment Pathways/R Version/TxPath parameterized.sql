@@ -34,6 +34,7 @@ the results queries allow you to remove small cell counts before producing the f
 ***changed to create only 2 output files, plus new summary.   both stratified by year, but overall is set with year = 9999
 --update 8 jan 2015:
 ***changed table names to be shorter to work with Oracle
+***added semicolons to work with postgresql/oracle
 *************************/
 
 {DEFAULT @cdmSchema = 'cdmSchema'}  /*cdmSchema:  @cdmSchema*/
