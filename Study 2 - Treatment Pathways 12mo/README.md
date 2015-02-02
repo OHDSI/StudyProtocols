@@ -1,9 +1,9 @@
-Treatment Pathways Study Protocol 2
+Treatment Pathways Study Protocol 12 months
 ===============
 
-This is a study of treatment pathways in hypertension, diabetes, and depression during the first 12 mo after diagnosis.  Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_hypertension).
+This is a study of treatment pathways in hypertension, diabetes, and depression during the first 12 mo after diagnosis.  Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_chronic_disease_12_mos).
 
-You have two options to execute this analysis, using R or via SQL console.
+Execution via R
 
 **R Version**
 
@@ -22,7 +22,7 @@ You have two options to execute this analysis, using R or via SQL console.
 
 **SQL Version**
 
-- Open the dialect-specific version of the SQL script in your SQL console of choice.
+If you would like to run the study directly from SQL without using R, contact the study administrator listed on the Wiki page. - Open the dialect-specific version of the SQL script in your SQL console of choice.
 - Perform find/replace on the following parameters:
  
     - cdm_schema  :  replace with schema name of your CDM
