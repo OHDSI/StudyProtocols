@@ -6,7 +6,7 @@ This is a study of treatment pathways in hypertension, diabetes, and depression 
 **R Version**
 
 - Open MainAnalysis.R in your R console
-- Modify the section of MainAnalysis.R below
+- Modify the section of code below
 
 ```bash
 ###########################################################
@@ -30,12 +30,12 @@ server <- "server_name"
 port <- NULL 
 ```
 
-folder 	      = folder containing the R files and parameterized SQL script from this repo, make sure to use forward slashes /
-minCellCount  = 5   # all cell counts lower than this value will be removed from the final results table
-cdmSchema     = schema name where your patient-level data in OMOP CDM format resides
-resultsSchema = schema where you'd like the results tables to be created (requires user to have create/write access)
-sourceName    = short name that will be appeneded to results table name
-dbms          = "sql server", "oracle", "postgresql" or "redshift"
+- *folder* - folder containing the R files and parameterized SQL script from this repo, make sure to use forward slashes (/)
+- *minCellCount* - all cell counts lower than this value will be removed from the final results table
+- *cdmSchema* - schema name where your patient-level data in OMOP CDM format resides
+- *resultsSchema* - schema where you'd like the results tables to be created (requires user to have create/write access)
+- *sourceName* - short name that will be appeneded to results table name
+- *dbms* - "sql server", "oracle", "postgresql" or "redshift"
  
 - Execute the script.
 - MainAnalysis.R will render the SQL, translate it to your environment dialect, execute the SQL, and export the resulting summary statistics as .csv files to your target folder.  
