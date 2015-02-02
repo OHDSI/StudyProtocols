@@ -47,4 +47,4 @@ port <- NULL
 - MainAnalysis.R will render the SQL, translate it to your environment dialect, execute the SQL, and export the resulting summary statistics as .csv files to your target folder.  
 - Email the resulting files to study coordinator.
 
-If you would like to run the study directly from SQL without using R, contact the study administrator listed on the Wiki page. - 
+If you would like to run the study directly from SQL without using R, contact the study administrator listed on the [Wiki page](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_chronic_disease_12_mos). 
