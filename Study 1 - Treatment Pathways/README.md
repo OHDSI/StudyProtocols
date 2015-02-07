@@ -22,17 +22,4 @@ You have two options to execute this analysis, using R or via SQL console.
 
 **SQL Version**
 
-- Open the dialect-specific version of the SQL script in your SQL console of choice.
-- Perform find/replace on the following parameters:
- 
-    - cdm_schema  :  replace with schema name of your CDM
-
-    - results_schema  : replace with schema where you want to store temp tables and results tables
-
-    - source_name  :  replace with shortname that'll be in result table name (e.g. CCAE, INPC, Optum)
-
-- Execute SQL (may take a few hours)
-- Export the results tables from your resultSchema into .csv files.
-- Email the results files to the study coordinator.
-
-Note that the SQL version runs one study at a time, so the above should be repeated to perform all three studies.
+Contact the study coordinator if you are unable to run the R version above and would prefer to run the SQL version directly.
