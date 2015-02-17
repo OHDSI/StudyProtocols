@@ -1,8 +1,10 @@
-Package: SkeletonStudy
+Package: PGxDrugStudy
 Title: What the study does (short line)
 Version: 0.1
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the study does (paragraph)
+Author: Richard Boyce, Patrick B. Ryan, Marc A. Suchard
+Maintainer: Marc A. Suchard <msuchard@ucla.edu>
+Description: This study examines in the incidence of exposure to drugs for which pre-emptive
+  pharmacogenomic testing is available.
 Depends: R (>= 3.1)
 Imports:
     SqlRender,
