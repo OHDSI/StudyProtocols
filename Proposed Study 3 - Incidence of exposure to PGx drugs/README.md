@@ -8,6 +8,8 @@ protocol is available on the [OHDSI
 Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:project_proposal_template).
 
 Project layout:
+- dummy-tables-for-incidence-of-exposure-to-PGx-drugs.xlsx : Table shells for the study
+
 - sql : SQL code for the study that has been tested on the Truven MDCD, MDCR, and CCAE datasets in CDM v4 hosted by IMEDS 
 
 - R code : currently empty but will likely hold the script to execute the SQL code at each participating site
