@@ -1,4 +1,3 @@
-set search_path to MDCR_CDM4;
 WITH filtered_list_of_exposed_persons_and_substances AS (	
 	SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id as substance_id
 	FROM DRUG_EXPOSURE, CONCEPT_ANCESTOR, CONCEPT_RELATIONSHIP, PERSON
