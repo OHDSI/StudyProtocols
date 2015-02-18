@@ -1,3 +1,5 @@
+# query-to-get-count-of-persons-being-prescribed-any-drug-using-age-at-exposure.sql
+
 WITH persons_and_their_age_at_first_prescription_in_time_window AS (
 		SELECT DISTINCT(DRUG_EXPOSURE.person_id), MIN((DATE_PART_YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth)) AS person_age_at_first_prescription_in_time_window
 		FROM DRUG_EXPOSURE,  PERSON
