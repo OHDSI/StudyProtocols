@@ -1,3 +1,5 @@
+#  get-frequencies-query-using-age-at-exposure-excluding-topical--refined-definition-of-incident-use.sql GetFrequencies.sql
+
 WITH filtered_list_of_exposed_persons_and_substances AS (	
 	SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id as substance_id
 	FROM DRUG_EXPOSURE, CONCEPT_ANCESTOR, CONCEPT_RELATIONSHIP, PERSON

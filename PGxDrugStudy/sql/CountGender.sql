@@ -1,3 +1,5 @@
+# query-to-get-count-of-males-and-females-being-prescribed-any-drug-using-age-at-exposure
+
 SELECT CONCEPT.concept_name as gender, COUNT(DISTINCT(PERSON.person_id))
 FROM DRUG_EXPOSURE,  PERSON, CONCEPT
 WHERE DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE >= DATE '2009-01-01'
