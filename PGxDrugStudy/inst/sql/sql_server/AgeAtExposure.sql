@@ -12,7 +12,7 @@ WITH count_of_distinct_substances_per_person AS (
 			AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE >= DATE '2009-01-01'
 			AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE <= DATE '2012-12-31'
 			AND   DRUG_EXPOSURE.person_id = PERSON.person_id 
-			AND   (DATE_PART_YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 65)
+			AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 65)
 		MINUS
 		SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id -- lists substance exposures BEFORE the selected time window. Those don't 'count' because we want to know about incident use.
 		FROM DRUG_EXPOSURE, CONCEPT_ANCESTOR, CONCEPT_RELATIONSHIP
