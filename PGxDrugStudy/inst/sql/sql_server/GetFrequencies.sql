@@ -1,4 +1,4 @@
-#  get-frequencies-query-using-age-at-exposure-excluding-topical--refined-definition-of-incident-use.sql GetFrequencies.sql
+--  get-frequencies-query-using-age-at-exposure-excluding-topical--refined-definition-of-incident-use.sql GetFrequencies.sql
 
 WITH filtered_list_of_exposed_persons_and_substances AS (	
 	SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id as substance_id
@@ -12,7 +12,7 @@ WITH filtered_list_of_exposed_persons_and_substances AS (
 		AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE <= DATE '2012-12-31'
 		AND   DRUG_EXPOSURE.person_id = PERSON.person_id 
 		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 65)
-	MINUS
+	EXCEPT
 	SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id -- lists substance exposures BEFORE the selected time window. Those don't 'count' because we want to know about incident use.
 	FROM DRUG_EXPOSURE, CONCEPT_ANCESTOR, CONCEPT_RELATIONSHIP
 	WHERE DRUG_EXPOSURE.DRUG_CONCEPT_ID = CONCEPT_ANCESTOR.descendant_concept_id
