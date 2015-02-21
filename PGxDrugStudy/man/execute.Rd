@@ -5,7 +5,7 @@
 \title{Execute OHDSI Study (FILL IN NAME)}
 \usage{
 execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
-  folder = getwd(), ...)
+  file = getDefaultStudyFileName(), folder = getwd(), ...)
 }
 \arguments{
 \item{dbms}{The type of DBMS running on the server. Valid values are
