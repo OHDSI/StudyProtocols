@@ -57,7 +57,7 @@ execute <- function(dbms, user, password, server,
     ageAtExposure <- invokeSql("AgeAtExposure.sql", dbms, conn, "Executing age by exposure count ...")
     
     # Age by exposure redefinition
-     ageAtExposureRedefinition <- invokeSql("AgeAtExposureRedefinition.sql", dbms, conn, "Executing age by exposure redefinition ...")
+   	ageAtExposureRedefinition <- invokeSql("AgeAtExposureRedefinition.sql", dbms, conn, "Executing age by exposure redefinition ...")
      
     # Count people
     tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", 
@@ -80,7 +80,7 @@ execute <- function(dbms, user, password, server,
     	)
     
     # Save results to disk
-    save(list = objectsToSave, file = file)
+    saveOhdsiStudy(list = objectsToSave, file = file)
             
     # Clean up
     DBI::dbDisconnect(conn)    
@@ -91,12 +91,41 @@ execute <- function(dbms, user, password, server,
     invisible(result)
 }
 
+#' @export 
+loadOhsdiStudy <- function(file = getDefaultStudyFileName(),													 
+													 verbose = FALSE) {
+
+# 	if (missing(object)) {
+# 		stop("Must provide an object name in which to load data")
+# 	}	
+# 	tmp <- new.env()
+# 	load(file, envir = tmp, verbose = verbose)	
+# 	assign(object, mget(ls(tmp), envir = tmp), envir = parent.frame())
+	
+# 	if (is.character(envir)) {
+# 		assign(envir, new.env(), envir = parent.frame())	
+#  		load(file, envir = get(envir), verbose = verbose)
+# 	} else {	
+# 		load(file, envir = envir, verbose = verbose)
+# 	}
+
+	# Return list of results
+	tmp <- new.env()
+	load(file, envir = tmp, verbose = verbose)
+	result <- mget(ls(tmp), envir = tmp)
+	class(result) <- "OhdsiStudy"
+	return (result)	
+}
+
 #' @export
-saveOhsdiStudy <- function(list = stop("Must provide object list to save"),
+saveOhsdiStudy <- function(list,
 													 file = getDefaultStudyFileName(),
 													 compress = "xz",
 													 includeMetadata = TRUE) {
 	
+	if (missing(list)) {
+		stop("Must provide object list to save")
+	}
 	
 	if (includeMetadata) {
 		metadata <- list()
@@ -104,9 +133,9 @@ saveOhsdiStudy <- function(list = stop("Must provide object list to save"),
 		metadata$r.version <- R.Version()$version.string		
 		info <- Sys.info()
 		metadata$sysname <- info[["sysname"]]
-		metadata$login <- info[["login"]]
 		metadata$user <- info[["user"]]
 		metadata$nodename <- info[["nodename"]]
+		metadata$time <- Sys.time()
 		list <- c(list, "metadata")
 	}
 	
