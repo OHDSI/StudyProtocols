@@ -46,4 +46,19 @@ This function executes OHDSI Study (FILL IN NAME).
 This is a study of (GIVE SOME DETAILS).
 Detailed information and protocol are available on the OHDSI Wiki.
 }
+\examples{
+\dontrun{
+# Run study
+execute(dbms = "postgresql",
+        user = "joebruin",
+        password = "supersecret",
+        server = "myserver",
+        cdmSchema = "cdm_schema",
+        resultsSchema = "results_schema")
+
+# Email result file
+email(from = "collaborator@ohdsi.org",
+      dataDescription = "CDM4 Simulated Data")
+}
+}
 

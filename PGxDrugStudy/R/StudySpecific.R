@@ -27,6 +27,20 @@
 #' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
 #' @param ...   (FILL IN) Additional properties for this specific study.
 #' 
+#' @examples \dontrun{
+#' # Run study
+#' execute(dbms = "postgresql", 
+#'         user = "joebruin", 
+#'         password = "supersecret", 
+#'         server = "myserver", 
+#'         cdmSchema = "cdm_schema", 
+#'         resultsSchema = "results_schema")
+#'
+#' # Email result file        
+#' email(from = "collaborator@@ohdsi.org", 
+#'       dataDescription = "CDM4 Simulated Data") 
+#' }
+#' 
 #' @importFrom DBI dbDisconnect
 #' @export
 execute <- function(dbms, user, password, server, 
@@ -90,8 +104,10 @@ execute <- function(dbms, user, password, server,
     invisible(result)
 }
 
+# Package must provide a default gmail address to receive result files
 #' @keywords internal
 getDestinationAddress <- function() { return("msuchard@gmail.com") }
 
+# Package must provide a default result file name
 #' @keywords internal
 getDefaultStudyFileName <- function() { return("PGxStudy.rda") }
