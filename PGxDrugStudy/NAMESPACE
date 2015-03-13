@@ -2,9 +2,8 @@
 
 export(email)
 export(execute)
-export(invokeSql)
-export(loadOhsdiStudy)
-export(saveOhsdiStudy)
+export(loadOhdsiStudy)
+export(saveOhdsiStudy)
 import(DBI)
 import(DatabaseConnector)
 import(SqlRender)

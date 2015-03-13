@@ -5,7 +5,7 @@
 \title{Execute OHDSI Study (FILL IN NAME)}
 \usage{
 execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
-  file = getDefaultStudyFileName(), folder = getwd(), ...)
+  file = getDefaultStudyFileName(), ...)
 }
 \arguments{
 \item{dbms}{The type of DBMS running on the server. Valid values are
@@ -29,7 +29,7 @@ execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
 
 \item{resultsSchema}{(Optional) Schema where you'd like the results tables to be created (requires user to have create/write access)}
 
-\item{folder}{The name of the local folder to place results;  make sure to use forward slashes (/)}
+\item{file}{(Optional) Name of local file to place results; makre sure to use forward slashes (/)}
 
 \item{...}{(FILL IN) Additional properties for this specific study.}
 }

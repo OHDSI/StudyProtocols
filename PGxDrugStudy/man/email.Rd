@@ -5,8 +5,8 @@
 \title{Email results}
 \usage{
 email(from, to = getDestinationAddress(),
-  subject = "OHDSI Skeleton Study Results", dataDescription,
-  folder = getwd(), compress = TRUE)
+  subject = "OHDSI PGxDrugStudy Results", dataDescription,
+  file = getDefaultStudyFileName())
 }
 \arguments{
 \item{from}{Return email address}
@@ -17,11 +17,7 @@ email(from, to = getDestinationAddress(),
 
 \item{dataDescription}{A short description of the database}
 
-\item{folder}{The name of the local folder to place results;  make sure to use forward slashes (/)}
-
-\item{compress}{Use GZip compression on transmitted files}
-
-\item{sourceName}{Short name that was be appeneded to results table name}
+\item{file}{(Optional) Name of local file with results; makee sure to use forward slashes (/)}
 }
 \value{
 A list of files that were emailed.

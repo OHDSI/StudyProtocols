@@ -24,7 +24,7 @@
 #' @param port				(optional) The port on the server to connect to
 #' @param cdmSchema  Schema name where your patient-level data in OMOP CDM format resides
 #' @param resultsSchema  (Optional) Schema where you'd like the results tables to be created (requires user to have create/write access)
-#' @param folder   The name of the local folder to place results;  make sure to use forward slashes (/)
+#' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
 #' @param ...   (FILL IN) Additional properties for this specific study.
 #' 
 #' @importFrom DBI dbDisconnect
@@ -33,7 +33,6 @@ execute <- function(dbms, user, password, server,
                     port = NULL,
                     cdmSchema, resultsSchema, 
 										file = getDefaultStudyFileName(),
-                    folder = getwd(),
                     ...) {        
     # Open DB connection
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms=dbms, 
@@ -91,24 +90,26 @@ execute <- function(dbms, user, password, server,
     invisible(result)
 }
 
+#' @keywords internal
+getDestinationAddress <- function() { return("msuchard@gmail.com") }
+
+#' @keywords internal
+getDefaultStudyFileName <- function() { return("PGxStudy.rda") }
+
+#' @title Load OHSDI study
+#' 
+#' @details
+#' This function loads an OHDSI study results from disk file. 
+#' 
+#' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
+#' @param verbose Logical: print R object names that are loaded
+#' 
+#' @return
+#' A list of class type \code{OhsiStudy} that contains all saved study objects
+#' 
 #' @export 
-loadOhsdiStudy <- function(file = getDefaultStudyFileName(),													 
+loadOhdsiStudy <- function(file = getDefaultStudyFileName(),													 
 													 verbose = FALSE) {
-
-# 	if (missing(object)) {
-# 		stop("Must provide an object name in which to load data")
-# 	}	
-# 	tmp <- new.env()
-# 	load(file, envir = tmp, verbose = verbose)	
-# 	assign(object, mget(ls(tmp), envir = tmp), envir = parent.frame())
-	
-# 	if (is.character(envir)) {
-# 		assign(envir, new.env(), envir = parent.frame())	
-#  		load(file, envir = get(envir), verbose = verbose)
-# 	} else {	
-# 		load(file, envir = envir, verbose = verbose)
-# 	}
-
 	# Return list of results
 	tmp <- new.env()
 	load(file, envir = tmp, verbose = verbose)
@@ -117,8 +118,19 @@ loadOhsdiStudy <- function(file = getDefaultStudyFileName(),
 	return (result)	
 }
 
+#' @title Save OHDSI study
+#'
+#' @details
+#' This function saves an OHDSI study to disk file.  All objects are written using \code{\link{save}}
+#' format and can be read back from file at a later time by using the function \code{\link{loadOhdsiStudy}}.
+#' 
+#' @param list	A list of R objects to save to disk file.
+#' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
+#' @param compress Logical or character string specifying the use of compression. See \code{\link{save}}
+#' @param includeMetadata Logical: include metadata about user and system in saved file 
+#' 
 #' @export
-saveOhsdiStudy <- function(list,
+saveOhdsiStudy <- function(list,
 													 file = getDefaultStudyFileName(),
 													 compress = "xz",
 													 includeMetadata = TRUE) {
@@ -144,7 +156,7 @@ saveOhsdiStudy <- function(list,
 			 compress = compress)
 }
 
-#' @export
+#' @keywords internal
 invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE)  {
 	
 	parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server",sep=""), 
@@ -162,13 +174,6 @@ invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE)  {
 	}
 }
 
-
-#' @keywords internal
-getDestinationAddress <- function() { return("nobody@gmail.com") }
-
-#' @keywords internal
-getDefaultStudyFileName <- function() { return("PGxStudy.rda") }
-
 #' @title Email results
 #' 
 #' @details
@@ -181,41 +186,19 @@ getDefaultStudyFileName <- function() { return("PGxStudy.rda") }
 #' @param to			Delivery email address (must be a gmail.com acccount)
 #' @param subject  Subject line of email
 #' @param dataDescription A short description of the database
-#' @param sourceName Short name that was be appeneded to results table name
-#' @param folder   The name of the local folder to place results;  make sure to use forward slashes (/)
-#' @param compress Use GZip compression on transmitted files
+#' @param file	(Optional) Name of local file with results; makee sure to use forward slashes (/)
 #'
 #' @export
 email <- function(from,
 									to = getDestinationAddress(),
-									subject = "OHDSI Skeleton Study Results",
-									dataDescription,									
-									folder = getwd(),
-									compress = TRUE) {
+									subject = "OHDSI PGxDrugStudy Results",
+									dataDescription,	
+									file = getDefaultStudyFileName()) {
 	
 	if (missing(from)) stop("Must provide return address")
 	if (missing(dataDescription)) stop("Must provide a data description")
 	
-	suffix <- c("_person_cnt.csv", "_seq_cnt.csv", "_summary.csv")
-	prefix <- c("Dep12mo_", "HTN12mo_", "DM12mo_")
-	
-	files <- unlist(lapply(prefix, paste, 
-												 paste(sourceName, suffix, sep =""), 
-												 sep =""))
-	absolutePaths <- paste(folder, files, sep="/")
-	
-	if (compress) {
-		
-		sapply(absolutePaths, function(name) {
-			newName = paste(name, ".gz", sep="")
-			tmp <- read.csv(file = name)			
-			newFile <- gzfile(newName, "w")
-			write.csv(tmp, newFile)
-			writeLines(paste("Compressed to file '",newName,"'",sep=""))	
-			close(newFile)
-		})
-		absolutePaths <- paste(absolutePaths, ".gz", sep="")		
-	}
+	if(!file.exists(file)) stop(paste(c("No results file named '",file,"' exists"),sep=""))
 	
 	result <- mailR::send.mail(from = from,
 														 to = to,
@@ -224,14 +207,16 @@ email <- function(from,
 														 						 sep = ""),
 														 smtp = list(host.name = "aspmx.l.google.com",
 														 						port = 25),
-														 attach.files = absolutePaths,						
+														 attach.files = file,						
 														 authenticate = FALSE,
 														 send = TRUE)
 	if (result$isSendPartial()) {
 		stop("Error in sending email")
 	} else {
-		writeLines("Emailed the following files:\n")
-		writeLines(paste(absolutePaths, collapse="\n"))
-		writeLines(paste("\nto:", to))
+		writeLines(c(
+			"Emailed the following file:",
+			paste("\t", file, sep = ""),
+			paste("to:", to)
+		))
 	}
 }
