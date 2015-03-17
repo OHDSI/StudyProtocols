@@ -27,3 +27,10 @@ execute(dbms = "postgresql",
 email(from = "collaborator@ohdsi.org",
       dataDescription = "CDM4 Simulated Data")        
 ```
+
+To reload saved results in `R`
+
+```R
+# Load (or reload) study results
+results <- loadOhdsiStudy(verbose = TRUE)
+```
