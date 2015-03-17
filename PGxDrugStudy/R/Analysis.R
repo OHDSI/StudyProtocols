@@ -46,10 +46,7 @@ execute <- function(dbms, user, password, server,
         
     # Count gender
     gender <- invokeSql("CountGender.sql", dbms, conn, "Executing gender count ...")    
-    
-    # Count race
-    race <- invokeSql("CountRace.sql", dbms, conn, "Executing race count ...")
-    
+     
     # Get frequencies
     frequencies <- invokeSql("GetFrequencies.sql", dbms, conn, "Executing frequency count ...")
     
@@ -72,7 +69,6 @@ execute <- function(dbms, user, password, server,
     # List of R objects to save
     objectsToSave <- c(
     	"gender",
-    	"race",
     	"frequencies",
     	"ageAtExposure",
     	"ageAtExposureRedefinition",
