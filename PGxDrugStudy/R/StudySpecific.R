@@ -1,9 +1,9 @@
-#' @title Execute OHDSI Study (FILL IN NAME)
+#' @title Execute OHDSI Study PGxDrugStudy
 #'
 #' @details
-#' This function executes OHDSI Study (FILL IN NAME). 
-#' This is a study of (GIVE SOME DETAILS).
-#' Detailed information and protocol are available on the OHDSI Wiki.
+#' This function executes OHDSI Study "Incidence of exposure to drugs for which pre-emptive pharmacogenomic testing is available" (PGxDrugStudy).
+#' This is a study to derive data that large healthcare organizations can combine with data on risks of adverse events and cost data to conduct cost-effectiveness / cost-benefit analyses for pre-emptive pharmacogenomics testing.
+#' Detailed information and protocol are available on the OHDSI Wiki (http://www.ohdsi.org/web/wiki/doku.php?id=research:pgx_drug_exposure).
 #' 
 #' @return
 #' Study results are placed in CSV format files in specified local folder and returned 
@@ -60,9 +60,6 @@ execute <- function(dbms, user, password, server,
     # Count gender
     gender <- invokeSql("CountGender.sql", dbms, conn, "Executing gender count ...")    
     
-    # Count race
-    race <- invokeSql("CountRace.sql", dbms, conn, "Executing race count ...")
-    
     # Get frequencies
     frequencies <- invokeSql("GetFrequencies.sql", dbms, conn, "Executing frequency count ...")
     
@@ -85,7 +82,6 @@ execute <- function(dbms, user, password, server,
     # List of R objects to save
     objectsToSave <- c(
     	"gender",
-    	"race",
     	"frequencies",
     	"ageAtExposure",
     	"ageAtExposureRedefinition",
