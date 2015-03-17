@@ -102,7 +102,7 @@ execute <- function(dbms, user, password, server,
 
 # Package must provide a default gmail address to receive result files
 #' @keywords internal
-getDestinationAddress <- function() { return("msuchard@gmail.com") }
+getDestinationAddress <- function() { return("nobody@gmail.com") }
 
 # Package must provide a default result file name
 #' @keywords internal
