@@ -12,20 +12,20 @@ To execute protocol in `R`
 
 ```R
 library(devtools)
-install_github(c("OHDSI/SqlRender","OHDSI/DatabaseConnector","OHDSI/StudyProtocols/PGcDrugStudy"))
+install_github(c("OHDSI/SqlRender","OHDSI/DatabaseConnector","OHDSI/StudyProtocols/PGxDrugStudy"))
 library(PGxDrugStudy)
 ?execute # To get extended help
 
 # Run study
-execute(dbms = "postgresql",
+execute(dbms = "postgresql",      # Change to participant settings
         user = "joebruin",
         password = "supersecret",
         server = "myserver",
         cdmSchema = "cdm_schema")
         
 # Email result file        
-email(from = "collaborator@ohdsi.org",
-      dataDescription = "CDM4 Simulated Data")        
+email(from = "collaborator@ohdsi.org",         # Change to participant email address
+      dataDescription = "CDM4 Simulated Data") # Change to participant data description
 ```
 
 To reload saved results in `R`
