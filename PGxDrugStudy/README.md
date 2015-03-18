@@ -23,7 +23,7 @@ execute(dbms = "postgresql",      # Change to participant settings
         server = "myserver",
         cdmSchema = "cdm_schema")
         
-# Email result file        
+# Email results file        
 email(from = "collaborator@ohdsi.org",         # Change to participant email address
       dataDescription = "CDM4 Simulated Data") # Change to participant data description
 ```
