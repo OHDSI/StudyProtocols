@@ -6,8 +6,8 @@ WITH persons_and_their_age AS (
 		WHERE DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE >= DATE '2009-01-01'
 		AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE <= DATE '2012-12-31'
 		AND   DRUG_EXPOSURE.person_id = PERSON.person_id 
-		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 0)
-		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth < 14)
+		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 65)
+		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth < 110)
 		GROUP BY DRUG_EXPOSURE.person_id
 )
 -- SELECT COUNT(person_id), min(person_age_at_first_prescription) as min_age, MAX(person_age_at_first_prescription) AS max_age, MIN(median_age_temp) AS median_age FROM 
