@@ -70,8 +70,9 @@ execute <- function(dbms, user, password, server,
    	ageAtExposureRedefinition <- invokeSql("AgeAtExposureRedefinition.sql", dbms, conn, "Executing age by exposure redefinition ...")
      
     # Count people
-    tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", 
-    								 use.ffdf = TRUE) # Cache to disk in case table is large
+    #tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", 
+    #								 use.ffdf = TRUE) # Cache to disk in case table is large
+    tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", use.ffdf = FALSE) # Cache to disk in case table is large
     person <- list()
     person$count <- length(tmp[,1])
     person$min <- min(tmp[,1])
