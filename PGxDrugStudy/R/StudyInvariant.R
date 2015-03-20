@@ -68,7 +68,6 @@ invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE)  {
 	translatedSql <- SqlRender::translateSql(renderedSql, 
 																				 sourceDialect = "sql server", 
 																				 targetDialect = dbms)$sql
-        writeLines(translatedSql)
 	writeLines(text)
 	if (use.ffdf) { 
 		return (DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql))
