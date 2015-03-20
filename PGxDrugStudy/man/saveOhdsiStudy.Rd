@@ -4,11 +4,11 @@
 \alias{saveOhdsiStudy}
 \title{Save OHDSI study}
 \usage{
-saveOhdsiStudy(list, file = getDefaultStudyFileName(), compress = "xz",
+saveOhdsiStudy(objList, file = getDefaultStudyFileName(), compress = "xz",
   includeMetadata = TRUE)
 }
 \arguments{
-\item{list}{A list of R objects to save to disk file.}
+\item{objList}{A list of R objects to save to disk file.}
 
 \item{file}{(Optional) Name of local file to place results; makre sure to use forward slashes (/)}
 
