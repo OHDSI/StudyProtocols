@@ -85,11 +85,11 @@ execute <- function(dbms, user, password, server,
 
     # List of R objects to save
     objectsToSave <- c(
-    	gender,
-    	frequencies,
-    	ageAtExposure,
-    	ageAtExposureRedefinition,
-    	person
+    	"gender",
+    	"frequencies",
+    	"ageAtExposure",
+    	"ageAtExposureRedefinition",
+    	"person"
     	)
     
     # Save results to disk
