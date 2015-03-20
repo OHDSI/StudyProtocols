@@ -26,18 +26,18 @@ loadOhdsiStudy <- function(file = getDefaultStudyFileName(),
 #' This function saves an OHDSI study to disk file.  All objects are written using \code{\link{save}}
 #' format and can be read back from file at a later time by using the function \code{\link{loadOhdsiStudy}}.
 #' 
-#' @param list	A list of R objects to save to disk file.
+#' @param objList	A list of R objects to save to disk file.
 #' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
 #' @param compress Logical or character string specifying the use of compression. See \code{\link{save}}
 #' @param includeMetadata Logical: include metadata about user and system in saved file 
 #' 
 #' @export
-saveOhdsiStudy <- function(list,
+saveOhdsiStudy <- function(objList,
 													 file = getDefaultStudyFileName(),
 													 compress = "xz",
 													 includeMetadata = TRUE) {
 	
-	if (missing(list)) {
+	if (missing(objList)) {
 		stop("Must provide object list to save")
 	}
 	
@@ -50,10 +50,10 @@ saveOhdsiStudy <- function(list,
 		metadata$user <- info[["user"]]
 		metadata$nodename <- info[["nodename"]]
 		metadata$time <- Sys.time()
-		list <- c(list, "metadata")
+		list <- c(objList, "metadata")
 	}
 	
-	save(list = list,
+	save(list = objList,
 			 file = file,
 			 compress = compress)
 }
