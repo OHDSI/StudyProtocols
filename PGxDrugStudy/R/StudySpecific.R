@@ -109,3 +109,7 @@ getDestinationAddress <- function() { return("codehop.dev@gmail.com") }
 # Package must provide a default result file name
 #' @keywords internal
 getDefaultStudyFileName <- function() { return("PGxStudy.rda") }
+
+# Packge must provide default email subject
+#' @keywords internal
+getDefaultStudyEmailSubject() <- function() { return("OHDSI PGxDrugStudy Results") }

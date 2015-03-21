@@ -93,7 +93,7 @@ invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE)  {
 #' @export
 email <- function(from,
 									to = getDestinationAddress(),
-									subject = "OHDSI PGxDrugStudy Results",
+									subject = getDefaultStudyEmailSubject(),
 									dataDescription,	
 									file = getDefaultStudyFileName()) {
 	
