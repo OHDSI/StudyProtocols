@@ -2,7 +2,7 @@
 % Please edit documentation in R/StudySpecific.R
 \name{execute}
 \alias{execute}
-\title{Execute OHDSI Study (FILL IN NAME)}
+\title{Execute OHDSI Study PGxDrugStudy}
 \usage{
 execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
   file = getDefaultStudyFileName(), ...)
@@ -39,12 +39,12 @@ as an R object class \code{OhdsiStudy} when sufficiently small.  The properties 
 \code{OhdsiStudy} may differ from study to study.
 }
 \description{
-Execute OHDSI Study (FILL IN NAME)
+Execute OHDSI Study PGxDrugStudy
 }
 \details{
-This function executes OHDSI Study (FILL IN NAME).
-This is a study of (GIVE SOME DETAILS).
-Detailed information and protocol are available on the OHDSI Wiki.
+This function executes OHDSI Study "Incidence of exposure to drugs for which pre-emptive pharmacogenomic testing is available" (PGxDrugStudy).
+This is a study to derive data that large healthcare organizations can combine with data on risks of adverse events and cost data to conduct cost-effectiveness / cost-benefit analyses for pre-emptive pharmacogenomics testing.
+Detailed information and protocol are available on the OHDSI Wiki (http://www.ohdsi.org/web/wiki/doku.php?id=research:pgx_drug_exposure).
 }
 \examples{
 \dontrun{
