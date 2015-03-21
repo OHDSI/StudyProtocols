@@ -72,10 +72,8 @@ execute <- function(dbms, user, password, server,
     # Count people
     # TODO: a query for each age range or some way of passing age ranges  needs to be implemented
     # TODO: the chance of null results needs to be accounted for.
-    # TODO: find out why 'use.ffdf = TRUE' here triggers "could not find function ".jcall"" from DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql)
-    #tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", 
-    #								 use.ffdf = TRUE) # Cache to disk in case table is large
-    tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", use.ffdf = FALSE) # Cache to disk in case table is large
+    tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", 
+    								 use.ffdf = TRUE) # Cache to disk in case table is large
     person <- list()
     person$count <- length(tmp[,1])
     person$min <- min(tmp[,1])
