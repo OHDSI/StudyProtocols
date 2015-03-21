@@ -112,4 +112,4 @@ getDefaultStudyFileName <- function() { return("PGxStudy.rda") }
 
 # Packge must provide default email subject
 #' @keywords internal
-getDefaultStudyEmailSubject() <- function() { return("OHDSI PGxDrugStudy Results") }
+getDefaultStudyEmailSubject <- function() { return("OHDSI PGxDrugStudy Results") }
