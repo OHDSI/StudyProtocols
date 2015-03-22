@@ -50,11 +50,13 @@ saveOhdsiStudy <- function(list,
 		metadata$user <- info[["user"]]
 		metadata$nodename <- info[["nodename"]]
 		metadata$time <- Sys.time()
+		assign("metadata", metadata, envir = parent.frame()) # place in same environment as named objects
 		list <- c(list, "metadata")
 	}
 	
 	save(list = list,
 			 file = file,
+			 envir = parent.frame(1),
 			 compress = compress)
 }
 
