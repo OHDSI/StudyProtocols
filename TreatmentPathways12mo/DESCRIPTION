@@ -1,0 +1,20 @@
+Package: TreatmentPathways12mo
+Type: Package
+Title: OHDSI Treatment Pathways Study Protocol 12 months
+Version: 0.1
+Date: 2015-02-03
+Author: Jon Duke, Patrick B. Ryan, Marc A. Suchard
+Maintainer: Marc A. Suchard <msuchard@ucla.edu>
+Description: This is a study of treatment pathways in hypertension,
+    diabetes, and depression during the first 12 mo after diagnosis.  
+    Detailed information and protocol is available on the OHDSI
+    Wiki.
+URL: http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_chronic_disease_12_mos
+License: Apache License 2.0
+Depends:
+	R (>= 3.0.0)
+Imports:
+	SqlRender,
+	DatabaseConnector,
+	DBI,
+	mailR
