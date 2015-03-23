@@ -9,6 +9,11 @@ Repository of OHDSI Collaborative Research Protocols
 
 See individual study README files for instructions on installation and study execution.
 
+New Study Development
+================
+
+Build off of `R` package `SkeletonStudy`.
+
 Acknowledgements
 ================
 - This project is supported in part through the National Science Foundation grant IIS 1251151.
