@@ -33,9 +33,9 @@ loadOhdsiStudy <- function(file = getDefaultStudyFileName(),
 #' 
 #' @export
 saveOhdsiStudy <- function(list,
-													 file = getDefaultStudyFileName(),
-													 compress = "xz",
-													 includeMetadata = TRUE) {
+                           file = getDefaultStudyFileName(),
+                           compress = "xz",
+                           includeMetadata = TRUE) {
 	
 	if (missing(list)) {
 		stop("Must provide object list to save")
@@ -50,11 +50,13 @@ saveOhdsiStudy <- function(list,
 		metadata$user <- info[["user"]]
 		metadata$nodename <- info[["nodename"]]
 		metadata$time <- Sys.time()
+		assign("metadata", metadata, envir = parent.frame()) # place in same environment as named objects
 		list <- c(list, "metadata")
 	}
 	
 	save(list = list,
 			 file = file,
+			 envir = parent.frame(1),
 			 compress = compress)
 }
 
@@ -93,7 +95,7 @@ invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE)  {
 #' @export
 email <- function(from,
 									to = getDestinationAddress(),
-									subject = "OHDSI PGxDrugStudy Results",
+									subject = getDefaultStudyEmailSubject(),
 									dataDescription,	
 									file = getDefaultStudyFileName()) {
 	

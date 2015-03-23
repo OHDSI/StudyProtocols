@@ -83,3 +83,7 @@ getDestinationAddress <- function() { return("nobody@gmail.com") }
 # Package must provide a default result file name
 #' @keywords internal
 getDefaultStudyFileName <- function() { return("OhdsiStudy.rda") }
+
+# Packge must provide default email subject
+#' @keywords internal
+getDefaultStudyEmailSubject <- function() { return("OHDSI Study Results") }
