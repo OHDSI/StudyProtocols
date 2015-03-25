@@ -1,6 +1,6 @@
 ---
 title: "Deliver and execute OHDSI studies"
-author: "Marc A. Suchard and Martijn J. Schuemie"
+author: "Marc A. Suchard, Martijn J. Schuemie and Richard Boyce"
 date: "March 24, 2015"
 output: beamer_presentation
 ---
@@ -15,6 +15,27 @@ output: beamer_presentation
     - Run in `R` and return results
 - Collect results
     - Bad: email; better: hosted server
+    
+## How to execute
+
+- Data holding collaborators execute in ``R``
+
+```{r eval=FALSE}
+library(devtools)
+install_github(c("OHDSI/SqlRender", 
+                 "OHDSI/DatabaseConnector"))
+install_github("OHDSI/StudyProtocols/PGxDrugStudy")
+library(PGxDrugStudy)
+execute(...)
+email(from = "msuchard@ucla.edu",  # Use your own
+      dataDescription = "I hold no real data")
+```
+
+- Coordinator executes in ``R``
+
+```{r eval=FALSE}
+first_results <- loadOhdsiStudy(file = "Junk.rda")
+```    
 
 ## Build a package
 
@@ -150,6 +171,12 @@ install_github(c("OHDSI/SqlRender",
 install_github("OHDSI/StudyProtocols/PGxDrugStudy")
 library(PGxDrugStudy)
 execute(...)
-email(from = "msuchard@ucla.edu",
+email(from = "msuchard@ucla.edu",  # Use your own 
       dataDescription = "I hold no real data")
+```
+
+- Coordinator executes in ``R``
+
+```{r eval=FALSE}
+first_results <- loadOhdsiStudy(file = "Junk.rda")
 ```

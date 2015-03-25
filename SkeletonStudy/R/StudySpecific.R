@@ -56,12 +56,20 @@ execute <- function(dbms, user, password, server,
                                                                     schema=cdmSchema,
                                                                     port = port)    
     conn <- DatabaseConnector::connect(connectionDetails)
-        
+            
+    # Record start time
+    start <- Sys.time()
+    
+    # Place execution code here
 	result <- 42
+    
+    # Execution duration
+    executionTime <- Sys.time() - start    
 
     # List of R objects to save
     objectsToSave <- c(
-    	"result"
+    	"result",
+        "executionTime"
     	)
     
     # Save results to disk

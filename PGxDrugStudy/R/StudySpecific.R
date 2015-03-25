@@ -56,6 +56,9 @@ execute <- function(dbms, user, password, server,
                                                                     schema=cdmSchema,
                                                                     port = port)    
     conn <- DatabaseConnector::connect(connectionDetails)
+    
+    # Record start time
+    start <- Sys.time()
         
     # Count gender
     gender <- invokeSql("CountGender.sql", dbms, conn, "Executing gender count ...")    
@@ -80,6 +83,9 @@ execute <- function(dbms, user, password, server,
     person$median <- median(tmp[,1])
     person$max <- max(tmp[,1])
     rm(tmp) # discard potentially large file
+    
+    # Execution duration
+    executionTime <- Sys.time() - start
 
     # List of R objects to save
     objectsToSave <- c(
@@ -87,7 +93,8 @@ execute <- function(dbms, user, password, server,
     	"frequencies",
     	"ageAtExposure",
     	"ageAtExposureRedefinition",
-    	"person"
+    	"person",
+    	"executionTime"
     	)
     
     # Save results to disk
