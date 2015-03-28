@@ -56,6 +56,9 @@ execute <- function(dbms, user, password, server,
                                                                     schema=cdmSchema,
                                                                     port = port)    
     conn <- DatabaseConnector::connect(connectionDetails)
+    if (is.null(conn)) {
+    	stop("Failed to connect to db server.")
+    }
     
     # Record start time
     start <- Sys.time()
