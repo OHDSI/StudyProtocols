@@ -46,7 +46,7 @@
 execute <- function(dbms, user, password, server,
                     port = NULL,
                     cdmSchema, resultsSchema,
-										file = getDefaultStudyFileName(),
+                    file = getDefaultStudyFileName(),
                     ...) {
     # Open DB connection
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms=dbms,
@@ -56,6 +56,9 @@ execute <- function(dbms, user, password, server,
                                                                     schema=cdmSchema,
                                                                     port = port)
     conn <- DatabaseConnector::connect(connectionDetails)
+    if (is.null(conn)) {
+        stop("Failed to connect to db server.")
+    }
 
     # Record start time
     start <- Sys.time()
@@ -76,9 +79,7 @@ execute <- function(dbms, user, password, server,
     saveOhdsiStudy(list = objectsToSave, file = file)
 
     # Clean up
-    if (!is.null(conn)) {
-        DBI::dbDisconnect(conn)
-    }
+    DBI::dbDisconnect(conn)
 
     # Package and return result if return value is used
     result <- mget(objectsToSave)
