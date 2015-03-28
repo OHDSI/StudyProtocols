@@ -9,5 +9,7 @@ Imports:
     DatabaseConnector,
     DBI,
     mailR
+Suggests:
+    testthat
 License: Apache License 2.0
 LazyData: true
