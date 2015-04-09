@@ -2330,7 +2330,7 @@ select 'Number of persons with at least one drug exposure' as count_type, count(
 ;        
 
 insert into @resultsSchema.dbo.@studyName_@sourceName_summary (count_type, num_persons)
-select 'Number of persons with at least one drug exposure and >1 year of prior observation and >3 years of follow-up observation' as count_type, count(distinct t1.PERSON_ID) as num_persons
+select 'Number of persons with at least one drug exposure and >1 year of prior observation and >1 years of follow-up observation' as count_type, count(distinct t1.PERSON_ID) as num_persons
 				from
 (SELECT d.person_id, min(drug_exposure_start_date) as first_drug
         FROM @cdmSchema.dbo.DRUG_EXPOSURE d
