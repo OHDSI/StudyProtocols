@@ -1,9 +1,0 @@
-DBMS:
-postgresql
-
-Error:
-org.postgresql.util.PSQLException: ERROR: relation "resuts_schema.t2dmcounts_patients_t2dm_final_counts" does not exist
-  Position: 15
-
-SQL:
-SELECT * FROM resuts_schema.T2DMCounts_patients_t2dm_final_counts
