@@ -6,7 +6,7 @@ In order to assess the utility of our approach, we test it on diabetes mellitus 
 
 Before coding the complete study, we are releasing the potential patient identification step to determine if there is enough support on the OHDSI sites for this study to be ported in its entirety. 
 
-**R Version**
+**R Version (DEPRICATED -- see below)**
 
 - Open MainAnalysis.R in your R console
 - Modify the section of code below
@@ -45,3 +45,32 @@ port <- NULL
 - Execute the script.
 - MainAnalysis.R will render the SQL, translate it to your environment dialect, execute the SQL, and export the resulting summary statistics as .csv files to your target folder.  
 - Email the resulting files to study coordinator.
+
+## R Version ##
+
+To execute protocol in `R`
+
+```R
+library(devtools)
+install_github(c("OHDSI/SqlRender","OHDSI/DatabaseConnector","OHDSI/StudyProtocols/StableDM2Patients"))
+library(StableDM2Patients)
+?execute # To get extended help
+
+# Run study
+execute(dbms = "postgresql",      # Change to participant settings
+        user = "joebruin",
+        password = "supersecret",
+        server = "myserver",
+        cdmSchema = "cdm_schema")
+        
+# Email results file        
+email(from = "collaborator@ohdsi.org",         # Change to participant email address
+      dataDescription = "CDM4 Simulated Data") # Change to participant data description
+```
+
+To reload saved results in `R`
+
+```R
+# Load (or reload) study results
+results <- loadOhdsiStudy(verbose = TRUE)
+```
