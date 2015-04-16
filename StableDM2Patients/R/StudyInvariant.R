@@ -71,7 +71,8 @@ invokeSql <- function(fileName, cdmSchema, resultsSchema, studyName, dbms, conn,
 		#return (DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql))
 		return (DatabaseConnector::executeSql(conn, translatedSql))
 	} else {
-		return (DBI::dbGetQuery(conn, translatedSql))
+        #return (DBI::dbGetQuery(conn, translatedSql))
+	    return (DBI::executeSql(conn, translatedSql))
 	}
 }
 
