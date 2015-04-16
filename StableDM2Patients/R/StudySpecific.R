@@ -26,6 +26,7 @@
 #' @param server			The name of the server
 #' @param port				(optional) The port on the server to connect to
 #' @param cdmSchema  Schema name where your patient-level data in OMOP CDM format resides
+#' @param studyName  Name of the study
 #' @param resultsSchema  (Optional) Schema where you'd like the results tables to be created (requires user to have create/write access)
 #' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
 #'
@@ -35,7 +36,9 @@
 #'         user = "joebruin",
 #'         password = "supersecret",
 #'         server = "myserver",
+#'         port ="port"
 #'         cdmSchema = "cdm_schema",
+#'         studyName = "studyName"
 #'         resultsSchema = "results_schema")
 #'
 #' # Email result file
@@ -45,10 +48,7 @@
 #'
 #' @importFrom DBI dbDisconnect
 #' @export
-execute <- function(dbms, user, password, server,
-                    port = NULL,
-                    cdmSchema, resultsSchema,
-                    file = getDefaultStudyFileName(),
+execute <- function(dbms, user, password, server, port, cdmSchema, studyName, resultsSchema, file= getDefaultStudyFileName(),
                     ...) {
     # Open DB connection
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms=dbms,
@@ -66,7 +66,7 @@ execute <- function(dbms, user, password, server,
     start <- Sys.time()
 
     # Place execution code here
-    patientCounts <- invokeSql("ParameterizedSql.sql", dbms, conn, "Generating estable diabetes mellitus type II patient counts  ...")
+    patientCounts <- invokeSql("ParameterizedSql.sql",cdmSchema, resultsSchema, studyName, dbms, conn, "Generating estable diabetes mellitus type II patient counts  ...")
 
     # Execution duration
     executionTime <- Sys.time() - start

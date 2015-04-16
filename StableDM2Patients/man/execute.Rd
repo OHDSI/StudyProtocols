@@ -4,7 +4,7 @@
 \alias{execute}
 \title{Execute OHDSI Study StableDM2Patients}
 \usage{
-execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
+execute(dbms, user, password, server, port, cdmSchema, studyName, resultsSchema,
   file = getDefaultStudyFileName(), ...)
 }
 \arguments{
@@ -26,6 +26,8 @@ execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
 \item{port}{(optional) The port on the server to connect to}
 
 \item{cdmSchema}{Schema name where your patient-level data in OMOP CDM format resides}
+
+\item{studyName}{Name of the study}
 
 \item{resultsSchema}{(Optional) Schema where you'd like the results tables to be created (requires user to have create/write access)}
 
@@ -54,7 +56,9 @@ execute(dbms = "postgresql",
         user = "joebruin",
         password = "supersecret",
         server = "myserver",
+        port ="port"
         cdmSchema = "cdm_schema",
+        studyName = "studyName"
         resultsSchema = "results_schema")
 
 # Email result file

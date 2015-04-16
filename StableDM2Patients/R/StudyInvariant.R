@@ -61,15 +61,11 @@ saveOhdsiStudy <- function(list,
 }
 
 #' @keywords internal
-invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE)  {
+invokeSql <- function(fileName, cdmSchema, resultsSchema, studyName, dbms, conn, text, use.ffdf = FALSE)  {
 
-	parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server",sep=""),
-																									 fileName,
-																									 package="StableDM2Patients"))
-	renderedSql <- SqlRender::renderSql(parameterizedSql)$sql
-	translatedSql <- SqlRender::translateSql(renderedSql,
-																				 sourceDialect = "sql server",
-																				 targetDialect = dbms)$sql
+	parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server",sep=""), fileName, package="StableDM2Patients"))
+	renderedSql <- SqlRender::renderSql(parameterizedSql, cdmSchema=cdmSchema, resultsSchema=resultsSchema, studyName = studyName)$sql
+    translatedSql <- SqlRender::translateSql(renderedSql, sourceDialect = "sql server", targetDialect = dbms)$sql
 	writeLines(text)
 	if (use.ffdf) {
 		return (DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql))

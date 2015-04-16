@@ -1,7 +1,7 @@
 -- Place parameterized SQL statements in this file
 
-{DEFAULT @cdmSchema = 'cdmSchema'}  /*cdmSchema:  @cdmSchema*/
-{DEFAULT @resultsSchema = 'resultsSchema'}  /*resultsSchema:  @resultsSchema*/
+{DEFAULT @cdmSchema = 'cdmSchema'}
+{DEFAULT @resultsSchema = 'resultsSchema'}
 {DEFAULT @studyName = 'studyName'}
 
 
