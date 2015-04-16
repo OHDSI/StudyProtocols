@@ -70,5 +70,3 @@ TRUNCATE TABLE #@studyName_patients_t2dm_visits;
 DROP TABLE #@studyName_patients_t2dm_visits;
 TRUNCATE TABLE #@studyName_patients_t2dm_labs;
 DROP TABLE #@studyName_patients_t2dm_labs;
-
-SELECT patient_counts FROM @studyName_patients_t2dm_final_counts;
