@@ -5,6 +5,4 @@
 {DEFAULT @studyName = 'studyName'}
 
 
-USE @resultsSchema;
-
-SELECT patient_counts FROM @studyName_patients_t2dm_final_counts;
+SELECT patient_counts FROM @resultsSchema.dbo.@studyName_patients_t2dm_final_counts;
