@@ -75,6 +75,18 @@ invokeSql <- function(fileName, cdmSchema, resultsSchema, studyName, dbms, conn,
 	    return (DatabaseConnector::executeSql(conn, translatedSql))
 	}
 }
+invokeSqlR <- function(fileName, cdmSchema, resultsSchema, studyName, dbms, conn, text, use.ffdf = FALSE)  {
+
+    parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server",sep=""), fileName, package="StableDM2Patients"))
+    renderedSql <- SqlRender::renderSql(parameterizedSql, cdmSchema=cdmSchema, resultsSchema=resultsSchema, studyName = studyName)$sql
+    translatedSql <- SqlRender::translateSql(renderedSql, sourceDialect = "sql server", targetDialect = dbms)$sql
+    writeLines(text)
+    if (use.ffdf) {
+        return (DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql))
+    } else {
+        return (DBI::dbGetQuery(conn, translatedSql))
+    }
+}
 
 #' @title Email results
 #'

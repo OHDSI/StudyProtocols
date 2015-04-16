@@ -67,7 +67,7 @@ execute <- function(dbms, user, password, server, port, cdmSchema, studyName, re
 
     # Place execution code here
     invokeSql("ParameterizedSql.sql",cdmSchema, resultsSchema, studyName, dbms, conn, "Generating estable diabetes mellitus type II patient counts  ...")
-    patientCounts <- invokeSql("Getcounts.sql",cdmSchema, resultsSchema, studyName, dbms, conn, "Extracting estable diabetes mellitus type II patient counts  ...")
+    patientCounts <- invokeSqlR("Getcounts.sql",cdmSchema, resultsSchema, studyName, dbms, conn, "Extracting estable diabetes mellitus type II patient counts  ...")
 
     # Execution duration
     executionTime <- Sys.time() - start
