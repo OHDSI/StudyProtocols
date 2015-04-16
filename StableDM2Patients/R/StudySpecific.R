@@ -48,7 +48,7 @@
 #'
 #' @importFrom DBI dbDisconnect
 #' @export
-execute <- function(dbms, user, password, server, port, cdmSchema, studyName, resultsSchema, file= getDefaultStudyFileName(),
+execute <- function(dbms, user, password, server, port, cdmSchema, studyName, resultsSchema, file=getDefaultStudyFileName(),
                     ...) {
     # Open DB connection
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms=dbms,
