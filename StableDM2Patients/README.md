@@ -11,14 +11,15 @@ To execute protocol in `R`
 ```R
 library(devtools)
 install_github(c("OHDSI/SqlRender","OHDSI/DatabaseConnector","OHDSI/StudyProtocols/StableDM2Patients"))
-library(StabkeDM2Patients)
-?execute # To get extended help
+library(StableDM2Patients)
 
 # Run study
 execute(dbms = "postgresql",      # Change to participant settings
         user = "joebruin",
         password = "supersecret",
         server = "myserver",
+        port = "myport",
+        resultsSchema = "my_results_schema",
         cdmSchema = "cdm_schema")
 
 # Email results file
