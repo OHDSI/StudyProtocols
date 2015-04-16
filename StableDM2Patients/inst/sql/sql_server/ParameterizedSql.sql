@@ -15,19 +15,7 @@
 # limitations under the License.
 ********************************************************************************/
 
-
-/************************
-script to count the number of stable diabetes mellitus type II patients.
-last revised: April 10th, 2015
-author:  Assaf Gottlieb / Converted to OHDSI by: Juan M. Banda
-description:
-1) Find diabetic patients.
-2) Find patients on diabetes drugs where the drug_era > 60.
-3) Find diabetic patients which have > 1 year of visits and > 5 visits all together.
-4) Find diabetic patients with at least 5 relevant tests.
-5) Lastly, count the intersection of all three tables.
-
-*************************/
+-- Place parameterized SQL statements in this file
 
 {DEFAULT @cdmSchema = 'cdmSchema'}  /*cdmSchema:  @cdmSchema*/
 {DEFAULT @resultsSchema = 'resultsSchema'}  /*resultsSchema:  @resultsSchema*/
