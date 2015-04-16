@@ -96,8 +96,8 @@ getDestinationAddress <- function() { return("jmbanda@stanford.edu") }
 
 # Package must provide a default result file name
 #' @keywords internal
-getDefaultStudyFileName <- function() { return("OhdsiStudy.rda") }
+getDefaultStudyFileName <- function() { return("StableDM2PatientsStudy.rda") }
 
 # Packge must provide default email subject
 #' @keywords internal
-getDefaultStudyEmailSubject <- function() { return("OHDSI Study Results") }
+getDefaultStudyEmailSubject <- function() { return("StableDM2Patients Study Results") }
