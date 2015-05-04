@@ -12,7 +12,8 @@ See individual study README files for instructions on installation and study exe
 New Study Development
 ================
 
-Build off of `R` package `SkeletonStudy`.
+Do not develop new studies in this repository.  Use the `StudyProtocolSandbox` repository.
+
 
 Acknowledgements
 ================
