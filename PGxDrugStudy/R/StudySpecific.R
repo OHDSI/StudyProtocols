@@ -128,11 +128,11 @@ execute <- function(dbms, user, password, server,
     	"gender0to13",
         "gender14to39",
         "gender40to64",
-        "gender65Plus"
+        "gender65Plus",
     	"frequencies0to13",
         "frequencies14to39",
         "frequencies40to64",
-        "frequencies65Plus"
+        "frequencies65Plus",
     	"ageAtExposureAllPgx0to13",
         "ageAtExposureAllPgx14to39",
         "ageAtExposureAllPgx40to64",
