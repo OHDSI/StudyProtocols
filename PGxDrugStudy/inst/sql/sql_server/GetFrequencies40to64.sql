@@ -1,4 +1,5 @@
--- query-using-age-at-exposure-excluding-topical--refined-definition-of-incident-use.sql
+--  get-frequencies-query-using-age-at-exposure-excluding-topical--refined-definition-of-incident-use.sql GetFrequencies.sql
+
 WITH filtered_list_of_exposures AS (	
 	SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id as substance_id
 	FROM DRUG_EXPOSURE, CONCEPT_ANCESTOR, CONCEPT_RELATIONSHIP, PERSON
@@ -10,7 +11,8 @@ WITH filtered_list_of_exposures AS (
 		AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE >= DATE '2009-01-01'
 		AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE <= DATE '2012-12-31'
 		AND   DRUG_EXPOSURE.person_id = PERSON.person_id 
-		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 65)
+		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 40)
+		AND   (YEAR(DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE) - PERSON.year_of_birth >= 64)
 	EXCEPT
 	SELECT DISTINCT DRUG_EXPOSURE.person_id AS exposed_person_id, CONCEPT_ANCESTOR.ancestor_concept_id -- lists substance exposures BEFORE the selected time window. Those don't 'count' because we want to know about incident use.
 	FROM DRUG_EXPOSURE, CONCEPT_ANCESTOR, CONCEPT_RELATIONSHIP
@@ -20,14 +22,9 @@ WITH filtered_list_of_exposures AS (
 		AND   DRUG_EXPOSURE.DRUG_CONCEPT_ID = CONCEPT_RELATIONSHIP.concept_id_1 
 		AND   CONCEPT_RELATIONSHIP.concept_id_2 NOT IN (19082224,19082228,19082227,19095973,19082225,19095912,19008697,19082109,19130307,19095972,19082286,19126590,19009068,19016586,19082110,19082108,19102295,19095900,19082226,19057400,19112648,19082222,19095975,40227748,19135439,19135438,19135440,19135446,19082107) --concept ids for topical dosage forms
 		AND   DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE < DATE '2009-01-01'
-
-), 
- count_of_distinct_substances AS (
-       SELECT exposed_person_id, COUNT(DISTINCT(substance_id)) AS distinct_substance_count
-       FROM filtered_list_of_exposures
-       GROUP BY exposed_person_id
 )
-SELECT COUNT(exposed_person_id) AS person_count, distinct_substance_count 
-FROM count_of_distinct_substances
-GROUP BY distinct_substance_count
-ORDER BY distinct_substance_count
+SELECT CONCEPT.concept_name, COUNT(DISTINCT(exposed_person_id)) AS distinct_person_count
+FROM filtered_list_of_exposures, CONCEPT
+WHERE substance_id = CONCEPT.concept_id
+GROUP BY CONCEPT.concept_name
+ORDER BY distinct_person_count DESC

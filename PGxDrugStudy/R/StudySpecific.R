@@ -64,27 +64,60 @@ execute <- function(dbms, user, password, server,
     start <- Sys.time()
         
     # Count gender
-    gender <- invokeSql("CountGender.sql", dbms, conn, "Executing gender count ...")    
+    gender0to13 <- invokeSql("CountGender0to13.sql", dbms, conn, "Executing gender count 0 to 13 ...")
+    gender14to39 <- invokeSql("CountGender14to39.sql", dbms, conn, "Executing gender count 14 to 39 ...")
+    gender40to64 <- invokeSql("CountGender40to64.sql", dbms, conn, "Executing gender count 40 to 64 ...")
+    gender65Plus <- invokeSql("CountGender65Plus.sql", dbms, conn, "Executing gender count 65 plus ...")    
     
     # Get frequencies
-    frequencies <- invokeSql("GetFrequencies.sql", dbms, conn, "Executing frequency count ...")
+    frequencies0to13 <- invokeSql("GetFrequencies0to13.sql", dbms, conn, "Executing frequency count 0 to 13 ...")
+    frequencies14to39 <- invokeSql("GetFrequencies14to39.sql", dbms, conn, "Executing frequency count 14 to 39 ...")
+    frequencies40to64 <- invokeSql("GetFrequencies40to64.sql", dbms, conn, "Executing frequency count 40 to 64 ...")
+    frequencies65Plus <- invokeSql("GetFrequencies65Plus.sql", dbms, conn, "Executing frequency count 65+ ...")
     
     # Age by exposure
-    ageAtExposure <- invokeSql("AgeAtExposure.sql", dbms, conn, "Executing age by exposure count ...")
-    
-    # Age by exposure redefinition
-    ageAtExposureRedefinition <- invokeSql("AgeAtExposureRedefinition.sql", dbms, conn, "Executing age by exposure redefinition ...")
-     
+    ageAtExposureAllPgx0to13 <- invokeSql("AgeAtExposureAllPgx0to13.sql", dbms, conn, "Executing age by exposure ALL pgx count 0 to 13 ...")
+    ageAtExposureAllPgx14to39 <- invokeSql("AgeAtExposureAllPgx14to39.sql", dbms, conn, "Executing age by exposure ALL pgx count 14 to 39 ...")
+    ageAtExposureAllPgx40to64 <- invokeSql("AgeAtExposureAllPgx40to64.sql", dbms, conn, "Executing age by exposure ALL pgx count 40 to 64 ...")
+    ageAtExposureAllPgx65Plus <- invokeSql("AgeAtExposureAllPgx65Plus.sql", dbms, conn, "Executing age by exposure ALL pgx count 65+ ...")
+
+    ageAtExposureCorePgx0to13 <- invokeSql("AgeAtExposureCorePgx0to13.sql", dbms, conn, "Executing age by exposure CORE pgx count 0 to 13 ...")
+    ageAtExposureCorePgx14to39 <- invokeSql("AgeAtExposureCorePgx14to39.sql", dbms, conn, "Executing age by exposure CORE pgx count 14 to 39 ...")
+    ageAtExposureCorePgx40to64 <- invokeSql("AgeAtExposureCorePgx40to64.sql", dbms, conn, "Executing age by exposure CORE pgx count 40 to 64 ...")
+    ageAtExposureCorePgx65Plus <- invokeSql("AgeAtExposureCorePgx65Plus.sql", dbms, conn, "Executing age by exposure CORE pgx count 65+ ...")
+      
     # Count people
-    # TODO: a query for each age range or some way of passing age ranges  needs to be implemented
     # TODO: the chance of null results needs to be accounted for.
-    tmp <- invokeSql("CountPerson.sql", dbms, conn, text ="Executing person count ...", 
-    								 use.ffdf = TRUE) # Cache to disk in case table is large
-    person <- list()
-    person$count <- length(tmp[,1])
-    person$min <- min(tmp[,1])
-    person$median <- median(tmp[,1])
-    person$max <- max(tmp[,1])
+    tmp <- invokeSql("CountPerson0to13.sql", dbms, conn, text ="Executing person count 0 to 13 ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    person0to13 <- list()
+    person0to13$count <- length(tmp[,1])
+    person0to13$min <- min(tmp[,1])
+    person0to13$median <- median(tmp[,1])
+    person0to13$max <- max(tmp[,1])
+    rm(tmp) # discard potentially large file
+
+    tmp <- invokeSql("CountPerson14to39.sql", dbms, conn, text ="Executing person count 14 to 39 ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    person14to39 <- list()
+    person14to39$count <- length(tmp[,1])
+    person14to39$min <- min(tmp[,1])
+    person14to39$median <- median(tmp[,1])
+    person14to39$max <- max(tmp[,1])
+    rm(tmp) # discard potentially large file
+
+    tmp <- invokeSql("CountPerson40to64.sql", dbms, conn, text ="Executing person count 40 to 64x ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    person40to64 <- list()
+    person40to64$count <- length(tmp[,1])
+    person40to64$min <- min(tmp[,1])
+    person40to64$median <- median(tmp[,1])
+    person40to64$max <- max(tmp[,1])
+    rm(tmp) # discard potentially large file
+
+    tmp <- invokeSql("CountPerson65Plus.sql", dbms, conn, text ="Executing person count 65+ ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    person65Plus <- list()
+    person65Plus$count <- length(tmp[,1])
+    person65Plus$min <- min(tmp[,1])
+    person65Plus$median <- median(tmp[,1])
+    person65Plus$max <- max(tmp[,1])
     rm(tmp) # discard potentially large file
     
     # Execution duration
@@ -92,11 +125,26 @@ execute <- function(dbms, user, password, server,
 
     # List of R objects to save
     objectsToSave <- c(
-    	"gender",
-    	"frequencies",
-    	"ageAtExposure",
-    	"ageAtExposureRedefinition",
-    	"person",
+    	"gender0to13",
+        "gender14to39",
+        "gender40to64",
+        "gender65Plus"
+    	"frequencies0to13",
+        "frequencies14to39",
+        "frequencies40to64",
+        "frequencies65Plus"
+    	"ageAtExposureAllPgx0to13",
+        "ageAtExposureAllPgx14to39",
+        "ageAtExposureAllPgx40to64",
+        "ageAtExposureAllPgx65Plus",                       
+    	"ageAtExposureCorePgx0to13",
+        "ageAtExposureCorePgx14to39",
+        "ageAtExposureCorePgx40to64",
+        "ageAtExposureCorePgx65Plus",
+    	"person0to13",
+        "person14to39",
+        "person40to64",
+        "person65Plus",
     	"executionTime"
     	)
     
