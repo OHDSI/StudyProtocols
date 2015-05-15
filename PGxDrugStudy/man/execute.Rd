@@ -4,8 +4,8 @@
 \alias{execute}
 \title{Execute OHDSI Study PGxDrugStudy}
 \usage{
-execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
-  file = getDefaultStudyFileName(), ...)
+execute(dbms, user = NULL, domain = NULL, password = NULL, server,
+  port = NULL, cdmSchema, file = getDefaultStudyFileName(), ...)
 }
 \arguments{
 \item{dbms}{The type of DBMS running on the server. Valid values are
@@ -15,9 +15,15 @@ execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
   \item{"postgresql" for PostgreSQL}
   \item{"redshift" for Amazon Redshift}
   \item{"sql server" for Microsoft SQL Server}
+  \item{"pdw" for Microsoft Parallel Data Warehouse (PDW)}
+  \item{"netezza" for IBM Netezza}
 }}
 
-\item{user}{The user name used to access the server.}
+\item{user}{The user name used to access the server. If the user is not specified for SQL Server,
+Windows Integrated Security will be used, which requires the SQL Server JDBC drivers
+to be installed.}
+
+\item{domain}{(optional) The Windows domain for SQL Server only.}
 
 \item{password}{The password for that user}
 
@@ -26,8 +32,6 @@ execute(dbms, user, password, server, port = NULL, cdmSchema, resultsSchema,
 \item{port}{(optional) The port on the server to connect to}
 
 \item{cdmSchema}{Schema name where your patient-level data in OMOP CDM format resides}
-
-\item{resultsSchema}{(Optional) Schema where you'd like the results tables to be created (requires user to have create/write access)}
 
 \item{file}{(Optional) Name of local file to place results; makre sure to use forward slashes (/)}
 
@@ -53,8 +57,7 @@ execute(dbms = "postgresql",
         user = "joebruin",
         password = "supersecret",
         server = "myserver",
-        cdmSchema = "cdm_schema",
-        resultsSchema = "results_schema")
+        cdmSchema = "cdm_schema")
 
 # Email result file
 email(from = "collaborator@ohdsi.org",

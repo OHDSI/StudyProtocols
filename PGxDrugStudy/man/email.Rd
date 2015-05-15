@@ -5,7 +5,7 @@
 \title{Email results}
 \usage{
 email(from, to = getDestinationAddress(),
-  subject = "OHDSI PGxDrugStudy Results", dataDescription,
+  subject = getDefaultStudyEmailSubject(), dataDescription,
   file = getDefaultStudyFileName())
 }
 \arguments{
