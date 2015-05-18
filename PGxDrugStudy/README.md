@@ -11,6 +11,7 @@ Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:project_proposal_templa
 To execute protocol in `R`
 
 ```R
+install.packages("devtools")
 library(devtools)
 install_github(c("OHDSI/SqlRender","OHDSI/DatabaseConnector","OHDSI/StudyProtocols/PGxDrugStudy"))
 library(PGxDrugStudy)
