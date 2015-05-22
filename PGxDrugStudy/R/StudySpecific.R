@@ -91,37 +91,45 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     ageAtExposureCorePgx65Plus <- invokeSql("AgeAtExposureCorePgx65Plus.sql", dbms, conn, "Executing age by exposure CORE pgx count 65+ ...")
 
     # Count people
-    # TODO: the chance of null results needs to be accounted for.
+    # TODO: should consider a loop instead of code-duplication
     tmp <- invokeSql("CountPerson0to13.sql", dbms, conn, text ="Executing person count 0 to 13 ...", use.ffdf = TRUE) # Cache to disk in case table is large
     person0to13 <- list()
     person0to13$count <- length(tmp[,1])
-    person0to13$min <- min(tmp[,1])
-    person0to13$median <- median(tmp[,1])
-    person0to13$max <- max(tmp[,1])
+    if (length(tmp[,1]) > 0) {
+    	person0to13$min <- min(tmp[,1])
+    	person0to13$median <- median(tmp[,1])
+    	person0to13$max <- max(tmp[,1])
+    }
     rm(tmp) # discard potentially large file
 
     tmp <- invokeSql("CountPerson14to39.sql", dbms, conn, text ="Executing person count 14 to 39 ...", use.ffdf = TRUE) # Cache to disk in case table is large
     person14to39 <- list()
     person14to39$count <- length(tmp[,1])
-    person14to39$min <- min(tmp[,1])
-    person14to39$median <- median(tmp[,1])
-    person14to39$max <- max(tmp[,1])
+    if (length(tmp[,1]) > 0) {
+    	person14to39$min <- min(tmp[,1])
+    	person14to39$median <- median(tmp[,1])
+    	person14to39$max <- max(tmp[,1])
+    }
     rm(tmp) # discard potentially large file
 
     tmp <- invokeSql("CountPerson40to64.sql", dbms, conn, text ="Executing person count 40 to 64x ...", use.ffdf = TRUE) # Cache to disk in case table is large
     person40to64 <- list()
     person40to64$count <- length(tmp[,1])
-    person40to64$min <- min(tmp[,1])
-    person40to64$median <- median(tmp[,1])
-    person40to64$max <- max(tmp[,1])
+    if (length(tmp[,1]) > 0) {
+    	person40to64$min <- min(tmp[,1])
+    	person40to64$median <- median(tmp[,1])
+    	person40to64$max <- max(tmp[,1])
+    }
     rm(tmp) # discard potentially large file
 
     tmp <- invokeSql("CountPerson65Plus.sql", dbms, conn, text ="Executing person count 65+ ...", use.ffdf = TRUE) # Cache to disk in case table is large
     person65Plus <- list()
     person65Plus$count <- length(tmp[,1])
-    person65Plus$min <- min(tmp[,1])
-    person65Plus$median <- median(tmp[,1])
-    person65Plus$max <- max(tmp[,1])
+    if (length(tmp[,1]) > 0) {
+    	person65Plus$min <- min(tmp[,1])
+    	person65Plus$median <- median(tmp[,1])
+    	person65Plus$max <- max(tmp[,1])
+    }
     rm(tmp) # discard potentially large file
 
     # Execution duration
