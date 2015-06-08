@@ -68,7 +68,7 @@ saveOhdsiStudy <- function(list,
 #' @keywords internal
 invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE, quiet = TRUE)  {
 
-	parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server",sep=""),
+	parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server", sep = ""),
 																										 fileName,
 																										 package="PGxDrugStudy"))
 	renderedSql <- SqlRender::renderSql(parameterizedSql)$sql
@@ -76,12 +76,18 @@ invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE, quiet = TRUE
 																					 sourceDialect = "sql server",
 																					 targetDialect = dbms)$sql
 	writeLines(text)
-	if (use.ffdf) {
-		return (DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql,
-																							 quiet = quiet))
-	} else {
-		return (DBI::dbGetQuery(conn, translatedSql))
-	}
+	result <- tryCatch({
+		if (use.ffdf) {
+			DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql,
+																				 quiet = quiet)
+		} else {
+			DBI::dbGetQuery(conn, translatedSql)
+		}
+	}, error = function(e) {
+		writeLines("Error in executing SQL")
+		e
+	})
+	return(result)
 }
 
 #' @title Email results
