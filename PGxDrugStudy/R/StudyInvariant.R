@@ -112,25 +112,34 @@ email <- function(from,
 	if (missing(subject)) subject <- getDefaultStudyEmailSubject()
 	if (missing(file)) file <- getDefaultStudyFileName()
 
-	if(!file.exists(file)) stop(paste(c("No results file named '",file,"' exists"),sep=""))
+	if(!file.exists(file)) stop(paste(c("No results file named '",file,"' exists"),sep = ""))
 
-	result <- mailR::send.mail(from = from,
-														 to = to,
-														 subject = subject,
-														 body = paste("\n", dataDescription, "\n",
-														 						 sep = ""),
-														 smtp = list(host.name = "aspmx.l.google.com",
-														 						port = 25),
-														 attach.files = file,
-														 authenticate = FALSE,
-														 send = TRUE)
-	if (result$isSendPartial()) {
-		stop("Error in sending email")
-	} else {
+	tryCatch({
+		result <- mailR::send.mail(from = from,
+															 to = to,
+															 subject = subject,
+															 body = paste("\n", dataDescription, "\n",
+															 						 sep = ""),
+															 smtp = list(host.name = "aspmx.l.google.com",
+															 						port = 25),
+															 attach.files = file,
+															 authenticate = FALSE,
+															 send = TRUE)
+		if (result$isSendPartial()) {
+			stop("Unknown error in sending email")
+		} else {
+			writeLines(c(
+				"Sucessfully emailed the following file:",
+				paste("\t", file, sep = ""),
+				paste("to:", to)
+			))
+		}
+	}, error = function(e) {
 		writeLines(c(
-			"Emailed the following file:",
+			"Error in automatically emailing results, most likely due to security settings.",
+			"Please manually email the following file:",
 			paste("\t", file, sep = ""),
 			paste("to:", to)
 		))
-	}
+	})
 }
