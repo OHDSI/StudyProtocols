@@ -29,8 +29,7 @@
 #' @param port				(optional) The port on the server to connect to
 #' @param cdmSchema  Schema name where your patient-level data in OMOP CDM format resides
 #' @param cdmVersion     Define the OMOP CDM version used:  currently support 4 and 5.  Default = 4
-#' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
-#' @param ...   (FILL IN) Additional properties for this specific study.
+#' @param file	(Optional) Name of local file to place results; make sure to use forward slashes (/)
 #'
 #' @examples \dontrun{
 #' # Run study
@@ -51,8 +50,7 @@
 execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
                     port = NULL,
                     cdmSchema, cdmVersion = 4,
-										file = getDefaultStudyFileName(),
-                    ...) {
+										file) {
     # Open DB connection
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms=dbms,
                                                                     server=server,
@@ -163,6 +161,7 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     	)
 
     # Save results to disk
+    if (missing(file)) file <- getDefaultStudyFileName()
     saveOhdsiStudy(list = objectsToSave, file = file)
 
     # Clean up
