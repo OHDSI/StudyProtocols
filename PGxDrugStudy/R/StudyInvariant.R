@@ -66,28 +66,32 @@ saveOhdsiStudy <- function(list,
 }
 
 #' @keywords internal
-invokeSql <- function(fileName, dbms, conn, text, use.ffdf = FALSE, quiet = TRUE)  {
+invokeSql <- function(fileName, dbms, conn, text, cdmVersion, use.ffdf = FALSE, quiet = TRUE)  {
+
+	if (cdmVersion != 4 && cdmVersion != 5) {
+		stop(paste("Invalid CDM version:", cdmVersion))
+	}
 
 	parameterizedSql <- SqlRender::readSql(system.file(paste("sql/","sql_server", sep = ""),
 																										 fileName,
 																										 package="PGxDrugStudy"))
-	renderedSql <- SqlRender::renderSql(parameterizedSql)$sql
+	renderedSql <- SqlRender::renderSql(parameterizedSql,
+																			cdmVersion = cdmVersion)$sql
 	translatedSql <- SqlRender::translateSql(renderedSql,
 																					 sourceDialect = "sql server",
 																					 targetDialect = dbms)$sql
 	writeLines(text)
-	result <- tryCatch({
-		if (use.ffdf) {
-			DatabaseConnector::dbGetQuery.ffdf(conn, translatedSql,
-																				 quiet = quiet)
-		} else {
-			DBI::dbGetQuery(conn, translatedSql)
-		}
-	}, error = function(e) {
-		writeLines("Error in executing SQL")
-		e
-	})
-	return(result)
+
+	if (quiet) {
+		ops <- options(warn = -1)
+		on.exit(options(ops))
+	}
+
+	if (use.ffdf) {
+		return(DatabaseConnector::querySql.ffdf(conn, translatedSql))
+	} else {
+		return(DatabaseConnector::querySql(conn, translatedSql))
+	}
 }
 
 #' @title Email results
