@@ -22,7 +22,8 @@ execute(dbms = "postgresql",      # Change to participant settings
         user = "joebruin",
         password = "supersecret",
         server = "myserver",
-        cdmSchema = "cdm_schema")
+        cdmSchema = "cdm_schema",
+        cdmVersion = 4)
         
 # Email results file        
 email(from = "collaborator@ohdsi.org",         # Change to participant email address
