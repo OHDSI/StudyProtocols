@@ -37,7 +37,7 @@ loadOhdsiStudy <- function(file,
 #' @export
 saveOhdsiStudy <- function(list,
 													 file,
-													 compress = "xz",
+													 compress = TRUE,
 													 includeMetadata = TRUE) {
 
 	if (missing(list)) {
