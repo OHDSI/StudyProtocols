@@ -28,8 +28,8 @@
 #' @param server			The name of the server
 #' @param port				(optional) The port on the server to connect to
 #' @param cdmSchema  Schema name where your patient-level data in OMOP CDM format resides
-#' @param file	(Optional) Name of local file to place results; makre sure to use forward slashes (/)
-#' @param ...   (FILL IN) Additional properties for this specific study.
+#' @param cdmVersion     Define the OMOP CDM version used:  currently support 4 and 5.  Default = 4
+#' @param file	(Optional) Name of local file to place results; make sure to use forward slashes (/)
 #'
 #' @examples \dontrun{
 #' # Run study
@@ -37,7 +37,8 @@
 #'         user = "joebruin",
 #'         password = "supersecret",
 #'         server = "myserver",
-#'         cdmSchema = "cdm_schema")
+#'         cdmSchema = "cdm_schema",
+#'         cdmVersion = 5)
 #'
 #' # Email result file
 #' email(from = "collaborator@@ohdsi.org",
@@ -48,9 +49,8 @@
 #' @export
 execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
                     port = NULL,
-                    cdmSchema,
-										file = getDefaultStudyFileName(),
-                    ...) {
+                    cdmSchema, cdmVersion = 4,
+										file) {
     # Open DB connection
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms=dbms,
                                                                     server=server,
@@ -68,31 +68,31 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     start <- Sys.time()
 
     # Count gender
-    gender0to13 <- invokeSql("CountGender0to13.sql", dbms, conn, "Executing gender count 0 to 13 ...")
-    gender14to39 <- invokeSql("CountGender14to39.sql", dbms, conn, "Executing gender count 14 to 39 ...")
-    gender40to64 <- invokeSql("CountGender40to64.sql", dbms, conn, "Executing gender count 40 to 64 ...")
-    gender65Plus <- invokeSql("CountGender65Plus.sql", dbms, conn, "Executing gender count 65 plus ...")
+    gender0to13 <- invokeSql("CountGender0to13.sql", dbms, conn, "Executing gender count 0 to 13 ...", cdmVersion)
+    gender14to39 <- invokeSql("CountGender14to39.sql", dbms, conn, "Executing gender count 14 to 39 ...", cdmVersion)
+    gender40to64 <- invokeSql("CountGender40to64.sql", dbms, conn, "Executing gender count 40 to 64 ...", cdmVersion)
+    gender65Plus <- invokeSql("CountGender65Plus.sql", dbms, conn, "Executing gender count 65 plus ...", cdmVersion)
 
     # Get frequencies
-    frequencies0to13 <- invokeSql("GetFrequencies0to13.sql", dbms, conn, "Executing frequency count 0 to 13 ...")
-    frequencies14to39 <- invokeSql("GetFrequencies14to39.sql", dbms, conn, "Executing frequency count 14 to 39 ...")
-    frequencies40to64 <- invokeSql("GetFrequencies40to64.sql", dbms, conn, "Executing frequency count 40 to 64 ...")
-    frequencies65Plus <- invokeSql("GetFrequencies65Plus.sql", dbms, conn, "Executing frequency count 65+ ...")
+    frequencies0to13 <- invokeSql("GetFrequencies0to13.sql", dbms, conn, "Executing frequency count 0 to 13 ...", cdmVersion)
+    frequencies14to39 <- invokeSql("GetFrequencies14to39.sql", dbms, conn, "Executing frequency count 14 to 39 ...", cdmVersion)
+    frequencies40to64 <- invokeSql("GetFrequencies40to64.sql", dbms, conn, "Executing frequency count 40 to 64 ...", cdmVersion)
+    frequencies65Plus <- invokeSql("GetFrequencies65Plus.sql", dbms, conn, "Executing frequency count 65+ ...", cdmVersion)
 
     # Age by exposure
-    ageAtExposureAllPgx0to13 <- invokeSql("AgeAtExposureAllPgx0to13.sql", dbms, conn, "Executing age by exposure ALL pgx count 0 to 13 ...")
-    ageAtExposureAllPgx14to39 <- invokeSql("AgeAtExposureAllPgx14to39.sql", dbms, conn, "Executing age by exposure ALL pgx count 14 to 39 ...")
-    ageAtExposureAllPgx40to64 <- invokeSql("AgeAtExposureAllPgx40to64.sql", dbms, conn, "Executing age by exposure ALL pgx count 40 to 64 ...")
-    ageAtExposureAllPgx65Plus <- invokeSql("AgeAtExposureAllPgx65Plus.sql", dbms, conn, "Executing age by exposure ALL pgx count 65+ ...")
+    ageAtExposureAllPgx0to13 <- invokeSql("AgeAtExposureAllPgx0to13.sql", dbms, conn, "Executing age by exposure ALL pgx count 0 to 13 ...", cdmVersion)
+    ageAtExposureAllPgx14to39 <- invokeSql("AgeAtExposureAllPgx14to39.sql", dbms, conn, "Executing age by exposure ALL pgx count 14 to 39 ...", cdmVersion)
+    ageAtExposureAllPgx40to64 <- invokeSql("AgeAtExposureAllPgx40to64.sql", dbms, conn, "Executing age by exposure ALL pgx count 40 to 64 ...", cdmVersion)
+    ageAtExposureAllPgx65Plus <- invokeSql("AgeAtExposureAllPgx65Plus.sql", dbms, conn, "Executing age by exposure ALL pgx count 65+ ...", cdmVersion)
 
-    ageAtExposureCorePgx0to13 <- invokeSql("AgeAtExposureCorePgx0to13.sql", dbms, conn, "Executing age by exposure CORE pgx count 0 to 13 ...")
-    ageAtExposureCorePgx14to39 <- invokeSql("AgeAtExposureCorePgx14to39.sql", dbms, conn, "Executing age by exposure CORE pgx count 14 to 39 ...")
-    ageAtExposureCorePgx40to64 <- invokeSql("AgeAtExposureCorePgx40to64.sql", dbms, conn, "Executing age by exposure CORE pgx count 40 to 64 ...")
-    ageAtExposureCorePgx65Plus <- invokeSql("AgeAtExposureCorePgx65Plus.sql", dbms, conn, "Executing age by exposure CORE pgx count 65+ ...")
+    ageAtExposureCorePgx0to13 <- invokeSql("AgeAtExposureCorePgx0to13.sql", dbms, conn, "Executing age by exposure CORE pgx count 0 to 13 ...", cdmVersion)
+    ageAtExposureCorePgx14to39 <- invokeSql("AgeAtExposureCorePgx14to39.sql", dbms, conn, "Executing age by exposure CORE pgx count 14 to 39 ...", cdmVersion)
+    ageAtExposureCorePgx40to64 <- invokeSql("AgeAtExposureCorePgx40to64.sql", dbms, conn, "Executing age by exposure CORE pgx count 40 to 64 ...", cdmVersion)
+    ageAtExposureCorePgx65Plus <- invokeSql("AgeAtExposureCorePgx65Plus.sql", dbms, conn, "Executing age by exposure CORE pgx count 65+ ...", cdmVersion)
 
     # Count people
     # TODO: should consider a loop instead of code-duplication
-    tmp <- invokeSql("CountPerson0to13.sql", dbms, conn, text ="Executing person count 0 to 13 ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    tmp <- invokeSql("CountPerson0to13.sql", dbms, conn, text ="Executing person count 0 to 13 ...", cdmVersion, use.ffdf = TRUE) # Cache to disk in case table is large
     person0to13 <- list()
     person0to13$count <- length(tmp[,1])
     if (length(tmp[,1]) > 0) {
@@ -102,7 +102,7 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     }
     rm(tmp) # discard potentially large file
 
-    tmp <- invokeSql("CountPerson14to39.sql", dbms, conn, text ="Executing person count 14 to 39 ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    tmp <- invokeSql("CountPerson14to39.sql", dbms, conn, text ="Executing person count 14 to 39 ...", cdmVersion, use.ffdf = TRUE) # Cache to disk in case table is large
     person14to39 <- list()
     person14to39$count <- length(tmp[,1])
     if (length(tmp[,1]) > 0) {
@@ -112,7 +112,7 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     }
     rm(tmp) # discard potentially large file
 
-    tmp <- invokeSql("CountPerson40to64.sql", dbms, conn, text ="Executing person count 40 to 64x ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    tmp <- invokeSql("CountPerson40to64.sql", dbms, conn, text ="Executing person count 40 to 64 ...", cdmVersion, use.ffdf = TRUE) # Cache to disk in case table is large
     person40to64 <- list()
     person40to64$count <- length(tmp[,1])
     if (length(tmp[,1]) > 0) {
@@ -122,7 +122,7 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     }
     rm(tmp) # discard potentially large file
 
-    tmp <- invokeSql("CountPerson65Plus.sql", dbms, conn, text ="Executing person count 65+ ...", use.ffdf = TRUE) # Cache to disk in case table is large
+    tmp <- invokeSql("CountPerson65Plus.sql", dbms, conn, text ="Executing person count 65+ ...", cdmVersion, use.ffdf = TRUE) # Cache to disk in case table is large
     person65Plus <- list()
     person65Plus$count <- length(tmp[,1])
     if (length(tmp[,1]) > 0) {
@@ -161,6 +161,7 @@ execute <- function(dbms, user = NULL, domain = NULL, password = NULL, server,
     	)
 
     # Save results to disk
+    if (missing(file)) file <- getDefaultStudyFileName()
     saveOhdsiStudy(list = objectsToSave, file = file)
 
     # Clean up
