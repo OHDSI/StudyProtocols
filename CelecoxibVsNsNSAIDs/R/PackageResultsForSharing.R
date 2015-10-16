@@ -37,14 +37,18 @@ packageResults <- function(outputFolder = outputFolder) {
     ### Main propensity score plot ###
     psFileName <- outcomeReference$sharedPsFile[outcomeReference$sharedPsFile != ""][1]
     ps <- readRDS(psFileName)
-    plotPs(ps, fileName = file.path(exportFolder, "PS_pref_scale.png"))
-    plotPs(ps, scale = "propensity", fileName = file.path(exportFolder, "PS.png"))
+    CohortMethod::plotPs(ps, fileName = file.path(exportFolder, "PS_pref_scale.png"))
+    CohortMethod::plotPs(ps, scale = "propensity", fileName = file.path(exportFolder, "PS.png"))
 
-    ### Two covariate balance plots ###
+    ### Covariate balance table ###
     balFileName <- outcomeReference$covariateBalanceFile[outcomeReference$covariateBalanceFile != ""][1]
     balance <- readRDS(balFileName)
-    plotCovariateBalanceScatterPlot(balance, fileName = file.path(exportFolder, "Balance_scatterplot.png"))
-    plotCovariateBalanceOfTopVariables(balance, fileName = file.path(exportFolder, "Balance_topVars.png"))
+
+    write.csv(balance, file.path(exportFolder, "Balance.csv"), row.names = FALSE)
+
+    ### Two covariate balance plots ###
+    CohortMethod::plotCovariateBalanceScatterPlot(balance, fileName = file.path(exportFolder, "Balance_scatterplot.png"))
+    CohortMethod::plotCovariateBalanceOfTopVariables(balance, fileName = file.path(exportFolder, "Balance_topVars.png"))
 
     ### Empiricial calibration plots ###
     negControlCohortIds <- unique(analysisSummary$outcomeId[analysisSummary$outcomeId > 100])
