@@ -4,29 +4,16 @@ FROM
 (
  SELECT 0 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
 ( 
-  select DISTINCT concept_id from @cdm_database_schema.CONCEPT where concept_id in (21603933) and invalid_reason is null
+  select DISTINCT concept_id from @cdm_database_schema.CONCEPT where concept_id in (1177480,1115008,1136980,1150345,1124300,1113648,1178663,1195492) and invalid_reason is null
     UNION 
 
   select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (21603933)
+  and ca.ancestor_concept_id in (1177480,1115008,1136980,1150345,1124300,1113648,1178663,1195492)
   and c.invalid_reason is null
 
 ) I
-LEFT JOIN
-(
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (21603991)and invalid_reason is null
-    UNION 
-
-  select c.concept_id
-  from @cdm_database_schema.CONCEPT c
-  join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (21603991)
-  and c.invalid_reason is null
-
-) E ON I.concept_id = E.concept_id
-WHERE E.concept_id is null
 ) C
 ) C
 ;
