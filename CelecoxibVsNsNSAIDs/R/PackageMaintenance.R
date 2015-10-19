@@ -27,7 +27,7 @@
 
 .insertCohortDefinitions <- function() {
     OhdsiRTools::insertCirceDefinitionInPackage(293, "Treatment")
-    OhdsiRTools::insertCirceDefinitionInPackage(484, "Comparator")
+    OhdsiRTools::insertCirceDefinitionInPackage(489, "Comparator")
     OhdsiRTools::insertCirceDefinitionInPackage(280, "MyocardialInfarction")
     OhdsiRTools::insertCirceDefinitionInPackage(289, "MiAndIschemicDeath")
     OhdsiRTools::insertCirceDefinitionInPackage(288, "GiHemorrhage")
