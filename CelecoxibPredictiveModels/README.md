@@ -1,7 +1,6 @@
 OHDSI Celecoxib predictive models study
 =======================================
-
-This study aims to...
+This study aims to showcase the use of the [PatientLevelPrediction package](https://github.com/OHDSI/PatientLevelPrediction) in a study, and evaluate the performance of data-driven risk prediction models that are generated for a variety of health outcomes. For this we use a cohort consisting of celecoxib new-users and predict the risk of myocardial infarction, GI bleed, acute renal failure and angioedema within 1 year of the index dates. 
 
 Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:celecoxib_prediction_models).
 
