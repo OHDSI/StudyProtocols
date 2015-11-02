@@ -14,14 +14,14 @@ How to run
 	```r
 	install.packages("devtools")
 	library(devtools)
-    install_github("ohdsi/OhdsiRTools") 
-    install_github("ohdsi/SqlRender")
-    install_github("ohdsi/DatabaseConnector")
-    install_github("ohdsi/Cyclops")
-    install_github("ohdsi/PatientLevelPrediction") 
-    install_github("ohdsi/CohortMethod")
-	install_github("ohdsi/OhdsiSharing")
-	install_github("ohdsi/EmpiricalCalibration")
+    install_github("ohdsi/OhdsiRTools", ref = "80f5dba70e75a498e3ba4c00b5325c1e7430a3b2") 
+    install_github("ohdsi/SqlRender", ref = "be36af85e3cfdba7a787f7cd48ff30e61835a002")
+    install_github("ohdsi/DatabaseConnector", ref = "352b0b634db0ab823e9fd46af09c94480ab36ede")
+    install_github("ohdsi/Cyclops", ref = "b66f28f823ab98c99edc14a5a644ee980227d946")
+    install_github("ohdsi/PatientLevelPrediction", ref = "v1.0.0") 
+    install_github("ohdsi/CohortMethod", ref = "ab762d5c89058ddd41b591669151b9b2ff40c4a7")
+	install_github("ohdsi/OhdsiSharing", ref = "f5d063ee31a35d3bcfc4c15a7fd9ee3cfaa0b556")
+	install_github("ohdsi/EmpiricalCalibration", ref = "457c7bc383acdee2d25e9df614c62a0769220fe0")
 	install_github("ohdsi/StudyProtocols/CelecoxibVsNsNSAIDs")
 	```
 

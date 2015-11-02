@@ -9,28 +9,35 @@ createCohorts(connectionDetails, cdmDatabaseSchema, workDatabaseSchema,
   cdmVersion = 5, outputFolder)
 }
 \arguments{
-\item{connectionDetails}{An object of type \code{connectionDetails} as created using the \code{\link[DatabaseConnector]{createConnectionDetails}}
-function in the DatabaseConnector package.}
+\item{connectionDetails}{An object of type \code{connectionDetails} as created using the
+\code{\link[DatabaseConnector]{createConnectionDetails}} function in the
+DatabaseConnector package.}
 
-\item{cdmDatabaseSchema}{Schema name where your patient-level data in OMOP CDM format resides. Note that for SQL Server, this should include
-both the database and schema name, for example 'cdm_data.dbo'.}
+\item{cdmDatabaseSchema}{Schema name where your patient-level data in OMOP CDM format resides.
+Note that for SQL Server, this should include both the database and
+schema name, for example 'cdm_data.dbo'.}
 
-\item{workDatabaseSchema}{Schema name where intermediate data can be stored. You will need to have write priviliges in this schema. Note that
-for SQL Server, this should include both the database and schema name, for example 'cdm_data.dbo'.}
+\item{workDatabaseSchema}{Schema name where intermediate data can be stored. You will need to have
+write priviliges in this schema. Note that for SQL Server, this should
+include both the database and schema name, for example 'cdm_data.dbo'.}
 
-\item{studyCohortTable}{The name of the table that will be created in the work database schema. This table will hold the exposure and outcome
-cohorts used in this study.}
+\item{studyCohortTable}{The name of the table that will be created in the work database schema.
+This table will hold the exposure and outcome cohorts used in this
+study.}
 
-\item{oracleTempSchema}{Should be used in Oracle to specify a schema where the user has write priviliges for storing temporary tables.}
+\item{oracleTempSchema}{Should be used in Oracle to specify a schema where the user has write
+priviliges for storing temporary tables.}
 
 \item{cdmVersion}{Version of the CDM. Can be "4" or "5"}
 
-\item{outputFolder}{Name of local folder to place results; make sure to use forward slashes (/)}
+\item{outputFolder}{Name of local folder to place results; make sure to use forward slashes
+                            (/)}
 }
 \description{
 Create the exposure and outcome cohorts
 }
 \details{
-This function will create the exposure and outcome cohorts following the definitions included in this package.
+This function will create the exposure and outcome cohorts following the definitions included in
+this package.
 }
 

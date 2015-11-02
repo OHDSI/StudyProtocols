@@ -17,7 +17,6 @@
 .formatAndCheckCode <- function() {
   OhdsiRTools::formatRFolder()
   OhdsiRTools::checkUsagePackage("CelecoxibVsNsNSAIDs")
-  OhdsiRTools::ohdsiLintrFolder()
 }
 
 .createManualAndVignettes <- function() {
@@ -26,14 +25,23 @@
 }
 
 .insertCohortDefinitions <- function() {
-    OhdsiRTools::insertCirceDefinitionInPackage(293, "Treatment")
-    OhdsiRTools::insertCirceDefinitionInPackage(489, "Comparator")
-    OhdsiRTools::insertCirceDefinitionInPackage(280, "MyocardialInfarction")
-    OhdsiRTools::insertCirceDefinitionInPackage(289, "MiAndIschemicDeath")
-    OhdsiRTools::insertCirceDefinitionInPackage(288, "GiHemorrhage")
-    OhdsiRTools::insertCirceDefinitionInPackage(282, "Angioedema")
-    OhdsiRTools::insertCirceDefinitionInPackage(417, "AcuteRenalFailure")
-    OhdsiRTools::insertCirceDefinitionInPackage(416, "DrugInducedLiverInjury")
-    OhdsiRTools::insertCirceDefinitionInPackage(418, "HeartFailure")
+  OhdsiRTools::insertCirceDefinitionInPackage(293, "Treatment")
+  OhdsiRTools::insertCirceDefinitionInPackage(489, "Comparator")
+  OhdsiRTools::insertCirceDefinitionInPackage(280, "MyocardialInfarction")
+  OhdsiRTools::insertCirceDefinitionInPackage(289, "MiAndIschemicDeath")
+  OhdsiRTools::insertCirceDefinitionInPackage(288, "GiHemorrhage")
+  OhdsiRTools::insertCirceDefinitionInPackage(282, "Angioedema")
+  OhdsiRTools::insertCirceDefinitionInPackage(417, "AcuteRenalFailure")
+  OhdsiRTools::insertCirceDefinitionInPackage(416, "DrugInducedLiverInjury")
+  OhdsiRTools::insertCirceDefinitionInPackage(418, "HeartFailure")
 }
 
+.createAnalysisDetails <- function() {
+    connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "pdw",
+                                                                    server = "JRDUSAPSCTL01",
+                                                                    user = NULL,
+                                                                    password = NULL,
+                                                                    port = 17001)
+    cdmDatabaseSchema <- "cdm_truven_mdcd_v5.dbo"
+    createAnalysesDetails(connectionDetails, cdmDatabaseSchema, "inst/settings/")
+}
