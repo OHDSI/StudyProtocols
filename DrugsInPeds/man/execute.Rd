@@ -4,9 +4,9 @@
 \alias{execute}
 \title{Execute OHDSI Drug Utilization in Children}
 \usage{
-execute(connectionDetails, cdmDatabaseSchema, oracleTempSchema,
-  cdmVersion = 4, folder = getDefaultStudyFolder(),
-  file = getDefaultStudyFileName())
+execute(connectionDetails, cdmDatabaseSchema,
+  oracleTempSchema = cdmDatabaseSchema, cdmVersion = 4,
+  folder = "DrugsInPeds", file = "StudyResults.zip.enc")
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the \code{\link[DatabaseConnector]{createConnectionDetails}}
@@ -41,9 +41,6 @@ connectionDetails <- createConnectionDetails(dbms = "postgresql",
 execute(connectionDetails,
         cdmDatabaseSchema = "cdm_data",
         cdmVersion = "4")
-
-email(from = "collaborator@ohdsi.org",
-      dataDescription = "CDM4 Simulated Data")
 
 }
 }

@@ -61,6 +61,8 @@ saveDenominator <- function(conn,
                             splitByAgeGroup,
                             splitByYear,
                             splitByGender,
+                            restrictToPersonsWithData,
+                            useDerivedObservationPeriods,
                             fileName) {
     line <- "Getting denominator"
     if (splitByAgeGroup) {
@@ -82,7 +84,9 @@ saveDenominator <- function(conn,
                                              study_end_date = studyEndDate,
                                              split_by_age_group = splitByAgeGroup,
                                              split_by_year = splitByYear,
-                                             split_by_gender = splitByGender)
+                                             split_by_gender = splitByGender,
+                                             restict_to_persons_with_data = restrictToPersonsWithData,
+                                             use_derived_observation_periods = useDerivedObservationPeriods)
     denominator <- DatabaseConnector::querySql(conn, sql)
     names(denominator) <- SqlRender::snakeCaseToCamelCase(names(denominator))
     write.csv(denominator, file = fileName, row.names = FALSE)
@@ -97,6 +101,7 @@ saveNumerator <- function(conn,
                           splitByYear,
                           splitByGender,
                           splitByDrugLevel,
+                          restrictToPersonsWithData,
                           cdmVersion,
                           fileName) {
     line <- "Getting numerator"
@@ -124,6 +129,7 @@ saveNumerator <- function(conn,
                                              split_by_year = splitByYear,
                                              split_by_gender = splitByGender,
                                              split_by_drug_level = splitByDrugLevel,
+                                             restict_to_persons_with_data = restrictToPersonsWithData,
                                              cdm_version = cdmVersion)
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
 
@@ -145,12 +151,13 @@ saveNumerator <- function(conn,
     write.csv(numerator, file = fileName, row.names = FALSE)
 }
 
-dropHelperTables <- function(conn, oracleTempSchema){
+dropHelperTables <- function(conn, oracleTempSchema, restrictToPersonsWithData){
     writeLines("Dropping helper tables")
     sql <- SqlRender::loadRenderTranslateSql("DropHelperTables.sql",
                                              "DrugsInPeds",
                                              attr(conn,"dbms"),
-                                             oracleTempSchema = oracleTempSchema)
+                                             oracleTempSchema = oracleTempSchema,
+                                             restict_to_persons_with_data = restrictToPersonsWithData)
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
 }
 
@@ -164,11 +171,11 @@ saveMetaData <- function(fileName){
     write.csv(metaData, file = fileName, row.names = FALSE)
 }
 
-compressAndEncrypt <- function(file){
+compressAndEncrypt <- function(folder, file){
     pathToPublicKey <- system.file("key",
-                             "public.key",
-                             package = "DrugsInPeds")
-    OhdsiSharing::compressAndEncryptFolder("./", file, pathToPublicKey)
+                                   "public.key",
+                                   package = "DrugsInPeds")
+    OhdsiSharing::compressAndEncryptFolder(folder, file, pathToPublicKey)
 }
 
 #' @title Execute OHDSI Drug Utilization in Children
@@ -198,27 +205,24 @@ compressAndEncrypt <- function(file){
 #'         cdmDatabaseSchema = "cdm_data",
 #'         cdmVersion = "4")
 #'
-#' email(from = "collaborator@@ohdsi.org",
-#'       dataDescription = "CDM4 Simulated Data")
-#'
 #' }
 #'
 #' @export
 execute <- function(connectionDetails,
                     cdmDatabaseSchema,
-                    oracleTempSchema,
+                    oracleTempSchema = cdmDatabaseSchema,
                     cdmVersion = 4,
-                    folder = getDefaultStudyFolder(),
-                    file = getDefaultStudyFileName()) {
+                    folder = "DrugsInPeds",
+                    file = "StudyResults.zip.enc") {
+    # Study parameters:
+    studyStartDate <- "20090101"
+    studyEndDate <- "20131231"
+    minDaysPerPerson <- 0
+    useDerivedObservationPeriods <- TRUE # If TRUE, derive observation periods from the start of the first observation period to the end of the last
+
     if (!file.exists(folder)){
         dir.create(folder)
     }
-    previousFolder <- setwd(folder)
-	on.exit(setwd(previousFolder))
-
-    studyStartDate <- "20090101"
-    studyEndDate <- "20131231"
-    minDaysPerPerson <- 180
 
     conn <- DatabaseConnector::connect(connectionDetails)
     if (is.null(conn)) {
@@ -228,12 +232,14 @@ execute <- function(connectionDetails,
 
     loadHelperTables(conn, oracleTempSchema)
 
-    findPopulationWithData(conn,
-                           oracleTempSchema,
-                           cdmDatabaseSchema,
-                           studyStartDate,
-                           studyEndDate,
-                           minDaysPerPerson)
+    if (minDaysPerPerson != 0) {
+        findPopulationWithData(conn,
+                               oracleTempSchema,
+                               cdmDatabaseSchema,
+                               studyStartDate,
+                               studyEndDate,
+                               minDaysPerPerson)
+    }
 
     saveDenominator(conn,
                     oracleTempSchema,
@@ -243,7 +249,9 @@ execute <- function(connectionDetails,
                     splitByAgeGroup = FALSE,
                     splitByYear = FALSE,
                     splitByGender = FALSE,
-                    "Denominator.csv")
+                    restrictToPersonsWithData = minDaysPerPerson != 0,
+                    useDerivedObservationPeriods = useDerivedObservationPeriods,
+                    fileName = file.path(folder, "Denominator.csv"))
 
     saveDenominator(conn,
                     oracleTempSchema,
@@ -253,7 +261,9 @@ execute <- function(connectionDetails,
                     splitByAgeGroup = TRUE,
                     splitByYear = FALSE,
                     splitByGender = FALSE,
-                    "DenominatorByAgeGroup.csv")
+                    restrictToPersonsWithData = minDaysPerPerson != 0,
+                    useDerivedObservationPeriods = useDerivedObservationPeriods,
+                    fileName = file.path(folder, "DenominatorByAgeGroup.csv"))
 
     saveDenominator(conn,
                     oracleTempSchema,
@@ -263,7 +273,9 @@ execute <- function(connectionDetails,
                     splitByAgeGroup = FALSE,
                     splitByYear = TRUE,
                     splitByGender = FALSE,
-                    "DenominatorByYear.csv")
+                    restrictToPersonsWithData = minDaysPerPerson != 0,
+                    useDerivedObservationPeriods = useDerivedObservationPeriods,
+                    fileName = file.path(folder, "DenominatorByYear.csv"))
 
     saveDenominator(conn,
                     oracleTempSchema,
@@ -273,7 +285,9 @@ execute <- function(connectionDetails,
                     splitByAgeGroup = FALSE,
                     splitByYear = FALSE,
                     splitByGender = TRUE,
-                    "DenominatorByGender.csv")
+                    restrictToPersonsWithData = minDaysPerPerson != 0,
+                    useDerivedObservationPeriods = useDerivedObservationPeriods,
+                    fileName = file.path(folder, "DenominatorByGender.csv"))
 
     saveDenominator(conn,
                     oracleTempSchema,
@@ -283,7 +297,9 @@ execute <- function(connectionDetails,
                     splitByAgeGroup = TRUE,
                     splitByYear = TRUE,
                     splitByGender = FALSE,
-                    "DenominatorByAgeGroupByYear.csv")
+                    restrictToPersonsWithData = minDaysPerPerson != 0,
+                    useDerivedObservationPeriods = useDerivedObservationPeriods,
+                    fileName = file.path(folder, "DenominatorByAgeGroupByYear.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -294,8 +310,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "none",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "Numerator.csv")
+                  fileName = file.path(folder, "Numerator.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -306,8 +323,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "none",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByAgeGroup.csv")
+                  fileName = file.path(folder, "NumeratorByAgeGroup.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -318,8 +336,9 @@ execute <- function(connectionDetails,
                   splitByYear = TRUE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "none",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByYear.csv")
+                  fileName = file.path(folder, "NumeratorByYear.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -330,8 +349,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = TRUE,
                   splitByDrugLevel = "none",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByGender.csv")
+                  fileName = file.path(folder, "NumeratorByGender.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -342,8 +362,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "atc3",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByAtc3.csv")
+                  fileName = file.path(folder, "NumeratorByAtc3.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -354,8 +375,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "ingredient",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByIngredient.csv")
+                  fileName = file.path(folder, "NumeratorByIngredient.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -366,8 +388,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "atc1",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByAgeGroupByAtc1.csv")
+                  fileName = file.path(folder, "NumeratorByAgeGroupByAtc1.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -378,8 +401,9 @@ execute <- function(connectionDetails,
                   splitByYear = FALSE,
                   splitByGender = TRUE,
                   splitByDrugLevel = "atc1",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByGenderByAtc1.csv")
+                  fileName = file.path(folder, "NumeratorByGenderByAtc1.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -390,34 +414,21 @@ execute <- function(connectionDetails,
                   splitByYear = TRUE,
                   splitByGender = FALSE,
                   splitByDrugLevel = "atc1",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  "NumeratorByAgeGroupByYearByAtc1.csv")
+                  fileName = file.path(folder, "NumeratorByAgeGroupByYearByAtc1.csv"))
 
-    dropHelperTables(conn, oracleTempSchema)
+    dropHelperTables(conn = conn,
+                     oracleTempSchema = oracleTempSchema,
+                     restrictToPersonsWithData = minDaysPerPerson != 0)
 
     DBI::dbDisconnect(conn)
 
-    saveMetaData("MetaData.csv")
+    saveMetaData(fileName = file.path(folder, "MetaData.csv"))
 
-    compressAndEncrypt(file)
+    compressAndEncrypt(folder, file.path(folder, file))
 
     # Report time
     delta <- Sys.time() - start
     writeLines(paste("Analysis took", signif(delta, 3), attr(delta, "units")))
 }
-
-# Package must provide a default gmail address to receive result files
-#' @export
-getDestinationAddress <- function() { return("schuemie@ohdsi.org") }
-
-# Package must provide a default result folder name
-#' @export
-getDefaultStudyFolder <- function() { return("DrugsInPeds") }
-
-# Package must provide a default result file name
-#' @export
-getDefaultStudyFileName <- function() { return("StudyResults.zip.enc") }
-
-# Packge must provide default email subject
-#' @export
-getDefaultStudyEmailSubject <- function() { return("OHDSI Drug Utilization in Children study results") }

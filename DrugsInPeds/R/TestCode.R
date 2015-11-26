@@ -4,6 +4,14 @@ testCode <- function() {
     user <- NULL
     oracleTempSchema <- NULL
 
+    dbms <- "postgresql"
+    server <- "localhost/ohdsi"
+    cdmDatabaseSchema <- "cdm4_sim"
+    port <- NULL
+    cdmVersion <- "4"
+    user <- "postgres"
+    password <- Sys.getenv("pwPostgres")
+
     dbms <- "sql server"
     server <- "RNDUSRDHIT07.jnj.com"
     cdmDatabaseSchema <- "cdm4_sim.dbo"
@@ -11,7 +19,7 @@ testCode <- function() {
     cdmVersion <- "4"
 
     dbms <- "sql server"
-    server <- "RNDUSRDHIT02.jnj.com"
+    server <- "RNDUSRDHIT06.jnj.com"
     cdmDatabaseSchema <- "cdm_jmdc.dbo"
     port <- NULL
     cdmVersion <- "4"
@@ -32,7 +40,8 @@ testCode <- function() {
     execute(connectionDetails,
             cdmDatabaseSchema = cdmDatabaseSchema,
             oracleTempSchema = oracleTempSchema,
-            cdmVersion = cdmVersion)
+            cdmVersion = cdmVersion,
+            folder = "s:/temp/DrugsInPeds")
 
 
     createFiguresAndTables(connectionDetails,

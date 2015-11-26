@@ -15,10 +15,12 @@
 ********************************************************************************/
 {DEFAULT @study_start_date = '19000101'} 
 {DEFAULT @study_end_date = '21000101'} 
-{DEFAULT @cdm_database_schema = 'dcm4'} 
+{DEFAULT @cdm_database_schema = 'cdm4'} 
 {DEFAULT @split_by_age_group = TRUE} 
 {DEFAULT @split_by_year = TRUE} 
 {DEFAULT @split_by_gender = TRUE}
+{DEFAULT @restict_to_persons_with_data = FALSE}
+{DEFAULT @use_derived_observation_periods = FALSE}
 
 SELECT SUM(1 + CAST(DATEDIFF(DAY, start_date, end_date) AS BIGINT)) AS days,
 	COUNT_BIG(DISTINCT person_id) AS persons 
@@ -69,13 +71,25 @@ FROM (
 					ELSE observation_period_end_date
 					END AS end_date
 			FROM @cdm_database_schema.person
+{@use_derived_observation_periods} ? {
+			INNER JOIN (
+				SELECT person_id, 
+					MIN(observation_period_start_date) AS observation_period_start_date,
+					MAX(observation_period_end_date) AS observation_period_end_date
+				FROM @cdm_database_schema.observation_period
+				GROUP BY person_id
+			) observation_period
+} : {
 			INNER JOIN @cdm_database_schema.observation_period
+}
 				ON person.person_id = observation_period.person_id
 			WHERE CAST('@study_start_date' AS DATE) <= observation_period_end_date
 			    AND CAST('@study_end_date' AS DATE) >= observation_period_start_date
 			) temp1
+{@restict_to_persons_with_data} ? {
 		INNER JOIN #study_population study_population
 		    ON temp1.person_id = study_population.person_id
+}
 		INNER JOIN #age_group age_group
 			ON start_date < DATEADD(DAY, CAST(end_age * 365.25 AS INT), date_of_birth)
 				AND end_date >= DATEADD(DAY, CAST(start_age * 365.25 AS INT), date_of_birth)

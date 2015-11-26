@@ -2,7 +2,3 @@
 
 export(createFiguresAndTables)
 export(execute)
-export(getDefaultStudyEmailSubject)
-export(getDefaultStudyFileName)
-export(getDefaultStudyFolder)
-export(getDestinationAddress)

@@ -10,7 +10,6 @@ Depends:
 Imports:
     SqlRender,
     DBI,
-    mailR,
     OhdsiSharing,
     ggplot2
 Suggests:

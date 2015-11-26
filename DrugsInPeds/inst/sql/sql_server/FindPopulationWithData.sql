@@ -15,7 +15,7 @@
 ********************************************************************************/
 {DEFAULT @study_start_date = '19000101' } 
 {DEFAULT @study_end_date = '21000101' } 
-{DEFAULT @cdm_database_schema = 'dcm4' }
+{DEFAULT @cdm_database_schema = 'cmd4' }
 {DEFAULT @min_days_per_person = 180}
 
 IF OBJECT_ID('tempdb..#study_population', 'U') IS NOT NULL

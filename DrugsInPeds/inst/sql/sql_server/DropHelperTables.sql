@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ********************************************************************************/
+{DEFAULT @restict_to_persons_with_data = FALSE}
+
 TRUNCATE TABLE #age_group;
 
 DROP TABLE #age_group;
@@ -25,6 +27,9 @@ TRUNCATE TABLE #year_period;
 
 DROP TABLE #year_period;
 
+
+{@restict_to_persons_with_data} ? {
 TRUNCATE TABLE #study_population;
 
 DROP TABLE #study_population;
+}

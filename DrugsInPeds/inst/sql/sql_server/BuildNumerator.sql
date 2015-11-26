@@ -19,6 +19,7 @@
 {DEFAULT @split_by_year = TRUE} 
 {DEFAULT @split_by_drug_level = 'ingredient'} /* 'ingredient', 'atc3', 'atc1', or 'none' */
 {DEFAULT @cdm_database_schema = 'cdm_data'}
+{DEFAULT @restict_to_persons_with_data = FALSE}
 {DEFAULT @cdm_version = '4'}
 
 {@split_by_drug_level == 'ingredient'} ? {
@@ -122,8 +123,10 @@ FROM (
 		  WHEN {@cdm_version == 4} ? {place_of_service_concept_id} : {visit_concept_id} = 9201 THEN 1 ELSE 0 END AS inpatient,
 		gender_concept_id
 	FROM @cdm_database_schema.drug_exposure
+{@restict_to_persons_with_data} ? {
 	INNER JOIN #study_population study_population
 	    ON drug_exposure.person_id = study_population.person_id
+}
 	INNER JOIN #drug_mapping drug_mapping
 		ON drug_exposure.drug_concept_id = drug_mapping.drug_concept_id
 	INNER JOIN @cdm_database_schema.person
