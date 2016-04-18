@@ -16,9 +16,11 @@ shiny::shinyServer(function(input, output, session) {
         deps <- data.frame(Package=c("devtools", "OhdsiRTools","SqlRender",
                                      "DatabaseConnector","Cyclops",
                                      "OhdsiSharing",
+                                     "FeatureExtraction",
                                      "CelecoxibPredictiveModels",
                                      "PatientLevelPrediction"),
                            requiredVersion = c('Any','Any','>= 1.1.3','>= 1.3.0','>= 1.2.0','Any',
+                                               'Any',
                                                '>= 0.2','>= 1.1.1'))
         packageList <- merge(packageList, deps, all.y=T)
 
@@ -53,9 +55,9 @@ shiny::shinyServer(function(input, output, session) {
                    TRUE,
                    as.character(packageList[as.character(packageList[,'Package'])=="devtools",'Version'])< '0' )) { install.packages("devtools") }
         library(devtools)
-        pkgs <- c("OhdsiRTools","SqlRender","DatabaseConnector","Cyclops", "OhdsiSharing")
+        pkgs <- c("OhdsiRTools","SqlRender","DatabaseConnector","Cyclops", "OhdsiSharing", "FeatureExtraction")
         version <- data.frame(pkg=pkgs,
-                              min=c('0','1.1.3','1.3.0','1.2.0', '0'))
+                              min=c('0','1.1.3','1.3.0','1.2.0', '0', '0'))
         for (pkg in pkgs) {
             if (ifelse(!pkg%in%packageList[,'Package'],
                        TRUE,
