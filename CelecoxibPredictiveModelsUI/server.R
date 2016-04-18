@@ -53,7 +53,7 @@ shiny::shinyServer(function(input, output, session) {
         packageList <-installed.packages()
         if (ifelse(!'devtools'%in%packageList[,'Package'],
                    TRUE,
-                   as.character(packageList[as.character(packageList[,'Package'])=="devtools",'Version'])< '0' )) { install.packages("devtools") }
+                   as.character(packageList[as.character(packageList[,'Package'])=="devtools",'Version'])< '0' )) { install.packages("devtools", dependencies=T) }
         library(devtools)
         pkgs <- c("OhdsiRTools","SqlRender","DatabaseConnector","Cyclops", "OhdsiSharing", "FeatureExtraction")
         version <- data.frame(pkg=pkgs,
@@ -191,7 +191,7 @@ shiny::shinyServer(function(input, output, session) {
                                                     "MySQL" = 'mysql',
                                                     "Oracle" = "oracle",
                                                     "PostgreSQL" = "postgresql",
-                                                    "Amazon Redshift" = "redshift", 
+                                                    "Amazon Redshift" = "redshift",
                                                     "Microsoft Parallel Data Warehouse (PDW)" = 'pdw',
                                                     "IBM Netezza" = 'netezza' ),
                                      selected = 'pdw'),
