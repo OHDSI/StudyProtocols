@@ -37,16 +37,26 @@ createPredictiveModels <- function(connectionDetails,
                                    workDatabaseSchema,
                                    studyCohortTable = "ohdsi_celecoxib_prediction",
                                    oracleTempSchema,
+                                   gap=1,
                                    cdmVersion = 5,
-                                   outputFolder) {
+                                   outputFolder,
+                                   updateProgress=NULL) {
 
     outcomeIds <- 10:16
     minOutcomeCount <- 25
 
-    plpDataFile <- file.path(outputFolder, "plpData")
+    database <- strsplit(cdmDatabaseSchema, '\\.')[[1]][1]
+    plpDataFile <- file.path(outputFolder, paste("plpData", toupper(database), sep='_'))
     if (file.exists(plpDataFile)) {
+        if (is.function(updateProgress)) {
+            updateProgress(detail = "\n Data extracted...")
+        }
+        warning('Loaded existing plpData - change outputFolder if you want new data')
         plpData <- PatientLevelPrediction::loadPlpData(plpDataFile)
     } else {
+        if (is.function(updateProgress)) {
+            updateProgress(detail = "\n Extracting data...")
+        }
         writeLines("- Extracting cohorts/covariates/outcomes")
         conn <- DatabaseConnector::connect(connectionDetails)
         sql <- "SELECT descendant_concept_id FROM @cdm_database_schema.concept_ancestor WHERE ancestor_concept_id = 1118084"
@@ -56,7 +66,7 @@ createPredictiveModels <- function(connectionDetails,
         celecoxibDrugs <- celecoxibDrugs[,1]
         RJDBC::dbDisconnect(conn)
 
-        covariateSettings <- PatientLevelPrediction::createCovariateSettings(useCovariateDemographics = TRUE,
+        covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
                                                                              useCovariateDemographicsGender = TRUE,
                                                                              useCovariateDemographicsRace = TRUE,
                                                                              useCovariateDemographicsEthnicity = TRUE,
@@ -115,9 +125,10 @@ createPredictiveModels <- function(connectionDetails,
                                                         cdmDatabaseSchema = cdmDatabaseSchema,
                                                         cohortDatabaseSchema = workDatabaseSchema,
                                                         cohortTable = studyCohortTable,
-                                                        cohortIds = 1,
-                                                        useCohortEndDate = FALSE,
-                                                        windowPersistence = 365,
+                                                        cohortId = 1,
+                                                        washoutPeriod = 365,
+                                                        studyStartDate = "",
+                                                        studyEndDate = "",
                                                         covariateSettings = covariateSettings,
                                                         outcomeDatabaseSchema = workDatabaseSchema,
                                                         outcomeTable = studyCohortTable,
@@ -126,49 +137,62 @@ createPredictiveModels <- function(connectionDetails,
 
 
         PatientLevelPrediction::savePlpData(plpData, plpDataFile)
+
     }
 
-    trainPlpDataFile <- file.path(outputFolder, "trainPlptData")
-    testPlpDataFile <- file.path(outputFolder, "testPlpData")
-    if (file.exists(trainPlpDataFile) &&
-        file.exists(testPlpDataFile)) {
-        trainPlpData <- PatientLevelPrediction::loadPlpData(trainPlpDataFile)
-    } else {
-        writeLines("Creating train-test split")
-        parts <- PatientLevelPrediction::splitData(plpData, c(0.75, 0.25))
-
-        PatientLevelPrediction::savePlpData(parts[[1]], trainPlpDataFile)
-        PatientLevelPrediction::savePlpData(parts[[2]], testPlpDataFile)
-
-        trainPlpData <- parts[[1]]
-        testPlpData <- parts[[2]]
-
-        sumTrainPlpData <- summary(trainPlpData)
-        sumTestPlpData <- summary(testPlpData)
-
-        write.csv(c(summary(trainPlpData)$subjectCount, summary(trainPlpData)$windowCount), file.path(outputFolder, "trainCohortSize.csv"), row.names = FALSE)
-        write.csv(addOutcomeNames(summary(trainPlpData)$outcomeCounts), file.path(outputFolder, "trainOutcomeCounts.csv"), row.names = FALSE)
-        write.csv(c(summary(testPlpData)$subjectCount, summary(testPlpData)$windowCount), file.path(outputFolder, "testCohortSize.csv"), row.names = FALSE)
-        write.csv(addOutcomeNames(summary(trainPlpData)$outcomeCounts), file.path(outputFolder, "testOutcomeCounts.csv"), row.names = FALSE)
-    }
-    counts <- summary(trainPlpData)$outcomeCounts
     for (outcomeId in outcomeIds){
-        writeLines(paste(outcomeId))
-        modelFile <- file.path(outputFolder, paste("model_o",outcomeId, ".rds", sep = ""))
-        if (counts$eventCount[counts$outcomeId == outcomeId] > minOutcomeCount &&
-            !file.exists(modelFile)){
-            writeLines(paste("- Fitting model for outcome", outcomeId))
-            control = Cyclops::createControl(noiseLevel = "quiet",
-                                             cvType = "auto",
-                                             startingVariance = 0.1,
-                                             threads = 10)
-
-
-            model <- PatientLevelPrediction::fitPredictiveModel(trainPlpData,
-                                                                outcomeId = outcomeId,
-                                                                modelType = "logistic",
-                                                                control = control)
-            saveRDS(model, modelFile)
+        if (is.function(updateProgress)) {
+            updateProgress(detail = paste0("\n Creating model for outcome: ", outcomeId)  )
         }
+        writeLines(paste0('Creating models for outcome: ', outcomeId))
+
+        if(file.exists(file.path(outputFolder,'modelInfo.txt'))){
+            # check modelInfo+performance to find if already done
+            models <- read.csv(file.path(outputFolder,'modelInfo.txt'), header=T)
+            header <- strsplit(colnames(models), '\\.')[[1]]
+            models <- t(unlist(apply(models, 1,
+                                     function(x) {temp <- strsplit(x, ' ' )[[1]];
+                                     c(paste(temp[1],temp[2]), temp[-(1:2)])
+                                     }   )))
+            if(length(header)==ncol(models)-1){
+                colnames(models) <- c(header, 'timeUnit')
+            } else {
+            colnames(models) <- header
+            }
+
+            done <- sum(models[,'cohortId']==1 &
+                            models[,'outcomeId']==outcomeId &
+                            models[,'trainDatabase'] == strsplit(cdmDatabaseSchema, '\\.')[[1]][1]  )>0
+        } else{done<-F}
+        if (!done){
+
+            writeLines(paste("-creating study population for outcome", outcomeId))
+            population <- PatientLevelPrediction::createStudyPopulation(plpData,
+                                                                        outcomeId=outcomeId,
+                                                                        binary=T,
+                                                                        firstExposureOnly=T,
+                                                                        washoutPeriod =365,
+                                                                        removeSubjectsWithPriorOutcome = TRUE, priorOutcomeLookback = 365,
+                                                                        requireTimeAtRisk = T, minTimeAtRisk = 0, riskWindowStart = gap,
+                                                                        addExposureDaysToStart = FALSE, riskWindowEnd = 365+gap,
+                                                                        addExposureDaysToEnd = F, silent = F)
+
+            if(!is.null(population)){
+            writeLines(paste("- Training model for outcome", outcomeId))
+
+            modelSet <- PatientLevelPrediction::logisticRegressionModel(variance=0.01)
+            model <- PatientLevelPrediction::developModel(population, plpData,
+                                                          featureSettings = NULL,
+                                                          modelSettings=modelSet,
+                                                          testSplit = "person",
+                                                          testFraction = 0.3, nfold = 3,
+                                                          indexes = NULL,
+                                                          dirPath = outputFolder,
+                                                          silent = F)
+            } else {
+                warning(paste0('Populatation for outcome ',outcomeId, ' NULL - model skipped'))
+            }
+
+        } else {writeLines('Model already exists')}
     }
 }

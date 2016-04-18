@@ -1,10 +1,10 @@
-.testCode <- function(user,pw) {
+.testCode <- function() {
     library(CelecoxibPredictiveModels)
     options(fftempdir = "s:/FFtemp")
 
     dbms <- "pdw"
-    #user <- NULL
-    #pw <- NULL
+    user <- NULL
+    pw <- NULL
     server <- "JRDUSAPSCTL01"
     port <- 17001
     connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
@@ -17,7 +17,7 @@
     studyCohortTable <- "ohdsi_celecoxib_prediction"
     oracleTempSchema <- NULL
     cdmVersion <- "5"
-    outputFolder <- "S:/temp/CelecoxibPredictiveModels"
+    outputFolder <- "S:/temp/CelecoxibPredictiveModels_newplp"
 
     execute(connectionDetails,
             cdmDatabaseSchema = cdmDatabaseSchema,

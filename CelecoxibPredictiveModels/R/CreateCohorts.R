@@ -139,13 +139,13 @@ createCohorts <- function(connectionDetails,
     DatabaseConnector::executeSql(conn, sql)
 
     # Check number of subjects per cohort:
-    sql <- "SELECT cohort_definition_id, COUNT(*) AS count FROM @work_database_schema.@study_cohort_table GROUP BY cohort_definition_id"
+    sql <- "SELECT cohort_definition_id, COUNT(*) AS N FROM @work_database_schema.@study_cohort_table GROUP BY cohort_definition_id"
     sql <- SqlRender::renderSql(sql, work_database_schema = workDatabaseSchema, study_cohort_table = studyCohortTable)$sql
     sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
     counts <- DatabaseConnector::querySql(conn, sql)
-    names(counts) <- SqlRender::snakeCaseToCamelCase(names(counts))
-    counts <- addOutcomeNames(counts, "cohortDefinitionId")
-    write.csv(counts, file.path(outputFolder,"CohortCounts.csv"))
+    #names(counts) <- SqlRender::snakeCaseToCamelCase(names(counts))
+    counts <- addOutcomeNames(counts, "COHORT_DEFINITION_ID")
+    write.table(counts, file.path(outputFolder,"analysis.txt"), row.names=F)
     print(counts)
 
     RJDBC::dbDisconnect(conn)
@@ -159,7 +159,7 @@ createCohorts <- function(connectionDetails,
 #' @export
 addOutcomeNames <- function(data, outcomeIdColumnName = "outcomeId"){
     idToName <- data.frame(outcomeId = c(1,10,11,12,13,14,15,16),
-                           cohortName = c("Exposure",
+                           COHORT_NAME = c("Exposure",
                                           "Myocardial infarction",
                                           "Myocardial infarction and ischemic death",
                                           "Gastrointestinal hemorrhage",
@@ -169,5 +169,13 @@ addOutcomeNames <- function(data, outcomeIdColumnName = "outcomeId"){
                                           "Heart failure"))
     names(idToName)[1] <- outcomeIdColumnName
     data <- merge(data, idToName)
+
+    noExposure <- data[data[,colnames(data)%in%'COHORT_NAME']!="Exposure",]
+    colnames(noExposure)[colnames(noExposure)=='N'] <- 'N_OUTCOME'
+    colnames(noExposure)[colnames(noExposure)==outcomeIdColumnName] <- 'OUTCOME_ID'
+    colnames(noExposure)[colnames(noExposure)=='COHORT_NAME'] <- 'OUTCOME_NAME'
+    exposure <- data[data[,colnames(data)%in%'COHORT_NAME']=="Exposure",]
+    colnames(exposure)[colnames(exposure)=='N'] <- 'N_EXPOSURE'
+    data <- merge(exposure, noExposure, all.y=T)
     return(data)
 }

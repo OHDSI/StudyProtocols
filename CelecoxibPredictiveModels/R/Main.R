@@ -55,12 +55,13 @@ execute <- function(connectionDetails,
                     workDatabaseSchema = cdmDatabaseSchema,
                     studyCohortTable = "ohdsi_celecoxib_prediction",
                     oracleTempSchema = NULL,
+                    gap=1,
                     cdmVersion = 5,
                     outputFolder,
                     createCohorts = TRUE,
                     createPredictiveModels = TRUE,
-                    evaluatePredictiveModels = TRUE,
-                    packageResultsForSharing = TRUE) {
+                    packageResultsForSharing = TRUE,
+                    updateProgress=NULL) {
 
     if (cdmVersion == 4) {
         stop("CDM version 4 not supported")
@@ -71,6 +72,9 @@ execute <- function(connectionDetails,
 
     if (createCohorts) {
         writeLines("Creating exposure and outcome cohorts")
+        if (is.function(updateProgress)) {
+            updateProgress(detail = "\n Creating exposure and outcome cohorts...")
+        }
         createCohorts(connectionDetails,
                       cdmDatabaseSchema,
                       workDatabaseSchema,
@@ -87,13 +91,10 @@ execute <- function(connectionDetails,
                                workDatabaseSchema,
                                studyCohortTable,
                                oracleTempSchema,
+                               gap,
                                cdmVersion,
-                               outputFolder)
-    }
-
-    if (evaluatePredictiveModels) {
-        writeLines("Evaluate predictive models")
-        evaluatePredictiveModels(outputFolder)
+                               outputFolder,
+                               updateProgress=updateProgress)
     }
 
     if (packageResultsForSharing) {

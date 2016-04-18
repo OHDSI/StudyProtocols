@@ -1,19 +1,23 @@
 Package: CelecoxibPredictiveModels
 Title: Celecoxib predicive models
-Version: 0.1
+Version: 0.2
 Author: Martijn J. Schuemie [aut, cre],
-	Patrick B. Ryan [aut]
+    Patrick B. Ryan [aut].
+    Jenna M. Reps [aut],
+    Jamie Weaver [aut]
 Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
-Description: What the study does (paragraph)
+Description: This runs the patient level prediction code to train a logistic regression with lasso regularisation and then calculates various performance metrics to evaluate the model
 Depends:
     R (>= 3.1),
     DatabaseConnector (>= 1.3.0)
 Imports:
     SqlRender (>= 1.1.2),
     PatientLevelPrediction,
+    FeatureExtraction,
     DBI,
     OhdsiSharing
 Suggests:
     testthat
 License: Apache License 2.0
 LazyData: true
+RoxygenNote: 5.0.0
