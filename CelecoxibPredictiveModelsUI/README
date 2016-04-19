@@ -2,5 +2,5 @@
 install.packages("shiny")
 install.packages("DT")
 
-library('Shiny')
+library('shiny')
 shiny::runGitHub(repo='OHDSI/StudyProtocols',subdir='CelecoxibPredictiveModelsUI', ref='new_plp')
