@@ -1,6 +1,6 @@
-To run this make sure shiny and DT are installed:
+#To run this make sure shiny and DT are installed:
 install.packages("shiny")
 install.packages("DT")
 
-then inside R run:
+library('Shiny')
 shiny::runGitHub(repo='OHDSI/StudyProtocols',subdir='CelecoxibPredictiveModelsUI', ref='new_plp')
