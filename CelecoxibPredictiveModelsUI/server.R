@@ -121,6 +121,7 @@ shiny::shinyServer(function(input, output, session) {
   shiny::observeEvent(input$runStudy, {
     settingList$dbms=input$dbms
     settingList$domain = input$domain
+    #settingList$user= input$user
     settingList$password= input$password
     settingList$server = input$server
     settingList$port = input$port
@@ -264,10 +265,12 @@ shiny::shinyServer(function(input, output, session) {
     outcomeIds <- paste0('-- Outcome: ', summary$data[,colnames(summary$data)%in%c('OUTCOME_ID','outcomeID')])
     outcomeNames <- paste0('(',summary$data[,colnames(summary$data)%in%c('OUTCOME_NAME')],')')
 
+    database <- paste0('-- Training Database: ', summary$data[,colnames(summary$data)%in%c('database')])
+    
     if(sum(colnames(summary$data)%in%c('OUTCOME_NAME'))>0)
-      names(summary$choice) <- paste(cohortIds, cohortNames, outcomeIds, outcomeNames ,sep='')
+      names(summary$choice) <- paste(cohortIds, cohortNames, outcomeIds, outcomeNames,database ,sep='')
     if(sum(colnames(summary$data)%in%c('OUTCOME_NAME'))==0)
-      names(summary$choice) <- paste(cohortIds, cohortNames, outcomeIds ,sep='')
+      names(summary$choice) <- paste(cohortIds, cohortNames, outcomeIds,database ,sep='')
 
   })
 
@@ -277,7 +280,7 @@ shiny::shinyServer(function(input, output, session) {
     if (is.null(summary$data)) return()
 
     colnames(summary$data) <- gsub('_DEFINITION','',colnames(summary$data))
-    data.frame(summary$data[,colnames(summary$data)%in%c('COHORT_ID', 'COHORT_NAME','OUTCOME_ID','outcomeId','OUTCOME_NAME','trainDatabase','testDatabase','auc')])
+    data.frame(summary$data[,colnames(summary$data)%in%c('COHORT_ID', 'COHORT_NAME','OUTCOME_ID','outcomeId','OUTCOME_NAME','database','auc')])
   },     escape = FALSE, selection = 'none',
   options = list(
     pageLength = 25
@@ -328,6 +331,8 @@ shiny::shinyServer(function(input, output, session) {
       rwnames <- colnames(test)
       returnTab <- data.frame(cbind(t(test), t(train)))
       colnames(returnTab) <- c('Test', 'Train')
+      
+      # add external data results here
 
       returnTab
 
@@ -344,7 +349,7 @@ shiny::shinyServer(function(input, output, session) {
     } else{
       id <- input$explorerIds
     }
-    id <- gsub(' ','',gsub('-','',gsub(':','', summary$data[id, colnames(summary$data)=='datetime'])))
+    id <- summary$data[id, colnames(summary$data)=='modelId']
     model <- PatientLevelPrediction::loadPlpModel(file.path(priorResult$dataFolder, id, 'savedModel' ))
     data.frame(model$varImp)
   },     escape = FALSE, selection = 'none',
@@ -360,14 +365,34 @@ shiny::shinyServer(function(input, output, session) {
     } else{
       id <- input$explorerIds
     }
-    id <- gsub(' ','',gsub('-','',gsub(':','', summary$data[id, colnames(summary$data)=='datetime'])))
+    id <- summary$data[id, colnames(summary$data)=='modelId']
     model <- PatientLevelPrediction::loadPlpModel(file.path(priorResult$dataFolder, id, 'savedModel' ))
-    data.frame(model$metaData$attrition)
+    data.frame(model$populationSettings$attrition)
   },     escape = FALSE, selection = 'none',
   options = list(
     pageLength = 25
     #,initComplete = I("function(settings, json) {alert('Done.');}")
   ))
+  
+  output$options <- DT::renderDataTable({
+    if (is.null(summary$data)) return()
+    if(is.null(input$explorerIds)){
+      id <- 1
+    } else{
+      id <- input$explorerIds
+    }
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    model <- PatientLevelPrediction::loadPlpModel(file.path(priorResult$dataFolder, id, 'savedModel' ))
+    model$populationSettings$attrition <- NULL
+    result <- t(as.data.frame(model$populationSettings))
+    colnames(result) <- c('Setting')
+    result
+  },     escape = FALSE, selection = 'none',
+  options = list(
+    pageLength = 25
+    #,initComplete = I("function(settings, json) {alert('Done.');}")
+  ))
+  #=============================
 
   output$rocPlot <- shiny::renderPlot({
     if (is.null(summary$data)) return()
@@ -376,8 +401,8 @@ shiny::shinyServer(function(input, output, session) {
     } else{
       id <- input$explorerIds
     }
-    id <- gsub(' ','',gsub('-','',gsub(':','', summary$data[id, colnames(summary$data)=='datetime'])))
-    rocData <- read.table(file.path(priorResult$dataFolder, id, 'rocRawSparse.txt' ), header=T)
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    rocData <- read.table(file.path(priorResult$dataFolder, id,'test', 'rocRawSparse.txt' ), header=T)
     sensitivity <- rocData$TP/(rocData$TP+rocData$FN)
     one_minus_specificity <- 1-rocData$TN/(rocData$TN+rocData$FP)
     data <- data.frame(sensitivity=sensitivity,
@@ -394,6 +419,33 @@ shiny::shinyServer(function(input, output, session) {
       ggplot2::scale_x_continuous("1 - specificity") +
       ggplot2::scale_y_continuous("Sensitivity")
   })
+  output$rocPlotTrain <- shiny::renderPlot({
+    if (is.null(summary$data)) return()
+    if(is.null(input$explorerIds)){
+      id <- 1
+    } else{
+      id <- input$explorerIds
+    }
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    rocData <- read.table(file.path(priorResult$dataFolder, id,'train', 'rocRawSparse.txt' ), header=T)
+    sensitivity <- rocData$TP/(rocData$TP+rocData$FN)
+    one_minus_specificity <- 1-rocData$TN/(rocData$TN+rocData$FP)
+    data <- data.frame(sensitivity=sensitivity,
+                       one_minus_specificity=one_minus_specificity)
+    #plot(1-specificity, sensitivity)
+    steps <- data.frame(sensitivity = sensitivity[1:(length(sensitivity) - 1)],
+                        one_minus_specificity = one_minus_specificity[2:length(one_minus_specificity)] - 1e-09)
+    data <- rbind(data, steps)
+    data <- data[order(data$sensitivity, data$one_minus_specificity), ]
+    ggplot2::ggplot(data, ggplot2::aes(x = one_minus_specificity, y = sensitivity)) +
+      ggplot2::geom_abline(intercept = 0, slope = 1) +
+      ggplot2::geom_area(color = rgb(0, 0, 0.8, alpha = 0.8),
+                         fill = rgb(0, 0, 0.8, alpha = 0.4)) +
+      ggplot2::scale_x_continuous("1 - specificity") +
+      ggplot2::scale_y_continuous("Sensitivity")
+  })
+  
+  #=====================
 
   output$boxPlot <- shiny::renderPlot({
     if(is.null(input$explorerIds)){
@@ -401,19 +453,44 @@ shiny::shinyServer(function(input, output, session) {
     } else{
       id <- input$explorerIds
     }
-    id <- gsub(' ','',gsub('-','',gsub(':','', summary$data[id, colnames(summary$data)=='datetime'])))
-    boxData <- read.table(file.path(priorResult$dataFolder, id, 'quantiles.txt' ), header=T)
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    boxData <- read.table(file.path(priorResult$dataFolder, id,'test', 'quantiles.txt' ), header=T)
 
     #"Group.1" "x.0%" "x.25%" "x.50%" "x.75%" "x.100%"
-    colnames(boxData) <- c('Outcome', 'y0', 'y25', 'y50', 'y75', 'y100')
+    colnames(boxData) <- c('Outcome', 'y0','y10', 'y25', 'y50', 'y75','y90', 'y100')
     ggplot2::ggplot(boxData, ggplot2::aes(as.factor(Outcome))) +
       ggplot2::geom_boxplot(
-        ggplot2::aes(ymin = y0, lower = y25, middle = y50, upper = y75, ymax = y100),
-        stat = "identity"
+        ggplot2::aes(ymin = y10, lower = y25, middle = y50, upper = y75, ymax = y90),
+        stat = "identity", color=c("#D55E00", "#56B4E9")
       ) +
-      ggplot2::coord_flip()
+      ggplot2::coord_flip() +
+      ggplot2::geom_point(ggplot2::aes(y = boxData[,'y0'])) +
+      ggplot2::geom_point(ggplot2::aes(y = boxData[,'y100']))
 
   })
+  output$boxPlotTrain <- shiny::renderPlot({
+    if(is.null(input$explorerIds)){
+      id <- 1
+    } else{
+      id <- input$explorerIds
+    }
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    boxData <- read.table(file.path(priorResult$dataFolder, id,'train', 'quantiles.txt' ), header=T)
+    
+    #"Group.1" "x.0%" "x.25%" "x.50%" "x.75%" "x.100%"
+    colnames(boxData) <- c('Outcome', 'y0','y10', 'y25', 'y50', 'y75','y90', 'y100')
+    ggplot2::ggplot(boxData, ggplot2::aes(as.factor(Outcome))) +
+      ggplot2::geom_boxplot(
+        ggplot2::aes(ymin = y10, lower = y25, middle = y50, upper = y75, ymax = y90),
+        stat = "identity", color=c("#D55E00", "#56B4E9")
+      ) +
+      ggplot2::coord_flip() +
+      ggplot2::geom_point(ggplot2::aes(y = boxData[,'y0'])) +
+      ggplot2::geom_point(ggplot2::aes(y = boxData[,'y100']))
+    
+  })
+  
+  #=========================
 
   output$calPlot <- shiny::renderPlot({
     if (is.null(summary$data)) return()
@@ -422,19 +499,45 @@ shiny::shinyServer(function(input, output, session) {
     } else{
       id <- input$explorerIds
     }
-    id <- gsub(' ','',gsub('-','',gsub(':','', summary$data[id, colnames(summary$data)=='datetime'])))
-    calData <- read.table(file.path(priorResult$dataFolder, id, 'calSparse.txt' ), header=T)
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    calData <- read.table(file.path(priorResult$dataFolder, id,'test', 'calSparse2_10.txt' ), header=T)
 
+    # linear model:
+    fit <- lm(obs ~ pred, data=calData)
+    param <- coefficients(fit)
+    
     ggplot2::ggplot(calData,
-                    ggplot2::aes(xmin = minx, xmax = maxx, ymin = 0, ymax = fraction)) +
-      ggplot2::geom_abline() +
-      ggplot2::geom_rect(color = rgb(0, 0, 0.8, alpha = 0.8),
-                         fill = rgb(0, 0, 0.8, alpha = 0.5)) +
-      ggplot2::scale_x_continuous("Predicted probability") +
-      ggplot2::coord_cartesian(xlim = c(0, min(1,max(calData[,'minx'])*1.5)  )) +
-      ggplot2::scale_y_continuous("Observed fraction")
+                    ggplot2::aes(x=pred, y=obs)) +
+      ggplot2::geom_point() +
+      ggplot2::geom_abline(slope=param[2], intercept= param[1], color='red') +
+      ggplot2::geom_abline(slope=1, intercept=0,linetype="dotted", color = "black")+
+      ggplot2::xlim(0,max(calData[,'pred']))
 
   })
+  
+  output$calPlotTrain <- shiny::renderPlot({
+    if (is.null(summary$data)) return()
+    if(is.null(input$explorerIds)){
+      id <- 1
+    } else{
+      id <- input$explorerIds
+    }
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    calData <- read.table(file.path(priorResult$dataFolder, id,'train', 'calSparse2_10.txt' ), header=T)
+    
+    # linear model:
+    fit <- lm(obs ~ pred, data=calData)
+    param <- coefficients(fit)
+    
+    ggplot2::ggplot(calData,
+                    ggplot2::aes(x=pred, y=obs)) +
+      ggplot2::geom_point() +
+      ggplot2::geom_abline(slope=param[2], intercept= param[1], color='red') +
+      ggplot2::geom_abline(slope=1, intercept=0,linetype="dotted", color = "black")+
+      ggplot2::xlim(0,max(calData[,'pred']))
+    
+  })
+  #====================
 
   output$prefPlot <- shiny::renderPlot({
     if (is.null(summary$data)) return()
@@ -443,8 +546,8 @@ shiny::shinyServer(function(input, output, session) {
     } else{
       id <- input$explorerIds
     }
-    id <- gsub(' ','',gsub('-','',gsub(':','', summary$data[id, colnames(summary$data)=='datetime'])))
-    prefData <- read.table(file.path(priorResult$dataFolder, id, 'preferenceScoresSparse.txt' ), header=T)
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    prefData <- read.table(file.path(priorResult$dataFolder, id,'test', 'preferenceScoresSparse.txt' ), header=T)
     ggplot2::ggplot(prefData, ggplot2::aes(x=groupVal, y=density,
                                            group=as.factor(outcomeCount), col=as.factor(outcomeCount),
                                            fill=as.factor(outcomeCount))) +
@@ -452,6 +555,24 @@ shiny::shinyServer(function(input, output, session) {
       ggplot2::scale_x_continuous(limits = c(0, 1)) +
       ggplot2::geom_vline(xintercept = 0.3) + ggplot2::geom_vline(xintercept = 0.7)
 
+  })
+  
+  output$prefPlotTrain <- shiny::renderPlot({
+    if (is.null(summary$data)) return()
+    if(is.null(input$explorerIds)){
+      id <- 1
+    } else{
+      id <- input$explorerIds
+    }
+    id <- summary$data[id, colnames(summary$data)=='modelId']
+    prefData <- read.table(file.path(priorResult$dataFolder, id,'train', 'preferenceScoresSparse.txt' ), header=T)
+    ggplot2::ggplot(prefData, ggplot2::aes(x=groupVal, y=density,
+                                           group=as.factor(outcomeCount), col=as.factor(outcomeCount),
+                                           fill=as.factor(outcomeCount))) +
+      ggplot2::geom_line() + ggplot2::xlab("Preference") + ggplot2::ylab("Density") +
+      ggplot2::scale_x_continuous(limits = c(0, 1)) +
+      ggplot2::geom_vline(xintercept = 0.3) + ggplot2::geom_vline(xintercept = 0.7)
+    
   })
 
 })

@@ -69,6 +69,9 @@ shiny::shinyUI(
                                                shiny::tabPanel(title = "Performance", value="panel_permform",
                                                                shiny::h4("Performance Metrics"),
                                                                DT::dataTableOutput("performance")),
+                                               shiny::tabPanel(title = "Options", value="panel_options",
+                                                               shiny::h4("Options"),
+                                                               DT::dataTableOutput("options")),
                                                shiny::tabPanel(title = "Variables", value="panel_varimp",
                                                                shiny::h4("Variable Importance"),
                                                                DT::dataTableOutput("varImp")),
@@ -76,19 +79,42 @@ shiny::shinyUI(
                                                                shiny::h4("Attrition"),
                                                                DT::dataTableOutput("attrition")),
                                                shiny:: tabPanel(title = "ROC", value="panel_roc",
-                                                                shiny::h4("ROC Plot"),
-                                                                shiny::plotOutput("rocPlot")),
+                                                                shiny::h4("Test"),
+                                                                shiny::plotOutput("rocPlot"),
+                                                                shiny::h4("Train"),
+                                                                shiny::plotOutput("rocPlotTrain")),
                                                shiny::tabPanel(title = "Box Plot", value="panel_box",
-                                                               shiny::h4("Box Plot"),
-                                                               shiny::plotOutput("boxPlot")),
+                                                               shiny::h4("Test"),
+                                                               shiny::plotOutput("boxPlot"),
+                                                               shiny::h4("Train"),
+                                                               shiny::plotOutput("boxPlotTrain")
+                                                               ),
                                                shiny::tabPanel(title = "Calibration", value="panel_cal",
-                                                               shiny::h4("Calibration Plot"),
-                                                               shiny::plotOutput("calPlot")),
+                                                               shiny::h4("Test"),
+                                                               shiny::plotOutput("calPlot"),
+                                                               shiny::h4("Train"),
+                                                               shiny::plotOutput("calPlotTrain")),
                                                shiny::tabPanel(title = "Preference", value="panel_pref",
-                                                               shiny::h4("Preference Scores"),
-                                                               shiny::plotOutput("prefPlot"))
+                                                               shiny::h4("Test"),
+                                                               shiny::plotOutput("prefPlot"),
+                                                               shiny::h4("Train"),
+                                                               shiny::plotOutput("prefPlotTrain"))
                             )
 
+            ),
+            
+            shiny::tabPanel("Apply Models",
+                            shiny::mainPanel("Here you can select a model and apply it to",
+                                             "predict the outcome using data extracted from a",
+                                             "new database (e.g. apply model trained on CDM_JMDC_V5",
+                                             "to data extracted from CDM_OPTUM_V5",
+                            shiny::wellPanel(shiny::h4("Pick model: "),
+                                             shiny::h4("Pick Data: ")
+                              
+                              
+                            )
+                            )
+                            
             )
 
 

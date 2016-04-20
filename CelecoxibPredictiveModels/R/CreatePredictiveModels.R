@@ -148,21 +148,11 @@ createPredictiveModels <- function(connectionDetails,
 
         if(file.exists(file.path(outputFolder,'modelInfo.txt'))){
             # check modelInfo+performance to find if already done
-            models <- read.csv(file.path(outputFolder,'modelInfo.txt'), header=T)
-            header <- strsplit(colnames(models), '\\.')[[1]]
-            models <- t(unlist(apply(models, 1,
-                                     function(x) {temp <- strsplit(x, ' ' )[[1]];
-                                     c(paste(temp[1],temp[2]), temp[-(1:2)])
-                                     }   )))
-            if(length(header)==ncol(models)-1){
-                colnames(models) <- c(header, 'timeUnit')
-            } else {
-            colnames(models) <- header
-            }
+            models <- read.table(file.path(outputFolder,'modelInfo.txt'), header=T)
 
             done <- sum(models[,'cohortId']==1 &
                             models[,'outcomeId']==outcomeId &
-                            models[,'trainDatabase'] == strsplit(cdmDatabaseSchema, '\\.')[[1]][1]  )>0
+                            models[,'database'] == strsplit(cdmDatabaseSchema, '\\.')[[1]][1]  )>0
         } else{done<-F}
         if (!done){
 
@@ -181,14 +171,22 @@ createPredictiveModels <- function(connectionDetails,
             writeLines(paste("- Training model for outcome", outcomeId))
 
             modelSet <- PatientLevelPrediction::logisticRegressionModel(variance=0.01)
-            model <- PatientLevelPrediction::developModel(population, plpData,
-                                                          featureSettings = NULL,
-                                                          modelSettings=modelSet,
-                                                          testSplit = "person",
-                                                          testFraction = 0.3, nfold = 3,
-                                                          indexes = NULL,
-                                                          dirPath = outputFolder,
-                                                          silent = F)
+            model <- tryCatch({
+                PatientLevelPrediction::developModel(population, plpData,
+                                                     featureSettings = NULL,
+                                                     modelSettings=modelSet,
+                                                     testSplit = "person",
+                                                     testFraction = 0.3, nfold = 3,
+                                                     indexes = NULL,
+                                                     dirPath = outputFolder,
+                                                     silent = F)},
+                error = function(err) {
+                    # error handler picks up where error was generated
+                    print(paste("MY_ERROR:  ",err))
+                    return(NULL)
+                }
+            )
+
             } else {
                 warning(paste0('Populatation for outcome ',outcomeId, ' NULL - model skipped'))
             }

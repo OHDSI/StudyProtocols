@@ -63,6 +63,11 @@ execute <- function(connectionDetails,
                     packageResultsForSharing = TRUE,
                     updateProgress=NULL) {
 
+
+    # check for data already extacrted:
+    database <- strsplit(cdmDatabaseSchema, '\\.')[[1]][1]
+    plpDataFile <- file.path(outputFolder, paste("plpData", toupper(database), sep='_'))
+
     if (cdmVersion == 4) {
         stop("CDM version 4 not supported")
     }
@@ -70,7 +75,7 @@ execute <- function(connectionDetails,
     if (!file.exists(outputFolder))
         dir.create(outputFolder)
 
-    if (createCohorts) {
+    if (createCohorts & !dir.exists(plpDataFile) ) {
         writeLines("Creating exposure and outcome cohorts")
         if (is.function(updateProgress)) {
             updateProgress(detail = "\n Creating exposure and outcome cohorts...")
@@ -82,7 +87,7 @@ execute <- function(connectionDetails,
                       oracleTempSchema,
                       cdmVersion,
                       outputFolder)
-    }
+    }else {updateProgress(detail = "\n plpData present, skipping data creation...")}
 
     if (createPredictiveModels) {
         writeLines("Creating predictive models")
