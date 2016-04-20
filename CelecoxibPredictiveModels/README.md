@@ -17,9 +17,10 @@ How to run
     install_github("ohdsi/SqlRender")
     install_github("ohdsi/DatabaseConnector")
     install_github("ohdsi/Cyclops")
-    install_github("ohdsi/PatientLevelPrediction") 
+    install_github("ohdsi/FeatureExtraction")
+    install_github("ohdsi/PatientLevelPrediction", rep='develop') 
 	install_github("ohdsi/OhdsiSharing")
-	install_github("ohdsi/StudyProtocols/CelecoxibPredictiveModels")
+	install_github("ohdsi/StudyProtocols/CelecoxibPredictiveModels", rep='new_plp')
 	```
 
 3. Once installed, you can execute the study by modifying and using the following code:
