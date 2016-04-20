@@ -1,4 +1,4 @@
-# Copyright 2015 Observational Health Data Sciences and Informatics
+# Copyright 2016 Observational Health Data Sciences and Informatics
 #
 # This file is part of DrugsInPeds
 #
@@ -133,25 +133,17 @@ createTable1 <- function() {
 
 createTable2 <- function(conn, cdmDatabaseSchema, denominatorType) {
     denominator <- read.csv("Denominator.csv", stringsAsFactors = FALSE)
-    numerator <- read.csv("NumeratorByAtc3.csv", stringsAsFactors = FALSE)
-    conceptIds <- unique(numerator$conceptId)
-    sql <- SqlRender::loadRenderTranslateSql("GetConceptCodes.sql",
-                                             "DrugsInPeds",
-                                             attr(conn,"dbms"),
-                                             cdm_database_schema = cdmDatabaseSchema,
-                                             concept_ids = conceptIds)
-    conceptCodes <- DatabaseConnector::querySql(conn, sql)
-    names(conceptCodes) <- SqlRender::snakeCaseToCamelCase(names(conceptCodes))
+    numerator <- read.csv("NumeratorByClass.csv", stringsAsFactors = FALSE)
     numeratorInpatient <- numerator[numerator$inpatient == 1,]
     if (nrow(numeratorInpatient) != 0) {
-        data <- merge(numeratorInpatient, conceptCodes)
-        data <- data[order(data$conceptCode),]
+        data <- numeratorInpatient
+        data <- data[order(data$conceptName),]
         if (denominatorType == "persons") {
-            table2a <- data.frame(Class = paste(data$conceptName, "(", data$conceptCode, ")", sep = ""),
+            table2a <- data.frame(Class = data$conceptName,
                                   UserPrevalence = round(data$personCount/(denominator$persons / 1000), digits = 2),
                                   PrescriptionPrevalence = round(data$prescriptionCount/(denominator$persons / 1000), digits = 2))
         } else {
-            table2a <- data.frame(Class = paste(data$conceptName, "(", data$conceptCode, ")", sep = ""),
+            table2a <- data.frame(Class = data$conceptName,
                                   UserPrevalence = round(data$personCount/(denominator$days / 365.25 / 1000), digits = 2),
                                   PrescriptionPrevalence = round(data$prescriptionCount/(denominator$days / 365.25 / 1000), digits = 2))
         }
@@ -159,14 +151,14 @@ createTable2 <- function(conn, cdmDatabaseSchema, denominatorType) {
     }
     numeratorNotInpatient <- numerator[numerator$inpatient == 0,]
     if (nrow(numeratorNotInpatient) != 0) {
-        data <- merge(numeratorNotInpatient, conceptCodes)
-        data <- data[order(data$conceptCode),]
+        data <- numeratorNotInpatient
+        data <- data[order(data$conceptName),]
         if (denominatorType == "persons") {
-            table2b <- data.frame(Class = paste(data$conceptName, "(", data$conceptCode, ")", sep = ""),
+            table2b <- data.frame(Class = data$conceptName,
                                   UserPrevalence = round(data$personCount/(denominator$persons / 1000), digits = 2),
                                   PrescriptionPrevalence = round(data$prescriptionCount/(denominator$days / 365.25 / 1000), digits = 2))
         } else {
-            table2b <- data.frame(Class = paste(data$conceptName, "(", data$conceptCode, ")", sep = ""),
+            table2b <- data.frame(Class = data$conceptName,
                                   UserPrevalence = round(data$personCount/(denominator$persons / 1000), digits = 2),
                                   PrescriptionPrevalence = round(data$prescriptionCount/(denominator$days / 365.25 / 1000), digits = 2))
         }
@@ -179,45 +171,47 @@ createTable3 <- function(conn, cdmDatabaseSchema, oracleTempSchema, cdmVersion, 
     denominator <- read.csv("Denominator.csv", stringsAsFactors = FALSE)
     numerator <- read.csv("NumeratorByIngredient.csv", stringsAsFactors = FALSE)
 
-    names(numerator) <- SqlRender::camelCaseToSnakeCase(names(numerator))
-    DatabaseConnector::insertTable(connection = conn,
-                                   tableName = "#numerator",
-                                   data = numerator,
-                                   dropTableIfExists = TRUE,
-                                   createTable = TRUE,
-                                   tempTable = TRUE,
-                                   oracleTempSchema = oracleTempSchema)
 
-    sql <- SqlRender::loadRenderTranslateSql("TopDrugsPerClass.sql",
-                                             "DrugsInPeds",
-                                             attr(conn,"dbms"),
-                                             oracleTempSchema = oracleTempSchema,
-                                             cdm_database_schema = cdmDatabaseSchema,
-                                             top_n = 5,
-                                             cdm_version = cdmVersion)
-    numerator <- DatabaseConnector::querySql(conn, sql)
-    names(numerator) <- SqlRender::snakeCaseToCamelCase(names(numerator))
-    numerator <- numerator[order(numerator$conceptCode, numerator$rowNum),]
+
+    pathToCsv <- system.file("csv",
+                             "CustomClassification.csv",
+                             package = "DrugsInPeds")
+    classes <- read.csv(pathToCsv, as.is = TRUE)
+    names(classes) <- SqlRender::snakeCaseToCamelCase(names(classes))
+    classes <- classes[, c("conceptId","classId")]
+    numerator <- merge(numerator, classes)
+
+    temp <- list()
+    for (inpatient in c(0,1)) {
+        for (classId in unique(classes$classId)){
+            subset <- numerator[numerator$classId == classId & numerator$inpatient == inpatient,]
+            subset <- subset[order(-subset$personCount), ]
+            subset <- subset[1:min(5,nrow(subset)), ]
+            temp[[length(temp)+1]] <- subset
+        }
+    }
+    numerator <- do.call(rbind, temp)
+    numerator <- numerator[order(numerator$classId, -numerator$personCount),]
 
     data <- numerator[numerator$inpatient == 1,]
 
     if (denominatorType == "persons") {
-        table3a <- data.frame(Class = data$conceptCode,
+        table3a <- data.frame(Class = data$classId,
                               Drug = data$conceptName,
                               UserPrevalence = round(data$personCount/(denominator$persons / 1000), digits = 2))
     } else {
-        table3a <- data.frame(Class = data$conceptCode,
+        table3a <- data.frame(Class = data$classId,
                               Drug = data$conceptName,
                               UserPrevalence = round(data$personCount/(denominator$days / 365.25 / 1000), digits = 2))
     }
 
     data <- numerator[numerator$inpatient == 0,]
     if (denominatorType == "persons") {
-        table3b <- data.frame(Class = data$conceptCode,
+        table3b <- data.frame(Class = data$classId,
                               Drug = data$conceptName,
                               UserPrevalence = round(data$personCount/(denominator$persons / 1000), digits = 2))
     } else {
-        table3b <- data.frame(Class = data$conceptCode,
+        table3b <- data.frame(Class = data$classId,
                               Drug = data$conceptName,
                               UserPrevalence = round(data$personCount/(denominator$days / 365.25 / 1000), digits = 2))
     }
@@ -228,7 +222,7 @@ createTable3 <- function(conn, cdmDatabaseSchema, oracleTempSchema, cdmVersion, 
 
 createFigure1 <- function(denominatorType) {
     denominator <- read.csv("DenominatorByAgeGroup.csv", stringsAsFactors = FALSE)
-    numerator <- read.csv("NumeratorByAgeGroupByAtc1.csv", stringsAsFactors = FALSE)
+    numerator <- read.csv("NumeratorByAgeGroupByClass.csv", stringsAsFactors = FALSE)
 
     numeratorInpatient <- numerator[numerator$inpatient == 1,]
     if (nrow(numeratorInpatient) != 0){
@@ -267,7 +261,7 @@ createFigure1 <- function(denominatorType) {
 
 createFigure2 <- function(denominatorType) {
     denominator <- read.csv("DenominatorByGender.csv", stringsAsFactors = FALSE)
-    numerator <- read.csv("NumeratorByGenderByAtc1.csv", stringsAsFactors = FALSE)
+    numerator <- read.csv("NumeratorByGenderByClass.csv", stringsAsFactors = FALSE)
 
     numeratorInpatient <- numerator[numerator$inpatient == 1,]
     if (nrow(numeratorInpatient) != 0){
@@ -307,7 +301,7 @@ createFigure2 <- function(denominatorType) {
 
 createFigure3 <- function(denominatorType) {
     denominator <- read.csv("DenominatorByAgeGroupByYear.csv", stringsAsFactors = FALSE)
-    numerator <- read.csv("NumeratorByAgeGroupByYearByAtc1.csv", stringsAsFactors = FALSE)
+    numerator <- read.csv("NumeratorByAgeGroupByYearByClass.csv", stringsAsFactors = FALSE)
 
     numeratorInpatient <- numerator[numerator$inpatient == 1,]
     if (nrow(numeratorInpatient) != 0){

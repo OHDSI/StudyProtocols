@@ -45,7 +45,6 @@ execute(connectionDetails,
         cdmVersion = cdmVersion,
         folder = "s:/temp/DrugsInPeds")
 
-
 createFiguresAndTables(connectionDetails,
                        cdmDatabaseSchema = cdmDatabaseSchema,
                        oracleTempSchema = oracleTempSchema,

@@ -1,9 +1,9 @@
 Package: DrugsInPeds
-Title: Exploration of drug utilization in children
-Version: 0.1
+Title: Exploration of Drug Utilization in Children
+Version: 0.2
 Author: Martijn J. Schuemie [aut, cre]
 Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
-Description: What the study does (paragraph)
+Description: This study aims to measure the prevalence of drug use in children in several countries in Asia.
 Depends:
     R (>= 3.1),
     DatabaseConnector (>= 1.2.1)

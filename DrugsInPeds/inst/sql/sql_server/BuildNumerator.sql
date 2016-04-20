@@ -1,5 +1,5 @@
 /*********************************************************************************
-# Copyright 2015 Observational Health Data Sciences and Informatics
+# Copyright 2016 Observational Health Data Sciences and Informatics
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 {DEFAULT @study_end_date = '21000101'}
 {DEFAULT @split_by_age_group = TRUE} 
 {DEFAULT @split_by_year = TRUE} 
-{DEFAULT @split_by_drug_level = 'ingredient'} /* 'ingredient', 'atc3', 'atc1', or 'none' */
+{DEFAULT @split_by_drug_level = 'ingredient'} /* 'ingredient', 'class', or 'none' */
 {DEFAULT @cdm_database_schema = 'cdm_data'}
 {DEFAULT @restict_to_persons_with_data = FALSE}
 {DEFAULT @cdm_version = '4'}
@@ -55,40 +55,15 @@ FROM (
 		AND LEN(concept_code) = 7
 	) temp;
 } 
-{@split_by_drug_level == 'atc3'} ? {
-SELECT drug.concept_id AS drug_concept_id,
-	drug_class.concept_id AS concept_id,
-	drug_class.concept_name AS concept_name
+
+{@split_by_drug_level == 'class'} ? {
+SELECT concept_id AS drug_concept_id,
+	0 AS concept_id,
+	class_id AS concept_name
 INTO #drug_mapping
-FROM @cdm_database_schema.concept_ancestor
-INNER JOIN @cdm_database_schema.concept drug
-	ON concept_ancestor.descendant_concept_id = drug.concept_id
-INNER JOIN @cdm_database_schema.concept drug_class
-	ON concept_ancestor.ancestor_concept_id = drug_class.concept_id
-WHERE LEN(drug_class.concept_code) = 3
-{@cdm_version == 4} ? {
-	AND drug_class.vocabulary_id = 21;
-} : {
-    AND drug_class.vocabulary_id = 'ATC';
-}
+FROM #drug_classes;
 } 
-{@split_by_drug_level == 'atc1'} ? {
-SELECT drug.concept_id AS drug_concept_id,
-	drug_class.concept_id AS concept_id,
-	drug_class.concept_name AS concept_name
-INTO #drug_mapping
-FROM @cdm_database_schema.concept_ancestor
-INNER JOIN @cdm_database_schema.concept drug
-	ON concept_ancestor.descendant_concept_id = drug.concept_id
-INNER JOIN @cdm_database_schema.concept drug_class
-	ON concept_ancestor.ancestor_concept_id = drug_class.concept_id
-WHERE LEN(drug_class.concept_code) = 1
-{@cdm_version == 4} ? {
-	AND drug_class.vocabulary_id = 21;
-} : {
-    AND drug_class.vocabulary_id = 'ATC';
-}
-} 
+
 {@split_by_drug_level == 'none'} ? {
 SELECT drug.concept_id AS drug_concept_id,
 	0 AS concept_id,

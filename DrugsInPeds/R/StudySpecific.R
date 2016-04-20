@@ -1,4 +1,4 @@
-# Copyright 2015 Observational Health Data Sciences and Informatics
+# Copyright 2016 Observational Health Data Sciences and Informatics
 #
 # This file is part of DrugsInPeds
 #
@@ -27,6 +27,12 @@ loadHelperTables <- function(conn, oracleTempSchema){
                              package = "DrugsInPeds")
     years <- read.csv(pathToCsv, as.is = TRUE)
     DatabaseConnector::insertTable(conn, table = "#calendar_year", data = years, dropTableIfExists = TRUE, createTable = TRUE, tempTable = TRUE, oracleTempSchema = oracleTempSchema)
+
+    pathToCsv <- system.file("csv",
+                             "CustomClassification.csv",
+                             package = "DrugsInPeds")
+    classes <- read.csv(pathToCsv, as.is = TRUE)
+    DatabaseConnector::insertTable(conn, table = "#drug_classes", data = classes, dropTableIfExists = TRUE, createTable = TRUE, tempTable = TRUE, oracleTempSchema = oracleTempSchema)
 
     sql <- SqlRender::loadRenderTranslateSql("CreateYearPeriods.sql",
                                              "DrugsInPeds",
@@ -161,16 +167,6 @@ dropHelperTables <- function(conn, oracleTempSchema, restrictToPersonsWithData){
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
 }
 
-saveMetaData <- function(fileName){
-    info <- Sys.info()
-    metaData <- data.frame(rVersion = R.Version()$version.string,
-                           sysname = info[["sysname"]],
-                           user = info[["user"]],
-                           nodename = info[["nodename"]],
-                           time = Sys.time())
-    write.csv(metaData, file = fileName, row.names = FALSE)
-}
-
 compressAndEncrypt <- function(folder, file){
     pathToPublicKey <- system.file("key",
                                    "public.key",
@@ -194,6 +190,7 @@ compressAndEncrypt <- function(folder, file){
 #' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write priviliges for storing temporary tables.
 #' @param cdmVersion           Version of the CDM. Can be "4" or "5"
 #' @param folder	           (Optional) Name of local file to place results; make sure to use forward slashes (/)
+#' @param file                 Name of the file containing all study results.
 #'
 #' @examples \dontrun{
 #' connectionDetails <- createConnectionDetails(dbms = "postgresql",
@@ -361,19 +358,6 @@ execute <- function(connectionDetails,
                   splitByAgeGroup = FALSE,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
-                  splitByDrugLevel = "atc3",
-                  restrictToPersonsWithData = minDaysPerPerson != 0,
-                  cdmVersion = cdmVersion,
-                  fileName = file.path(folder, "NumeratorByAtc3.csv"))
-
-    saveNumerator(conn,
-                  oracleTempSchema,
-                  cdmDatabaseSchema,
-                  studyStartDate,
-                  studyEndDate,
-                  splitByAgeGroup = FALSE,
-                  splitByYear = FALSE,
-                  splitByGender = FALSE,
                   splitByDrugLevel = "ingredient",
                   restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
@@ -384,13 +368,26 @@ execute <- function(connectionDetails,
                   cdmDatabaseSchema,
                   studyStartDate,
                   studyEndDate,
+                  splitByAgeGroup = FALSE,
+                  splitByYear = FALSE,
+                  splitByGender = FALSE,
+                  splitByDrugLevel = "class",
+                  restrictToPersonsWithData = minDaysPerPerson != 0,
+                  cdmVersion = cdmVersion,
+                  fileName = file.path(folder, "NumeratorByClass.csv"))
+
+    saveNumerator(conn,
+                  oracleTempSchema,
+                  cdmDatabaseSchema,
+                  studyStartDate,
+                  studyEndDate,
                   splitByAgeGroup = TRUE,
                   splitByYear = FALSE,
                   splitByGender = FALSE,
-                  splitByDrugLevel = "atc1",
+                  splitByDrugLevel = "class",
                   restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  fileName = file.path(folder, "NumeratorByAgeGroupByAtc1.csv"))
+                  fileName = file.path(folder, "NumeratorByAgeGroupByClass.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -400,10 +397,10 @@ execute <- function(connectionDetails,
                   splitByAgeGroup = FALSE,
                   splitByYear = FALSE,
                   splitByGender = TRUE,
-                  splitByDrugLevel = "atc1",
+                  splitByDrugLevel = "class",
                   restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  fileName = file.path(folder, "NumeratorByGenderByAtc1.csv"))
+                  fileName = file.path(folder, "NumeratorByGenderByClass.csv"))
 
     saveNumerator(conn,
                   oracleTempSchema,
@@ -413,18 +410,16 @@ execute <- function(connectionDetails,
                   splitByAgeGroup = TRUE,
                   splitByYear = TRUE,
                   splitByGender = FALSE,
-                  splitByDrugLevel = "atc1",
+                  splitByDrugLevel = "class",
                   restrictToPersonsWithData = minDaysPerPerson != 0,
                   cdmVersion = cdmVersion,
-                  fileName = file.path(folder, "NumeratorByAgeGroupByYearByAtc1.csv"))
+                  fileName = file.path(folder, "NumeratorByAgeGroupByYearByClass.csv"))
 
     dropHelperTables(conn = conn,
                      oracleTempSchema = oracleTempSchema,
                      restrictToPersonsWithData = minDaysPerPerson != 0)
 
     DBI::dbDisconnect(conn)
-
-    saveMetaData(fileName = file.path(folder, "MetaData.csv"))
 
     compressAndEncrypt(folder, file.path(folder, file))
 

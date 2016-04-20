@@ -20,6 +20,8 @@ both the database and schema name, for example 'cdm_data.dbo'.}
 \item{cdmVersion}{Version of the CDM. Can be "4" or "5"}
 
 \item{folder}{(Optional) Name of local file to place results; make sure to use forward slashes (/)}
+
+\item{file}{Name of the file containing all study results.}
 }
 \value{
 Study results are placed in CSV format files in specified local folder. The CSV files are then compressed and encrypted into
