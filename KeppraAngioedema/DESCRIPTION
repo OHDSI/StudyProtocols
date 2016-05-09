@@ -21,6 +21,7 @@ Imports:
     CohortMethod (>= 2.0.2),
     EmpiricalCalibration,
     OhdsiSharing (>= 0.1.0),
+    OhdsiRTools,
     RJDBC,
     Cyclops
 License: Apache License 2.0
