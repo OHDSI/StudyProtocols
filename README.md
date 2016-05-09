@@ -7,6 +7,7 @@ Repository of OHDSI Collaborative Research Protocols
 2. Treatment Pathways in 12 Months (as `R` package `TxPathways12mo`)
 3. Pharmacogenetic Drug Study (as `R` package `PGxDrugStudy`)
 4. Drug Utilization in Children Protocol (as `R` package `DrugsInPeds`)
+5. Keppra and the Risk of Angioedema (as `R` package `KeppraAngioedema`)
 
 See individual study README files for instructions on installation and study execution.
 
