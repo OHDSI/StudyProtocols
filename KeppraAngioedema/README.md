@@ -24,27 +24,14 @@ How to run
 ==========
 1. Make sure that you have [Java](http://java.com) installed, and on Windows make sure that [RTools](http://cran.r-project.org/bin/windows/Rtools/) is installed. See the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:r_setup) for help on setting up your R environment
 
-3. In R, use the following code to install the study package and its dependencies:
+3. In `R`, use the following code to install the study package and its dependencies:
 	```r
-	install.packages(c("drat","stringi"))  # stringi requires updating on IMEDS instance
+	install.packages("stringi")  # Update old buggy version pre-installed on IMEDS
+	
+	install.packages("drat")
 	drat::addRepo(c("OHDSI","cloudyr")) # Link to OHDSI packages
 	install.packages("KeppraAngioedema")
 	```
-
-	```r
-	install.packages("devtools")
-	library(devtools)
-    install_github("ohdsi/OhdsiRTools") 
-    install_github("ohdsi/SqlRender")
-    install_github("ohdsi/DatabaseConnector")
-    install_github("ohdsi/Cyclops")
-    install_github("ohdsi/FeatureExtraction") 
-    install_github("ohdsi/CohortMethod")
-	install_github("ohdsi/OhdsiSharing")
-	install.packages("aws.s3", repos = "http://cloudyr.github.io/drat")
-	install_github("ohdsi/StudyProtocols/KeppraAngioedema")
-	```
-
 4. Once installed, you can execute the study by modifying and using the following code:
 
 	```r
@@ -62,6 +49,26 @@ How to run
 			oracleTempSchema = NULL,
 			outputFolder = "c:/temp/study_results",
 			maxCores = 4)
+	```
+	
+  If you are using IMEDS, try the following code:
+  	```r
+	library(KeppraAngioedema)
+ 	connectionDetails <- createConnectionDetails(
+            dbms = "redshift",
+            user = Sys.getenv("REDSHIFT_USER"),         # Assumes environmental variables set before running R,
+            password = Sys.getenv("REDSHIFT_PASSWORD"), # otherwise fill-in with correct user/password pair.
+            server = "omop-datasets.cqlmv7nlakap.us-east-1.redshift.amazonaws.com/truven",
+            port = "5439")	
+	
+	execute(connectionDetails,
+	        cdmDatabaseSchema = "mdcr_v5",
+        	workDatabaseSchema = "ohdsi",
+        	studyCohortTable = "ohdsi_keppra_angioedema",
+        	oracleTempSchema = NULL,
+        	outputFolder = "~/study_results",
+        	maxCores = 1)
+	
 	```
 
 	* For details on how to configure```createConnectionDetails``` in your environment type this for help:
