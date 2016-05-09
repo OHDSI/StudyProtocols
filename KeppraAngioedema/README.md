@@ -26,7 +26,7 @@ How to run
 
 3. In R, use the following code to install the study package and its dependencies:
 	```r
-	install.packages("drat")
+	install.packages(c("drat","stringi"))  # stringi requires updating on IMEDS instance
 	drat::addRepo(c("OHDSI","cloudyr")) # Link to OHDSI packages
 	install.packages("KeppraAngioedema")
 	```
