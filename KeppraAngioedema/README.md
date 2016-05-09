@@ -25,11 +25,11 @@ How to run
 1. Make sure that you have [Java](http://java.com) installed, and on Windows make sure that [RTools](http://cran.r-project.org/bin/windows/Rtools/) is installed. See the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=documentation:r_setup) for help on setting up your R environment
 
 3. In R, use the following code to install the study package and its dependencies:
-```r
-install.packages("drat")
-drat::addRepo(c("OHDSI","cloudyr")) # Link to OHDSI packages
-install.package("KeppraAngioedema")
-```
+	```r
+	install.packages("drat")
+	drat::addRepo(c("OHDSI","cloudyr")) # Link to OHDSI packages
+	install.packages("KeppraAngioedema")
+	```
 
 	```r
 	install.packages("devtools")
