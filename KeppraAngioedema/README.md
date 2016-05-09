@@ -51,7 +51,7 @@ How to run
 			maxCores = 4)
 	```
 	
-  If you are using IMEDS, try the following code:
+  If you are using IMEDS, try the following code on a `Linux 64`/`c1.xlarge` image/instance:
   	```r
 	library(KeppraAngioedema)
  	connectionDetails <- createConnectionDetails(
@@ -67,7 +67,7 @@ How to run
         	studyCohortTable = "ohdsi_keppra_angioedema",
         	oracleTempSchema = NULL,
         	outputFolder = "~/study_results",
-        	maxCores = 1)
+        	maxCores = 8)
 	
 	```
 
