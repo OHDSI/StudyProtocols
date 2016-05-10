@@ -27,6 +27,7 @@ How to run
 3. In `R`, use the following code to install the study package and its dependencies:
 	```r
 	install.packages("stringi")  # Update old buggy version pre-installed on IMEDS
+	                             # Install into personal library; use any CRAN mirror
 	
 	install.packages("drat")
 	drat::addRepo(c("OHDSI","cloudyr")) # Link to OHDSI packages
