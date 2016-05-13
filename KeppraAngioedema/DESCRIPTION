@@ -20,7 +20,7 @@ Imports:
     FeatureExtraction (>= 1.0.0),
     CohortMethod (>= 2.0.2),
     EmpiricalCalibration,
-    OhdsiSharing (>= 0.1.0),
+    OhdsiSharing (>= 0.1.1),
     OhdsiRTools,
     RJDBC,
     Cyclops
