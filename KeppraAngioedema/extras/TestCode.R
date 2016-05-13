@@ -32,6 +32,14 @@ oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaMdcr"
 
+cdmDatabaseSchema <- "cdm_optum_v5.dbo"
+workDatabaseSchema <- "scratch.dbo"
+studyCohortTable <- "ohdsi_keppra_angioedema_optum"
+oracleTempSchema <- NULL
+cdmVersion <- "5"
+outputFolder <- "S:/temp/KeppraAngioedemaOptum"
+
+# CPRD?
 
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
@@ -40,7 +48,8 @@ execute(connectionDetails = connectionDetails,
         oracleTempSchema = oracleTempSchema,
         cdmVersion = cdmVersion,
         outputFolder = outputFolder,
-        createCohorts = TRUE,
+        createCohorts = FALSE,
+        runAnalyses = FALSE,
         maxCores = 32)
 
 createTableAndFigures(file.path(outputFolder, "export"))
@@ -78,7 +87,6 @@ execute(connectionDetails = connectionDetails,
         outputFolder = outputFolder,
         createCohorts = TRUE,
         maxCores = 30)
-
 
 om <- readRDS(file.path(outputFolder, "cmOutput", "Analysis_3", "om_t1_c2_o3.rds"))
 summary(om)

@@ -26,17 +26,10 @@
 #' @export
 createTableAndFigures <- function(exportFolder) {
   analysisSummary <- read.csv(file.path(exportFolder, "MainResults.csv"))
-  cmAnalysisListFile <- system.file("settings", "cmAnalysisList.txt", package = "KeppraAngioedema")
-  cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
 
   tablesAndFiguresFolder <- file.path(exportFolder, "tablesAndFigures")
   if (!file.exists(tablesAndFiguresFolder))
     dir.create(tablesAndFiguresFolder)
-
-  # Add analysis description:
-  for (i in 1:length(cmAnalysisList)) {
-    analysisSummary$description[analysisSummary$analysisId == cmAnalysisList[[i]]$analysisId] <- cmAnalysisList[[i]]$description
-  }
 
   negControlCohortIds <- unique(analysisSummary$outcomeId[analysisSummary$outcomeId != 3])
   # Calibrate p-values and draw calibration plots:
