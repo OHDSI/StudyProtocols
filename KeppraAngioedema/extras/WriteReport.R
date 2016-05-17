@@ -112,3 +112,10 @@ writeReport <- function(exportFolder, dbName) {
 
     ReporteRs::writeDoc(report, file.path(exportFolder, "Report.docx"))
 }
+
+writeReportKnitr <- function(exportFolder) {
+    rmarkdown::render("extras/Report.rmd",
+                      params = list(exportFolder = exportFolder),
+                      output_file = file.path(exportFolder, "ReportKnitr.docx"),
+                      rmarkdown::word_document(toc = TRUE))
+}

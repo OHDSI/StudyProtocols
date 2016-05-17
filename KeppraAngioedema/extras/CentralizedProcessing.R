@@ -2,6 +2,9 @@ library(KeppraAngioedema)
 library(ReporteRs)
 createTableAndFigures("S:/Angioedema/IMEDS_MDCR")
 writeReport("S:/Angioedema/IMEDS_MDCR")
+writeReportKnitr("S:/Angioedema/IMEDS_MDCR")
+
+
 
 # exportFolder <- "S:/Angioedema/IMEDS_MDCR"
 # mr <- read.csv("S:/Angioedema/IMEDS_MDCR/MainResults.csv")
