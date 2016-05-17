@@ -57,6 +57,10 @@ createTableAndFigures <- function(exportFolder) {
                                             negControlSubset$seLogRr,
                                             fileName = file.path(tablesAndFiguresFolder,
                                                                  paste0("Cal_a", analysisId, ".png")))
+      EmpiricalCalibration::plotCalibrationEffect(negControlSubset$logRr,
+                                                  negControlSubset$seLogRr,
+                                                  fileName = file.path(tablesAndFiguresFolder,
+                                                                       paste0("CalEffectNoHoi_a", analysisId, ".png")))
       hoi <- analysisSummary[analysisSummary$analysisId == analysisId & !(analysisSummary$outcomeId %in%
         negControlCohortIds), ]
       EmpiricalCalibration::plotCalibrationEffect(negControlSubset$logRr,
