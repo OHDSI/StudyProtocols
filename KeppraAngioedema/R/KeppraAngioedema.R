@@ -19,4 +19,5 @@
 #' @docType package
 #' @name KeppraAngioedema
 #' @import DatabaseConnector
+#' @importFrom OhdsiRTools makeCluster
 NULL
