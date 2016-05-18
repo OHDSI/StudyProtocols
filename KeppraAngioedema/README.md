@@ -26,8 +26,7 @@ How to run
 
 3. In `R`, use the following code to install the study package and its dependencies:
 	```r
-	install.packages("stringi")  # Update old buggy version pre-installed on IMEDS
-	                             # Install into personal library; use any CRAN mirror
+	install.packages("stringi")  # Force update to newest version
 	
 	install.packages("drat")
 	drat::addRepo(c("OHDSI","cloudyr")) # Link to OHDSI packages
@@ -52,25 +51,7 @@ How to run
 			maxCores = 4)
 	```
 	
-  If you are using IMEDS, try the following code on a `Linux 64`/`c1.xlarge` image/instance:
-  	```r
-	library(KeppraAngioedema)
- 	connectionDetails <- createConnectionDetails(
-            dbms = "redshift",
-            user = Sys.getenv("REDSHIFT_USER"),         # Assumes environmental variables set before running R,
-            password = Sys.getenv("REDSHIFT_PASSWORD"), # otherwise fill-in with correct user/password pair.
-            server = "omop-datasets.cqlmv7nlakap.us-east-1.redshift.amazonaws.com/truven",
-            port = "5439")	
-	
-	execute(connectionDetails,
-	        cdmDatabaseSchema = "mdcr_v5",
-        	workDatabaseSchema = "ohdsi",
-        	studyCohortTable = "ohdsi_keppra_angioedema",
-        	oracleTempSchema = NULL,
-        	outputFolder = "~/study_results",
-        	maxCores = 8)
-	
-	```
+    See [here](https://github.com/OHDSI/StudyProtocols/blob/master/KeppraAngioedema/extras/TestCodeImeds.R) for an example showing how one would run this package in the IMEDS lab.
 
 	* For details on how to configure```createConnectionDetails``` in your environment type this for help:
 	```r
