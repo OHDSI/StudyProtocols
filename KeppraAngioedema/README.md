@@ -76,12 +76,14 @@ How to run
     ```
     Where ```key``` and ```secret``` are the credentials provided to you personally by the study coordinator.
 
-6. If you want, you can generate the figures and tables locally using:
+6. If you want, you can generate the figures, tables, and report locally using:
 
     ```r
     createTableAndFigures("c:/temp/study_results/export")
+    
+    writeReport("c:/temp/study_results/export", "c:/temp/study_results/report.docx")
     ```
-    This will create a subfolder called ```tablesAndFigures``` in the ```export``` folder containing several tables and figures.
+    This will create a subfolder called ```tablesAndFigures``` in the ```export``` folder containing several tables and figures, as well as a Word document summarizing the main results of the study/
 
 Getting Involved
 ================
