@@ -23,7 +23,8 @@ Imports:
     OhdsiSharing (>= 0.1.1),
     OhdsiRTools,
     RJDBC,
-    Cyclops
+    Cyclops,
+    rmarkdown
 License: Apache License 2.0
 LazyData: true
 RoxygenNote: 5.0.1
