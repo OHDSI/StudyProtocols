@@ -11,7 +11,7 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 user = user,
                                                                 password = pw,
                                                                 port = port)
-cdmDatabaseSchema <- "cdm_truven_mdcd_v5.dbo"
+cdmDatabaseSchema <- "CDM_Truven_MDCD_V432.dbo"
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "ohdsi_keppra_angioedema"
 oracleTempSchema <- NULL
@@ -32,14 +32,19 @@ oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaMdcr"
 
-cdmDatabaseSchema <- "cdm_optum_v5.dbo"
+cdmDatabaseSchema <- "CDM_OPTUM_V379.dbo"
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "ohdsi_keppra_angioedema_optum"
 oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaOptum"
 
-# CPRD?
+cdmDatabaseSchema <- "cdm_cprd_v5.dbo"
+workDatabaseSchema <- "scratch.dbo"
+studyCohortTable <- "ohdsi_keppra_angioedema_cprd"
+oracleTempSchema <- NULL
+cdmVersion <- "5"
+outputFolder <- "S:/temp/KeppraAngioedemaCprd"
 
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
@@ -54,6 +59,7 @@ execute(connectionDetails = connectionDetails,
 
 createTableAndFigures(file.path(outputFolder, "export"))
 
+writeReport(file.path(outputFolder, "export"), file.path(outputFolder, "Report.docx"))
 
 submitResults(file.path(outputFolder, "export"),
               key = Sys.getenv("keyAngioedema"),
@@ -90,3 +96,15 @@ execute(connectionDetails = connectionDetails,
 
 om <- readRDS(file.path(outputFolder, "cmOutput", "Analysis_3", "om_t1_c2_o3.rds"))
 summary(om)
+
+
+library(CohortMethod)
+cmData <- loadCohortMethodData(file.path(outputFolder, "cmOutput", "CmData_l1_t1_c2"))
+str(cmData$cohorts$treatment)
+str(cmData$covariateRef$covariateName)
+as.Date(cmData$cohorts$cohortStartDate)
+ff::as.ff(cmData$cohorts$cohortStartDate)
+
+as.Date(c("2001-13-13"))
+
+

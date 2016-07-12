@@ -21,6 +21,21 @@ results <- read.csv(file.path(exportFolder, "tablesAndFigures", "EmpiricalCalibr
 
 This reports describes the results from a comparative effectiveness study comparing new users of levetiracetam to new users of phenytoin. Propensity scores were generated using large scale regression, and one-on-one and variable ratio matching was performed. Effect sizes were estimated using a univariate Cox regression, conditioned on the matched sets. A set of negative control outcomes was included to estimate residual bias and calibrate p-values.
 
+## Population characteristics
+
+```{r, echo = FALSE}
+    if (file.exists(file.path(exportFolder, "tablesAndFigures", "PopChar.csv"))){
+        table <- read.csv(file.path(exportFolder, "tablesAndFigures", "PopChar.csv"))
+        table <- data.frame(group = table$group,
+                            treated = paste0(formatC(table$countTreated, format="d", big.mark=","), " (", round(table$fractionTreated*100, 1), ")"),
+                            comparator = paste0(formatC(table$countComparator, format="d", big.mark=","), " (", round(table$fractionComparator*100, 1), ")"))
+        colnames(table) <- c("Group", "Number in treated (%)", "Number in comparator (%)")
+        knitr::kable(table, 
+                     caption = "Key characteristics of the study population, stratified by treatment group.", 
+                     row.names = FALSE)
+    }
+```  
+
 ## Analysis variations
 
 In total, 8 analysis variations were executed:
@@ -93,6 +108,20 @@ knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceTopV
 ```{r, echo = FALSE, results="asis"}
     cat(out)
 ```
+# Attrition
+
+## 1-on-1 matching on propensity scores
+
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using 1-on-1 matching on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in CIRCE."}
+knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "Attr1On1Matching.png"))
+```
+
+## Variable ratio matching on propensity scores
+
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using variable ratio matching on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in CIRCE."}
+knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "AttrVarRatioMatching.png"))
+```
+
 
 # Main results
 

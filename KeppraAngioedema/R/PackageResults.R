@@ -27,9 +27,10 @@
 #'                            schema name, for example 'cdm_data.dbo'.
 #' @param outputFolder        Name of local folder to place results; make sure to use forward slashes
 #'                            (/)
+#' @param minCellCount        The minimum number of subjects contributing to a count before it can be included in the results.
 #'
 #' @export
-packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder) {
+packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder, minCellCount = 5) {
     exportFolder <- file.path(outputFolder, "export")
     if (!file.exists(exportFolder))
         dir.create(exportFolder)
@@ -99,21 +100,42 @@ packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder) {
                                                   3]
     strata <- readRDS(strataFile)
     balance <- CohortMethod::computeCovariateBalance(strata, cohortMethodData)
-    balance <- balance[, c("covariateId",
-                           "covariateName",
-                           "beforeMatchingStdDiff",
-                           "afterMatchingStdDiff")]
+    idx <- balance$beforeMatchingSumTreated < minCellCount
+    balance$beforeMatchingSumTreated[idx] <- NA
+    balance$beforeMatchingMeanTreated[idx] <- NA
+    idx <- balance$beforeMatchingSumComparator < minCellCount
+    balance$beforeMatchingsumComparator[idx] <- NA
+    balance$beforeMatchingMeanComparator[idx] <- NA
+    idx <- balance$afterMatchingSumTreated < minCellCount
+    balance$afterMatchingSumTreated[idx] <- NA
+    balance$afterMatchingMeanTreated[idx] <- NA
+    idx <- balance$afterMatchingSumComparator < minCellCount
+    balance$afterMatchingsumComparator[idx] <- NA
+    balance$afterMatchingMeanComparator[idx] <- NA
     write.csv(balance, file.path(exportFolder, "BalanceVarRatioMatching.csv"), row.names = FALSE)
 
     strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 2 & outcomeReference$outcomeId ==
                                                   3]
     strata <- readRDS(strataFile)
     balance <- CohortMethod::computeCovariateBalance(strata, cohortMethodData)
-    balance <- balance[, c("covariateId",
-                           "covariateName",
-                           "beforeMatchingStdDiff",
-                           "afterMatchingStdDiff")]
+    idx <- balance$beforeMatchingSumTreated < minCellCount
+    balance$beforeMatchingSumTreated[idx] <- NA
+    balance$beforeMatchingMeanTreated[idx] <- NA
+    idx <- balance$beforeMatchingSumComparator < minCellCount
+    balance$beforeMatchingsumComparator[idx] <- NA
+    balance$beforeMatchingMeanComparator[idx] <- NA
+    idx <- balance$afterMatchingSumTreated < minCellCount
+    balance$afterMatchingSumTreated[idx] <- NA
+    balance$afterMatchingMeanTreated[idx] <- NA
+    idx <- balance$afterMatchingSumComparator < minCellCount
+    balance$afterMatchingsumComparator[idx] <- NA
+    balance$afterMatchingMeanComparator[idx] <- NA
     write.csv(balance, file.path(exportFolder, "Balance1On1Matching.csv"), row.names = FALSE)
+
+    ### Removed (redunant) covariates ###
+    idx <- is.na(ffbase::ffmatch(cohortMethodData$covariateRef$covariateId, ff::as.ff(cohortMethodData$metaData$deletedCovariateIds)))
+    removedCovars <- ff::as.ram(cohortMethodData$covariateRef[ffbase::ffwhich(idx, idx == FALSE), ])
+    write.csv(removedCovars, file.path(exportFolder, "RemovedCovars.csv"), row.names = FALSE)
 
     ### Main Kaplan Meier plots ###
     strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 2 & outcomeReference$outcomeId ==

@@ -69,6 +69,13 @@ createTableAndFigures <- function(exportFolder) {
                                                   hoi$seLogRr,
                                                   fileName = file.path(tablesAndFiguresFolder,
                                                                        paste0("CalEffect_a", analysisId, ".png")))
+      EmpiricalCalibration::plotCalibrationEffect(negControlSubset$logRr,
+                                                  negControlSubset$seLogRr,
+                                                  hoi$logRr,
+                                                  hoi$seLogRr,
+                                                  showCis = TRUE,
+                                                  fileName = file.path(tablesAndFiguresFolder,
+                                                                       paste0("CalEffectCi_a", analysisId, ".png")))
     }
   }
   write.csv(analysisSummary, file.path(tablesAndFiguresFolder,
@@ -90,4 +97,94 @@ createTableAndFigures <- function(exportFolder) {
   CohortMethod::plotCovariateBalanceOfTopVariables(balance,
                                                    fileName = file.path(tablesAndFiguresFolder,
                                                                                  "BalanceTopVariablesVarRatioMatching.png"))
+
+  ### Population characteristics table
+  balance <- read.csv(file.path(exportFolder, "BalanceVarRatioMatching.csv"))
+
+  ## Age
+  age <- balance[grep("Age group:", balance$covariateName), ]
+  age <- data.frame(group = age$covariateName,
+                    countTreated = age$beforeMatchingSumTreated,
+                    countComparator = age$beforeMatchingsumComparator,
+                    fractionTreated = age$beforeMatchingMeanTreated,
+                    fractionComparator = age$beforeMatchingMeanComparator)
+
+  # Add removed age group (if any):
+  removedCovars <- read.csv(file.path(exportFolder, "RemovedCovars.csv"))
+  removedAgeGroup <- removedCovars[grep("Age group:", removedCovars$covariateName), ]
+  if (nrow(removedAgeGroup) == 1) {
+      totalTreated <- age$countTreated[1] / age$fractionTreated[1]
+      missingFractionTreated <- 1 - sum(age$fractionTreated)
+      missingFractionComparator <- 1 - sum(age$fractionComparator)
+      removedAgeGroup <- data.frame(group = removedAgeGroup$covariateName,
+                                    countTreated = round(missingFractionTreated * totalTreated),
+                                    countComparator = round(missingFractionComparator * totalTreated),
+                                    fractionTreated = missingFractionTreated,
+                                    fractionComparator = missingFractionComparator)
+      age <- rbind(age, removedAgeGroup)
+  }
+  age$start <- gsub("Age group: ", "", gsub("-.*$", "", age$group))
+  age$start <- as.integer(age$start)
+  age <- age[order(age$start), ]
+  age$start <- NULL
+
+  ## Gender
+  gender <- balance[grep("Gender", balance$covariateName), ]
+  gender <- data.frame(group = gender$covariateName,
+                       countTreated = gender$beforeMatchingSumTreated,
+                       countComparator = gender$beforeMatchingsumComparator,
+                       fractionTreated = gender$beforeMatchingMeanTreated,
+                       fractionComparator = gender$beforeMatchingMeanComparator)
+  # Add removed gender (if any):
+  removedGender <- removedCovars[grep("Gender", removedCovars$covariateName), ]
+  if (nrow(removedGender) == 1) {
+      totalTreated <- gender$countTreated[1] / gender$fractionTreated[1]
+      missingFractionTreated <- 1 - sum(gender$fractionTreated)
+      missingFractionComparator <- 1 - sum(gender$fractionComparator)
+      removedGender <- data.frame(group = removedGender$covariateName,
+                                    countTreated = round(missingFractionTreated * totalTreated),
+                                    countComparator = round(missingFractionComparator * totalTreated),
+                                    fractionTreated = missingFractionTreated,
+                                    fractionComparator = missingFractionComparator)
+      gender <- rbind(gender, removedGender)
+  }
+  gender$group <- gsub("Gender = ", "", gender$group)
+
+  ## Calendar year
+  year <- balance[grep("Index year", balance$covariateName), ]
+  year <- data.frame(group = year$covariateName,
+                       countTreated = year$beforeMatchingSumTreated,
+                       countComparator = year$beforeMatchingsumComparator,
+                       fractionTreated = year$beforeMatchingMeanTreated,
+                       fractionComparator = year$beforeMatchingMeanComparator)
+  # Add removed year (if any):
+  removedYear <- removedCovars[grep("Index year", removedCovars$covariateName), ]
+  if (nrow(removedYear) == 1) {
+      totalTreated <- year$countTreated[1] / year$fractionTreated[1]
+      missingFractionTreated <- 1 - sum(year$fractionTreated)
+      missingFractionComparator <- 1 - sum(year$fractionComparator)
+      removedYear <- data.frame(group = removedYear$covariateName,
+                                  countTreated = round(missingFractionTreated * totalTreated),
+                                  countComparator = round(missingFractionComparator * totalTreated),
+                                  fractionTreated = missingFractionTreated,
+                                  fractionComparator = missingFractionComparator)
+      year <- rbind(year, removedYear)
+  }
+  year$group <- gsub("Index year: ", "", year$group)
+  year <- year[order(year$group), ]
+
+  table <- rbind(age, gender, year)
+  write.csv(table, file.path(tablesAndFiguresFolder, "PopChar.csv"), row.names = FALSE)
+
+  ### Attrition diagrams
+  attrition <- read.csv(file.path(exportFolder, "Attrition1On1Matching.csv"))
+  object <- list()
+  attr(object, "metaData") <- list(attrition = attrition)
+  CohortMethod::drawAttritionDiagram(object, fileName = file.path(tablesAndFiguresFolder, "Attr1On1Matching.png"))
+
+  attrition <- read.csv(file.path(exportFolder, "AttritionVarRatioMatching.csv"))
+  object <- list()
+  attr(object, "metaData") <- list(attrition = attrition)
+  CohortMethod::drawAttritionDiagram(object, fileName = file.path(tablesAndFiguresFolder, "AttrVarRatioMatching.png"))
+
 }

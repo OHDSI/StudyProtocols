@@ -4,7 +4,8 @@
 \alias{packageResults}
 \title{Package the results for sharing with OHDSI researchers}
 \usage{
-packageResults(connectionDetails, cdmDatabaseSchema, outputFolder)
+packageResults(connectionDetails, cdmDatabaseSchema, outputFolder,
+  minCellCount = 5)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the
@@ -17,6 +18,8 @@ schema name, for example 'cdm_data.dbo'.}
 
 \item{outputFolder}{Name of local folder to place results; make sure to use forward slashes
 (/)}
+
+\item{minCellCount}{The minimum number of subjects contributing to a count before it can be included in the results.}
 }
 \description{
 Package the results for sharing with OHDSI researchers
