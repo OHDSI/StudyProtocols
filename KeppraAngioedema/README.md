@@ -10,7 +10,7 @@ Requirements
 
 - A database in [Common Data Model version 5](https://github.com/OHDSI/CommonDataModel) in one of these platforms: SQL Server, Oracle, PostgreSQL, Amazon RedShift, or Microsoft APS.
 - R version 3.2.2 or newer
-- [RTools](http://cran.r-project.org/bin/windows/Rtools/)
+- On Windows: [RTools](http://cran.r-project.org/bin/windows/Rtools/)
 - [Java](http://java.com)
 - 100 GB of free disk space
 
