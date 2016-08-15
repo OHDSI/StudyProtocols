@@ -105,7 +105,7 @@ createTableAndFigures <- function(exportFolder) {
   age <- balance[grep("Age group:", balance$covariateName), ]
   age <- data.frame(group = age$covariateName,
                     countTreated = age$beforeMatchingSumTreated,
-                    countComparator = age$beforeMatchingsumComparator,
+                    countComparator = age$beforeMatchingSumComparator,
                     fractionTreated = age$beforeMatchingMeanTreated,
                     fractionComparator = age$beforeMatchingMeanComparator)
 
@@ -132,7 +132,7 @@ createTableAndFigures <- function(exportFolder) {
   gender <- balance[grep("Gender", balance$covariateName), ]
   gender <- data.frame(group = gender$covariateName,
                        countTreated = gender$beforeMatchingSumTreated,
-                       countComparator = gender$beforeMatchingsumComparator,
+                       countComparator = gender$beforeMatchingSumComparator,
                        fractionTreated = gender$beforeMatchingMeanTreated,
                        fractionComparator = gender$beforeMatchingMeanComparator)
   # Add removed gender (if any):
@@ -154,7 +154,7 @@ createTableAndFigures <- function(exportFolder) {
   year <- balance[grep("Index year", balance$covariateName), ]
   year <- data.frame(group = year$covariateName,
                        countTreated = year$beforeMatchingSumTreated,
-                       countComparator = year$beforeMatchingsumComparator,
+                       countComparator = year$beforeMatchingSumComparator,
                        fractionTreated = year$beforeMatchingMeanTreated,
                        fractionComparator = year$beforeMatchingMeanComparator)
   # Add removed year (if any):
