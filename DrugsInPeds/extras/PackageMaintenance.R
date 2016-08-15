@@ -31,7 +31,7 @@ shell("R CMD Rd2pdf ./ --output=extras/DrugsInPeds.pdf")
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "sql server",
                                                                 server = "RNDUSRDHIT06.jnj.com")
 conn <- DatabaseConnector::connect(connectionDetails)
-DatabaseConnector::executeSql(conn, "USE [OMOP_Vocabulary_v5.0_20160311]")
+DatabaseConnector::executeSql(conn, "USE [OMOP_Vocabulary_20160311]")
 sql <- SqlRender::readSql("extras/BuildCustomDrugClassification.sql")
 DatabaseConnector::executeSql(conn, sql)
 classification <- DatabaseConnector::querySql(conn, "SELECT * FROM #my_drug_classification ORDER BY class_id, concept_name")

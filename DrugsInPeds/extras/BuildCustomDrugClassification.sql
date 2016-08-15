@@ -17,7 +17,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ************************************************************************/
-
 IF OBJECT_ID('tempdb..#my_drug_classification', 'U') IS NOT NULL
 	DROP TABLE #my_drug_classification;
 
@@ -50,9 +49,9 @@ FROM (
 		AND atc.concept_code = 'A10'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -89,9 +88,9 @@ FROM (
 		AND atc.concept_code IN ('N02', 'M01A')
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -107,9 +106,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -134,17 +133,25 @@ FROM (
 			ndfrt2.concept_name LIKE '%opioid%'
 			OR ndfrt2.concept_name = 'Nonsteroidal Anti-inflammatory Drug'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
 	FROM concept rxnorm
 	WHERE rxnorm.concept_name = 'loxoprofen'
-	AND rxnorm.concept_class_id = 'Ingredient'
-	AND rxnorm.vocabulary_id = 'RxNorm'
-	) tmp;
+		AND rxnorm.concept_class_id = 'Ingredient'
+		AND rxnorm.vocabulary_id = 'RxNorm'
+	) tmp
+WHERE concept_name NOT LIKE '%alvimopan%'
+	AND concept_name NOT LIKE '%lisuride%'
+	AND concept_name NOT LIKE '%loperamide%'
+	AND concept_name NOT LIKE '%methylnaltrexone%'
+	AND concept_name NOT LIKE '%nalmefene%'
+	AND concept_name NOT LIKE '%naloxegol%'
+	AND concept_name NOT LIKE '%naloxone%'
+	AND concept_name NOT LIKE '%naltrexone%';
 
 -- Corticosteroids:
 INSERT INTO #my_drug_classification (
@@ -168,9 +175,9 @@ FROM (
 		AND atc.concept_code = 'C05AA'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -183,9 +190,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -231,9 +238,9 @@ FROM (
 		AND atc.concept_code IN ('N05A', 'N06A')
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -246,9 +253,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -270,7 +277,8 @@ FROM (
 		AND ndfrt2.invalid_reason IS NULL
 		AND ndfrt2.concept_class_id = 'Pharmacologic Class'
 		AND ndfrt2.concept_name IN ('Atypical Antipsychotic', 'Typical Antipsychotic', 'Serotonin Reuptake Inhibitor', 'Tricyclic Antidepressant', 'Serotonin and Norepinephrine Reuptake Inhibitor', 'Monoamine Oxidase Inhibitor')
-	) tmp;
+	) tmp
+WHERE concept_name NOT LIKE '%Prochlorperazine%';
 
 -- Antiinfectives (excluding antibiotics)
 INSERT INTO #my_drug_classification (
@@ -280,7 +288,7 @@ INSERT INTO #my_drug_classification (
 	class_id
 	)
 SELECT *,
-	'Antiinfectives (excluding antibiotics)' AS class_id
+	'Antiinfectives (excluding antibiotics and vaccines)' AS class_id
 FROM (
 	SELECT ingredient.concept_id,
 		ingredient.concept_name,
@@ -291,20 +299,22 @@ FROM (
 	INNER JOIN concept ingredient
 		ON ingredient.concept_id = descendant_concept_id
 	WHERE atc.vocabulary_id = 'ATC'
-	    AND LEN(atc.concept_code) = 3
+		AND LEN(atc.concept_code) = 3
 		AND LEFT(atc.concept_code, 1) = 'J'
 		AND atc.concept_code != 'J01'
+		AND atc.concept_code != 'J07'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
 	FROM concept ingredient
 	WHERE LEFT(concept_code, 1) = 'J'
 		AND LEFT(concept_code, 3) != 'J01'
+		AND LEFT(concept_code, 3) != 'J07'
 		AND LEN(concept_code) = 7
 		AND vocabulary_id = 'ATC'
 		AND concept_id NOT IN (
@@ -312,9 +322,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -337,11 +347,18 @@ FROM (
 		AND ndfrt2.concept_class_id = 'Pharmacologic Class'
 		AND (
 			ndfrt2.concept_name LIKE 'Antimicrobial'
-			OR ndfrt2.concept_name LIKE '%Vaccine'
 			OR ndfrt2.concept_name LIKE '%Antifungal'
 			)
-	) tmp;
-	
+	) tmp
+WHERE concept_name NOT LIKE '%vaccine%'
+	AND concept_name NOT LIKE '%attenuated%'
+	AND concept_name NOT LIKE '%inactivated%'
+	AND concept_name NOT LIKE '%capreomycin%'
+	AND concept_name NOT LIKE '%cycloserine%'
+	AND concept_name NOT LIKE '%hachimycin%'
+	AND concept_name NOT LIKE '%streptomycin%'
+	AND concept_name != 'combinations';
+
 -- Antibiotics
 INSERT INTO #my_drug_classification (
 	concept_id,
@@ -364,9 +381,9 @@ FROM (
 		AND atc.concept_code = 'J01'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -379,9 +396,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -403,7 +420,8 @@ FROM (
 		AND ndfrt2.invalid_reason IS NULL
 		AND ndfrt2.concept_class_id = 'Pharmacologic Class'
 		AND ndfrt2.concept_name LIKE '%Antibacterial'
-	) tmp;
+	) tmp
+WHERE concept_name != 'combinations';
 
 -- Antihistamines
 INSERT INTO #my_drug_classification (
@@ -427,9 +445,9 @@ FROM (
 		AND atc.concept_code = 'R06'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -442,9 +460,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -490,9 +508,9 @@ FROM (
 		AND atc.concept_code = 'G03A'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -529,9 +547,9 @@ FROM (
 		AND atc.concept_code = 'R03C'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -544,9 +562,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -568,7 +586,8 @@ FROM (
 		AND ndfrt2.invalid_reason IS NULL
 		AND ndfrt2.concept_class_id = 'Pharmacologic Class'
 		AND ndfrt2.concept_name LIKE '%adrenergic%'
-	) tmp;
+	) tmp
+WHERE concept_name NOT LIKE '%epinastine%';
 
 -- Central nervous system stimulants
 INSERT INTO #my_drug_classification (
@@ -592,9 +611,9 @@ FROM (
 		AND atc.concept_code = 'N06B'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -607,9 +626,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -655,10 +674,10 @@ FROM (
 		AND atc.concept_code = 'L'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-		AND ingredient.concept_id != 1118084	-- celecoxib
-
+		AND ingredient.concept_id != 1118084 -- celecoxib
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -671,7 +690,8 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-	) tmp;
+	) tmp
+WHERE concept_name NOT LIKE '%vaccine%';
 
 -- Mucolytics
 INSERT INTO #my_drug_classification (
@@ -695,9 +715,9 @@ FROM (
 		AND atc.concept_code = 'R05CB'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -710,9 +730,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -736,7 +756,7 @@ FROM (
 		AND ndfrt2.concept_name = 'Mucolytic'
 	) tmp;
 
--- Antithrombotic agents
+-- Anticlotting and antifibrinolytic
 INSERT INTO #my_drug_classification (
 	concept_id,
 	concept_name,
@@ -744,7 +764,7 @@ INSERT INTO #my_drug_classification (
 	class_id
 	)
 SELECT *,
-	'Antithrombotic agents' AS class_id
+	'Anticlotting and antifibrinolytic' AS class_id
 FROM (
 	SELECT ingredient.concept_id,
 		ingredient.concept_name,
@@ -758,9 +778,9 @@ FROM (
 		AND atc.concept_code = 'B01'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -773,7 +793,10 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-	) tmp;
+	) tmp
+WHERE concept_name NOT LIKE '%aspirin%'
+	AND concept_name NOT LIKE '%iloprost%'
+	AND concept_name NOT LIKE '%treprostinil%';
 
 -- Diuretics
 INSERT INTO #my_drug_classification (
@@ -797,9 +820,9 @@ FROM (
 		AND atc.concept_code = 'C03'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -812,9 +835,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id
@@ -837,8 +860,7 @@ FROM (
 		AND ndfrt2.concept_class_id = 'Pharmacologic Class'
 		AND ndfrt2.concept_name LIKE '%Diuretic'
 	) tmp;
-	
-	
+
 -- Antiepileptics
 INSERT INTO #my_drug_classification (
 	concept_id,
@@ -861,9 +883,9 @@ FROM (
 		AND atc.concept_code = 'N03A'
 		AND ingredient.vocabulary_id = 'RxNorm'
 		AND ingredient.concept_class_id = 'Ingredient'
-
+	
 	UNION
-
+	
 	SELECT concept_id,
 		concept_name,
 		vocabulary_id
@@ -876,9 +898,9 @@ FROM (
 			FROM concept_relationship
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
-
+	
 	UNION
-
+	
 	SELECT rxnorm.concept_id,
 		rxnorm.concept_name,
 		rxnorm.vocabulary_id

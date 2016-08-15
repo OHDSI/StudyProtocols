@@ -33,9 +33,13 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
 folder <- "C:/home/Research/DrugsInPeds/results"
 privateKey <- file.path(folder, "private.key")
 
-dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "PBS", "NHIRD"), inpatient = c(TRUE, TRUE, TRUE, FALSE, TRUE), ambulatory = c(FALSE, FALSE, TRUE, TRUE, TRUE), stringsAsFactors = FALSE)
-#dbs <- data.frame(name = c("AUSOM","JMDC"), inpatient = c(TRUE), ambulatory = c(TRUE), stringsAsFactors = FALSE)
+#dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "PBS", "NHIRD"), inpatient = c(TRUE, TRUE, TRUE, FALSE, TRUE), ambulatory = c(FALSE, FALSE, TRUE, TRUE, TRUE), stringsAsFactors = FALSE)
+dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "NHIRD"), inpatient = c(TRUE, TRUE, TRUE, TRUE), ambulatory = c(FALSE, FALSE, TRUE, TRUE), stringsAsFactors = FALSE)
 
+pathToCsv <- system.file("csv",
+                         "CustomClassification.csv",
+                         package = "DrugsInPeds")
+classes <- unique(read.csv(pathToCsv, as.is = TRUE)$CLASS_ID)
 
 ### Decrypt, decompress, and generate tables and figures per DB ###
 for (i in 1:nrow(dbs)) {
@@ -99,12 +103,6 @@ for (i in 1:nrow(dbs)) {
 }
 table2a <- table2a[,order(names(table2a))]
 table2b <- table2b[,order(names(table2b))]
-table2a$code <- substr(table2a$Class, nchar(table2a$Class) - 3, nchar(table2a$Class) - 1)
-table2b$code <- substr(table2b$Class, nchar(table2b$Class) - 3, nchar(table2b$Class) - 1)
-table2a <- table2a[order(table2a$code),]
-table2b <- table2b[order(table2b$code),]
-table2a$code <- NULL
-table2b$code <- NULL
 write.csv(table2a, file.path(folder, "table2a.csv"), row.names = FALSE, na = "")
 write.csv(table2b, file.path(folder, "table2b.csv"), row.names = FALSE, na = "")
 
@@ -116,24 +114,44 @@ for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     if (dbs$inpatient[i]) {
         dbTable3a <- read.csv(file.path(dbFolder, "table3a.csv"), stringsAsFactors = FALSE)
+        counts <- aggregate(Drug ~ Class, data = dbTable3a, length)
+        counts$Drug <- 5 - counts$Drug
+        counts <- counts[counts$Drug != 0, ]
+        for (j in 1:nrow(counts)) {
+            dbTable3a <- rbind(dbTable3a,
+                               data.frame(Class = rep(counts$Class[j], each = counts$Drug[j]),
+                                          Drug = "",
+                                          UserPrevalence = NA))
+        }
+        dbTable3a <- dbTable3a[order(dbTable3a$Class, -dbTable3a$UserPrevalence), ]
         names(dbTable3a)[2:3] <- paste(dbs$name[i], names(dbTable3a)[2:3], sep="\n")
+
         if (is.null(table3a)){
             table3a <- dbTable3a
         } else {
-            table3a <- cbind(table3a, dbTable3a[,2:3])
+            table3a <- cbind(table3a, dbTable3a[, c(2,3)])
         }
     }
     dbFolder <- file.path(folder, dbs$name[i])
     if (dbs$ambulatory[i]) {
         dbTable3b <- read.csv(file.path(dbFolder, "table3b.csv"), stringsAsFactors = FALSE)
+        counts <- aggregate(Drug ~ Class, data = dbTable3b, length)
+        counts$Drug <- 5 - counts$Drug
+        counts <- counts[counts$Drug != 0, ]
+        for (j in 1:nrow(counts)) {
+            dbTable3b <- rbind(dbTable3b,
+                               data.frame(Class = rep(counts$Class[j], each = counts$Drug[j]),
+                                          Drug = "",
+                                          UserPrevalence = NA))
+        }
+        dbTable3b <- dbTable3b[order(dbTable3b$Class, -dbTable3b$UserPrevalence), ]
         names(dbTable3b)[2:3] <- paste(dbs$name[i], names(dbTable3b)[2:3], sep="\n")
         if (is.null(table3b)){
             table3b <- dbTable3b
         } else {
-            table3b <- cbind(table3b, dbTable3b[,2:3])
+            table3b <- cbind(table3b, dbTable3b[, c(2,3)])
         }
     }
-
 }
 write.csv(table3a, file.path(folder, "table3a.csv"), row.names = FALSE, na = "")
 write.csv(table3b, file.path(folder, "table3b.csv"), row.names = FALSE, na = "")
@@ -145,7 +163,7 @@ numerator <- data.frame()
 for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByAgeGroup.csv"), stringsAsFactors = FALSE)
-    dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByAgeGroupByAtc1.csv"), stringsAsFactors = FALSE)
+    dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByAgeGroupByClass.csv"), stringsAsFactors = FALSE)
     dbDenominator$db <- dbs$name[i]
     dbNumerator$db <- dbs$name[i]
     if (!dbs$inpatient[i]) {
@@ -171,7 +189,7 @@ ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, col
     ggplot2::facet_grid(.~ conceptName) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
-ggplot2::ggsave(file.path(folder, "Figure1a.png"), width = 9, height = 9, dpi= 200)
+ggplot2::ggsave(file.path(folder, "Figure1a.png"), width = 9, height = 7, dpi= 200)
 
 numeratorNotInpatient <- numerator[numerator$inpatient == 0,]
 data <- merge(denominator, numeratorNotInpatient)
@@ -186,7 +204,7 @@ ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, col
     ggplot2::facet_grid(.~ conceptName) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
-ggplot2::ggsave(file.path(folder, "Figure1b.png"), width = 9, height = 9, dpi= 200)
+ggplot2::ggsave(file.path(folder, "Figure1b.png"), width = 9, height = 7, dpi= 200)
 
 
 ### Combine figures 2a and 2b across DBs ###
@@ -195,7 +213,7 @@ numerator <- data.frame()
 for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByGender.csv"), stringsAsFactors = FALSE)
-    dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByGenderByAtc1.csv"), stringsAsFactors = FALSE)
+    dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByGenderByClass.csv"), stringsAsFactors = FALSE)
     dbDenominator$db <- dbs$name[i]
     dbNumerator$db <- dbs$name[i]
     if (!dbs$inpatient[i]) {
@@ -247,7 +265,7 @@ numerator <- data.frame()
 for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByAgeGroupByYear.csv"), stringsAsFactors = FALSE)
-    dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByAgeGroupByYearByAtc1.csv"), stringsAsFactors = FALSE)
+    dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByAgeGroupByYearByClass.csv"), stringsAsFactors = FALSE)
     dbDenominator$db <- dbs$name[i]
     dbNumerator$db <- dbs$name[i]
     dbDenominator <- dbDenominator[dbDenominator$calendarYear >= 2008 & dbDenominator$calendarYear <= 2013,]
