@@ -45,8 +45,8 @@
 createCohorts <- function(connectionDetails,
                           cdmDatabaseSchema,
                           workDatabaseSchema,
-                          studyCohortTable = "ohdsi_t2dm_cohorts",
-                          exposureCohortSummaryTable = "ohdsi_t2dm_cohort_summary",
+                          studyCohortTable = "ohdsi_cohorts",
+                          exposureCohortSummaryTable = "ohdsi_cohort_summary",
                           oracleTempSchema,
                           workFolder) {
     if (!file.exists(workFolder)) {
@@ -56,7 +56,7 @@ createCohorts <- function(connectionDetails,
 
     # Create study cohort table structure:
     sql <- SqlRender::loadRenderTranslateSql("CreateCohortTable.sql",
-                                             "PopEstT2Dm",
+                                             "LargeScalePopEst",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
                                              cdm_database_schema = cdmDatabaseSchema,
@@ -65,10 +65,10 @@ createCohorts <- function(connectionDetails,
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
 
     writeLines("- Creating exposure cohorts")
-    pathToCsv <- system.file("settings", "DrugsOfInterest.csv", package = "PopEstT2Dm")
+    pathToCsv <- system.file("settings", "DrugsOfInterest.csv", package = "LargeScalePopEst")
     exposures <- read.csv(pathToCsv)
     sql <- SqlRender::loadRenderTranslateSql("ExposureCohorts.sql",
-                                             "PopEstT2Dm",
+                                             "LargeScalePopEst",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
                                              cdm_database_schema = cdmDatabaseSchema,
@@ -89,10 +89,10 @@ createCohorts <- function(connectionDetails,
     write.csv(exposureSummary, file.path(workFolder, "exposureSummary.csv"), row.names = FALSE)
 
     writeLines("- Creating negative control cohorts")
-    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "PopEstT2Dm")
+    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "LargeScalePopEst")
     negativeControls <- read.csv(pathToCsv)
     sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
-                                             "PopEstT2Dm",
+                                             "LargeScalePopEst",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
                                              cdm_database_schema = cdmDatabaseSchema,
@@ -102,12 +102,12 @@ createCohorts <- function(connectionDetails,
     DatabaseConnector::executeSql(conn, sql)
 
     writeLines("- Creating health outcomes of interest cohorts")
-    pathToCsv <- system.file("settings", "OutcomesOfInterest.csv", package = "PopEstT2Dm")
+    pathToCsv <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePopEst")
     outcomes <- read.csv(pathToCsv)
     for (i in 1:nrow(outcomes)) {
         writeLines(paste(" -", outcomes$name[i]))
         sql <- SqlRender::loadRenderTranslateSql(paste0(outcomes$name[i], ".sql"),
-                                                 "PopEstT2Dm",
+                                                 "LargeScalePopEst",
                                                  dbms = connectionDetails$dbms,
                                                  oracleTempSchema = oracleTempSchema,
                                                  cdm_database_schema = cdmDatabaseSchema,
