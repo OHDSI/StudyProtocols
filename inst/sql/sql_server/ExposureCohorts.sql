@@ -18,7 +18,7 @@
 {DEFAULT @target_cohort_summary_table = 'exposure_cohort_summary'}
 
 IF OBJECT_ID('tempdb..#exposure_cohorts', 'U') IS NOT NULL
-  DROP TABLE #exposure_cohorts;
+	DROP TABLE #exposure_cohorts;
 
 SELECT de1.person_id AS subject_id,
 	de1.drug_concept_id AS cohort_definition_id,
@@ -54,257 +54,285 @@ INNER JOIN (
 	) co1
 	ON de1.person_id = co1.person_id
 		AND de1.drug_era_start_date >= co1.condition_start_date
-LEFT JOIN 
-(
-  SELECT person_id, 
-    MIN(condition_start_date) as condition_start_date
+LEFT JOIN (
+	SELECT person_id,
+		MIN(condition_start_date) AS condition_start_date
 	FROM @cdm_database_schema.condition_occurrence
 	WHERE condition_concept_id IN (
-    SELECT descendant_concept_id 
-    FROM @cdm_database_schema.concept_ancestor 
-    WHERE ancestor_concept_id in (@exclusion_ids))
-	group by person_id
-) co2
-ON de1.person_id = co2.person_id
-  AND de1.drug_era_start_date >= co2.condition_start_date
+			SELECT descendant_concept_id
+			FROM @cdm_database_schema.concept_ancestor
+			WHERE ancestor_concept_id IN (@exclusion_ids)
+			)
+	GROUP BY person_id
+	) co2
+	ON de1.person_id = co2.person_id
+		AND de1.drug_era_start_date >= co2.condition_start_date
 WHERE de1.rn1 = 1
-  AND co2.person_id IS NULL;
-
-
-
---Do we put the other exposure (proceudure era) here?
-
-/******
+	AND co2.person_id IS NULL;
 
 --4327941 Psychotherapy 
-
-
 SELECT po1.person_id,
-    	po2.procedure_date as drug_exposure_start_date,
-			po2.procedure_date as drug_exposure_end_date
-        INTO #de
+	po2.procedure_date AS drug_exposure_start_date,
+	po2.procedure_date AS drug_exposure_end_date
+INTO #de
+FROM (
+	SELECT person_id,
+		procedure_concept_id,
+		MIN(procedure_date) AS procedure_date
+	FROM @cdm_database_schema.procedure_occurrence
+	WHERE procedure_concept_id IN (2007748, 4088889, 4151904, 43527989, 4118797, 4199042, 4262582, 2617478, 2007749, 2213547, 4118801, 4148398, 4196062, 4208314, 4234402, 43527904, 43527986, 45888237, 4143316, 43527905, 4119335, 4258834, 40482841, 45765516, 45887951, 2213554, 4079938, 4079939, 4128268, 44792695, 2007731, 4035812, 4083133, 4173581, 4242119, 4268909, 4080044, 4083706, 4117915, 4121662, 4225728, 44808677, 2007750, 2213546, 4103512, 44791916, 44808259, 46286330, 2213544, 4012488, 4079608, 4084195, 4119334, 4132436, 4299728, 4263758, 45887728, 2007730, 2007746, 2617477, 4128406, 4164790, 4219683, 4226276, 2213555, 4048385, 4083130, 4234476, 4249602, 4265313, 4295027, 2007763, 2108571, 4080048, 4221997, 4226275, 4278094, 45763911, 45889353, 2213548, 4114491, 4136352, 4137086, 4233181, 4327941, 43527987, 4048387, 4148765, 4202234, 4311943, 43527988, 43527990, 4028920, 4084202, 4100341, 4118798, 4118800, 4296166, 43527991, 4083129, 4083131, 4084201, 4179241, 46286403, 2007747, 4079500, 4126653, 4272803)
+	GROUP BY person_id,
+		procedure_concept_id
+	) po1
+INNER JOIN @cdm_database_schema.observation_period op1
+	ON po1.person_id = op1.person_id
+		AND po1.procedure_date BETWEEN DATEADD(dd, @washout_period, op1.observation_period_start_date)
+			AND op1.observation_period_end_date
+INNER JOIN (
+	SELECT person_id,
+		MIN(condition_start_date) AS condition_start_date
+	FROM @cdm_database_schema.condition_occurrence
+	WHERE condition_concept_id IN (
+			SELECT descendant_concept_id
+			FROM @cdm_database_schema.concept_ancestor
+			WHERE ancestor_concept_id IN (@indication_ids)
+			)
+	GROUP BY person_id
+	) co1
+	ON po1.person_id = co1.person_id
+		AND po1.procedure_date >= co1.condition_start_date
+LEFT JOIN (
+	SELECT person_id,
+		MIN(condition_start_date) AS condition_start_date
+	FROM @cdm_database_schema.condition_occurrence
+	WHERE condition_concept_id IN (
+			SELECT descendant_concept_id
+			FROM @cdm_database_schema.concept_ancestor
+			WHERE ancestor_concept_id IN (@exclusion_ids)
+			)
+	GROUP BY person_id
+	) co2
+	ON po1.person_id = co2.person_id
+		AND po1.procedure_date >= co2.condition_start_date
+INNER JOIN (
+	SELECT person_id,
+		procedure_concept_id,
+		procedure_date
+	FROM @cdm_database_schema.procedure_occurrence
+	WHERE procedure_concept_id IN (2007748, 4088889, 4151904, 43527989, 4118797, 4199042, 4262582, 2617478, 2007749, 2213547, 4118801, 4148398, 4196062, 4208314, 4234402, 43527904, 43527986, 45888237, 4143316, 43527905, 4119335, 4258834, 40482841, 45765516, 45887951, 2213554, 4079938, 4079939, 4128268, 44792695, 2007731, 4035812, 4083133, 4173581, 4242119, 4268909, 4080044, 4083706, 4117915, 4121662, 4225728, 44808677, 2007750, 2213546, 4103512, 44791916, 44808259, 46286330, 2213544, 4012488, 4079608, 4084195, 4119334, 4132436, 4299728, 4263758, 45887728, 2007730, 2007746, 2617477, 4128406, 4164790, 4219683, 4226276, 2213555, 4048385, 4083130, 4234476, 4249602, 4265313, 4295027, 2007763, 2108571, 4080048, 4221997, 4226275, 4278094, 45763911, 45889353, 2213548, 4114491, 4136352, 4137086, 4233181, 4327941, 43527987, 4048387, 4148765, 4202234, 4311943, 43527988, 43527990, 4028920, 4084202, 4100341, 4118798, 4118800, 4296166, 43527991, 4083129, 4083131, 4084201, 4179241, 46286403, 2007747, 4079500, 4126653, 4272803)
+	) po2
+	ON po1.person_id = po2.person_id
+WHERE co2.person_id IS NULL;
+
+INSERT INTO #exposure_cohorts (
+	subject_id,
+	cohort_definition_id,
+	cohort_start_date,
+	cohort_end_date
+	)
+SELECT person_id AS subject_id,
+	4327941 AS cohort_definition_id,
+	min(drug_exposure_start_date) AS cohort_start_date,
+	min(era_end_date) AS cohort_end_date
+FROM (
+	SELECT *
+	FROM #de
+	) de
+INNER JOIN (
+	--cteEndDates
+	SELECT PERSON_ID,
+		DATEADD(day, - 1 * 30, EVENT_DATE) AS END_DATE -- unpad the end date by 30
+	FROM (
+		SELECT E1.PERSON_ID,
+			E1.EVENT_DATE,
+			COALESCE(E1.START_ORDINAL, MAX(E2.START_ORDINAL)) START_ORDINAL,
+			E1.OVERALL_ORD
 		FROM (
-			SELECT person_id,
-				procedure_concept_id,
-				min(procedure_date) as procedure_date
-			FROM @cdm_database_schema.procedure_occurrence
-			WHERE procedure_concept_id IN (2007748,4088889,4151904,43527989,4118797,4199042,4262582,2617478,2007749,2213547,4118801,4148398,4196062,4208314,4234402,43527904,43527986,45888237,4143316,43527905,4119335,4258834,40482841,45765516,45887951,2213554,4079938,4079939,4128268,44792695,2007731,4035812,4083133,4173581,4242119,4268909,4080044,4083706,4117915,4121662,4225728,44808677,2007750,2213546,4103512,44791916,44808259,46286330,2213544,4012488,4079608,4084195,4119334,4132436,4299728,4263758,45887728,2007730,2007746,2617477,4128406,4164790,4219683,4226276,2213555,4048385,4083130,4234476,4249602,4265313,4295027,2007763,2108571,4080048,4221997,4226275,4278094,45763911,45889353,2213548,4114491,4136352,4137086,4233181,4327941,43527987,4048387,4148765,4202234,4311943,43527988,43527990,4028920,4084202,4100341,4118798,4118800,4296166,43527991,4083129,4083131,4084201,4179241,46286403,2007747,4079500,4126653,4272803)
-			GROUP BY person_id, procedure_concept_id
-			) po1
-		INNER JOIN @cdm_database_schema.observation_period op1
-			ON po1.person_id = op1.person_id
-				AND po1.procedure_date BETWEEN DATEADD(dd, 365, op1.observation_period_start_date)
-					AND op1.observation_period_end_date
-		INNER JOIN (
-			SELECT person_id,
-				MIN(condition_start_date) AS condition_start_date
-			FROM @cdm_database_schema.condition_occurrence
-			WHERE condition_concept_id IN (
-					SELECT descendant_concept_id
-					FROM @cdm_database_schema.concept_ancestor
-					WHERE ancestor_concept_id IN (440383)
-					)
-			GROUP BY person_id
-			) co1
-			ON po1.person_id = co1.person_id
-				AND po1.procedure_date >= co1.condition_start_date
-		LEFT JOIN 
-		(
-		  SELECT person_id, 
-			MIN(condition_start_date) as condition_start_date
-			FROM @cdm_database_schema.condition_occurrence
-			WHERE condition_concept_id IN (
-			SELECT descendant_concept_id 
-			FROM @cdm_database_schema.concept_ancestor 
-			WHERE ancestor_concept_id in (435783, 36665))
-			group by person_id
-		) co2
-		ON po1.person_id = co2.person_id
-		  AND po1.procedure_date >= co2.condition_start_date
-
-		INNER JOIN
-		(
-			SELECT person_id,
-				procedure_concept_id,
-				procedure_date
-			FROM @cdm_database_schema.procedure_occurrence
-			WHERE procedure_concept_id IN (2007748,4088889,4151904,43527989,4118797,4199042,4262582,2617478,2007749,2213547,4118801,4148398,4196062,4208314,4234402,43527904,43527986,45888237,4143316,43527905,4119335,4258834,40482841,45765516,45887951,2213554,4079938,4079939,4128268,44792695,2007731,4035812,4083133,4173581,4242119,4268909,4080044,4083706,4117915,4121662,4225728,44808677,2007750,2213546,4103512,44791916,44808259,46286330,2213544,4012488,4079608,4084195,4119334,4132436,4299728,4263758,45887728,2007730,2007746,2617477,4128406,4164790,4219683,4226276,2213555,4048385,4083130,4234476,4249602,4265313,4295027,2007763,2108571,4080048,4221997,4226275,4278094,45763911,45889353,2213548,4114491,4136352,4137086,4233181,4327941,43527987,4048387,4148765,4202234,4311943,43527988,43527990,4028920,4084202,4100341,4118798,4118800,4296166,43527991,4083129,4083131,4084201,4179241,46286403,2007747,4079500,4126653,4272803)
-		) po2
-		ON po1.person_id = po2.person_id
-
-		WHERE co2.person_id IS NULL
-;
-
-
-
-INSERT INTO #exposure_cohorts (subject_id, cohort_definition_id, cohort_start_date, cohort_end_date)
-select person_id as subject_id,
-4327941 as cohort_definition_id,
-min(drug_exposure_start_date) as cohort_start_date,
-min(era_end_date) as cohort_end_date
-from
-(
-  select * from #DE
-    ) DE
-    JOIN 
-    (
-      --cteEndDates
-      select PERSON_ID, DATEADD(day,-1 * 30,EVENT_DATE) as END_DATE -- unpad the end date by 30
-      FROM
-      (
-        select E1.PERSON_ID, E1.EVENT_DATE, COALESCE(E1.START_ORDINAL,MAX(E2.START_ORDINAL)) START_ORDINAL, E1.OVERALL_ORD 
-        FROM 
-        (
-          select PERSON_ID, EVENT_DATE, EVENT_TYPE, 
-          START_ORDINAL,
-          ROW_NUMBER() OVER (PARTITION BY PERSON_ID ORDER BY EVENT_DATE, EVENT_TYPE) AS OVERALL_ORD -- this re-numbers the inner UNION so all rows are numbered ordered by the event date
-          from
-          (
-            -- select the start dates, assigning a row number to each
-            Select PERSON_ID, DRUG_EXPOSURE_START_DATE AS EVENT_DATE, 0 as EVENT_TYPE, ROW_NUMBER() OVER (PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as START_ORDINAL
-            from (
-              -- cteDrugTarget
-              select * from #DE
-            ) D
-
-            UNION ALL
-
-            -- add the end dates with NULL as the row number, padding the end dates by 30 to allow a grace period for overlapping ranges.
-            select PERSON_ID, DATEADD(day,30,DRUG_EXPOSURE_END_DATE), 1 as EVENT_TYPE, NULL
-            FROM (
-              -- cteDrugTarget
-               select * from #DE
-          ) D
-        ) E2 ON E1.PERSON_ID = E2.PERSON_ID AND E2.EVENT_DATE <= E1.EVENT_DATE
-        GROUP BY E1.PERSON_ID, E1.EVENT_DATE, E1.START_ORDINAL, E1.OVERALL_ORD
-      ) E
-      WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
-    ) E on DE.PERSON_ID = E.PERSON_ID and E.END_DATE >= DE.DRUG_EXPOSURE_START_DATE
-    GROUP BY de.person_id, de.drug_exposure_start_date
-
-) t1
+			SELECT PERSON_ID,
+				EVENT_DATE,
+				EVENT_TYPE,
+				START_ORDINAL,
+				ROW_NUMBER() OVER (
+					PARTITION BY PERSON_ID ORDER BY EVENT_DATE,
+						EVENT_TYPE
+					) AS OVERALL_ORD -- this re-numbers the inner UNION so all rows are numbered ordered by the event date
+			FROM (
+				-- select the start dates, assigning a row number to each
+				SELECT PERSON_ID,
+					DRUG_EXPOSURE_START_DATE AS EVENT_DATE,
+					0 AS EVENT_TYPE,
+					ROW_NUMBER() OVER (
+						PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE
+						) AS START_ORDINAL
+				FROM (
+					-- cteDrugTarget
+					SELECT *
+					FROM #de
+					) D
+				
+				UNION ALL
+				
+				-- add the end dates with NULL as the row number, padding the end dates by 30 to allow a grace period for overlapping ranges.
+				SELECT PERSON_ID,
+					DATEADD(day, 30, DRUG_EXPOSURE_END_DATE),
+					1 AS EVENT_TYPE,
+					NULL
+				FROM (
+					-- cteDrugTarget
+					SELECT *
+					FROM #de
+					) D
+				) E2
+				ON E1.PERSON_ID = E2.PERSON_ID
+					AND E2.EVENT_DATE <= E1.EVENT_DATE
+			GROUP BY E1.PERSON_ID,
+				E1.EVENT_DATE,
+				E1.START_ORDINAL,
+				E1.OVERALL_ORD
+			) E
+		WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
+		) E
+		ON de.PERSON_ID = E.PERSON_ID
+			AND E.END_DATE >= de.DRUG_EXPOSURE_START_DATE
+	GROUP BY de.person_id,
+		de.drug_exposure_start_date
+	) t1
 GROUP BY person_id;
 
-
-
-
+TRUNCATE TABLE #de;
+DROP TABLE #de;
 
 --4030840 Electroconvulsive therapy 
-DROP TABLE #DE;
-
 SELECT po1.person_id,
-  		po2.procedure_date as drug_exposure_start_date,
-			po2.procedure_date as drug_exposure_end_date
-        INTO #de
+	po2.procedure_date AS drug_exposure_start_date,
+	po2.procedure_date AS drug_exposure_end_date
+INTO #de
+FROM (
+	SELECT person_id,
+		procedure_concept_id,
+		min(procedure_date) AS procedure_date
+	FROM @cdm_database_schema.procedure_occurrence
+	WHERE procedure_concept_id IN (2007727, 2007728, 2108578, 2108579, 2213552, 4004830, 4020981, 4030840, 4111663, 4210144, 4210145, 4332436, 4336318, 44508134)
+	GROUP BY person_id,
+		procedure_concept_id
+	) po1
+INNER JOIN @cdm_database_schema.observation_period op1
+	ON po1.person_id = op1.person_id
+		AND po1.procedure_date BETWEEN DATEADD(dd, @washout_period, op1.observation_period_start_date)
+			AND op1.observation_period_end_date
+INNER JOIN (
+	SELECT person_id,
+		MIN(condition_start_date) AS condition_start_date
+	FROM @cdm_database_schema.condition_occurrence
+	WHERE condition_concept_id IN (
+			SELECT descendant_concept_id
+			FROM @cdm_database_schema.concept_ancestor
+			WHERE ancestor_concept_id IN (@indication_ids)
+			)
+	GROUP BY person_id
+	) co1
+	ON po1.person_id = co1.person_id
+		AND po1.procedure_date >= co1.condition_start_date
+LEFT JOIN (
+	SELECT person_id,
+		MIN(condition_start_date) AS condition_start_date
+	FROM @cdm_database_schema.condition_occurrence
+	WHERE condition_concept_id IN (
+			SELECT descendant_concept_id
+			FROM @cdm_database_schema.concept_ancestor
+			WHERE ancestor_concept_id IN (@exclusion_ids)
+			)
+	GROUP BY person_id
+	) co2
+	ON po1.person_id = co2.person_id
+		AND po1.procedure_date >= co2.condition_start_date
+INNER JOIN (
+	SELECT person_id,
+		procedure_concept_id,
+		procedure_date
+	FROM @cdm_database_schema.procedure_occurrence
+	WHERE procedure_concept_id IN (2007727, 2007728, 2108578, 2108579, 2213552, 4004830, 4020981, 4030840, 4111663, 4210144, 4210145, 4332436, 4336318, 44508134)
+	) po2
+	ON po1.person_id = po2.person_id
+WHERE co2.person_id IS NULL;
+
+INSERT INTO #exposure_cohorts (
+	subject_id,
+	cohort_definition_id,
+	cohort_start_date,
+	cohort_end_date
+	)
+SELECT person_id AS subject_id,
+	4030840 AS cohort_definition_id,
+	min(drug_exposure_start_date) AS cohort_start_date,
+	min(era_end_date) AS cohort_end_date
+FROM (
+	SELECT *
+	FROM #de
+	) de
+INNER JOIN (
+	--cteEndDates
+	SELECT PERSON_ID,
+		DATEADD(day, - 1 * 30, EVENT_DATE) AS END_DATE -- unpad the end date by 30
+	FROM (
+		SELECT E1.PERSON_ID,
+			E1.EVENT_DATE,
+			COALESCE(E1.START_ORDINAL, MAX(E2.START_ORDINAL)) START_ORDINAL,
+			E1.OVERALL_ORD
 		FROM (
-			SELECT person_id,
-				procedure_concept_id,
-				min(procedure_date) as procedure_date
-			FROM @cdm_database_schema.procedure_occurrence
-			WHERE procedure_concept_id IN (2007727,2007728,2108578,2108579,2213552,4004830,4020981,4030840,4111663,4210144,4210145,4332436,4336318,44508134)
-			GROUP BY person_id, procedure_concept_id
-			) po1
-		INNER JOIN @cdm_database_schema.observation_period op1
-			ON po1.person_id = op1.person_id
-				AND po1.procedure_date BETWEEN DATEADD(dd, 365, op1.observation_period_start_date)
-					AND op1.observation_period_end_date
-		INNER JOIN (
-			SELECT person_id,
-				MIN(condition_start_date) AS condition_start_date
-			FROM @cdm_database_schema.condition_occurrence
-			WHERE condition_concept_id IN (
-					SELECT descendant_concept_id
-					FROM @cdm_database_schema.concept_ancestor
-					WHERE ancestor_concept_id IN (440383)
-					)
-			GROUP BY person_id
-			) co1
-			ON po1.person_id = co1.person_id
-				AND po1.procedure_date >= co1.condition_start_date
-		LEFT JOIN 
-		(
-		  SELECT person_id, 
-			MIN(condition_start_date) as condition_start_date
-			FROM @cdm_database_schema.condition_occurrence
-			WHERE condition_concept_id IN (
-			SELECT descendant_concept_id 
-			FROM @cdm_database_schema.concept_ancestor 
-			WHERE ancestor_concept_id in (435783, 36665))
-			group by person_id
-		) co2
-		ON po1.person_id = co2.person_id
-		  AND po1.procedure_date >= co2.condition_start_date
-
-		INNER JOIN
-		(
-			SELECT person_id,
-				procedure_concept_id,
-				procedure_date
-			FROM @cdm_database_schema.procedure_occurrence
-			WHERE procedure_concept_id IN (2007727,2007728,2108578,2108579,2213552,4004830,4020981,4030840,4111663,4210144,4210145,4332436,4336318,44508134)
-		) po2
-		ON po1.person_id = po2.person_id
-
-		WHERE co2.person_id IS NULL
-;
-
-
-
-INSERT INTO #exposure_cohorts (subject_id, cohort_definition_id, cohort_start_date, cohort_end_date)
-select person_id as subject_id,
-4030840 as cohort_definition_id,
-min(drug_exposure_start_date) as cohort_start_date,
-min(era_end_date) as cohort_end_date
-from
-(
-  select * from #DE
-    ) DE
-    JOIN 
-    (
-      --cteEndDates
-      select PERSON_ID, DATEADD(day,-1 * 30,EVENT_DATE) as END_DATE -- unpad the end date by 30
-      FROM
-      (
-        select E1.PERSON_ID, E1.EVENT_DATE, COALESCE(E1.START_ORDINAL,MAX(E2.START_ORDINAL)) START_ORDINAL, E1.OVERALL_ORD 
-        FROM 
-        (
-          select PERSON_ID, EVENT_DATE, EVENT_TYPE, 
-          START_ORDINAL,
-          ROW_NUMBER() OVER (PARTITION BY PERSON_ID ORDER BY EVENT_DATE, EVENT_TYPE) AS OVERALL_ORD -- this re-numbers the inner UNION so all rows are numbered ordered by the event date
-          from
-          (
-            -- select the start dates, assigning a row number to each
-            Select PERSON_ID, DRUG_EXPOSURE_START_DATE AS EVENT_DATE, 0 as EVENT_TYPE, ROW_NUMBER() OVER (PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE) as START_ORDINAL
-            from (
-              -- cteDrugTarget
-              select * from #DE
-            ) D
-
-            UNION ALL
-
-            -- add the end dates with NULL as the row number, padding the end dates by 30 to allow a grace period for overlapping ranges.
-            select PERSON_ID, DATEADD(day,30,DRUG_EXPOSURE_END_DATE), 1 as EVENT_TYPE, NULL
-            FROM (
-              -- cteDrugTarget
-               select * from #DE
-          ) D
-        ) E2 ON E1.PERSON_ID = E2.PERSON_ID AND E2.EVENT_DATE <= E1.EVENT_DATE
-        GROUP BY E1.PERSON_ID, E1.EVENT_DATE, E1.START_ORDINAL, E1.OVERALL_ORD
-      ) E
-      WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
-    ) E on DE.PERSON_ID = E.PERSON_ID and E.END_DATE >= DE.DRUG_EXPOSURE_START_DATE
-    GROUP BY de.person_id, de.drug_exposure_start_date
-
-) t1
+			SELECT PERSON_ID,
+				EVENT_DATE,
+				EVENT_TYPE,
+				START_ORDINAL,
+				ROW_NUMBER() OVER (
+					PARTITION BY PERSON_ID ORDER BY EVENT_DATE,
+						EVENT_TYPE
+					) AS OVERALL_ORD -- this re-numbers the inner UNION so all rows are numbered ordered by the event date
+			FROM (
+				-- select the start dates, assigning a row number to each
+				SELECT PERSON_ID,
+					DRUG_EXPOSURE_START_DATE AS EVENT_DATE,
+					0 AS EVENT_TYPE,
+					ROW_NUMBER() OVER (
+						PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE
+						) AS START_ORDINAL
+				FROM (
+					-- cteDrugTarget
+					SELECT *
+					FROM #de
+					) D
+				
+				UNION ALL
+				
+				-- add the end dates with NULL as the row number, padding the end dates by 30 to allow a grace period for overlapping ranges.
+				SELECT PERSON_ID,
+					DATEADD(day, 30, DRUG_EXPOSURE_END_DATE),
+					1 AS EVENT_TYPE,
+					NULL
+				FROM (
+					-- cteDrugTarget
+					SELECT *
+					FROM #de
+					) D
+				) E2
+				ON E1.PERSON_ID = E2.PERSON_ID
+					AND E2.EVENT_DATE <= E1.EVENT_DATE
+			GROUP BY E1.PERSON_ID,
+				E1.EVENT_DATE,
+				E1.START_ORDINAL,
+				E1.OVERALL_ORD
+			) E
+		WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
+		) E
+		ON de.PERSON_ID = E.PERSON_ID
+			AND E.END_DATE >= de.DRUG_EXPOSURE_START_DATE
+	GROUP BY de.person_id,
+		de.drug_exposure_start_date
+	) t1
 GROUP BY person_id;
 
-
-
-
-*******/
-
-
-
+TRUNCATE TABLE #de;
+DROP TABLE #de;
 
 
 IF OBJECT_ID('tempdb..#exposure_cohort_summary', 'U') IS NOT NULL
@@ -355,13 +383,16 @@ FROM (
 	WHERE s1.cohort_definition_id < s2.cohort_definition_id
 	) t1;
 
-DELETE FROM @target_database_schema.@target_cohort_table 
+DELETE
+FROM @target_database_schema.@target_cohort_table
 WHERE cohort_definition_id IN (
-	  SELECT tprime_cohort_definition_id
-	  FROM #exposure_cohort_pairs)
-  OR cohort_definition_id IN (
-	  SELECT cprime_cohort_definition_id
-	  FROM #exposure_cohort_pairs);
+		SELECT tprime_cohort_definition_id
+		FROM #exposure_cohort_pairs
+		)
+	OR cohort_definition_id IN (
+		SELECT cprime_cohort_definition_id
+		FROM #exposure_cohort_pairs
+		);
 
 --get tprime	  
 INSERT INTO @target_database_schema.@target_cohort_table (
@@ -383,7 +414,6 @@ LEFT JOIN @cdm_database_schema.drug_era de1
 	ON cp1.c_cohort_definition_id = de1.drug_concept_id
 		AND ec1.subject_id = de1.person_id
 WHERE de1.person_id IS NULL;
-
 
 --get cprime
 INSERT INTO @target_database_schema.@target_cohort_table (
@@ -418,7 +448,7 @@ FROM @target_database_schema.@target_cohort_table tec1
 GROUP BY cohort_definition_id;
 
 IF OBJECT_ID('@target_database_schema.@target_cohort_summary_table', 'U') IS NOT NULL
-  DROP TABLE @target_database_schema.@target_cohort_summary_table;
+	DROP TABLE @target_database_schema.@target_cohort_summary_table;
 
 SELECT cp1.pair_id,
 	cp1.t_cohort_definition_id,
