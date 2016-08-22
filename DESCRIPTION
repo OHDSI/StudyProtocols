@@ -10,9 +10,11 @@ Depends:
     DatabaseConnector (>= 1.2.1)
 Imports:
     RJDBC,
+	SqlRender,
     FeatureExtraction,
     CohortMethod,
     EmpiricalCalibration,
+	MethodEvaluation,
     OhdsiSharing
 Suggests:
     testthat

@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-library(PopEstT2Dm)
+library(LargeScalePopEst)
 options('fftempdir' = 's:/fftemp')
 
 pw <- NULL
@@ -29,19 +29,20 @@ workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_mdcd"
 exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
-workFolder <- "R:/PopEstT2Dm_Mdcd"
+workFolder <- "R:/PopEstDepression_Mdcd"
+maxCores <- 20
 
 pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_CCAE_V418.dbo"
+cdmDatabaseSchema <- "CDM_Truven_CCAE_V441.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_ccae"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_ccae"
 port <- 17001
-workFolder <- "R:/PopEstT2Dm_Ccae"
+workFolder <- "R:/PopEstDepression_Ccae"
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 server = server,

@@ -119,6 +119,11 @@ createCohorts <- function(connectionDetails,
                                                  target_cohort_table = studyCohortTable,
                                                  target_cohort_id = outcomes$cohortDefinitionId[i])
         DatabaseConnector::executeSql(conn, sql)
+
+        # Workaround until ATLAS is fixed:
+        sql <- "TRUNCATE TABLE #cohort_ends; DROP TABLE #cohort_ends;"
+        sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
+        DatabaseConnector::executeSql(conn, sql)
     }
 
     # Check number of subjects per cohort:

@@ -42,7 +42,7 @@ INNER JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (440383) -- Depressive disorder
+			WHERE ancestor_concept_id IN (4152280) -- Major depressive disorder
 			)
 	GROUP BY person_id
 	) co1
@@ -89,7 +89,7 @@ INNER JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (440383) -- Depressive disorder
+			WHERE ancestor_concept_id IN (4152280) -- Major depressive disorder
 			)
 	GROUP BY person_id
 	) co1
@@ -214,7 +214,7 @@ INNER JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (440383) -- Depressive disorder
+			WHERE ancestor_concept_id IN (4152280) -- Major depressive disorder
 			)
 	GROUP BY person_id
 	) co1
