@@ -1,4 +1,4 @@
-# Copyright 2065 Observational Health Data Sciences and Informatics
+# Copyright 2016 Observational Health Data Sciences and Informatics
 #
 # This file is part of LargeScalePopEst
 #
@@ -56,7 +56,7 @@ fetchAllDataFromServer <- function(connectionDetails,
     conn <- DatabaseConnector::connect(connectionDetails)
 
     # Lump persons of interest into one table:
-    sql <- SqlRender::loadRenderTranslateSql("CreateExposureCohortsOfInterest.sql",
+    sql <- SqlRender::loadRenderTranslateSql("UnionExposureCohorts.sql",
                                              "PopEstT2Dm",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
@@ -161,7 +161,7 @@ fetchAllDataFromServer <- function(connectionDetails,
 #'
 #' @details
 #' This function constructs a cohortMethodData object for a specific target and comparator, using the data
-#' fetched earlier using the \code\link{fetchAllDataFromServer}} function.
+#' fetched earlier using the \code{\link{fetchAllDataFromServer}} function.
 #'
 #' @param treatmentId          The cohort definition ID of the treatment cohort.
 #' @param comparatorId          The cohort definition ID of the comparator cohort.
@@ -232,7 +232,7 @@ constructCohortMethodDataObject <- function(treatmentId, comparatorId, workFolde
 #'
 #' @details
 #' This function constructs all cohortMethodData objects using the data
-#' fetched earlier using the \code\link{fetchAllDataFromServer}} function.
+#' fetched earlier using the \code{\link{fetchAllDataFromServer}} function.
 #'
 #' @param workFolder           Name of local folder to place results; make sure to use forward slashes
 #'                             (/)

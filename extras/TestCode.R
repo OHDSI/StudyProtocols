@@ -19,19 +19,17 @@
 library(PopEstT2Dm)
 options('fftempdir' = 's:/fftemp')
 
-
-
 pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_MDCD_V432.dbo"
+cdmDatabaseSchema <- "CDM_Truven_MDCD_V446.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
-studyCohortTable <- "mschuemie_t2dm_cohorts"
-exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary"
+studyCohortTable <- "mschuemie_depression_cohorts_mdcd"
+exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
-workFolder <- "s:/temp/PopEstT2Dm_Mdcd"
+workFolder <- "R:/PopEstT2Dm_Mdcd"
 
 pw <- NULL
 dbms <- "pdw"
@@ -40,18 +38,16 @@ server <- "JRDUSAPSCTL01"
 cdmDatabaseSchema <- "CDM_Truven_CCAE_V418.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
-studyCohortTable <- "mschuemie_t2dm_cohorts_ccae"
+studyCohortTable <- "mschuemie_depression_cohorts_ccae"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_ccae"
 port <- 17001
-workFolder <- "s:/temp/PopEstT2Dm_Ccae"
+workFolder <- "R:/PopEstT2Dm_Ccae"
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 server = server,
                                                                 user = user,
                                                                 password = pw,
                                                                 port = port)
-
-
 
 createCohorts(connectionDetails = connectionDetails,
               cdmDatabaseSchema = cdmDatabaseSchema,

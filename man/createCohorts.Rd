@@ -5,8 +5,8 @@
 \title{Create the exposure and outcome cohorts}
 \usage{
 createCohorts(connectionDetails, cdmDatabaseSchema, workDatabaseSchema,
-  studyCohortTable = "ohdsi_t2dm_cohorts",
-  exposureCohortSummaryTable = "ohdsi_t2dm_cohort_summary", oracleTempSchema,
+  studyCohortTable = "ohdsi_cohorts",
+  exposureCohortSummaryTable = "ohdsi_cohort_summary", oracleTempSchema,
   workFolder)
 }
 \arguments{

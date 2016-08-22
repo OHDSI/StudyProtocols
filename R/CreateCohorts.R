@@ -65,19 +65,23 @@ createCohorts <- function(connectionDetails,
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
 
     writeLines("- Creating exposure cohorts")
-    pathToCsv <- system.file("settings", "DrugsOfInterest.csv", package = "LargeScalePopEst")
-    exposures <- read.csv(pathToCsv)
     sql <- SqlRender::loadRenderTranslateSql("ExposureCohorts.sql",
+                                             "LargeScalePopEst",
+                                             dbms = connectionDetails$dbms,
+                                             oracleTempSchema = oracleTempSchema,
+                                             cdm_database_schema = cdmDatabaseSchema,
+                                             washout_period = 365)
+    DatabaseConnector::executeSql(conn, sql)
+
+    writeLines("- Creating exposure cohort pairs")
+    sql <- SqlRender::loadRenderTranslateSql("CreateCohortPairs.sql",
                                              "LargeScalePopEst",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
                                              cdm_database_schema = cdmDatabaseSchema,
                                              target_database_schema = workDatabaseSchema,
                                              target_cohort_table = studyCohortTable,
-                                             target_cohort_summary_table = exposureCohortSummaryTable,
-                                             exposure_ids = exposures$conceptId,
-                                             indication_ids = c(201826, 443732),
-                                             washout_period = 365)
+                                             target_cohort_summary_table = exposureCohortSummaryTable)
     DatabaseConnector::executeSql(conn, sql)
 
     sql <- "SELECT * FROM @target_database_schema.@target_cohort_summary_table"

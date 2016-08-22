@@ -1,25 +1,19 @@
---create exposure cohorts of interest
-----current example:
-----15 antidepressant drugs
-----365d washout before first use
-----prior diagnosis of MDD
-----no prior diagnosis of bipolar or schizophrenia
-----but approach would work for any exposures defined as drug_concept_ids at ingredient level (so in drug_era table)
---create exposure pairs
-----must not have both drugs
-----must restrict to period of overlapping time MAX(min date) - MIN(max date)
+-- Create depression exposure cohorts. Cohorts are created in temp table #exposure_cohorts
+--
+-- Important: make sure the cohort IDs generated here are the same as in ExposuresOfInterest.csv
+--
+--- Depression cohorts:
+---- 15 antidepressant drugs + 2 antidepressant procedures
+---- 365d washout before first use
+---- prior diagnosis of MDD
+---- no prior diagnosis of bipolar or schizophrenia
 {DEFAULT @washout_period = 365}
-{DEFAULT @exposure_ids = 739138,750982,797617,755695,715939,703547,715259,743670,710062,725131,722031,721724,717607,738156,40234834}
-{DEFAULT @indication_ids = 440383}
-{DEFAULT @exclusion_ids = 435783, 36665}
 {DEFAULT @cdm_database_schema = 'cdm.dbo'}
-{DEFAULT @target_database_schema = 'scratch.dbo'}
-{DEFAULT @target_cohort_table = 'cohort'}
-{DEFAULT @target_cohort_summary_table = 'exposure_cohort_summary'}
 
 IF OBJECT_ID('tempdb..#exposure_cohorts', 'U') IS NOT NULL
 	DROP TABLE #exposure_cohorts;
 
+-- Antidepressant drugs
 SELECT de1.person_id AS subject_id,
 	de1.drug_concept_id AS cohort_definition_id,
 	de1.drug_era_start_date AS cohort_start_date,
@@ -35,7 +29,7 @@ FROM (
 			drug_concept_id ORDER BY drug_era_start_date ASC
 			) AS rn1
 	FROM @cdm_database_schema.drug_era
-	WHERE drug_concept_id IN (@exposure_ids)
+	WHERE drug_concept_id IN (739138,750982,797617,755695,715939,703547,715259,743670,710062,725131,722031,721724,717607,738156,40234834)
 	) de1
 INNER JOIN @cdm_database_schema.observation_period op1
 	ON de1.person_id = op1.person_id
@@ -48,7 +42,7 @@ INNER JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (@indication_ids)
+			WHERE ancestor_concept_id IN (440383) -- Depressive disorder
 			)
 	GROUP BY person_id
 	) co1
@@ -61,7 +55,7 @@ LEFT JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (@exclusion_ids)
+			WHERE ancestor_concept_id IN (435783, 436665) -- Schizophrenia, Bipolar disorder
 			)
 	GROUP BY person_id
 	) co2
@@ -70,7 +64,7 @@ LEFT JOIN (
 WHERE de1.rn1 = 1
 	AND co2.person_id IS NULL;
 
---4327941 Psychotherapy 
+-- 4327941 Psychotherapy 
 SELECT po1.person_id,
 	po2.procedure_date AS drug_exposure_start_date,
 	po2.procedure_date AS drug_exposure_end_date
@@ -95,7 +89,7 @@ INNER JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (@indication_ids)
+			WHERE ancestor_concept_id IN (440383) -- Depressive disorder
 			)
 	GROUP BY person_id
 	) co1
@@ -108,7 +102,7 @@ LEFT JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (@exclusion_ids)
+			WHERE ancestor_concept_id IN (435783, 436665) -- Schizophrenia, Bipolar disorder
 			)
 	GROUP BY person_id
 	) co2
@@ -124,24 +118,16 @@ INNER JOIN (
 	ON po1.person_id = po2.person_id
 WHERE co2.person_id IS NULL;
 
-INSERT INTO #exposure_cohorts (
-	subject_id,
-	cohort_definition_id,
-	cohort_start_date,
-	cohort_end_date
-	)
-SELECT person_id AS subject_id,
-	4327941 AS cohort_definition_id,
-	min(drug_exposure_start_date) AS cohort_start_date,
-	min(era_end_date) AS cohort_end_date
-FROM (
-	SELECT *
-	FROM #de
-	) de
+-- Create eras, adapted from https://gist.github.com/chrisknoll/8d3c6744bae4f060aec1 
+INSERT INTO #exposure_cohorts (subject_id, cohort_definition_id, cohort_start_date, cohort_end_date)
+SELECT d.PERSON_ID,
+	4327941,
+	MIN(d.DRUG_EXPOSURE_START_DATE),
+	MIN(e.END_DATE) AS ERA_END_DATE
+FROM #de d
 INNER JOIN (
-	--cteEndDates
 	SELECT PERSON_ID,
-		DATEADD(day, - 1 * 30, EVENT_DATE) AS END_DATE -- unpad the end date by 30
+		DATEADD(day, - 30, EVENT_DATE) AS END_DATE -- unpad the end date
 	FROM (
 		SELECT E1.PERSON_ID,
 			E1.EVENT_DATE,
@@ -151,6 +137,7 @@ INNER JOIN (
 			SELECT PERSON_ID,
 				EVENT_DATE,
 				EVENT_TYPE,
+				--MAX(START_ORDINAL) OVER (PARTITION BY PERSON_ID ORDER BY EVENT_DATE, EVENT_TYPE ROWS UNBOUNDED PRECEDING) as START_ORDINAL, -- this pulls the current START down from the prior rows so that the NULLs from the END DATES will contain a value we can compare with 
 				START_ORDINAL,
 				ROW_NUMBER() OVER (
 					PARTITION BY PERSON_ID ORDER BY EVENT_DATE,
@@ -164,11 +151,7 @@ INNER JOIN (
 					ROW_NUMBER() OVER (
 						PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE
 						) AS START_ORDINAL
-				FROM (
-					-- cteDrugTarget
-					SELECT *
-					FROM #de
-					) D
+				FROM #de
 				
 				UNION ALL
 				
@@ -177,32 +160,36 @@ INNER JOIN (
 					DATEADD(day, 30, DRUG_EXPOSURE_END_DATE),
 					1 AS EVENT_TYPE,
 					NULL
-				FROM (
-					-- cteDrugTarget
-					SELECT *
-					FROM #de
-					) D
-				) E2
-				ON E1.PERSON_ID = E2.PERSON_ID
-					AND E2.EVENT_DATE <= E1.EVENT_DATE
-			GROUP BY E1.PERSON_ID,
-				E1.EVENT_DATE,
-				E1.START_ORDINAL,
-				E1.OVERALL_ORD
-			) E
-		WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
+				FROM #de
+				) RAWDATA
+			) E1
+		LEFT JOIN (
+			SELECT PERSON_ID,
+				DRUG_EXPOSURE_START_DATE AS EVENT_DATE,
+				ROW_NUMBER() OVER (
+					PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE
+					) AS START_ORDINAL
+			FROM #de
+			) E2
+			ON E1.PERSON_ID = E2.PERSON_ID
+				AND E2.EVENT_DATE < E1.EVENT_DATE
+		GROUP BY E1.PERSON_ID,
+			E1.EVENT_DATE,
+			E1.START_ORDINAL,
+			E1.OVERALL_ORD
 		) E
-		ON de.PERSON_ID = E.PERSON_ID
-			AND E.END_DATE >= de.DRUG_EXPOSURE_START_DATE
-	GROUP BY de.person_id,
-		de.drug_exposure_start_date
-	) t1
-GROUP BY person_id;
+	WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
+	) e
+	ON d.PERSON_ID = e.PERSON_ID
+		AND e.END_DATE >= d.DRUG_EXPOSURE_START_DATE
+GROUP BY d.PERSON_ID
+-- Require at least 1 day in era, so single session doesn't count:
+HAVING DATEDIFF(DAY, MIN(d.DRUG_EXPOSURE_START_DATE), MIN(e.END_DATE)) > 0;
 
 TRUNCATE TABLE #de;
 DROP TABLE #de;
 
---4030840 Electroconvulsive therapy 
+-- 4030840 Electroconvulsive therapy 
 SELECT po1.person_id,
 	po2.procedure_date AS drug_exposure_start_date,
 	po2.procedure_date AS drug_exposure_end_date
@@ -227,7 +214,7 @@ INNER JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (@indication_ids)
+			WHERE ancestor_concept_id IN (440383) -- Depressive disorder
 			)
 	GROUP BY person_id
 	) co1
@@ -240,7 +227,7 @@ LEFT JOIN (
 	WHERE condition_concept_id IN (
 			SELECT descendant_concept_id
 			FROM @cdm_database_schema.concept_ancestor
-			WHERE ancestor_concept_id IN (@exclusion_ids)
+			WHERE ancestor_concept_id IN (435783, 436665) -- Schizophrenia, Bipolar disorder
 			)
 	GROUP BY person_id
 	) co2
@@ -256,24 +243,16 @@ INNER JOIN (
 	ON po1.person_id = po2.person_id
 WHERE co2.person_id IS NULL;
 
-INSERT INTO #exposure_cohorts (
-	subject_id,
-	cohort_definition_id,
-	cohort_start_date,
-	cohort_end_date
-	)
-SELECT person_id AS subject_id,
-	4030840 AS cohort_definition_id,
-	min(drug_exposure_start_date) AS cohort_start_date,
-	min(era_end_date) AS cohort_end_date
-FROM (
-	SELECT *
-	FROM #de
-	) de
+-- Create eras, adapted from https://gist.github.com/chrisknoll/8d3c6744bae4f060aec1 
+INSERT INTO #exposure_cohorts (subject_id, cohort_definition_id, cohort_start_date, cohort_end_date)
+SELECT d.PERSON_ID,
+	4030840,
+	MIN(d.DRUG_EXPOSURE_START_DATE),
+	MIN(e.END_DATE) AS ERA_END_DATE
+FROM #de d
 INNER JOIN (
-	--cteEndDates
 	SELECT PERSON_ID,
-		DATEADD(day, - 1 * 30, EVENT_DATE) AS END_DATE -- unpad the end date by 30
+		DATEADD(day, - 30, EVENT_DATE) AS END_DATE -- unpad the end date
 	FROM (
 		SELECT E1.PERSON_ID,
 			E1.EVENT_DATE,
@@ -283,6 +262,7 @@ INNER JOIN (
 			SELECT PERSON_ID,
 				EVENT_DATE,
 				EVENT_TYPE,
+				--MAX(START_ORDINAL) OVER (PARTITION BY PERSON_ID ORDER BY EVENT_DATE, EVENT_TYPE ROWS UNBOUNDED PRECEDING) as START_ORDINAL, -- this pulls the current START down from the prior rows so that the NULLs from the END DATES will contain a value we can compare with 
 				START_ORDINAL,
 				ROW_NUMBER() OVER (
 					PARTITION BY PERSON_ID ORDER BY EVENT_DATE,
@@ -296,11 +276,7 @@ INNER JOIN (
 					ROW_NUMBER() OVER (
 						PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE
 						) AS START_ORDINAL
-				FROM (
-					-- cteDrugTarget
-					SELECT *
-					FROM #de
-					) D
+				FROM #de
 				
 				UNION ALL
 				
@@ -309,173 +285,31 @@ INNER JOIN (
 					DATEADD(day, 30, DRUG_EXPOSURE_END_DATE),
 					1 AS EVENT_TYPE,
 					NULL
-				FROM (
-					-- cteDrugTarget
-					SELECT *
-					FROM #de
-					) D
-				) E2
-				ON E1.PERSON_ID = E2.PERSON_ID
-					AND E2.EVENT_DATE <= E1.EVENT_DATE
-			GROUP BY E1.PERSON_ID,
-				E1.EVENT_DATE,
-				E1.START_ORDINAL,
-				E1.OVERALL_ORD
-			) E
-		WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
+				FROM #de
+				) RAWDATA
+			) E1
+		LEFT JOIN (
+			SELECT PERSON_ID,
+				DRUG_EXPOSURE_START_DATE AS EVENT_DATE,
+				ROW_NUMBER() OVER (
+					PARTITION BY PERSON_ID ORDER BY DRUG_EXPOSURE_START_DATE
+					) AS START_ORDINAL
+			FROM #de
+			) E2
+			ON E1.PERSON_ID = E2.PERSON_ID
+				AND E2.EVENT_DATE < E1.EVENT_DATE
+		GROUP BY E1.PERSON_ID,
+			E1.EVENT_DATE,
+			E1.START_ORDINAL,
+			E1.OVERALL_ORD
 		) E
-		ON de.PERSON_ID = E.PERSON_ID
-			AND E.END_DATE >= de.DRUG_EXPOSURE_START_DATE
-	GROUP BY de.person_id,
-		de.drug_exposure_start_date
-	) t1
-GROUP BY person_id;
+	WHERE 2 * E.START_ORDINAL - E.OVERALL_ORD = 0
+	) e
+	ON d.PERSON_ID = e.PERSON_ID
+		AND e.END_DATE >= d.DRUG_EXPOSURE_START_DATE
+GROUP BY d.PERSON_ID
+-- Require at least 1 day in era, so single session doesn't count:
+HAVING DATEDIFF(DAY, MIN(d.DRUG_EXPOSURE_START_DATE), MIN(e.END_DATE)) > 0;
 
 TRUNCATE TABLE #de;
 DROP TABLE #de;
-
-
-IF OBJECT_ID('tempdb..#exposure_cohort_summary', 'U') IS NOT NULL
-	DROP TABLE #exposure_cohort_summary;
-
-SELECT cohort_definition_id,
-	c1.concept_name AS cohort_definition_name,
-	COUNT(subject_id) AS num_persons,
-	MIN(cohort_start_date) AS min_cohort_date,
-	MAX(cohort_start_date) AS max_cohort_date
-INTO #exposure_cohort_summary
-FROM #exposure_cohorts tec1
-INNER JOIN @cdm_database_schema.concept c1
-	ON tec1.cohort_definition_id = c1.concept_id
-GROUP BY cohort_definition_id,
-	c1.concept_name;
-
-IF OBJECT_ID('tempdb..#exposure_cohort_pairs', 'U') IS NOT NULL
-	DROP TABLE #exposure_cohort_pairs;
-
-SELECT pair_id,
-	t_cohort_definition_id,
-	c_cohort_definition_id,
-	t_cohort_definition_id * 1000 + pair_id AS tprime_cohort_definition_id,
-	c_cohort_definition_id * 1000 + pair_id AS cprime_cohort_definition_id,
-	min_cohort_date,
-	max_cohort_date
-INTO #exposure_cohort_pairs
-FROM (
-	SELECT ROW_NUMBER() OVER (
-			ORDER BY s1.cohort_definition_id,
-				s2.cohort_definition_id
-			) AS pair_id,
-		s1.cohort_definition_id AS t_cohort_definition_id,
-		s2.cohort_definition_id AS c_cohort_definition_id,
-		CASE 
-			WHEN s1.min_cohort_date > s2.min_cohort_date
-				THEN s1.min_cohort_date
-			ELSE s2.min_cohort_date
-			END AS min_cohort_date,
-		CASE 
-			WHEN s1.max_cohort_date < s2.max_cohort_date
-				THEN s1.max_cohort_date
-			ELSE s2.max_cohort_date
-			END AS max_cohort_date
-	FROM #exposure_cohort_summary s1,
-		#exposure_cohort_summary s2
-	WHERE s1.cohort_definition_id < s2.cohort_definition_id
-	) t1;
-
-DELETE
-FROM @target_database_schema.@target_cohort_table
-WHERE cohort_definition_id IN (
-		SELECT tprime_cohort_definition_id
-		FROM #exposure_cohort_pairs
-		)
-	OR cohort_definition_id IN (
-		SELECT cprime_cohort_definition_id
-		FROM #exposure_cohort_pairs
-		);
-
---get tprime	  
-INSERT INTO @target_database_schema.@target_cohort_table (
-	cohort_definition_id,
-	subject_id,
-	cohort_start_date,
-	cohort_end_date
-	)
-SELECT cp1.tprime_cohort_definition_id AS cohort_definition_id,
-	ec1.subject_id,
-	ec1.cohort_start_date,
-	ec1.cohort_end_date
-FROM #exposure_cohort_pairs cp1
-INNER JOIN #exposure_cohorts ec1
-	ON cp1.t_cohort_definition_id = ec1.cohort_definition_id
-		AND ec1.cohort_start_date BETWEEN cp1.min_cohort_date
-			AND cp1.max_cohort_date
-LEFT JOIN @cdm_database_schema.drug_era de1
-	ON cp1.c_cohort_definition_id = de1.drug_concept_id
-		AND ec1.subject_id = de1.person_id
-WHERE de1.person_id IS NULL;
-
---get cprime
-INSERT INTO @target_database_schema.@target_cohort_table (
-	cohort_definition_id,
-	subject_id,
-	cohort_start_date,
-	cohort_end_date
-	)
-SELECT cp1.cprime_cohort_definition_id AS cohort_definition_id,
-	ec1.subject_id,
-	ec1.cohort_start_date,
-	ec1.cohort_end_date
-FROM #exposure_cohort_pairs cp1
-INNER JOIN #exposure_cohorts ec1
-	ON cp1.c_cohort_definition_id = ec1.cohort_definition_id
-		AND ec1.cohort_start_date BETWEEN cp1.min_cohort_date
-			AND cp1.max_cohort_date
-LEFT JOIN @cdm_database_schema.drug_era de1
-	ON cp1.t_cohort_definition_id = de1.drug_concept_id
-		AND ec1.subject_id = de1.person_id
-WHERE de1.person_id IS NULL;
-
-IF OBJECT_ID('tempdb..#exposure_pair_cohort_summary', 'U') IS NOT NULL
-	DROP TABLE #exposure_pair_cohort_summary;
-
-SELECT cohort_definition_id,
-	COUNT(subject_id) AS num_persons,
-	MIN(cohort_start_date) AS min_cohort_date,
-	MAX(cohort_start_date) AS max_cohort_date
-INTO #exposure_pair_cohort_summary
-FROM @target_database_schema.@target_cohort_table tec1
-GROUP BY cohort_definition_id;
-
-IF OBJECT_ID('@target_database_schema.@target_cohort_summary_table', 'U') IS NOT NULL
-	DROP TABLE @target_database_schema.@target_cohort_summary_table;
-
-SELECT cp1.pair_id,
-	cp1.t_cohort_definition_id,
-	ecs1.cohort_definition_name AS t_cohort_definition_name,
-	ecs1.num_persons AS t_num_persons,
-	ecs1.min_cohort_date AS t_min_cohort_date,
-	ecs1.max_cohort_date AS t_max_cohort_date,
-	cp1.tprime_cohort_definition_id,
-	epcs1.num_persons AS tprime_num_persons,
-	epcs1.min_cohort_date AS tprime_min_cohort_date,
-	epcs1.max_cohort_date AS tprime_max_cohort_date,
-	cp1.c_cohort_definition_id,
-	ecs2.cohort_definition_name AS c_cohort_definition_name,
-	ecs2.num_persons AS c_num_persons,
-	ecs2.min_cohort_date AS c_min_cohort_date,
-	ecs2.max_cohort_date AS c_max_cohort_date,
-	cp1.cprime_cohort_definition_id,
-	epcs2.num_persons AS cprime_num_persons,
-	epcs2.min_cohort_date AS cprime_min_cohort_date,
-	epcs2.max_cohort_date AS cprime_max_cohort_date
-INTO @target_database_schema.@target_cohort_summary_table
-FROM #exposure_cohort_pairs cp1
-INNER JOIN #exposure_cohort_summary ecs1
-	ON cp1.t_cohort_definition_id = ecs1.cohort_definition_id
-INNER JOIN #exposure_pair_cohort_summary epcs1
-	ON cp1.tprime_cohort_definition_id = epcs1.cohort_definition_id
-INNER JOIN #exposure_cohort_summary ecs2
-	ON cp1.c_cohort_definition_id = ecs2.cohort_definition_id
-INNER JOIN #exposure_pair_cohort_summary epcs2
-	ON cp1.cprime_cohort_definition_id = epcs2.cohort_definition_id;

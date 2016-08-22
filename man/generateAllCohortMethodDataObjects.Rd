@@ -13,4 +13,8 @@ generateAllCohortMethodDataObjects(workFolder)
 \description{
 Construct all cohortMethodData object
 }
+\details{
+This function constructs all cohortMethodData objects using the data
+fetched earlier using the \code{\link{fetchAllDataFromServer}} function.
+}
 

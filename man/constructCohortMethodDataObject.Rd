@@ -17,4 +17,8 @@ constructCohortMethodDataObject(treatmentId, comparatorId, workFolder)
 \description{
 Construct a cohortMethodData object
 }
+\details{
+This function constructs a cohortMethodData object for a specific target and comparator, using the data
+fetched earlier using the \code{\link{fetchAllDataFromServer}} function.
+}
 
