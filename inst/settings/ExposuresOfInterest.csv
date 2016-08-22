@@ -1,0 +1,18 @@
+type,class,name,conceptId
+Drug,Atypical,Bupropion,750982
+Drug,Atypical,Mirtazapine,725131
+Procedure,ECT,Electroconvulsive therapy,4030840
+Procedure,Psychotherapy,Psychotherapy,4327941
+Drug,SARI,Trazodone,703547
+Drug,SNRI,Desvenlafaxine,717607
+Drug,SNRI,duloxetine,715259
+Drug,SNRI,venlafaxine,743670
+Drug,SSRI,Citalopram,797617
+Drug,SSRI,Escitalopram,715939
+Drug,SSRI,Fluoxetine,755695
+Drug,SSRI,Paroxetine,722031
+Drug,SSRI,Sertraline,739138
+Drug,SSRI,vilazodone,40234834
+Drug,TCA,Amitriptyline,710062
+Drug,TCA,Doxepin,738156
+Drug,TCA,Nortriptyline,721724
