@@ -7,25 +7,14 @@ CREATE TABLE #Codesets (
 INSERT INTO #Codesets (codeset_id, concept_id)
 SELECT 0 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
 ( 
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (4280942,28779,198798,4112183,194382,192671,196436,4338225)and invalid_reason is null
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (439708,436962,4305303)and invalid_reason is null
 UNION  select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (4280942,28779,198798,4112183,192671,4338225)
+  and ca.ancestor_concept_id in (439708,436962,4305303)
   and c.invalid_reason is null
 
 ) I
-LEFT JOIN
-(
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (194158)and invalid_reason is null
-UNION  select c.concept_id
-  from @cdm_database_schema.CONCEPT c
-  join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (194158)
-  and c.invalid_reason is null
-
-) E ON I.concept_id = E.concept_id
-WHERE E.concept_id is null
 ) C;
 
 select row_number() over (order by P.person_id, P.start_date) as event_id, P.person_id, P.start_date, P.end_date, OP.observation_period_start_date as op_start_date, OP.observation_period_end_date as op_end_date
@@ -42,10 +31,8 @@ from
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
 ) C
-JOIN @cdm_database_schema.VISIT_OCCURRENCE V on C.visit_occurrence_id = V.visit_occurrence_id and C.person_id = V.person_id
+
 WHERE C.ordinal = 1
-AND C.condition_type_concept_id in (38000183,38000199,44786627,38000184,38000200)
-AND V.visit_concept_id in (9203,9201)
 
   ) P
 ) P

@@ -34,6 +34,8 @@
 #'                             priviliges for storing temporary tables.
 #' @param workFolder           Name of local folder to place results; make sure to use forward slashes
 #'                             (/)
+#' @param maxCores             How many parallel cores should be used? If more cores are made available
+#'                             this can speed up the analyses.
 #'
 #' @export
 injectSignals <- function(connectionDetails,
@@ -67,37 +69,64 @@ injectSignals <- function(connectionDetails,
                                        outcomeId = rep(negativeControlIds, length(exposureCohortIds)))
 
     #undebug(MethodEvaluation:::generateOutcomes)
-    MethodEvaluation::injectSignals(connectionDetails = connectionDetails,
-                                    cdmDatabaseSchema = cdmDatabaseSchema,
-                                    oracleTempSchema = cdmDatabaseSchema,
-                                    outputDatabaseSchema = workDatabaseSchema,
-                                    outputTable = studyCohortTable,
-                                    createOutputTable = FALSE,
-                                    exposureOutcomePairs = exposureOutcomePairs,
-                                    modelType = "survival",
-                                    buildOutcomeModel = TRUE,
-                                    buildModelPerExposure = FALSE,
-                                    minOutcomeCount = 100,
-                                    prior = Cyclops::createPrior("laplace", exclude = 0, useCrossValidation = TRUE),
-                                    control = Cyclops::createControl(cvType = "auto",
-                                                                     startingVariance = 0.01,
-                                                                     tolerance = 2e-07,
-                                                                     cvRepetitions = 1,
-                                                                     noiseLevel = "silent",
-                                                                     threads = min(6, maxCores)),
-                                    firstExposureOnly = TRUE,
-                                    washoutPeriod = 183,
-                                    riskWindowStart = 0,
-                                    riskWindowEnd = 0,
-                                    addExposureDaysToEnd = TRUE,
-                                    firstOutcomeOnly = FALSE,
-                                    effectSizes = c(1, 1.25, 1.5, 2, 4),
-                                    precision = 0.01,
-                                    outputIdOffset = 1000,
-                                    workFolder = signalInjectionFolder,
-                                    cdmVersion = "5",
-                                    modelThreads = max(1, round(maxCores/4)),
-                                    generationThreads = 1)#min(6, maxCores))
+    summ <- MethodEvaluation::injectSignals(connectionDetails = connectionDetails,
+                                            cdmDatabaseSchema = cdmDatabaseSchema,
+                                            oracleTempSchema = cdmDatabaseSchema,
+                                            outcomeDatabaseSchema = workDatabaseSchema,
+                                            outcomeTable = studyCohortTable,
+                                            outputDatabaseSchema = workDatabaseSchema,
+                                            outputTable = studyCohortTable,
+                                            createOutputTable = FALSE,
+                                            exposureOutcomePairs = exposureOutcomePairs,
+                                            modelType = "survival",
+                                            buildOutcomeModel = TRUE,
+                                            buildModelPerExposure = FALSE,
+                                            minOutcomeCountForModel = 100,
+                                            minOutcomeCountForInjection = 25,
+                                            prior = Cyclops::createPrior("laplace", exclude = 0, useCrossValidation = TRUE),
+                                            control = Cyclops::createControl(cvType = "auto",
+                                                                             startingVariance = 0.01,
+                                                                             tolerance = 2e-07,
+                                                                             cvRepetitions = 1,
+                                                                             noiseLevel = "silent",
+                                                                             threads = min(6, maxCores)),
+                                            firstExposureOnly = TRUE,
+                                            washoutPeriod = 183,
+                                            riskWindowStart = 0,
+                                            riskWindowEnd = 0,
+                                            addExposureDaysToEnd = TRUE,
+                                            firstOutcomeOnly = FALSE,
+                                            effectSizes = c(1.5, 2, 4),
+                                            precision = 0.01,
+                                            outputIdOffset = 1000,
+                                            workFolder = signalInjectionFolder,
+                                            cdmVersion = "5",
+                                            modelThreads = max(1, round(maxCores/4)),
+                                            generationThreads = min(6, maxCores))
+    # summ <- readRDS(file.path(signalInjectionFolder, "summary.rds"))
+    write.csv(summ, file.path(workFolder, "signalInjectionSummary.csv"), row.names = FALSE)
+
+    ffbase::load.ffdf(dir = file.path(workFolder, "allCohorts"))
+    subjectIds <- ffbase::unique.ff(cohorts$subjectId)
+    subjectIds <- data.frame(subject_id = ff::as.ram(subjectIds))
+    conn <- DatabaseConnector::connect(connectionDetails)
+    DatabaseConnector::insertTable(connection = conn,
+                                   tableName = "#subjects",
+                                   data = subjectIds,
+                                   dropTableIfExists = TRUE,
+                                   createTable = TRUE,
+                                   tempTable = TRUE,
+                                   oracleTempSchema = oracleTempSchema)
+    sql <- SqlRender::loadRenderTranslateSql("GetInjectedOutcomes.sql",
+                                             "LargeScalePopEst",
+                                             dbms = connectionDetails$dbms,
+                                             output_database_schema = workDatabaseSchema,
+                                             output_table = studyCohortTable,
+                                             min_id = min(summ$newOutcomeId),
+                                             max_id = max(summ$newOutcomeId))
+    injectedOutcomes <- DatabaseConnector::querySql.ffdf(conn, sql)
+    colnames(injectedOutcomes) <- SqlRender::snakeCaseToCamelCase(colnames(injectedOutcomes))
+    ffbase::save.ffdf(injectedOutcomes, dir = file.path(workFolder, "injectedOutcomes"))
 }
 
 createSignalInjectionDataFiles <- function(connectionDetails,

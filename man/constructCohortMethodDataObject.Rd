@@ -4,7 +4,8 @@
 \alias{constructCohortMethodDataObject}
 \title{Construct a cohortMethodData object}
 \usage{
-constructCohortMethodDataObject(targetId, comparatorId, workFolder)
+constructCohortMethodDataObject(targetId, comparatorId, targetConceptId,
+  comparatorConceptId, workFolder)
 }
 \arguments{
 \item{targetId}{The cohort definition ID of the treatment cohort.}

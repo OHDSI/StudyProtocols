@@ -17,7 +17,7 @@
 # limitations under the License.
 
 library(LargeScalePopEst)
-options('fftempdir' = 's:/fftemp')
+options('fftempdir' = 'R:/fftemp')
 
 pw <- NULL
 dbms <- "pdw"
@@ -67,9 +67,19 @@ fetchAllDataFromServer(connectionDetails = connectionDetails,
                        studyCohortTable = studyCohortTable,
                        workFolder = workFolder)
 
+injectSignals(connectionDetails = connectionDetails,
+              cdmDatabaseSchema = cdmDatabaseSchema,
+              workDatabaseSchema = workDatabaseSchema,
+              studyCohortTable = studyCohortTable,
+              oracleTempSchema = oracleTempSchema,
+              workFolder = workFolder,
+              maxCores = maxCores)
+
 generateAllCohortMethodDataObjects(workFolder)
 
-fitAllPsModels(workFolder, fitThreads = 6, cvThreads = 5)
+
+runCohortMethod(workFolder,
+                maxCores = maxCores)
 
 plotAllPsDistributions(workFolder)
 

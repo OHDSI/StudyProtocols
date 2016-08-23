@@ -43,13 +43,14 @@ from
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
 ) C
 JOIN @cdm_database_schema.VISIT_OCCURRENCE V on C.visit_occurrence_id = V.visit_occurrence_id and C.person_id = V.person_id
-WHERE C.condition_type_concept_id in (38000183,38000199,44786627,38000184,38000200)
+WHERE C.ordinal = 1
+AND C.condition_type_concept_id in (38000183,38000199,44786627,38000184,38000200)
 AND V.visit_concept_id in (9203,9201)
 
   ) P
 ) P
 JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date between OP.observation_period_start_date and op.observation_period_end_date
-WHERE DATEADD(day,0,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,0,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE
+WHERE DATEADD(day,0,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,0,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE AND P.ordinal = 1
 ;
 
 
@@ -60,39 +61,8 @@ FROM
   select pe.event_id, pe.person_id, pe.start_date, pe.end_date, pe.op_start_date, pe.op_end_date, row_number() over (partition by pe.person_id order by pe.start_date ASC) as ordinal
   FROM #primary_events pe
   
-JOIN (
-select 0 as index_id, event_id
-FROM
-(
-  select event_id FROM
-  (
-    SELECT 0 as index_id, p.event_id
-FROM #primary_events P
-LEFT JOIN
-(
-  select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
-from 
-(
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
-        FROM @cdm_database_schema.CONDITION_OCCURRENCE co
-where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
-) C
-
-
-
-) A on A.person_id = P.person_id and A.START_DATE BETWEEN P.OP_START_DATE AND P.OP_END_DATE AND A.START_DATE BETWEEN DATEADD(day,-90,P.START_DATE) and DATEADD(day,-1,P.START_DATE)
-GROUP BY p.event_id
-HAVING COUNT(A.TARGET_CONCEPT_ID) <= 0
-
-
-  ) CQ
-  GROUP BY event_id
-  HAVING COUNT(index_id) = 1
-) G
-) AC on AC.event_id = pe.event_id
-
 ) QE
-WHERE QE.ordinal = 1
+
 ;
 
 
@@ -122,7 +92,7 @@ FROM cteIncludedEvents Results
 WHERE Results.ordinal = 1
 ;
 
--- TODO: Apply end date stratagies
+-- Apply end date stratagies
 -- by default, all events extend to the op_end_date.
 select event_id, person_id, op_end_date as end_date
 into #cohort_ends
@@ -144,6 +114,8 @@ WHERE F.ordinal = 1
 
 
 
+TRUNCATE TABLE #cohort_ends;
+DROP TABLE #cohort_ends;
 
 TRUNCATE TABLE #inclusionRuleCohorts;
 DROP TABLE #inclusionRuleCohorts;

@@ -14,52 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Fit all propensity models
-#'
-#' @details
-#' This function fits all propensity models, using the cohortMethodData objects constructed using the
-#' \code{\link{generateAllCohortMethodDataObjects}} function.
-#'
-#' @param workFolder           Name of local folder to place results; make sure to use forward slashes
-#'                             (/)
-#'
-#' @export
-fitAllPsModels <- function(workFolder, fitThreads = 1, cvThreads = 4) {
-    writeLines("Fitting propensity models")
-    exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
-    tasks <- list()
-    for (i in 1:nrow(exposureSummary)) {
-        treatmentId <- exposureSummary$tprimeCohortDefinitionId[i]
-        comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
-        folderName <- file.path(workFolder, paste0("cmData_t", treatmentId, "_c", comparatorId))
-        fileName <- file.path(workFolder, paste0("ps_t", treatmentId, "_c", comparatorId, ".rds"))
-        if (!file.exists(fileName)){
-            task <- data.frame(folderName = folderName,
-                               fileName = fileName,
-                               cvThreads = cvThreads,
-                               stringsAsFactors = FALSE)
-            tasks[[length(tasks) + 1]] <- task
-        }
-    }
-
-    fitPropensityModel <- function(task) {
-        cmData <- CohortMethod::loadCohortMethodData(task$folderName)
-        ps <- CohortMethod::createPs(cmData,
-                                     control = createControl(noiseLevel = "quiet",
-                                                             cvType = "auto",
-                                                             tolerance = 2e-07,
-                                                             cvRepetitions = 1,
-                                                             startingVariance = 0.01,
-                                                             threads = task$cvThreads,
-                                                             seed = 1))
-        saveRDS(ps, task$fileName)
-    }
-    cluster <- OhdsiRTools::makeCluster(fitThreads)
-    OhdsiRTools::clusterRequire(cluster, "CohortMethod")
-    dummy <- OhdsiRTools::clusterApply(cluster, tasks, fitPropensityModel)
-    OhdsiRTools::stopCluster(cluster)
-}
-
 #' Plot all propensity score distributions
 #'
 #' @details

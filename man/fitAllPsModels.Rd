@@ -4,7 +4,7 @@
 \alias{fitAllPsModels}
 \title{Fit all propensity models}
 \usage{
-fitAllPsModels(workFolder, fitThreads = 1, cvThreads = 4)
+fitAllPsModels(workFolder, maxCores = 4)
 }
 \arguments{
 \item{workFolder}{Name of local folder to place results; make sure to use forward slashes

@@ -29,3 +29,6 @@ for (i in 1:nrow(outcomes)) {
     writeLines(paste0("Inserting HOI: ", outcomes$name[i]))
     OhdsiRTools::insertCirceDefinitionInPackage(outcomes$cohortDefinitionId[i], outcomes$name[i])
 }
+
+# Create analysis details
+createAnalysesDetails("inst/settings/")

@@ -64,47 +64,6 @@ fetchAllDataFromServer <- function(connectionDetails,
                                              target_cohort_table = studyCohortTable,
                                              exposure_ids = exposureIds)
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
-    #querySql(conn, "SELECT COUNT(*) FROM #exposure_cohorts")
-    # covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
-    #                                                                 useCovariateDemographicsGender = TRUE,
-    #                                                                 useCovariateDemographicsRace = TRUE,
-    #                                                                 useCovariateDemographicsEthnicity = TRUE,
-    #                                                                 useCovariateDemographicsAge = TRUE,
-    #                                                                 useCovariateDemographicsYear = TRUE,
-    #                                                                 useCovariateDemographicsMonth = TRUE,
-    #                                                                 useCovariateConditionOccurrence = TRUE,
-    #                                                                 useCovariateConditionOccurrence365d = TRUE,
-    #                                                                 useCovariateConditionOccurrence30d = TRUE,
-    #                                                                 useCovariateConditionOccurrenceInpt180d = TRUE,
-    #                                                                 useCovariateConditionGroup = TRUE,
-    #                                                                 useCovariateConditionGroupMeddra = TRUE,
-    #                                                                 useCovariateConditionGroupSnomed = TRUE,
-    #                                                                 useCovariateDrugEra = TRUE,
-    #                                                                 useCovariateDrugEra365d = TRUE,
-    #                                                                 useCovariateDrugEra30d = TRUE,
-    #                                                                 useCovariateDrugEraOverlap = TRUE,
-    #                                                                 useCovariateDrugGroup = TRUE,
-    #                                                                 useCovariateProcedureOccurrence = TRUE,
-    #                                                                 useCovariateProcedureOccurrence365d = TRUE,
-    #                                                                 useCovariateProcedureOccurrence30d = TRUE,
-    #                                                                 useCovariateProcedureGroup = TRUE,
-    #                                                                 useCovariateObservation = TRUE,
-    #                                                                 useCovariateObservation365d = TRUE,
-    #                                                                 useCovariateObservation30d = TRUE,
-    #                                                                 useCovariateObservationCount365d = TRUE,
-    #                                                                 useCovariateMeasurement = TRUE,
-    #                                                                 useCovariateMeasurement365d = TRUE,
-    #                                                                 useCovariateMeasurement30d = TRUE,
-    #                                                                 useCovariateMeasurementCount365d = TRUE,
-    #                                                                 useCovariateMeasurementBelow = TRUE,
-    #                                                                 useCovariateMeasurementAbove = TRUE,
-    #                                                                 useCovariateConceptCounts = TRUE,
-    #                                                                 useCovariateRiskScores = TRUE,
-    #                                                                 useCovariateRiskScoresCharlson = TRUE,
-    #                                                                 useCovariateRiskScoresDCSI = TRUE,
-    #                                                                 useCovariateRiskScoresCHADS2 = TRUE,
-    #                                                                 useCovariateRiskScoresCHADS2VASc = TRUE,
-    #                                                                 deleteCovariatesSmallCount = 100)
     covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
                                                                     useCovariateDemographicsGender = TRUE,
                                                                     useCovariateDemographicsRace = TRUE,
@@ -112,7 +71,47 @@ fetchAllDataFromServer <- function(connectionDetails,
                                                                     useCovariateDemographicsAge = TRUE,
                                                                     useCovariateDemographicsYear = TRUE,
                                                                     useCovariateDemographicsMonth = TRUE,
+                                                                    useCovariateConditionOccurrence = TRUE,
+                                                                    useCovariateConditionOccurrence365d = TRUE,
+                                                                    useCovariateConditionOccurrence30d = TRUE,
+                                                                    useCovariateConditionOccurrenceInpt180d = TRUE,
+                                                                    useCovariateConditionGroup = TRUE,
+                                                                    useCovariateConditionGroupMeddra = TRUE,
+                                                                    useCovariateConditionGroupSnomed = TRUE,
+                                                                    useCovariateDrugEra = TRUE,
+                                                                    useCovariateDrugEra365d = TRUE,
+                                                                    useCovariateDrugEra30d = TRUE,
+                                                                    useCovariateDrugEraOverlap = TRUE,
+                                                                    useCovariateDrugGroup = TRUE,
+                                                                    useCovariateProcedureOccurrence = TRUE,
+                                                                    useCovariateProcedureOccurrence365d = TRUE,
+                                                                    useCovariateProcedureOccurrence30d = TRUE,
+                                                                    useCovariateProcedureGroup = TRUE,
+                                                                    useCovariateObservation = TRUE,
+                                                                    useCovariateObservation365d = TRUE,
+                                                                    useCovariateObservation30d = TRUE,
+                                                                    useCovariateObservationCount365d = TRUE,
+                                                                    useCovariateMeasurement = TRUE,
+                                                                    useCovariateMeasurement365d = TRUE,
+                                                                    useCovariateMeasurement30d = TRUE,
+                                                                    useCovariateMeasurementCount365d = TRUE,
+                                                                    useCovariateMeasurementBelow = TRUE,
+                                                                    useCovariateMeasurementAbove = TRUE,
+                                                                    useCovariateConceptCounts = TRUE,
+                                                                    useCovariateRiskScores = TRUE,
+                                                                    useCovariateRiskScoresCharlson = TRUE,
+                                                                    useCovariateRiskScoresDCSI = TRUE,
+                                                                    useCovariateRiskScoresCHADS2 = TRUE,
+                                                                    useCovariateRiskScoresCHADS2VASc = TRUE,
                                                                     deleteCovariatesSmallCount = 100)
+    # covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
+    #                                                                 useCovariateDemographicsGender = TRUE,
+    #                                                                 useCovariateDemographicsRace = TRUE,
+    #                                                                 useCovariateDemographicsEthnicity = TRUE,
+    #                                                                 useCovariateDemographicsAge = TRUE,
+    #                                                                 useCovariateDemographicsYear = TRUE,
+    #                                                                 useCovariateDemographicsMonth = TRUE,
+    #                                                                 deleteCovariatesSmallCount = 100)
     covariates <- FeatureExtraction::getDbCovariateData(connection = conn,
                                                         oracleTempSchema = oracleTempSchema,
                                                         cdmDatabaseSchema = cdmDatabaseSchema,
@@ -165,21 +164,14 @@ fetchAllDataFromServer <- function(connectionDetails,
     saveRDS(filterConcepts, file.path(workFolder, "filterConceps.rds"))
 }
 
-#' Construct a cohortMethodData object
-#'
-#' @details
-#' This function constructs a cohortMethodData object for a specific target and comparator, using the data
-#' fetched earlier using the \code{\link{fetchAllDataFromServer}} function.
-#'
-#' @param targetId          The cohort definition ID of the treatment cohort.
-#' @param comparatorId          The cohort definition ID of the comparator cohort.
-#' @param workFolder           Name of local folder to place results; make sure to use forward slashes
-#'                             (/)
-#'
-#' @export
-constructCohortMethodDataObject <- function(targetId, comparatorId, workFolder) {
-    writeLines("Subsetting cohorts")
+constructCohortMethodDataObject <- function(targetId,
+                                            comparatorId,
+                                            targetConceptId,
+                                            comparatorConceptId,
+                                            workFolder) {
+    # Subsetting cohorts
     ffbase::load.ffdf(dir = file.path(workFolder, "allCohorts"))
+    ff::open.ffdf(cohorts, readonly = TRUE)
     idx <- cohorts$cohortDefinitionId == targetId | cohorts$cohortDefinitionId == comparatorId
     cohorts <- ff::as.ram(cohorts[ffbase::ffwhich(idx, idx == TRUE), ])
     cohorts$treatment <- 0
@@ -199,8 +191,9 @@ constructCohortMethodDataObject <- function(targetId, comparatorId, workFolder) 
                      attrition = counts)
     attr(cohorts, "metaData") <- metaData
 
-    writeLines("Subsetting outcomes")
+    # Subsetting outcomes
     ffbase::load.ffdf(dir = file.path(workFolder, "allOutcomes"))
+    ff::open.ffdf(outcomes, readonly = TRUE)
     idx <- !is.na(ffbase::ffmatch(outcomes$rowId, ff::as.ff(cohorts$rowId)))
     if (ffbase::any.ff(idx)){
         outcomes <- ff::as.ram(outcomes[ffbase::ffwhich(idx, idx == TRUE), ])
@@ -208,15 +201,33 @@ constructCohortMethodDataObject <- function(targetId, comparatorId, workFolder) 
         outcomes <- as.data.frame(outcomes[1, ])
         outcomes <- outcomes[T == F,]
     }
+    # Add injected outcomes
+    ffbase::load.ffdf(dir = file.path(workFolder, "injectedOutcomes"))
+    ff::open.ffdf(injectedOutcomes, readonly = TRUE)
+    injectionSummary <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
+    injectionSummary <- injectionSummary[injectionSummary$exposureId %in% c(targetConceptId, comparatorConceptId), ]
+    idx1 <- ffbase::'%in%'(injectedOutcomes$subjectId, cohorts$subjectId)
+    idx2 <- ffbase::'%in%'(injectedOutcomes$cohortDefinitionId, injectionSummary$newOutcomeId)
+    idx <- idx1 & idx2
+    if (ffbase::any.ff(idx)){
+        injectedOutcomes <- ff::as.ram(injectedOutcomes[idx, ])
+        colnames(injectedOutcomes)[colnames(injectedOutcomes) == "cohortStartDate"] <- "eventDate"
+        colnames(injectedOutcomes)[colnames(injectedOutcomes) == "cohortDefinitionId"] <- "outcomeId"
+        injectedOutcomes <- merge(cohorts[, c("rowId", "subjectId", "cohortStartDate")], injectedOutcomes[, c("subjectId", "outcomeId", "eventDate")])
+        injectedOutcomes$daysToEvent = injectedOutcomes$eventDate - injectedOutcomes$cohortStartDate
+        #any(injectedOutcomes$daysToEvent < 0)
+        #min(outcomes$daysToEvent[outcomes$outcomeId == 73008])
+        outcomes <- rbind(outcomes, injectedOutcomes[, c("rowId", "outcomeId", "daysToEvent")])
+    }
     metaData <- data.frame(outcomeIds = unique(outcomes$outcomeId))
     attr(outcomes, "metaData") <- metaData
 
-    writeLines("Subsetting covariates")
+    # Subsetting covariates
     covariateData <- FeatureExtraction::loadCovariateData(file.path(workFolder, "allCovariates"))
     idx <- is.na(ffbase::ffmatch(covariateData$covariates$rowId, ff::as.ff(cohorts$rowId)))
     covariates <- covariateData$covariates[ffbase::ffwhich(idx, idx == FALSE), ]
 
-    writeLines("Filtering covariates")
+    # Filtering covariates
     filterConcepts <- readRDS(file.path(workFolder, "filterConceps.rds"))
     filterConcepts <- filterConcepts[filterConcepts$exposureId %in% c(targetId, comparatorId),]
     filterConceptIds <- unique(filterConcepts$filterConceptId)
@@ -248,18 +259,26 @@ constructCohortMethodDataObject <- function(targetId, comparatorId, workFolder) 
 #' @export
 generateAllCohortMethodDataObjects <- function(workFolder) {
     writeLines("Constructing cohortMethodData objects")
+    start <- Sys.time()
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+    pb <- txtProgressBar(style = 3)
     for (i in 1:nrow(exposureSummary)) {
         targetId <- exposureSummary$tprimeCohortDefinitionId[i]
         comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
-        folderName <- file.path(workFolder, paste0("cmData_t", targetId, "_c", comparatorId))
+        targetConceptId <- exposureSummary$tCohortDefinitionId[i]
+        comparatorConceptId <- exposureSummary$cCohortDefinitionId[i]
+        folderName <- file.path(workFolder, "cmOutput", paste0("CmData_l1_t", targetId, "_c", comparatorId))
         if (!file.exists(folderName)) {
             cmData <- constructCohortMethodDataObject(targetId = targetId,
                                                       comparatorId = comparatorId,
+                                                      targetConceptId = targetConceptId,
+                                                      comparatorConceptId = comparatorConceptId,
                                                       workFolder = workFolder)
             CohortMethod::saveCohortMethodData(cmData, folderName)
         }
+        setTxtProgressBar(pb, i/nrow(exposureSummary))
     }
+    close(pb)
+    delta <- Sys.time() - start
+    writeLines(paste("Generating all CohortMethodData objects took", signif(delta, 3), attr(delta, "units")))
 }
-
-
