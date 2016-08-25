@@ -19,6 +19,9 @@
 library(LargeScalePopEst)
 options('fftempdir' = 'R:/fftemp')
 
+
+### Don't forget to remove excludeCovariateIds from analysis settings!
+
 pw <- NULL
 dbms <- "pdw"
 user <- NULL
@@ -31,6 +34,17 @@ exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Mdcd"
 maxCores <- 20
+# Excluding these pairs:
+#
+# Nortriptyline vs phychotherapy because nortriptyline users appear to take the drug for headache-related conditions and have no
+# Psychiatric or mental disorders in the recent past (30 days)
+#
+# Amitriptyline vs citalopram because amitriptyline appears to be only used as a second-line therapy, and always appears together with
+# another antidepressant
+#
+# Amitriptyline vs phychotherapy because Amitriptyline users have no
+# Psychiatric or mental disorders diagnose in the recent past (30 days)
+excludePairs <- data.frame(targetId = c(721724, 710062, 710062), comparatorId = c(4327941, 797617, 4327941))
 
 pw <- NULL
 dbms <- "pdw"
@@ -43,6 +57,7 @@ studyCohortTable <- "mschuemie_depression_cohorts_ccae"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_ccae"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Ccae"
+excludePairs <- NULL
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 server = server,
@@ -77,8 +92,8 @@ injectSignals(connectionDetails = connectionDetails,
 
 generateAllCohortMethodDataObjects(workFolder)
 
-
 runCohortMethod(workFolder,
+                excludePairs = excludePairs,
                 maxCores = maxCores)
 
 plotAllPsDistributions(workFolder)

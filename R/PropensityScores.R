@@ -31,25 +31,28 @@ plotAllPsDistributions <- function(workFolder) {
         dir.create(figuresAndTablesFolder)
     }
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+    outcomeModelReference <- readRDS(file.path(workFolder, "cmOutput", "outcomeModelReference.rds"))
     for (i in 1:nrow(exposureSummary)) {
         treatmentId <- exposureSummary$tprimeCohortDefinitionId[i]
         comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
-        psFileName <- file.path(workFolder, paste0("ps_t", treatmentId, "_c", comparatorId, ".rds"))
-        ps <- readRDS(psFileName)
+        psFileName <- outcomeModelReference$sharedPsFile[outcomeModelReference$targetId == treatmentId & outcomeModelReference$comparatorId == comparatorId & outcomeModelReference$analysisId == 2][1]
+        if (file.exists(psFileName)){
+            ps <- readRDS(psFileName)
 
-        plotFileName <- file.path(figuresAndTablesFolder, paste0("ps_t", treatmentId, "_c", comparatorId, ".png"))
-        CohortMethod::plotPs(ps,
-                             treatmentLabel = as.character(exposureSummary$tCohortDefinitionName[i]),
-                             comparatorLabel = as.character(exposureSummary$cCohortDefinitionName[i]),
-                             fileName = plotFileName)
+            plotFileName <- file.path(figuresAndTablesFolder, paste0("ps_t", treatmentId, "_c", comparatorId, ".png"))
+            CohortMethod::plotPs(ps,
+                                 treatmentLabel = as.character(exposureSummary$tCohortDefinitionName[i]),
+                                 comparatorLabel = as.character(exposureSummary$cCohortDefinitionName[i]),
+                                 fileName = plotFileName)
 
-        ps$treatment <- 1 - ps$treatment
-        ps$propensityScore <- 1 - ps$propensityScore
-        plotFileName <- file.path(figuresAndTablesFolder, paste0("ps_t", comparatorId, "_c", treatmentId, ".png"))
-        CohortMethod::plotPs(ps,
-                             treatmentLabel = as.character(exposureSummary$cCohortDefinitionName[i]),
-                             comparatorLabel = as.character(exposureSummary$tCohortDefinitionName[i]),
-                             fileName = plotFileName)
+            ps$treatment <- 1 - ps$treatment
+            ps$propensityScore <- 1 - ps$propensityScore
+            plotFileName <- file.path(figuresAndTablesFolder, paste0("ps_t", comparatorId, "_c", treatmentId, ".png"))
+            CohortMethod::plotPs(ps,
+                                 treatmentLabel = as.character(exposureSummary$cCohortDefinitionName[i]),
+                                 comparatorLabel = as.character(exposureSummary$tCohortDefinitionName[i]),
+                                 fileName = plotFileName)
+        }
     }
 }
 
@@ -71,10 +74,10 @@ computeEquipoiseMatrix <- function(workFolder) {
     }
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
     matrix1 <- data.frame(cohortId1 = exposureSummary$tprimeCohortDefinitionId,
-                         cohortName1 = exposureSummary$tCohortDefinitionName,
-                         cohortId2 = exposureSummary$cprimeCohortDefinitionId,
-                         cohortName2 = exposureSummary$cCohortDefinitionName,
-                         equipoise = 0)
+                          cohortName1 = exposureSummary$tCohortDefinitionName,
+                          cohortId2 = exposureSummary$cprimeCohortDefinitionId,
+                          cohortName2 = exposureSummary$cCohortDefinitionName,
+                          equipoise = 0)
     matrix2 <- data.frame(cohortId1 = exposureSummary$cprimeCohortDefinitionId,
                           cohortName1 = exposureSummary$cCohortDefinitionName,
                           cohortId2 = exposureSummary$tprimeCohortDefinitionId,

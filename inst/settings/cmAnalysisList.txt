@@ -207,6 +207,7 @@
     },
     "createPs": true,
     "createPsArgs": {
+      "excludeCovariateIds": [1001, 1002, 900000010905],
       "stopOnHighCorrelation": true,
       "prior": {
         "priorType": "laplace",
@@ -378,6 +379,7 @@
     },
     "createPs": true,
     "createPsArgs": {
+      "excludeCovariateIds": [1001, 1002, 900000010905],
       "stopOnHighCorrelation": true,
       "prior": {
         "priorType": "laplace",

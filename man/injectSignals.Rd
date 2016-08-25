@@ -29,6 +29,9 @@ priviliges for storing temporary tables.}
 \item{workFolder}{Name of local folder to place results; make sure to use forward slashes
 (/)}
 
+\item{maxCores}{How many parallel cores should be used? If more cores are made available
+this can speed up the analyses.}
+
 \item{exposureCohortSummaryTable}{The name of the exposure summary table in the work database schema.}
 }
 \description{

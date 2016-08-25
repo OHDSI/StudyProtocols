@@ -14,6 +14,63 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#' Run the cohort method package
+#'
+#' @details
+#' Runs the cohort method package to produce propensity scores and outcome models.
+#'
+#' @param workFolder           Name of local folder to place results; make sure to use forward slashes
+#'                             (/)
+#' @param maxCores             How many parallel cores should be used? If more cores are made available
+#'                             this can speed up the analyses.
+#'
+#' @export
+runCohortMethod <- function(workFolder, excludePairs, maxCores = 4) {
+    cmFolder <- file.path(workFolder, "cmOutput")
+    exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+    dcos <- list()
+    for (i in 1:nrow(exposureSummary)) {
+        originalTargetId <- exposureSummary$tCohortDefinitionId[i]
+        originalComparatorId <- exposureSummary$cCohortDefinitionId[i]
+        if (missing(excludePairs) || is.null(excludePairs) || !any(excludePairs$targetId == originalTargetId & excludePairs$comparatorId == originalComparatorId)) {
+            targetId <- exposureSummary$tprimeCohortDefinitionId[i]
+            comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
+            folderName <- file.path(cmFolder, paste0("CmData_l1_t", targetId, "_c", comparatorId))
+            cmData <- CohortMethod::loadCohortMethodData(folderName, readOnly = TRUE)
+            outcomeIds <-   attr(cmData$outcomes, "metaData")$outcomeIds
+            dco <- CohortMethod::createDrugComparatorOutcomes(targetId = targetId,
+                                                              comparatorId = comparatorId,
+                                                              outcomeIds = outcomeIds)
+            dcos[[length(dcos) + 1]] <- dco
+        }
+    }
+    cmAnalysisListFile <- system.file("settings",
+                                      "cmAnalysisList.txt",
+                                      package = "LargeScalePopEst")
+    cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
+
+    CohortMethod::runCmAnalyses(connectionDetails = NULL,
+                                cdmDatabaseSchema = NULL,
+                                exposureDatabaseSchema = NULL,
+                                exposureTable = NULL,
+                                outcomeDatabaseSchema = NULL,
+                                outcomeTable = NULL,
+                                outputFolder = cmFolder,
+                                oracleTempSchema = NULL,
+                                cmAnalysisList = cmAnalysisList,
+                                cdmVersion = 5,
+                                drugComparatorOutcomesList = dcos,
+                                getDbCohortMethodDataThreads = 1,
+                                createStudyPopThreads = min(4, maxCores),
+                                createPsThreads = max(1, round(maxCores/6)),
+                                #createPsThreads = 1,
+                                psCvThreads = min(10, maxCores),
+                                trimMatchStratifyThreads = min(4, maxCores),
+                                fitOutcomeModelThreads = min(4, maxCores),
+                                outcomeCvThreads = min(4, maxCores),
+                                refitPsForEveryOutcome = FALSE)
+}
+
 #' Create the analyses details
 #'
 #' @details
@@ -32,13 +89,16 @@ createAnalysesDetails <- function(outputFolder) {
                                                                         riskWindowEnd = 0,
                                                                         addExposureDaysToEnd = TRUE,
                                                                         minDaysAtRisk = 1)
-    # Fixing seed for reproducability:
+    # Fixing seed for reproducability
+    # Ignoring high correlation with mental disorder covariates. These appear highly predictive when comparing nortriptyline to
+    # psychotherapy, which is probably correct (Many nortriptyline users appear to use the drug for headache-related conditions)
     createPsArgs <- CohortMethod::createCreatePsArgs(control = Cyclops::createControl(noiseLevel = "silent",
                                                                                       cvType = "auto",
                                                                                       tolerance = 2e-07,
                                                                                       cvRepetitions = 1,
                                                                                       startingVariance = 0.01,
-                                                                                      seed = 123))
+                                                                                      seed = 123),
+                                                     excludeCovariateIds = c(1001,1002, 900000010905))
 
     matchOnPsArgs <- CohortMethod::createMatchOnPsArgs(maxRatio = 1)
 
@@ -87,57 +147,4 @@ createAnalysesDetails <- function(outputFolder) {
                            cmAnalysis3)
 
     CohortMethod::saveCmAnalysisList(cmAnalysisList, file.path(outputFolder, "cmAnalysisList.txt"))
-}
-
-#' Run the cohort method package
-#'
-#' @details
-#' Runs the cohort method package to produce propensity scores and outcome models.
-#'
-#' @param workFolder           Name of local folder to place results; make sure to use forward slashes
-#'                             (/)
-#' @param maxCores             How many parallel cores should be used? If more cores are made available
-#'                             this can speed up the analyses.
-#'
-#' @export
-runCohortMethod <- function(workFolder, maxCores = 4) {
-    cmFolder <- file.path(workFolder, "cmOutput")
-    exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
-    dcos <- list()
-    for (i in 1:nrow(exposureSummary)) {
-        targetId <- exposureSummary$tprimeCohortDefinitionId[i]
-        comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
-        folderName <- file.path(cmFolder, paste0("CmData_l1_t", targetId, "_c", comparatorId))
-        cmData <- CohortMethod::loadCohortMethodData(folderName, readOnly = TRUE)
-        outcomeIds <-   attr(cmData$outcomes, "metaData")$outcomeIds
-        dco <- CohortMethod::createDrugComparatorOutcomes(targetId = targetId,
-                                                          comparatorId = comparatorId,
-                                                          outcomeIds = outcomeIds)
-        dcos[[length(dcos) + 1]] <- dco
-    }
-    cmAnalysisListFile <- system.file("settings",
-                                      "cmAnalysisList.txt",
-                                      package = "LargeScalePopEst")
-    cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
-
-    CohortMethod::runCmAnalyses(connectionDetails = NULL,
-                                cdmDatabaseSchema = NULL,
-                                exposureDatabaseSchema = NULL,
-                                exposureTable = NULL,
-                                outcomeDatabaseSchema = NULL,
-                                outcomeTable = NULL,
-                                outputFolder = cmFolder,
-                                oracleTempSchema = NULL,
-                                cmAnalysisList = cmAnalysisList,
-                                cdmVersion = 5,
-                                drugComparatorOutcomesList = dcos,
-                                getDbCohortMethodDataThreads = 1,
-                                createStudyPopThreads = max(3, maxCores),
-                                createPsThreads = 1,
-                                psCvThreads = min(16, maxCores),
-                                computeCovarBalThreads = min(3, maxCores),
-                                trimMatchStratifyThreads = min(10, maxCores),
-                                fitOutcomeModelThreads = max(1, round(maxCores/4)),
-                                outcomeCvThreads = min(4, maxCores),
-                                refitPsForEveryOutcome = FALSE)
 }

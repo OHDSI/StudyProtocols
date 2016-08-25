@@ -64,6 +64,7 @@ fetchAllDataFromServer <- function(connectionDetails,
                                              target_cohort_table = studyCohortTable,
                                              exposure_ids = exposureIds)
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
+    # Note: removing concept counts because number of drugs is very predictive of drugs vs procedures
     covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
                                                                     useCovariateDemographicsGender = TRUE,
                                                                     useCovariateDemographicsRace = TRUE,
@@ -97,12 +98,13 @@ fetchAllDataFromServer <- function(connectionDetails,
                                                                     useCovariateMeasurementCount365d = TRUE,
                                                                     useCovariateMeasurementBelow = TRUE,
                                                                     useCovariateMeasurementAbove = TRUE,
-                                                                    useCovariateConceptCounts = TRUE,
+                                                                    useCovariateConceptCounts = FALSE,
                                                                     useCovariateRiskScores = TRUE,
                                                                     useCovariateRiskScoresCharlson = TRUE,
                                                                     useCovariateRiskScoresDCSI = TRUE,
                                                                     useCovariateRiskScoresCHADS2 = TRUE,
                                                                     useCovariateRiskScoresCHADS2VASc = TRUE,
+                                                                    exposureConceptIds = 9000000109,
                                                                     deleteCovariatesSmallCount = 100)
     # covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
     #                                                                 useCovariateDemographicsGender = TRUE,
