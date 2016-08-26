@@ -7,8 +7,8 @@
 ---- 365d washout before first use
 ---- prior diagnosis of MDD
 ---- no prior diagnosis of bipolar or schizophrenia
-{DEFAULT @washout_period = 365}
-{DEFAULT @cdm_database_schema = 'cdm.dbo'}
+{DEFAULT @washout_period = 365 } 
+{DEFAULT @cdm_database_schema = 'cdm.dbo' }
 
 IF OBJECT_ID('tempdb..#exposure_cohorts', 'U') IS NOT NULL
 	DROP TABLE #exposure_cohorts;
@@ -29,7 +29,7 @@ FROM (
 			drug_concept_id ORDER BY drug_era_start_date ASC
 			) AS rn1
 	FROM @cdm_database_schema.drug_era
-	WHERE drug_concept_id IN (739138,750982,797617,755695,715939,703547,715259,743670,710062,725131,722031,721724,717607,738156,40234834)
+	WHERE drug_concept_id IN (739138, 750982, 797617, 755695, 715939, 703547, 715259, 743670, 710062, 725131, 722031, 721724, 717607, 738156, 40234834)
 	) de1
 INNER JOIN @cdm_database_schema.observation_period op1
 	ON de1.person_id = op1.person_id
@@ -75,19 +75,15 @@ FROM (
 		MIN(procedure_date) AS procedure_date
 	FROM @cdm_database_schema.procedure_occurrence
 	WHERE procedure_concept_id IN (2007748, 4088889, 4151904, 43527989, 4118797, 4199042, 4262582, 2617478, 2007749, 2213547, 4118801, 4148398, 4196062, 4208314, 4234402, 43527904, 43527986, 45888237, 4143316, 43527905, 4119335, 4258834, 40482841, 45765516, 45887951, 2213554, 4079938, 4079939, 4128268, 44792695, 2007731, 4035812, 4083133, 4173581, 4242119, 4268909, 4080044, 4083706, 4117915, 4121662, 4225728, 44808677, 2007750, 2213546, 4103512, 44791916, 44808259, 46286330, 2213544, 4012488, 4079608, 4084195, 4119334, 4132436, 4299728, 4263758, 45887728, 2007730, 2007746, 2617477, 4128406, 4164790, 4219683, 4226276, 2213555, 4048385, 4083130, 4234476, 4249602, 4265313, 4295027, 2007763, 2108571, 4080048, 4221997, 4226275, 4278094, 45763911, 45889353, 2213548, 4114491, 4136352, 4137086, 4233181, 4327941, 43527987, 4048387, 4148765, 4202234, 4311943, 43527988, 43527990, 4028920, 4084202, 4100341, 4118798, 4118800, 4296166, 43527991, 4083129, 4083131, 4084201, 4179241, 46286403, 2007747, 4079500, 4126653, 4272803)
-	
-  OR procedure_source_concept_id (
-    select concept_id
-    from @cdm_database_schema.concept
-    where 
-    vocabulary_id = 'CPT4' and 
-    concept_name like '%psychotherap%'
-    and concept_name not like '%without the patient%'
-    and invalid_reason = 'D'
-  )
-
-
-  GROUP BY person_id,
+		OR procedure_source_concept_id IN (
+			SELECT concept_id
+			FROM @cdm_database_schema.concept
+			WHERE vocabulary_id = 'CPT4'
+				AND concept_name LIKE '%psychotherap%'
+				AND concept_name NOT LIKE '%without the patient%'
+				AND invalid_reason = 'D'
+			)
+	GROUP BY person_id,
 		procedure_concept_id
 	) po1
 INNER JOIN @cdm_database_schema.observation_period op1
@@ -126,25 +122,25 @@ INNER JOIN (
 		procedure_date
 	FROM @cdm_database_schema.procedure_occurrence
 	WHERE procedure_concept_id IN (2007748, 4088889, 4151904, 43527989, 4118797, 4199042, 4262582, 2617478, 2007749, 2213547, 4118801, 4148398, 4196062, 4208314, 4234402, 43527904, 43527986, 45888237, 4143316, 43527905, 4119335, 4258834, 40482841, 45765516, 45887951, 2213554, 4079938, 4079939, 4128268, 44792695, 2007731, 4035812, 4083133, 4173581, 4242119, 4268909, 4080044, 4083706, 4117915, 4121662, 4225728, 44808677, 2007750, 2213546, 4103512, 44791916, 44808259, 46286330, 2213544, 4012488, 4079608, 4084195, 4119334, 4132436, 4299728, 4263758, 45887728, 2007730, 2007746, 2617477, 4128406, 4164790, 4219683, 4226276, 2213555, 4048385, 4083130, 4234476, 4249602, 4265313, 4295027, 2007763, 2108571, 4080048, 4221997, 4226275, 4278094, 45763911, 45889353, 2213548, 4114491, 4136352, 4137086, 4233181, 4327941, 43527987, 4048387, 4148765, 4202234, 4311943, 43527988, 43527990, 4028920, 4084202, 4100341, 4118798, 4118800, 4296166, 43527991, 4083129, 4083131, 4084201, 4179241, 46286403, 2007747, 4079500, 4126653, 4272803)
-
-
-OR procedure_source_concept_id (
-    select concept_id
-    from @cdm_database_schema.concept
-    where 
-    vocabulary_id = 'CPT4' and 
-    concept_name like '%psychotherap%'
-    and concept_name not like '%without the patient%'
-    and invalid_reason = 'D'
-  )
-
-
-) po2
+		OR procedure_source_concept_id IN (
+			SELECT concept_id
+			FROM @cdm_database_schema.concept
+			WHERE vocabulary_id = 'CPT4'
+				AND concept_name LIKE '%psychotherap%'
+				AND concept_name NOT LIKE '%without the patient%'
+				AND invalid_reason = 'D'
+			)
+	) po2
 	ON po1.person_id = po2.person_id
 WHERE co2.person_id IS NULL;
 
 -- Create eras, adapted from https://gist.github.com/chrisknoll/8d3c6744bae4f060aec1 
-INSERT INTO #exposure_cohorts (subject_id, cohort_definition_id, cohort_start_date, cohort_end_date)
+INSERT INTO #exposure_cohorts (
+	subject_id,
+	cohort_definition_id,
+	cohort_start_date,
+	cohort_end_date
+	)
 SELECT d.PERSON_ID,
 	4327941,
 	MIN(d.DRUG_EXPOSURE_START_DATE),
@@ -212,6 +208,7 @@ GROUP BY d.PERSON_ID
 HAVING DATEDIFF(DAY, MIN(d.DRUG_EXPOSURE_START_DATE), MIN(e.END_DATE)) > 0;
 
 TRUNCATE TABLE #de;
+
 DROP TABLE #de;
 
 -- 4030840 Electroconvulsive therapy 
@@ -269,7 +266,12 @@ INNER JOIN (
 WHERE co2.person_id IS NULL;
 
 -- Create eras, adapted from https://gist.github.com/chrisknoll/8d3c6744bae4f060aec1 
-INSERT INTO #exposure_cohorts (subject_id, cohort_definition_id, cohort_start_date, cohort_end_date)
+INSERT INTO #exposure_cohorts (
+	subject_id,
+	cohort_definition_id,
+	cohort_start_date,
+	cohort_end_date
+	)
 SELECT d.PERSON_ID,
 	4030840,
 	MIN(d.DRUG_EXPOSURE_START_DATE),
@@ -337,4 +339,5 @@ GROUP BY d.PERSON_ID
 HAVING DATEDIFF(DAY, MIN(d.DRUG_EXPOSURE_START_DATE), MIN(e.END_DATE)) > 0;
 
 TRUNCATE TABLE #de;
+
 DROP TABLE #de;

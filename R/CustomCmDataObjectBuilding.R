@@ -104,7 +104,7 @@ fetchAllDataFromServer <- function(connectionDetails,
                                                                     useCovariateRiskScoresDCSI = TRUE,
                                                                     useCovariateRiskScoresCHADS2 = TRUE,
                                                                     useCovariateRiskScoresCHADS2VASc = TRUE,
-                                                                    exposureConceptIds = 9000000109,
+                                                                    excludedCovariateConceptIds = 900000010,
                                                                     deleteCovariatesSmallCount = 100)
     # covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
     #                                                                 useCovariateDemographicsGender = TRUE,
