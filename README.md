@@ -13,12 +13,11 @@ How to run
 	install.packages("devtools")
 	library(devtools)
 	install_github("ohdsi/OhdsiRTools") 
-	install_github("ohdsi/SqlRender")
 	install_github("ohdsi/DatabaseConnector")
-	install_github("ohdsi/Cyclops")
 	install_github("ohdsi/FeatureExtraction") 
 	install_github("ohdsi/CohortMethod")
 	install_github("ohdsi/OhdsiSharing")
+	install_github("ohdsi/MethodEvaluation")
 	install_github("ohdsi/StudyProtocolSandbox/PopEstT2Dm")
 	```
 

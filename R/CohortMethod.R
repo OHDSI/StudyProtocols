@@ -69,6 +69,9 @@ runCohortMethod <- function(workFolder, excludePairs, maxCores = 4) {
                                 fitOutcomeModelThreads = min(4, maxCores),
                                 outcomeCvThreads = min(4, maxCores),
                                 refitPsForEveryOutcome = FALSE)
+    outcomeModelReference <- readRDS(file.path(workFolder, "cmOutput", "outcomeModelReference.rds"))
+    analysesSum <- CohortMethod::summarizeAnalyses(outcomeModelReference)
+    write.csv(analysesSum, file.path(workFolder, "analysisSummary.csv"), row.names = FALSE)
 }
 
 #' Create the analyses details
@@ -98,7 +101,7 @@ createAnalysesDetails <- function(outputFolder) {
                                                                                       cvRepetitions = 1,
                                                                                       startingVariance = 0.01,
                                                                                       seed = 123),
-                                                     excludeCovariateIds = c(1001,1002, 900000010905))
+                                                     stopOnError = FALSE)
 
     matchOnPsArgs <- CohortMethod::createMatchOnPsArgs(maxRatio = 1)
 
@@ -142,9 +145,8 @@ createAnalysesDetails <- function(outputFolder) {
                                                   fitOutcomeModel = TRUE,
                                                   fitOutcomeModelArgs = fitOutcomeModelArgs2)
 
-    cmAnalysisList <- list(cmAnalysis1,
-                           cmAnalysis2,
-                           cmAnalysis3)
+   # cmAnalysisList <- list(cmAnalysis1, cmAnalysis2, cmAnalysis3)
+    cmAnalysisList <- list(cmAnalysis1, cmAnalysis3)
 
     CohortMethod::saveCmAnalysisList(cmAnalysisList, file.path(outputFolder, "cmAnalysisList.txt"))
 }
