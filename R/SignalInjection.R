@@ -44,6 +44,7 @@ injectSignals <- function(connectionDetails,
                           studyCohortTable = "ohdsi_cohorts",
                           oracleTempSchema,
                           workFolder,
+                          exposureOutcomePairs = NULL,
                           maxCores = 4) {
     signalInjectionFolder <- file.path(workFolder, "signalInjection")
     if (!file.exists(signalInjectionFolder))
@@ -64,11 +65,10 @@ injectSignals <- function(connectionDetails,
     pathToCsv <- system.file("settings", "NegativeControls.csv", package = "LargeScalePopEst")
     negativeControls <- read.csv(pathToCsv)
     negativeControlIds <- negativeControls$conceptId
-
-    exposureOutcomePairs <- data.frame(exposureId = rep(exposureCohortIds, each = length(negativeControlIds)),
-                                       outcomeId = rep(negativeControlIds, length(exposureCohortIds)))
-
-    #undebug(MethodEvaluation:::generateOutcomes)
+    if (is.null(exposureOutcomePairs)) {
+        exposureOutcomePairs <- data.frame(exposureId = rep(exposureCohortIds, each = length(negativeControlIds)),
+                                           outcomeId = rep(negativeControlIds, length(exposureCohortIds)))
+    }
     summ <- MethodEvaluation::injectSignals(connectionDetails = connectionDetails,
                                             cdmDatabaseSchema = cdmDatabaseSchema,
                                             oracleTempSchema = cdmDatabaseSchema,
@@ -89,16 +89,17 @@ injectSignals <- function(connectionDetails,
                                                                              tolerance = 2e-07,
                                                                              cvRepetitions = 1,
                                                                              noiseLevel = "silent",
-                                                                             threads = min(6, maxCores)),
+                                                                             threads = min(10, maxCores)),
                                             firstExposureOnly = TRUE,
                                             washoutPeriod = 183,
                                             riskWindowStart = 0,
                                             riskWindowEnd = 0,
                                             addExposureDaysToEnd = TRUE,
-                                            firstOutcomeOnly = FALSE,
+                                            firstOutcomeOnly = TRUE,
+                                            removePeopleWithPriorOutcomes = TRUE,
                                             effectSizes = c(1.5, 2, 4),
                                             precision = 0.01,
-                                            outputIdOffset = 1000,
+                                            outputIdOffset = 10000,
                                             workFolder = signalInjectionFolder,
                                             cdmVersion = "5",
                                             modelThreads = max(1, round(maxCores/4)),
@@ -168,14 +169,11 @@ createSignalInjectionDataFiles <- function(connectionDetails,
     negativeControlOutcomes <- merge(negativeControlOutcomes, ff::as.ffdf(exposures[, c("rowId", "daysAtRisk")]))
 
     dedupeAndCount <- function(outcomeId, data) {
-        data <- data[data$outcomeId == outcomeId, ]
-        rowIds <- ffbase::unique.ff(data$rowId)
-        dedupe <- ffbase::merge.ffdf(ff::ffdf(rowId = rowIds), data)
-        dedupe <- dedupe[dedupe$daysToEvent >= 0 & dedupe$daysToEvent <= dedupe$daysAtRisk]
-        dedupe <- ff::as.ram(dedupe)
-        y <- aggregate(outcomeId ~ rowId, dedupe, length)
+        data <- ff::as.ram(data[data$outcomeId == outcomeId, ])
+        data <- data[data$daysToEvent >= 0 & data$daysToEvent <= data$daysAtRisk, ]
+        y <- aggregate(outcomeId ~ rowId, data, length)
         colnames(y)[colnames(y) == "outcomeId"] <- "y"
-        timeToEvent <- aggregate(daysToEvent ~ rowId, dedupe, min)
+        timeToEvent <- aggregate(daysToEvent ~ rowId, data, min)
         colnames(timeToEvent)[colnames(timeToEvent) == "daysToEvent"] <- "timeToEvent"
         result <- merge(y, timeToEvent)
         result$outcomeId <- outcomeId
@@ -184,6 +182,16 @@ createSignalInjectionDataFiles <- function(connectionDetails,
     outcomes2 <- sapply(negativeControlIds, dedupeAndCount, data = negativeControlOutcomes, simplify = FALSE)
     outcomes2 <- do.call("rbind", outcomes2)
     saveRDS(outcomes2, file.path(signalInjectionFolder, "outcomes.rds"))
+
+    priorOutcomes <- negativeControlOutcomes[negativeControlOutcomes$daysToEvent < 0, c("rowId", "outcomeId")]
+    dedupe <- function(outcomeId, data) {
+        data <- data[data$outcomeId == outcomeId, ]
+        rowIds <- ff::as.ram(ffbase::unique.ff(data$rowId))
+        return(data.frame(rowId = rowIds, outcomeId = outcomeId))
+    }
+    priorOutcomes <- sapply(negativeControlIds, dedupe, data = priorOutcomes, simplify = FALSE)
+    priorOutcomes <- do.call("rbind", priorOutcomes)
+    saveRDS(priorOutcomes, file.path(signalInjectionFolder, "priorOutcomes.rds"))
 
     # Clone covariate data:
     covariateData <- FeatureExtraction::loadCovariateData(file.path(workFolder, "allCovariates"))

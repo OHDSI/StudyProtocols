@@ -18,7 +18,7 @@
 
 library(LargeScalePopEst)
 options('fftempdir' = 'R:/fftemp')
-options('fftempdir' = 'S:/fftemp')
+#options('fftempdir' = 'S:/fftemp')
 
 pw <- NULL
 dbms <- "pdw"
@@ -31,7 +31,7 @@ studyCohortTable <- "mschuemie_depression_cohorts_mdcd"
 exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Mdcd"
-workFolder <- "S:/PopEstDepression_Mdcd"
+#workFolder <- "S:/PopEstDepression_Mdcd"
 maxCores <- 20
 
 pw <- NULL

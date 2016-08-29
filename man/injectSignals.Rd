@@ -6,7 +6,7 @@
 \usage{
 injectSignals(connectionDetails, cdmDatabaseSchema, workDatabaseSchema,
   studyCohortTable = "ohdsi_cohorts", oracleTempSchema, workFolder,
-  maxCores = 4)
+  exposureOutcomePairs = NULL, maxCores = 4)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the
