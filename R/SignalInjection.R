@@ -50,6 +50,7 @@ injectSignals <- function(connectionDetails,
     if (!file.exists(signalInjectionFolder))
         dir.create(signalInjectionFolder)
 
+
     createSignalInjectionDataFiles(connectionDetails,
                                    cdmDatabaseSchema,
                                    workDatabaseSchema,
@@ -102,7 +103,7 @@ injectSignals <- function(connectionDetails,
                                             outputIdOffset = 10000,
                                             workFolder = signalInjectionFolder,
                                             cdmVersion = "5",
-                                            modelThreads = max(1, round(maxCores/4)),
+                                            modelThreads = max(1, round(maxCores/8)),
                                             generationThreads = min(6, maxCores))
     # summ <- readRDS(file.path(signalInjectionFolder, "summary.rds"))
     write.csv(summ, file.path(workFolder, "signalInjectionSummary.csv"), row.names = FALSE)
@@ -127,7 +128,11 @@ injectSignals <- function(connectionDetails,
                                              max_id = max(summ$newOutcomeId))
     injectedOutcomes <- DatabaseConnector::querySql.ffdf(conn, sql)
     colnames(injectedOutcomes) <- SqlRender::snakeCaseToCamelCase(colnames(injectedOutcomes))
-    ffbase::save.ffdf(injectedOutcomes, dir = file.path(workFolder, "injectedOutcomes"))
+    injectedOutcomesFolder <- file.path(workFolder, "injectedOutcomes")
+    if (file.exists(injectedOutcomesFolder)) {
+        unlink(injectedOutcomesFolder, recursive = TRUE)
+    }
+    ffbase::save.ffdf(injectedOutcomes, dir = injectedOutcomesFolder)
 }
 
 createSignalInjectionDataFiles <- function(connectionDetails,
@@ -148,11 +153,19 @@ createSignalInjectionDataFiles <- function(connectionDetails,
 
     # Create exposures file:
     ffbase::load.ffdf(dir = file.path(workFolder, "allCohorts"))
-    rowIds <- ffbase::unique.ff(cohorts$rowId)
-    cohortsDedupe <- ff::as.ram(ffbase::merge.ffdf(ff::ffdf(rowId = rowIds), cohorts))
-    exposures <- merge(cohortsDedupe, cohortDefinitionIdToConceptId)
+    exposures <- merge(cohorts, ff::as.ffdf(cohortDefinitionIdToConceptId))
+    conceptIds <- unique(cohortDefinitionIdToConceptId$conceptId)
+    dedupe <- function(exposureId, data) {
+        data <- data[data$conceptId == exposureId,]
+        data <- ff::as.ram(data)
+        data <- data[order(data$rowId), ]
+        data <- data[!duplicated(data$rowId), ]
+        return(data)
+    }
+    exposures <- sapply(conceptIds, dedupe, data = exposures, simplify = FALSE)
+    exposures <- do.call("rbind", exposures)
     exposures$daysToCohortEnd[exposures$daysToCohortEnd > exposures$daysToObsEnd] <- exposures$daysToObsEnd[exposures$daysToCohortEnd > exposures$daysToObsEnd]
-    #exposures$cohortEndDate <- exposures$cohortStartDate + exposures$daysToCohortEnd
+
     colnames(exposures)[colnames(exposures) == "daysToCohortEnd"] <- "daysAtRisk"
     colnames(exposures)[colnames(exposures) == "conceptId"] <- "exposureId"
     colnames(exposures)[colnames(exposures) == "subjectId"] <- "personId"
@@ -183,6 +196,22 @@ createSignalInjectionDataFiles <- function(connectionDetails,
     outcomes2 <- do.call("rbind", outcomes2)
     saveRDS(outcomes2, file.path(signalInjectionFolder, "outcomes.rds"))
 
+#     exposures <- exposures[order(exposures$rowId), ]
+#     temp <- merge(exposures[, c("rowId", "exposureId", "eraNumber")], outcomes2[, c("rowId", "outcomeId", "y")])
+#     nrow(exposures)
+#     length(unique(exposures$rowId))
+#     x <- which(duplicated(exposures$rowId))
+#     x[1]
+#     duplicated(exposures$rowId)[x[1]]
+#     exposures$rowId[x[1]]
+#     exposures$rowId[x[1]-1]
+#     exposures[c(x[1]-1, x[1]), ]
+#     exposures[c(12966, 12967), ]
+#     nrow(temp)
+#     nrow(outcomes2)
+#         temp$y <- outcomeCounts$y != 0
+
+
     priorOutcomes <- negativeControlOutcomes[negativeControlOutcomes$daysToEvent < 0, c("rowId", "outcomeId")]
     dedupe <- function(outcomeId, data) {
         data <- data[data$outcomeId == outcomeId, ]
@@ -194,10 +223,14 @@ createSignalInjectionDataFiles <- function(connectionDetails,
     saveRDS(priorOutcomes, file.path(signalInjectionFolder, "priorOutcomes.rds"))
 
     # Clone covariate data:
+    covariatesFolder <- file.path(signalInjectionFolder, "covariates")
+    if (file.exists(covariatesFolder)) {
+        unlink(covariatesFolder, recursive = TRUE)
+    }
     covariateData <- FeatureExtraction::loadCovariateData(file.path(workFolder, "allCovariates"))
     covariateDataClone <- list(covariates = ff::clone.ffdf(covariateData$covariates),
                                covariateRef = ff::clone.ffdf(covariateData$covariateRef),
                                metaData = covariateData$metaData)
     class(covariateDataClone) = class(covariateData)
-    FeatureExtraction::saveCovariateData(covariateDataClone, file.path(signalInjectionFolder, "covariates"))
+    FeatureExtraction::saveCovariateData(covariateDataClone, covariatesFolder)
 }

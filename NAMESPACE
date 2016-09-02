@@ -3,6 +3,7 @@
 export(analysePsDistributions)
 export(createAnalysesDetails)
 export(createCohorts)
+export(execute)
 export(fetchAllDataFromServer)
 export(filterByExposureCohortsSize)
 export(generateAllCohortMethodDataObjects)
