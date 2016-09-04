@@ -6,20 +6,28 @@ workFolder <- "S:/PopEstDepression_Mdcd"
 exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
 injectionSummary <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
 
+newRows <- data.frame()
 for (i in 1:nrow(exposureSummary)) {
     targetId <- exposureSummary$tprimeCohortDefinitionId[i]
     comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
     targetConceptId <- exposureSummary$tCohortDefinitionId[i]
     comparatorConceptId <- exposureSummary$cCohortDefinitionId[i]
+
     folderName <- file.path(workFolder, "cmOutput", paste0("CmData_l1_t", targetId, "_c", comparatorId))
     cmData <- CohortMethod::loadCohortMethodData(folderName)
+
+    cmData <- LargeScalePopEst:::constructCohortMethodDataObject(targetId = targetId,
+                                                                 comparatorId = comparatorId,
+                                                                 targetConceptId = targetConceptId,
+                                                                 comparatorConceptId = comparatorConceptId,
+                                                                 workFolder = workFolder)
     rows <-  injectionSummary[injectionSummary$exposureId == targetConceptId, ]
     rows$observedFxSize <- NA
     rows$observedFxSize_lb <- NA
     rows$observedFxSize_ub <- NA
-    newRows <- data.frame()
+
     for (j in 1:nrow(rows)) {
-        if (rows$trueEffectSize != 0){
+        if (rows$trueEffectSize[j] != 0){
             sp1 <- CohortMethod::createStudyPopulation(cohortMethodData = cmData,
                                                        outcomeId = rows$outcomeId[j],
                                                        removeSubjectsWithPriorOutcome = TRUE,
@@ -78,6 +86,8 @@ cmData <- LargeScalePopEst:::constructCohortMethodDataObject(targetId = 73913811
 cmData <- constructCustomCohortMethodDataObject(targetConceptId = 739138,
                                                 workFolder = workFolder)
 
+
+
 sp1 <- CohortMethod::createStudyPopulation(cohortMethodData = cmData,
                                            outcomeId = 75354,
                                            removeSubjectsWithPriorOutcome = TRUE,
@@ -87,7 +97,7 @@ sp1 <- CohortMethod::createStudyPopulation(cohortMethodData = cmData,
                                            addExposureDaysToEnd = TRUE)
 
 sp2 <- CohortMethod::createStudyPopulation(cohortMethodData = cmData,
-                                           outcomeId = 10001,
+                                           outcomeId = 10328,
                                            removeSubjectsWithPriorOutcome = TRUE,
                                            minDaysAtRisk = 0,
                                            riskWindowStart = 0,
@@ -107,10 +117,11 @@ om <- CohortMethod::fitOutcomeModel(sp,
                                     stratified = FALSE,
                                     useCovariates = FALSE)
 om
-summary(om)
-
-
-
+s <- summary(om)
+(s$outcomeCounts$treatedPersons / (s$timeAtRisk$treatedDays + s$populationCounts$treatedPersons)) / (s$outcomeCounts$comparatorPersons / (s$timeAtRisk$comparatorDays + s$populationCounts$comparatorPersons))
+(s$outcomeCounts$treatedPersons / s$timeAtRisk$treatedDays) / (s$outcomeCounts$comparatorPersons / s$timeAtRisk$comparatorDays)
+no<- readRDS("S:/PopEstDepression_Mdcd/signalInjection/newOutcomes_e739138_o75354_rr2.rds")
+no[!(no$subjectId %in% sp2$subjectId[sp2$outcomeCount != 0]),]
 
 
 constructCustomCohortMethodDataObject <- function(targetConceptId,

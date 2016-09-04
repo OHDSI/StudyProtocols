@@ -196,22 +196,6 @@ createSignalInjectionDataFiles <- function(connectionDetails,
     outcomes2 <- do.call("rbind", outcomes2)
     saveRDS(outcomes2, file.path(signalInjectionFolder, "outcomes.rds"))
 
-#     exposures <- exposures[order(exposures$rowId), ]
-#     temp <- merge(exposures[, c("rowId", "exposureId", "eraNumber")], outcomes2[, c("rowId", "outcomeId", "y")])
-#     nrow(exposures)
-#     length(unique(exposures$rowId))
-#     x <- which(duplicated(exposures$rowId))
-#     x[1]
-#     duplicated(exposures$rowId)[x[1]]
-#     exposures$rowId[x[1]]
-#     exposures$rowId[x[1]-1]
-#     exposures[c(x[1]-1, x[1]), ]
-#     exposures[c(12966, 12967), ]
-#     nrow(temp)
-#     nrow(outcomes2)
-#         temp$y <- outcomeCounts$y != 0
-
-
     priorOutcomes <- negativeControlOutcomes[negativeControlOutcomes$daysToEvent < 0, c("rowId", "outcomeId")]
     dedupe <- function(outcomeId, data) {
         data <- data[data$outcomeId == outcomeId, ]
