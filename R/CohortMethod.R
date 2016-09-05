@@ -87,7 +87,7 @@ createAnalysesDetails <- function(outputFolder) {
     getDbCmDataArgs <- CohortMethod::createGetDbCohortMethodDataArgs(covariateSettings = FeatureExtraction::createCovariateSettings())
 
     createStudyPopArgs <- CohortMethod::createCreateStudyPopulationArgs(removeDuplicateSubjects = FALSE,
-                                                                        removeSubjectsWithPriorOutcome = FALSE,
+                                                                        removeSubjectsWithPriorOutcome = TRUE,
                                                                         riskWindowStart = 0,
                                                                         riskWindowEnd = 0,
                                                                         addExposureDaysToEnd = TRUE,
