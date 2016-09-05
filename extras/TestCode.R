@@ -76,8 +76,8 @@ execute(connectionDetails = connectionDetails,
         maxCores = maxCores,
         createCohorts = FALSE,
         fetchAllDataFromServer = FALSE,
-        injectSignals = TRUE,
-        generateAllCohortMethodDataObjects = TRUE,
+        injectSignals = FALSE,
+        generateAllCohortMethodDataObjects = FALSE,
         runCohortMethod = TRUE)
 
 
