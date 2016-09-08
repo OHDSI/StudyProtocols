@@ -151,10 +151,11 @@ plotControlDistributions <- function(workFolder) {
                                                         xLabel = "Hazard ratio",
                                                         fileName = fileName)
 
-            injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == treatmentConceptId, ]
+            injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == treatmentConceptId & signalInjectionSum$injectedOutcomes != 0, ]
+            negativeControlIdSubsets <- unique(injectedSignals$outcomeId)
             injectedSignals <- data.frame(outcomeId = injectedSignals$newOutcomeId,
                                           trueLogRr = log(injectedSignals$targetEffectSize))
-            negativeControls <- data.frame(outcomeId = negativeControlIds,
+            negativeControls <- data.frame(outcomeId = negativeControlIdSubsets,
                                            trueLogRr = 0)
             data <- rbind(injectedSignals, negativeControls)
             data <- merge(data, estimates[, c("outcomeId", "logRr", "seLogRr")])
@@ -165,10 +166,11 @@ plotControlDistributions <- function(workFolder) {
                                                       trueLogRr = data$trueLogRr,
                                                       xLabel = "Hazard ratio",
                                                       fileName = fileName)
-            injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == comparatorConceptId, ]
+            injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == comparatorConceptId & signalInjectionSum$injectedOutcomes != 0, ]
+            negativeControlIdSubsets <- unique(injectedSignals$outcomeId)
             injectedSignals <- data.frame(outcomeId = injectedSignals$newOutcomeId,
                                           trueLogRr = log(injectedSignals$targetEffectSize))
-            negativeControls <- data.frame(outcomeId = negativeControlIds,
+            negativeControls <- data.frame(outcomeId = negativeControlIdSubsets,
                                            trueLogRr = 0)
             data <- rbind(injectedSignals, negativeControls)
             data <- merge(data, estimates[, c("outcomeId", "logRr", "seLogRr")])

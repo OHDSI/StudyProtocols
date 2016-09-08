@@ -97,10 +97,10 @@ fitAllPsModels <- function(workFolder, fitThreads = 1, cvThreads = 4) {
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
     tasks <- list()
     for (i in 1:nrow(exposureSummary)) {
-        treatmentId <- exposureSummary$tprimeCohortDefinitionId[i]
+        targetId <- exposureSummary$tprimeCohortDefinitionId[i]
         comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
         folderName <- file.path(workFolder, "cmOutput", paste0("CmData_l1_t", targetId, "_c", comparatorId,"_no_inj"))
-        fileName <- file.path(workFolder, "cmOutput", paste0("Ps_l1_s1_p2_t", treatmentId, "_c", comparatorId, ".rds"))
+        fileName <- file.path(workFolder, "cmOutput", paste0("Ps_l1_s1_p2_t", targetId, "_c", comparatorId, ".rds"))
         if (!file.exists(fileName)){
             task <- data.frame(folderName = folderName,
                                fileName = fileName,
@@ -113,33 +113,35 @@ fitAllPsModels <- function(workFolder, fitThreads = 1, cvThreads = 4) {
     fitPropensityModel <- function(task) {
         cmData <- CohortMethod::loadCohortMethodData(task$folderName)
         studyPop <- CohortMethod::createStudyPopulation(cohortMethodData = cmData,
-                                                        firstExposureOnly = false,
+                                                        firstExposureOnly = FALSE,
                                                         washoutPeriod = 0,
-                                                        removeDuplicateSubjects = false,
-                                                        removeSubjectsWithPriorOutcome = false,
+                                                        removeDuplicateSubjects = FALSE,
+                                                        removeSubjectsWithPriorOutcome = FALSE,
                                                         priorOutcomeLookback = 99999,
                                                         minDaysAtRisk = 1,
                                                         riskWindowStart = 0,
-                                                        addExposureDaysToStart = false,
+                                                        addExposureDaysToStart = FALSE,
                                                         riskWindowEnd  = 0,
-                                                        addExposureDaysToEnd = true)
-        ps <- CohortMethod::createPs(population = studyPop,
-                                     cohortMethodData = cmData,
-                                     control = createControl(noiseLevel = "quiet",
-                                                             cvType = "auto",
-                                                             tolerance = 2e-07,
-                                                             cvRepetitions = 1,
-                                                             startingVariance = 0.01,
-                                                             threads = task$cvThreads,
-                                                             seed = 1))
+                                                        addExposureDaysToEnd = TRUE)
+        ps <- CohortMethod::createPs(cohortMethodData = cmData,
+                                     population = studyPop,
+                                     stopOnError = FALSE,
+                                     control = Cyclops::createControl(noiseLevel = "quiet",
+                                                                      cvType = "auto",
+                                                                      tolerance = 2e-07,
+                                                                      cvRepetitions = 1,
+                                                                      startingVariance = 0.01,
+                                                                      threads = task$cvThreads,
+                                                                      seed = 1))
         saveRDS(ps, task$fileName)
     }
     cluster <- OhdsiRTools::makeCluster(fitThreads)
+    OhdsiRTools::clusterRequire(cluster, "Cyclops")
     OhdsiRTools::clusterRequire(cluster, "CohortMethod")
-    dummy <- OhdsiRTools::clusterApply(cluster, tasks, fitPropensityModel)
+    dummy <- OhdsiRTools::clusterApply(cluster, tasks, fitPropensityModel, stopOnError = TRUE)
     OhdsiRTools::stopCluster(cluster)
 }
-
+options('fftempdir' = 'S:/fftemp')
 workFolder <- "s:/PopEstDepression_Ccae"
 
 generateAllCohortMethodDataObjectsNoInjection(workFolder)
