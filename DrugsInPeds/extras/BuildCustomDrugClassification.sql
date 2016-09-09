@@ -691,7 +691,8 @@ FROM (
 			WHERE relationship_id = 'ATC - RxNorm'
 			)
 	) tmp
-WHERE concept_name NOT LIKE '%vaccine%';
+WHERE concept_name NOT LIKE '%vaccine%'
+AND concept_name NOT LIKE '%Ethinyl Estradiol%';
 
 -- Mucolytics
 INSERT INTO #my_drug_classification (
