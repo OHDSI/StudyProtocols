@@ -36,6 +36,7 @@ analysePsDistributions <- function(workFolder) {
     }
 
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+    #exposureSummary <- exposureSummary[exposureSummary$tCohortDefinitionName == "duloxetine" & exposureSummary$cCohortDefinitionName == "Sertraline",]
     outcomeModelReference <- readRDS(file.path(workFolder, "cmOutput", "outcomeModelReference.rds"))
     matrix1 <- data.frame(cohortId1 = exposureSummary$tprimeCohortDefinitionId,
                           cohortName1 = exposureSummary$tCohortDefinitionName,
@@ -105,6 +106,7 @@ plotControlDistributions <- function(workFolder) {
     }
 
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+    #exposureSummary <- exposureSummary[exposureSummary$tCohortDefinitionName == "duloxetine" & exposureSummary$cCohortDefinitionName == "Sertraline",]
     analysesSum <- read.csv(file.path(workFolder, "analysisSummary.csv"))
     signalInjectionSum <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
     negativeControlIds <- unique(signalInjectionSum$outcomeId)

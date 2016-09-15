@@ -27,6 +27,7 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
     }
 
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+    #exposureSummary <- exposureSummary[exposureSummary$tCohortDefinitionName == "duloxetine" & exposureSummary$cCohortDefinitionName == "Sertraline",]
     analysesSum <- read.csv(file.path(workFolder, "analysisSummary.csv"))
     analysesSumRev <- data.frame(analysisId = analysesSum$analysisId,
                                targetId = analysesSum$comparatorId,
@@ -180,5 +181,5 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
                                                       fileName = fileName)
         }
     }
-    write.csv(results, file.path(workFolder, "calibratedEstimates.csv"))
+    write.csv(results, file.path(workFolder, "calibratedEstimates.csv"), row.names = FALSE)
 }

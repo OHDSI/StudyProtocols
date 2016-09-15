@@ -17,8 +17,8 @@
 # limitations under the License.
 
 library(LargeScalePopEst)
-#options('fftempdir' = 'R:/fftemp')
-options('fftempdir' = 'S:/fftemp')
+options('fftempdir' = 'R:/fftemp')
+#options('fftempdir' = 'S:/fftemp')
 
 pw <- NULL
 dbms <- "pdw"
@@ -30,8 +30,8 @@ workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_mdcd"
 exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
-#workFolder <- "R:/PopEstDepression_Mdcd"
-workFolder <- "S:/PopEstDepression_Mdcd"
+workFolder <- "R:/PopEstDepression_Mdcd"
+#workFolder <- "S:/PopEstDepression_Mdcd"
 maxCores <- 20
 
 pw <- NULL
@@ -45,7 +45,7 @@ studyCohortTable <- "mschuemie_depression_cohorts_ccae"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_ccae"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Ccae"
-maxCores <- 20
+maxCores <- 24
 
 pw <- NULL
 dbms <- "pdw"
@@ -57,8 +57,21 @@ workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_mdcr"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_mdcr"
 port <- 17001
-workFolder <- "s:/PopEstDepression_Mdcr"
+workFolder <- "r:/PopEstDepression_Mdcr"
 maxCores <- 20
+
+pw <- NULL
+dbms <- "pdw"
+user <- NULL
+server <- "JRDUSAPSCTL01"
+cdmDatabaseSchema <- "cdm_optum_extended_ses_v458.dbo"
+oracleTempSchema <- NULL
+workDatabaseSchema <- "scratch.dbo"
+studyCohortTable <- "mschuemie_depression_cohorts_optum"
+exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_optum"
+port <- 17001
+workFolder <- "r:/PopEstDepression_Optum"
+maxCores <- 10
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 server = server,
@@ -80,9 +93,11 @@ execute(connectionDetails = connectionDetails,
         generateAllCohortMethodDataObjects = FALSE,
         runCohortMethod = TRUE)
 
+analysePsDistributions(workFolder)
 
+plotControlDistributions(workFolder)
 
-
+calibrateEstimatesAndPvalues(workFolder)
 
 createCohorts(connectionDetails = connectionDetails,
               cdmDatabaseSchema = cdmDatabaseSchema,
