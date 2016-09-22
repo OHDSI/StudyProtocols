@@ -1,4 +1,5 @@
 workFolder <- "R:/PopEstDepression_Ccae"
+workFolder <- "s:/PopEstDepression_Ccae"
 symposiumFolder <- file.path(workFolder, "symposium")
 if (!file.exists(symposiumFolder)){
     dir.create(symposiumFolder)
@@ -547,80 +548,71 @@ ggplot(data, aes(x = x, y = y, color = GROUP, group = GROUP, fill = GROUP)) +
 ggsave(filename = file.path(symposiumFolder, "allPs.png"), width = 15, height = 9, dpi = 300)
 
 
-max(data$preferenceScore)
-
-psFileName <- outcomeModelReference$sharedPsFile[outcomeModelReference$targetId == treatmentId & outcomeModelReference$comparatorId == comparatorId & outcomeModelReference$analysisId == 3][1]
-ps <- readRDS(psFileName)
-
-plotFileName <- file.path(workFolder, "symposium", "ps.png")
-CohortMethod::plotPs(ps,
-                     treatmentLabel = as.character(row$tCohortDefinitionName),
-                     comparatorLabel = as.character(row$cCohortDefinitionName),
-                     fileName = plotFileName)
-
-# Bias plots
 
 
-analysesSum <- read.csv(file.path(workFolder, "analysisSummary.csv"))
-signalInjectionSum <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
-negativeControlIds <- unique(signalInjectionSum$outcomeId)
-estimates <- analysesSum[analysesSum$analysisId == 1 &
-                             analysesSum$targetId == treatmentId &
-                             analysesSum$comparatorId == comparatorId, ]
-
-negControls <- estimates[estimates$outcomeId %in% negativeControlIds, ]
-mean(negControls$p < 0.05)
-fileName <- file.path(workFolder, "symposium", "bias_crude.png")
-plotEstimates(logRrNegatives = negControls$logRr,
-              seLogRrNegatives = negControls$seLogRr,
-              #title = title,
-              xLabel = "Hazard ratio",
-              fileName = fileName)
-
-estimates <- analysesSum[analysesSum$analysisId == 3 &
-                             analysesSum$targetId == treatmentId &
-                             analysesSum$comparatorId == comparatorId, ]
-
-negControls <- estimates[estimates$outcomeId %in% negativeControlIds, ]
-mean(negControls$p < 0.05)
-fileName <- file.path(workFolder, "symposium", "bias_adjusted.png")
-plotEstimates(logRrNegatives = negControls$logRr,
-              seLogRrNegatives = negControls$seLogRr,
-              #title = title,
-              xLabel = "Hazard ratio",
-              fileName = fileName)
-
-# True and observed plots
-injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == row$tCohortDefinitionId, ]
-injectedSignals <- data.frame(outcomeId = injectedSignals$newOutcomeId,
-                              trueLogRr = log(injectedSignals$targetEffectSize))
-negativeControlIds <- unique(signalInjectionSum$outcomeId[signalInjectionSum$exposureId == row$tCohortDefinitionId & signalInjectionSum$injectedOutcomes != 0])
-negativeControls <- data.frame(outcomeId = negativeControlIds,
-                               trueLogRr = 0)
-estimates <- analysesSum[analysesSum$analysisId == 1 &
-                             analysesSum$targetId == treatmentId &
-                             analysesSum$comparatorId == comparatorId, ]
-data <- rbind(injectedSignals, negativeControls)
-data <- merge(data, estimates[, c("outcomeId", "logRr", "seLogRr")])
-fileName <-file.path(workFolder, "symposium", "trueAndObs_crude.png")
-
-EmpiricalCalibration::plotTrueAndObserved(logRr = data$logRr,
-                                          seLogRr = data$seLogRr,
-                                          trueLogRr = data$trueLogRr,
-                                          xLabel = "Hazard ratio",
-                                          fileName = fileName)
-
-estimates <- analysesSum[analysesSum$analysisId == 3 &
-                             analysesSum$targetId == treatmentId &
-                             analysesSum$comparatorId == comparatorId, ]
-data <- rbind(injectedSignals, negativeControls)
-data <- merge(data, estimates[, c("outcomeId", "logRr", "seLogRr")])
-fileName <-file.path(workFolder, "symposium", "trueAndObs_adjusted.png")
-
-EmpiricalCalibration::plotTrueAndObserved(logRr = data$logRr,
-                                          seLogRr = data$seLogRr,
-                                          trueLogRr = data$trueLogRr,
-                                          xLabel = "Hazard ratio",
-                                          fileName = fileName)
+###########################################################################
+# Example error distribution plots                                        #
+###########################################################################
 
 
+require(ggplot2)
+x <- seq(from = 0.25, to = 10, by = 0.01)
+y <- dnorm(log(x), mean = log(1.5), sd = 0.25)
+d <- data.frame(x = x,
+                logX = log(x),
+                y = y)
+
+breaks <- c(0.25,0.5,1,2,4,6,8,10)
+theme <- element_text(colour="#000000", size=12)
+themeRA <- element_text(colour="#000000", size=12,hjust=1)
+themeLA <- element_text(colour="#000000", size=12,hjust=0)
+ggplot(d, aes(x=logX,y=y), environment=environment())+
+    geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
+    geom_density(stat = "identity", color = rgb(0, 0, 0.8), fill = rgb(0, 0, 0.8, alpha = 0.5)) +
+    geom_hline(yintercept=0) +
+    geom_vline(xintercept=0) +
+    scale_x_continuous("Effect size",limits = log(c(0.25,10)), breaks=log(breaks),labels=breaks) +
+    theme(
+        panel.grid.minor = element_blank(),
+        panel.background= element_rect(fill="#FAFAFA", colour = NA),
+        panel.grid.major= element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = theme,
+        legend.key= element_blank(),
+        strip.text.x = theme,
+        strip.background = element_blank(),
+        legend.position = "none"
+    )
+ggsave(file.path(symposiumFolder, "ErrorDistExample1.png"), width=5, height=2, dpi = 500)
+
+y <- dnorm(log(x), mean = log(2.5), sd = 0.35)
+d <- data.frame(x = x,
+                logX = log(x),
+                y = y)
+
+breaks <- c(0.25,0.5,1,2,4,6,8,10)
+theme <- element_text(colour="#000000", size=12)
+themeRA <- element_text(colour="#000000", size=12,hjust=1)
+themeLA <- element_text(colour="#000000", size=12,hjust=0)
+ggplot(d, aes(x=logX,y=y), environment=environment())+
+    geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
+    geom_density(stat = "identity", color = rgb(0, 0, 0.8), fill = rgb(0, 0, 0.8, alpha = 0.5)) +
+    geom_hline(yintercept=0) +
+    geom_vline(xintercept=log(2)) +
+    scale_x_continuous("Effect size",limits = log(c(0.25,10)), breaks=log(breaks),labels=breaks) +
+    theme(
+        panel.grid.minor = element_blank(),
+        panel.background= element_rect(fill="#FAFAFA", colour = NA),
+        panel.grid.major= element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = theme,
+        legend.key= element_blank(),
+        strip.text.x = theme,
+        strip.background = element_blank(),
+        legend.position = "none"
+    )
+ggsave(file.path(symposiumFolder, "ErrorDistExample2.png"), width=5, height=2, dpi = 500)
