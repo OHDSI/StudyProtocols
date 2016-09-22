@@ -10,3 +10,11 @@
 
 statement_*.sql
 errorReport.txt
+R/TC
+
+#C++ objects
+src/*.o
+src/*.so
+src/*.dll
+/Debug
+standalone/build/*
