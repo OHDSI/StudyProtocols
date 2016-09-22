@@ -1,7 +1,9 @@
-OHDSI Population-Level Evidence Generation for Depression
+OHDSI Large-Scale Population-Level Evidence Generation study
 ======================================================================
 
 This study aims to generate population-level evidence on treatments used for major depressive disorder.
+
+Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:largescalepopest).
 
 How to run
 ==========
@@ -31,8 +33,16 @@ How to run
 												 password = "secret",
 												 server = "myserver")
     workFolder <- "s:/temp/LargeScalePopEst"
+    oracleTempSchema <- NULL
 
-	# To-do: complete
+	execute(connectionDetails,
+		    cdmDatabaseSchema = "cdm_data",
+		    oracleTempSchema = oracleTempSchema,
+		    workDatabaseSchema = "results",
+	   	    studyCohortTable = "ohdsi_depression_cohorts",
+	   	    exposureCohortSummaryTable = "ohdsi_depression_exposure_summary",
+		    outputFolder = "c:/temp/study_results",
+		    maxCores = 4)
 	```
 
 	* For details on how to configure```createConnectionDetails``` in your environment type this for help:
@@ -46,19 +56,4 @@ How to run
 
 	* ```cdmVersion``` is the version of the CDM. Can be "4" or "5".
 
-4. Upload the file ```export/studyResult.zip``` in the output folder to the study coordinator:
-    ```r
-    submitResults("c:/temp/study_results/export", key = "<key>", secret = "<secret>")
-    ```
-    Where ```key``` and ```secret``` are the credentials provided to you personally by the study coordinator.
 
-Generating figures and tables
-=============================
-
-To locally generate the figures and tables described in the protocol, you can run
-
-```r
-    createFiguresAndTables(folder = "my_folder")
-```
-
-where ```my_folder``` is the path to the folder where the results of the ```createShareableResults``` command were stored.
