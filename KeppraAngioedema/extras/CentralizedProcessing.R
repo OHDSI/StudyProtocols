@@ -2,7 +2,9 @@ library(KeppraAngioedema)
 
 # Create per-database reports:
 studyFolder <- "S:/Angioedema"
-for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
+folders <- c("Truven_CCAE", "Truven_MDCD", "Truven_MDCR", "Optum")
+#for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
+for (file in folders) {
     if (file.info(file.path(studyFolder, file))$isdir) {
         writeLines(paste("Processing", file))
         createTableAndFigures(file.path(studyFolder, file))

@@ -104,13 +104,13 @@ packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder, m
     balance$beforeMatchingSumTreated[idx] <- NA
     balance$beforeMatchingMeanTreated[idx] <- NA
     idx <- balance$beforeMatchingSumComparator < minCellCount
-    balance$beforeMatchingsumComparator[idx] <- NA
+    balance$beforeMatchingSumComparator[idx] <- NA
     balance$beforeMatchingMeanComparator[idx] <- NA
     idx <- balance$afterMatchingSumTreated < minCellCount
     balance$afterMatchingSumTreated[idx] <- NA
     balance$afterMatchingMeanTreated[idx] <- NA
     idx <- balance$afterMatchingSumComparator < minCellCount
-    balance$afterMatchingsumComparator[idx] <- NA
+    balance$afterMatchingSumComparator[idx] <- NA
     balance$afterMatchingMeanComparator[idx] <- NA
     write.csv(balance, file.path(exportFolder, "BalanceVarRatioMatching.csv"), row.names = FALSE)
 
@@ -122,20 +122,22 @@ packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder, m
     balance$beforeMatchingSumTreated[idx] <- NA
     balance$beforeMatchingMeanTreated[idx] <- NA
     idx <- balance$beforeMatchingSumComparator < minCellCount
-    balance$beforeMatchingsumComparator[idx] <- NA
+    balance$beforeMatchingSumComparator[idx] <- NA
     balance$beforeMatchingMeanComparator[idx] <- NA
     idx <- balance$afterMatchingSumTreated < minCellCount
     balance$afterMatchingSumTreated[idx] <- NA
     balance$afterMatchingMeanTreated[idx] <- NA
     idx <- balance$afterMatchingSumComparator < minCellCount
-    balance$afterMatchingsumComparator[idx] <- NA
+    balance$afterMatchingSumComparator[idx] <- NA
     balance$afterMatchingMeanComparator[idx] <- NA
     write.csv(balance, file.path(exportFolder, "Balance1On1Matching.csv"), row.names = FALSE)
 
     ### Removed (redunant) covariates ###
-    idx <- is.na(ffbase::ffmatch(cohortMethodData$covariateRef$covariateId, ff::as.ff(cohortMethodData$metaData$deletedCovariateIds)))
-    removedCovars <- ff::as.ram(cohortMethodData$covariateRef[ffbase::ffwhich(idx, idx == FALSE), ])
-    write.csv(removedCovars, file.path(exportFolder, "RemovedCovars.csv"), row.names = FALSE)
+    if (!is.null(cohortMethodData$metaData$deletedCovariateIds)) {
+        idx <- is.na(ffbase::ffmatch(cohortMethodData$covariateRef$covariateId, ff::as.ff(cohortMethodData$metaData$deletedCovariateIds)))
+        removedCovars <- ff::as.ram(cohortMethodData$covariateRef[ffbase::ffwhich(idx, idx == FALSE), ])
+        write.csv(removedCovars, file.path(exportFolder, "RemovedCovars.csv"), row.names = FALSE)
+    }
 
     ### Main Kaplan Meier plots ###
     strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 2 & outcomeReference$outcomeId ==

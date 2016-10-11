@@ -322,6 +322,12 @@ createAnalysesDetails <- function(outputFolder) {
   drugComparatorOutcomesList <- list(dcos)
 
   covarSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
+                                                              useCovariateDemographicsGender = TRUE,
+                                                              useCovariateDemographicsRace = TRUE,
+                                                              useCovariateDemographicsEthnicity = TRUE,
+                                                              useCovariateDemographicsAge = TRUE,
+                                                              useCovariateDemographicsYear = TRUE,
+                                                              useCovariateDemographicsMonth = TRUE,
                                                               useCovariateConditionOccurrence = TRUE,
                                                               useCovariateConditionOccurrence365d = TRUE,
                                                               useCovariateConditionOccurrence30d = TRUE,

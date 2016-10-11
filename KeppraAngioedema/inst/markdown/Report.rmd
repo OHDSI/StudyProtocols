@@ -5,7 +5,7 @@ output:
         fig_caption: yes
         toc: yes
 params: 
-    exportFolder: S:/Angioedema/IMEDS_MDCR
+    exportFolder: S:/Angioedema/Truven_CCAE
 ---
 
 ```{r, echo = FALSE, message = FALSE}
@@ -135,9 +135,18 @@ In total, 8 analysis variations were executed:
 
 
 ```{r, echo = FALSE}
+    removeLowCounts <- function(counts) {
+        formatted <- formatC(counts, big.mark = ',')
+        formatted[counts <= 5 & counts > 0] <- "<6" 
+        return(formatted)
+    }
+    
     table <- results[results$outcomeId %in% hois, c("analysisId", "treated", "comparator", "eventsTreated", "eventsComparator")]
     table <- table[order(table$analysisId), ]
+    table$eventsTreated <- removeLowCounts(table$eventsTreated)
+    table$eventsComparator <- removeLowCounts(table$eventsComparator)
     colnames(table) <- c("Analysis ID", "# treated", "# comparator", "# treated with event", "# comparator with event")
+    
     knitr::kable(table, 
                  caption = "Counts of subjects and events for the treated and comparator groups.", 
                  row.names = FALSE, 

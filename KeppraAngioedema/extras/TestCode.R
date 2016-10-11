@@ -11,40 +11,59 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 user = user,
                                                                 password = pw,
                                                                 port = port)
-cdmDatabaseSchema <- "CDM_Truven_MDCD_V432.dbo"
+cdmDatabaseSchema <- "CDM_Truven_MDCD_V446.dbo"
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "ohdsi_keppra_angioedema"
 oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaMdcd"
 
-cdmDatabaseSchema <- "cdm_truven_ccae_v5.dbo"
+cdmDatabaseSchema <- "cdm_truven_ccae_v441.dbo"
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "ohdsi_keppra_angioedema_ccae"
 oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaCcae"
 
-cdmDatabaseSchema <- "cdm_truven_mdcr_v5.dbo"
+cdmDatabaseSchema <- "cdm_truven_mdcr_v445.dbo"
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "ohdsi_keppra_angioedema_mdcr"
 oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaMdcr"
 
-cdmDatabaseSchema <- "CDM_OPTUM_V379.dbo"
+cdmDatabaseSchema <- "cdm_optum_extended_ses_v458.dbo"
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "ohdsi_keppra_angioedema_optum"
 oracleTempSchema <- NULL
 cdmVersion <- "5"
 outputFolder <- "S:/temp/KeppraAngioedemaOptum"
 
-cdmDatabaseSchema <- "cdm_cprd_v5.dbo"
-workDatabaseSchema <- "scratch.dbo"
-studyCohortTable <- "ohdsi_keppra_angioedema_cprd"
-oracleTempSchema <- NULL
-cdmVersion <- "5"
-outputFolder <- "S:/temp/KeppraAngioedemaCprd"
+# cdmDatabaseSchema <- "cdm_cprd_v5.dbo"
+# workDatabaseSchema <- "scratch.dbo"
+# studyCohortTable <- "ohdsi_keppra_angioedema_cprd"
+# oracleTempSchema <- NULL
+# cdmVersion <- "5"
+# outputFolder <- "S:/temp/KeppraAngioedemaCprd"
+
+# dbms <- "redshift"
+# user <- "martijn"
+# pw <- Sys.getenv("pwPharmetrics")
+# server <- "ohdsi.cxmbbsphpllo.us-east-1.redshift.amazonaws.com/pplus"
+# cdmDatabaseSchema <- "cdmv5"
+# workDatabaseSchema <- "scratch"
+# oracleTempSchema <- NULL
+# studyCohortTable <- "ohdsi_test_cohorts"
+# outputFolder <- "S:/temp/KeppraAngioedemaPplus"
+# port <- 5439
+# cdmVersion <- "5"
+
+
+connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
+                                                                server = server,
+                                                                user = user,
+                                                                password = pw,
+                                                                port = port)
 
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
@@ -54,8 +73,13 @@ execute(connectionDetails = connectionDetails,
         cdmVersion = cdmVersion,
         outputFolder = outputFolder,
         createCohorts = FALSE,
-        runAnalyses = FALSE,
-        maxCores = 32)
+        runAnalyses = TRUE,
+        maxCores = 20)
+
+packageResults(connectionDetails = connectionDetails,
+               cdmDatabaseSchema = cdmDatabaseSchema,
+               outputFolder = outputFolder,
+               minCellCount = 5)
 
 createTableAndFigures(file.path(outputFolder, "export"))
 

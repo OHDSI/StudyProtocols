@@ -10,7 +10,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -139,7 +138,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -209,7 +207,8 @@
     },
     "createPs": true,
     "createPsArgs": {
-      "stopOnHighCorrelation": true,
+      "errorOnHighCorrelation": true,
+      "stopOnError": true,
       "prior": {
         "priorType": "laplace",
         "variance": 1,
@@ -238,7 +237,7 @@
         "startingVariance": 0.01,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
-        "selectorType": "default",
+        "selectorType": "auto",
         "initialBound": 2,
         "maxBoundCount": 5,
         "attr_class": "cyclopsControl"
@@ -311,7 +310,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -381,7 +379,8 @@
     },
     "createPs": true,
     "createPsArgs": {
-      "stopOnHighCorrelation": true,
+      "errorOnHighCorrelation": true,
+      "stopOnError": true,
       "prior": {
         "priorType": "laplace",
         "variance": 1,
@@ -410,7 +409,7 @@
         "startingVariance": 0.01,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
-        "selectorType": "default",
+        "selectorType": "auto",
         "initialBound": 2,
         "maxBoundCount": 5,
         "attr_class": "cyclopsControl"
@@ -483,7 +482,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -553,7 +551,8 @@
     },
     "createPs": true,
     "createPsArgs": {
-      "stopOnHighCorrelation": true,
+      "errorOnHighCorrelation": true,
+      "stopOnError": true,
       "prior": {
         "priorType": "laplace",
         "variance": 1,
@@ -582,7 +581,7 @@
         "startingVariance": 0.01,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
-        "selectorType": "default",
+        "selectorType": "auto",
         "initialBound": 2,
         "maxBoundCount": 5,
         "attr_class": "cyclopsControl"
@@ -655,7 +654,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -784,7 +782,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -854,7 +851,8 @@
     },
     "createPs": true,
     "createPsArgs": {
-      "stopOnHighCorrelation": true,
+      "errorOnHighCorrelation": true,
+      "stopOnError": true,
       "prior": {
         "priorType": "laplace",
         "variance": 1,
@@ -883,7 +881,7 @@
         "startingVariance": 0.01,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
-        "selectorType": "default",
+        "selectorType": "auto",
         "initialBound": 2,
         "maxBoundCount": 5,
         "attr_class": "cyclopsControl"
@@ -956,7 +954,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -1026,7 +1023,8 @@
     },
     "createPs": true,
     "createPsArgs": {
-      "stopOnHighCorrelation": true,
+      "errorOnHighCorrelation": true,
+      "stopOnError": true,
       "prior": {
         "priorType": "laplace",
         "variance": 1,
@@ -1055,7 +1053,7 @@
         "startingVariance": 0.01,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
-        "selectorType": "default",
+        "selectorType": "auto",
         "initialBound": 2,
         "maxBoundCount": 5,
         "attr_class": "cyclopsControl"
@@ -1128,7 +1126,6 @@
       "removeDuplicateSubjects": false,
       "washoutPeriod": 0,
       "covariateSettings": {
-        "useCovariateCohortIdIs1": false,
         "useCovariateDemographics": true,
         "useCovariateDemographicsGender": true,
         "useCovariateDemographicsRace": true,
@@ -1198,7 +1195,8 @@
     },
     "createPs": true,
     "createPsArgs": {
-      "stopOnHighCorrelation": true,
+      "errorOnHighCorrelation": true,
+      "stopOnError": true,
       "prior": {
         "priorType": "laplace",
         "variance": 1,
@@ -1227,7 +1225,7 @@
         "startingVariance": 0.01,
         "useKKTSwindle": false,
         "tuneSwindle": 10,
-        "selectorType": "default",
+        "selectorType": "auto",
         "initialBound": 2,
         "maxBoundCount": 5,
         "attr_class": "cyclopsControl"
