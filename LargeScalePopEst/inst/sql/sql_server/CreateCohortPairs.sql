@@ -81,10 +81,10 @@ INNER JOIN #exposure_cohorts ec1
 	ON cp1.t_cohort_definition_id = ec1.cohort_definition_id
 		AND ec1.cohort_start_date BETWEEN cp1.min_cohort_date
 			AND cp1.max_cohort_date
-LEFT JOIN @cdm_database_schema.drug_era de1
-	ON cp1.c_cohort_definition_id = de1.drug_concept_id
-		AND ec1.subject_id = de1.person_id
-WHERE de1.person_id IS NULL;
+LEFT JOIN #exposure_cohorts ec2
+	ON cp1.c_cohort_definition_id = ec2.cohort_definition_id
+		AND ec1.subject_id = ec2.subject_id
+WHERE ec2.subject_id IS NULL;
 
 --get cprime
 INSERT INTO @target_database_schema.@target_cohort_table (
@@ -102,10 +102,10 @@ INNER JOIN #exposure_cohorts ec1
 	ON cp1.c_cohort_definition_id = ec1.cohort_definition_id
 		AND ec1.cohort_start_date BETWEEN cp1.min_cohort_date
 			AND cp1.max_cohort_date
-LEFT JOIN @cdm_database_schema.drug_era de1
-	ON cp1.t_cohort_definition_id = de1.drug_concept_id
-		AND ec1.subject_id = de1.person_id
-WHERE de1.person_id IS NULL;
+LEFT JOIN #exposure_cohorts ec2
+	ON cp1.t_cohort_definition_id = ec2.cohort_definition_id
+		AND ec1.subject_id = ec2.subject_id
+WHERE ec2.subject_id IS NULL;
 
 IF OBJECT_ID('tempdb..#exposure_pair_cohort_summary', 'U') IS NOT NULL
 	DROP TABLE #exposure_pair_cohort_summary;

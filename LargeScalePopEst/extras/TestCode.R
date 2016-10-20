@@ -24,7 +24,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_MDCD_V446.dbo"
+cdmDatabaseSchema <- "CDM_Truven_MDCD_V464.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_mdcd"
@@ -32,13 +32,13 @@ exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Mdcd"
 #workFolder <- "S:/PopEstDepression_Mdcd"
-maxCores <- 20
+maxCores <- 30
 
 pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_CCAE_V441.dbo"
+cdmDatabaseSchema <- "CDM_Truven_CCAE_V466.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_ccae"
@@ -51,7 +51,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_MDCR_V445.dbo"
+cdmDatabaseSchema <- "CDM_Truven_MDCR_V467.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_mdcr"
@@ -64,7 +64,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "cdm_optum_extended_ses_v458.dbo"
+cdmDatabaseSchema <- "cdm_optum_extended_ses_v469.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_optum"
@@ -87,10 +87,10 @@ execute(connectionDetails = connectionDetails,
         exposureCohortSummaryTable = exposureCohortSummaryTable,
         workFolder = workFolder,
         maxCores = maxCores,
-        createCohorts = FALSE,
-        fetchAllDataFromServer = FALSE,
-        injectSignals = FALSE,
-        generateAllCohortMethodDataObjects = FALSE,
+        createCohorts = TRUE,
+        fetchAllDataFromServer = TRUE,
+        injectSignals = TRUE,
+        generateAllCohortMethodDataObjects = TRUE,
         runCohortMethod = TRUE)
 
 analysePsDistributions(workFolder)

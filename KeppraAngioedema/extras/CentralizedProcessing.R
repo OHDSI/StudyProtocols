@@ -14,20 +14,27 @@ for (file in folders) {
 
 # Create summary csv file:
 allResults <- data.frame()
+skip <- c("IMEDS_MDCR", "Regenstrief")
 for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
-    if (file.info(file.path(studyFolder, file))$isdir) {
-        writeLines(paste("Processing", file))
-        results <- read.csv(file.path(studyFolder, file, "tablesAndFigures", "EmpiricalCalibration.csv"))
-        results <- results[results$outcomeId == 3, ]
-        results$db <- file
-        results <- results[,c(ncol(results), 1:(ncol(results)-1))]
-        allResults <- rbind(allResults, results)
+    if (!(file %in% skip)) {
+        if (file.info(file.path(studyFolder, file))$isdir) {
+            writeLines(paste("Processing", file))
+            results <- read.csv(file.path(studyFolder, file, "tablesAndFigures", "EmpiricalCalibration.csv"))
+            results <- results[results$outcomeId == 3, ]
+            results$db <- file
+            results <- results[,c(ncol(results), 1:(ncol(results)-1))]
+            allResults <- rbind(allResults, results)
+        }
     }
 }
 write.csv(allResults, file.path(studyFolder, "AllResults.csv"), row.names = FALSE)
 
+results <- allResults[allResults$analysisId == 3, ]
+results <- results[!is.na(results$seLogRr), ]
 
-
+library(meta)
+meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
+forest(meta)
 
 
 # exportFolder <- "S:/Angioedema/Regenstrief"
