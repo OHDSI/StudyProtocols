@@ -2,7 +2,8 @@ Package: CiCalibration
 Title: Confidence Interval Calibration Evaluation study
 Version: 0.0.1
 Author: Martijn J. Schuemie [aut, cre],
-    Patrick B. Ryan [aut]
+    Patrick B. Ryan [aut],
+    Marc A. Suchard [aut]
 Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
 Description: What the study does (paragraph)
 Depends:
