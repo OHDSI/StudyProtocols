@@ -1,0 +1,3 @@
+study,targetId,targetName,comparatorId,comparatorName,outcomeId,outcomeName
+SSRIs,4,SSRIs,,Unexposed,6,Upper GI Bleed
+Dabigatran,1,Dabigatran,2,Warfarin,3,GI Bleed

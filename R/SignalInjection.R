@@ -1,0 +1,110 @@
+# Copyright 2016 Observational Health Data Sciences and Informatics
+#
+# This file is part of CiCalibration
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#' Inject outcomes on top of negative controls
+#'
+#' @details
+#' This function injects outcomes on top of negative controls to create controls with predefined relative risks greater than one.
+#'
+#' @param connectionDetails    An object of type \code{connectionDetails} as created using the
+#'                             \code{\link[DatabaseConnector]{createConnectionDetails}} function in the
+#'                             DatabaseConnector package.
+#' @param cdmDatabaseSchema    Schema name where your patient-level data in OMOP CDM format resides.
+#'                             Note that for SQL Server, this should include both the database and
+#'                             schema name, for example 'cdm_data.dbo'.
+#' @param workDatabaseSchema   Schema name where intermediate data can be stored. You will need to have
+#'                             write priviliges in this schema. Note that for SQL Server, this should
+#'                             include both the database and schema name, for example 'cdm_data.dbo'.
+#' @param studyCohortTable     The name of the study cohort table  in the work database schema.
+#' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write
+#'                             priviliges for storing temporary tables.
+#' @param study                For which study should the cohorts be created? Options are "SSRIs" and "Dabigatran".
+#' @param workFolder           Name of local folder to place results; make sure to use forward slashes
+#'                             (/)
+#' @param maxCores             How many parallel cores should be used? If more cores are made available
+#'                             this can speed up the analyses.
+#'
+#' @export
+injectSignals <- function(connectionDetails,
+                          cdmDatabaseSchema,
+                          workDatabaseSchema,
+                          studyCohortTable = "ohdsi_ci_calibration",
+                          oracleTempSchema,
+                          study,
+                          workFolder,
+                          exposureOutcomePairs = NULL,
+                          maxCores = 4) {
+    signalInjectionFolder <- file.path(workFolder, "signalInjection")
+    if (!file.exists(signalInjectionFolder))
+        dir.create(signalInjectionFolder)
+
+    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
+    negativeControls <- read.csv(pathToCsv)
+    negativeControls <- negativeControls[negativeControls$study == study, ]
+    pathToCsv <- system.file("settings", "HypothesesOfInterest.csv", package = "CiCalibration")
+    hypothesesOfInterest <- read.csv(pathToCsv)
+    hypothesesOfInterest <- hypothesesOfInterest[hypothesesOfInterest$study == study, ]
+    exposureOutcomePairs <- data.frame(exposureId = hypothesesOfInterest$targetId,
+                                           outcomeId = negativeControls$conceptId)
+	if (study == "SSRIs") {
+   	  modelType <- "poisson"
+	  firstOutcomeOnly <- FALSE
+	  removePeopleWithPriorOutcomes <- FALSE
+	  firstExposureOnly <- FALSE
+	} else {
+	  modelType <- "survival"
+	  firstOutcomeOnly <- TRUE
+	  removePeopleWithPriorOutcomes <- TRUE
+	  firstExposureOnly <- TRUE
+	}
+    summ <- MethodEvaluation::injectSignals(connectionDetails = connectionDetails,
+                                            cdmDatabaseSchema = cdmDatabaseSchema,
+                                            oracleTempSchema = cdmDatabaseSchema,
+                                            outcomeDatabaseSchema = workDatabaseSchema,
+                                            outcomeTable = studyCohortTable,
+                                            outputDatabaseSchema = workDatabaseSchema,
+                                            outputTable = studyCohortTable,
+                                            createOutputTable = FALSE,
+                                            exposureOutcomePairs = exposureOutcomePairs,
+                                            modelType = modelType,
+                                            buildOutcomeModel = TRUE,
+                                            buildModelPerExposure = FALSE,
+                                            minOutcomeCountForModel = 100,
+                                            minOutcomeCountForInjection = 25,
+                                            prior = Cyclops::createPrior("laplace", exclude = 0, useCrossValidation = TRUE),
+                                            control = Cyclops::createControl(cvType = "auto",
+                                                                             startingVariance = 0.01,
+                                                                             tolerance = 2e-07,
+                                                                             cvRepetitions = 1,
+                                                                             noiseLevel = "silent",
+                                                                             threads = min(10, maxCores)),
+                                            firstExposureOnly = firstExposureOnly,
+                                            washoutPeriod = 180,
+                                            riskWindowStart = 0,
+                                            riskWindowEnd = 0,
+                                            addExposureDaysToEnd = TRUE,
+                                            firstOutcomeOnly = firstOutcomeOnly,
+                                            removePeopleWithPriorOutcomes = removePeopleWithPriorOutcomes,
+                                            maxSubjectsForModel = 250000,
+                                            effectSizes = c(1.5, 2, 4),
+                                            precision = 0.01,
+                                            outputIdOffset = 10000,
+                                            workFolder = signalInjectionFolder,
+                                            cdmVersion = "5",
+                                            modelThreads = max(1, round(maxCores/8)),
+                                            generationThreads = min(6, maxCores))
+    write.csv(summ, file.path(workFolder, paste0("SignalInjectionSummary_", study, ".csv")), row.names = FALSE)
+}
