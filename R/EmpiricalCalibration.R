@@ -18,13 +18,13 @@
 #' Perform empirical calibration
 #'
 #' @details
-#' Performs empirical calibration of confidence intervals and p-values using the negative and positive control outcomes.
+#' Performs empirical calibration of confidence intervals and p-values using the negative and positive
+#' control outcomes.
 #'
 #' @param workFolder   The path to the output folder containing the results.
 #'
 #' @export
-doEmpiricalCalibration <- function(workFolder,
-                                   study) {
+doEmpiricalCalibration <- function(workFolder, study) {
 
 
   outcomeReference <- readRDS(file.path(workFolder, "outcomeModelReference.rds"))

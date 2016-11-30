@@ -40,48 +40,52 @@ runSccs <- function(connectionDetails,
                     studyCohortTable = "ohdsi_ci_calibration",
                     oracleTempSchema = NULL,
                     maxCores = 4) {
-    sccsFolder <- file.path(workFolder, "sccsOutput")
-    if (!file.exists(sccsFolder))
-        dir.create(sccsFolder)
+  sccsFolder <- file.path(workFolder, "sccsOutput")
+  if (!file.exists(sccsFolder))
+    dir.create(sccsFolder)
 
-    writeLines("Running self-controlled case series")
-    sccsAnalysisListFile <- system.file("settings", "sccsAnalysisList.txt", package = "CiCalibration")
-    sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
+  writeLines("Running self-controlled case series")
+  sccsAnalysisListFile <- system.file("settings", "sccsAnalysisList.txt", package = "CiCalibration")
+  sccsAnalysisList <- SelfControlledCaseSeries::loadSccsAnalysisList(sccsAnalysisListFile)
 
-    pathToCsv <- system.file("settings", "HypothesesOfInterest.csv", package = "CiCalibration")
-    hypothesesOfInterest <- read.csv(pathToCsv)
-    hypothesesOfInterest <- hypothesesOfInterest[hypothesesOfInterest$study == "SSRIs", ]
+  pathToHoi <- system.file("settings", "sccsHypothesisOfInterest.txt", package = "CiCalibration")
+  hypothesesOfInterest <- SelfControlledCaseSeries::loadExposureOutcomeList(pathToHoi)
 
-    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
-    negativeControls <- read.csv(pathToCsv)
-    negativeControls <- negativeControls[negativeControls$study == "SSRIs", ]
+  # Add negative control outcomes:
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
+  negativeControls <- read.csv(pathToCsv)
+  negativeControls <- negativeControls[negativeControls$study == "SSRIs", ]
+  for (outcomeId in negativeControls$conceptId) {
+      hoi <- SelfControlledCaseSeries::createExposureOutcome(exposureId = hypothesesOfInterest[[1]]$exposureId,
+                                                             outcomeId = outcomeId)
+      hypothesesOfInterest[[length(hypothesesOfInterest) + 1]] <- hoi
+  }
 
-    summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_SSRIs.csv"))
-    outcomeIds <- c(hypothesesOfInterest$outcomeId,
-                    negativeControls$conceptId,
-                    summ$newOutcomeId)
-    eoList <- list()
-    for (outcomeId in outcomeIds) {
-        eo <- SelfControlledCaseSeries::createExposureOutcome(exposureId = hypothesesOfInterest$targetId,
-                                                                           outcomeId = outcomeId)
-        eoList[[length(eonList) + 1]] <- eo
-    }
+  # Add positive control outcomes:
+  summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_SSRIs.csv"))
+  for (outcomeId in summ$newOutcomeId) {
+      hoi <- SelfControlledCaseSeries::createExposureOutcome(exposureId = hypothesesOfInterest[[1]]$exposureId,
+                                                             outcomeId = outcomeId)
+      hypothesesOfInterest[[length(hypothesesOfInterest) + 1]] <- hoi
+  }
 
-    sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
-                                                            cdmDatabaseSchema = cdmDatabaseSchema,
-                                                            oracleTempSchema = oracleTempSchema,
-                                                            exposureTable = "drug_era",
-                                                            outcomeDatabaseSchema = outcomeDatabaseSchema,
-                                                            outcomeTable = outcomeTable,
-                                                            sccsAnalysisList = sccsAnalysisList,
-                                                            exposureOutcomeList = eoList,
-                                                            cdmVersion = cdmVersion,
-                                                            outputFolder = sccsFolder,
-                                                            combineDataFetchAcrossOutcomes = TRUE,
-                                                            getDbSccsDataThreads = 1,
-                                                            createSccsEraDataThreads = min(3, maxCores),
-                                                            fitSccsModelThreads = max(1, round(maxCores/6)),
-                                                            cvThreads = min(10, maxCores))
-    sccsSummary <- SelfControlledCaseSeries::summarizeSccsAnalyses(sccsResult)
-    write.csv(sccsSummary, file.path(workFolder, "sccsSummary.csv"), row.names = FALSE)
+  sccsResult <- SelfControlledCaseSeries::runSccsAnalyses(connectionDetails = connectionDetails,
+                                                          cdmDatabaseSchema = cdmDatabaseSchema,
+                                                          oracleTempSchema = oracleTempSchema,
+                                                          exposureDatabaseSchema = workDatabaseSchema,
+                                                          exposureTable = studyCohortTable,
+                                                          outcomeDatabaseSchema = workDatabaseSchema,
+                                                          outcomeTable = studyCohortTable,
+                                                          sccsAnalysisList = sccsAnalysisList,
+                                                          exposureOutcomeList = hypothesesOfInterest,
+                                                          cdmVersion = 5,
+                                                          outputFolder = sccsFolder,
+                                                          combineDataFetchAcrossOutcomes = TRUE,
+                                                          getDbSccsDataThreads = 1,
+                                                          createSccsEraDataThreads = 1,#min(3, maxCores),
+                                                          fitSccsModelThreads = max(1, round(maxCores/6)),
+                                                          cvThreads = min(10, maxCores))
+  sccsSummary <- SelfControlledCaseSeries::summarizeSccsAnalyses(sccsResult)
+  write.csv(sccsSummary, file.path(workFolder, "sccsSummary.csv"), row.names = FALSE)
 }
+

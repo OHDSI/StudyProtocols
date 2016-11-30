@@ -34,7 +34,8 @@
 #'                             study.
 #' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write
 #'                             priviliges for storing temporary tables.
-#' @param study                For which study should the cohorts be created? Options are "SSRIs" and "Dabigatran".
+#' @param study                For which study should the cohorts be created? Options are "SSRIs" and
+#'                             "Dabigatran".
 #' @param workFolder           Name of local folder to place results; make sure to use forward slashes
 #'                             (/)
 #'
@@ -44,7 +45,7 @@ createCohorts <- function(connectionDetails,
                           workDatabaseSchema,
                           studyCohortTable = "ohdsi_ci_calibration",
                           oracleTempSchema,
-                          study = "Dabigatran",
+                          study = "Tata",
                           workFolder) {
   conn <- DatabaseConnector::connect(connectionDetails)
 
@@ -59,32 +60,35 @@ createCohorts <- function(connectionDetails,
   cohortsToCreate <- read.csv(pathToCsv)
   cohortsToCreate <- cohortsToCreate[cohortsToCreate$study == study, ]
   for (i in 1:nrow(cohortsToCreate)) {
-      writeLines(paste("Creating cohort:", cohortsToCreate$name[i]))
-      sql <- SqlRender::loadRenderTranslateSql(paste0(cohortsToCreate$name[i], ".sql"),
+    writeLines(paste("Creating cohort:", cohortsToCreate$name[i]))
+    sql <- SqlRender::loadRenderTranslateSql(paste0(cohortsToCreate$name[i], ".sql"),
+                                             "CiCalibration",
+                                             dbms = connectionDetails$dbms,
+                                             oracleTempSchema = oracleTempSchema,
+                                             cdm_database_schema = cdmDatabaseSchema,
+                                             target_database_schema = workDatabaseSchema,
+                                             target_cohort_table = studyCohortTable,
+                                             target_cohort_id = cohortsToCreate$cohortId[i])
+    DatabaseConnector::executeSql(conn, sql)
+  }
+
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
+  negativeControls <- read.csv(pathToCsv)
+  negativeControls <- negativeControls[negativeControls$study == study, ]
+  if (nrow(negativeControls) == 0) {
+      writeLines("- No negative controls to create!")
+  } else {
+      writeLines("- Creating negative control outcome cohort")
+      sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
                                                "CiCalibration",
                                                dbms = connectionDetails$dbms,
                                                oracleTempSchema = oracleTempSchema,
                                                cdm_database_schema = cdmDatabaseSchema,
                                                target_database_schema = workDatabaseSchema,
                                                target_cohort_table = studyCohortTable,
-                                               target_cohort_id = cohortsToCreate$cohortId[i])
+                                               outcome_ids = negativeControls$conceptId)
       DatabaseConnector::executeSql(conn, sql)
   }
-
-  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
-  negativeControls <- read.csv(pathToCsv)
-  negativeControls <- negativeControls[negativeControls$study == study, ]
-  writeLines("- Creating negative control outcome cohort")
-  sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
-                                           "CiCalibration",
-                                           dbms = connectionDetails$dbms,
-                                           oracleTempSchema = oracleTempSchema,
-                                           cdm_database_schema = cdmDatabaseSchema,
-                                           target_database_schema = workDatabaseSchema,
-                                           target_cohort_table = studyCohortTable,
-                                           outcome_ids = negativeControls$conceptId)
-  DatabaseConnector::executeSql(conn, sql)
-
   # Check number of subjects per cohort:
   sql <- "SELECT cohort_definition_id, COUNT(*) AS count FROM @work_database_schema.@study_cohort_table GROUP BY cohort_definition_id"
   sql <- SqlRender::renderSql(sql,
@@ -92,15 +96,30 @@ createCohorts <- function(connectionDetails,
                               study_cohort_table = studyCohortTable)$sql
   sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
   counts <- DatabaseConnector::querySql(conn, sql)
+  RJDBC::dbDisconnect(conn)
+
   names(counts) <- SqlRender::snakeCaseToCamelCase(names(counts))
-  counts <- merge(counts, cohortsToCreate[, c("cohortId", "name")], by.x = "cohortDefinitionId", by.y = "cohortId", all.x = TRUE)
-  counts <- merge(counts, negativeControls[, c("conceptId", "name")], by.x = "cohortDefinitionId", by.y = "conceptId", all.x = TRUE)
+  counts <- merge(counts,
+                  cohortsToCreate[,
+                  c("cohortId", "name")],
+                  by.x = "cohortDefinitionId",
+                  by.y = "cohortId",
+                  all.x = TRUE)
+  counts <- merge(counts,
+                  negativeControls[,
+                  c("conceptId", "name")],
+                  by.x = "cohortDefinitionId",
+                  by.y = "conceptId",
+                  all.x = TRUE)
   counts$cohortName <- as.character(counts$name.x)
   counts$cohortName[is.na(counts$name.x)] <- as.character(counts$name.y[is.na(counts$name.x)])
   counts$name.x <- NULL
   counts$name.y <- NULL
-  write.csv(counts, file.path(workFolder, paste0("CohortCounts_", study, ".csv")), row.names = FALSE)
+  write.csv(counts, file.path(workFolder,
+                              paste0("CohortCounts_", study, ".csv")), row.names = FALSE)
   print(counts)
-
-  RJDBC::dbDisconnect(conn)
 }
+
+
+# DatabaseConnector::querySql(conn, 'SELECT max(cohort_start_date) FROM
+# scratch.dbo.mschuemie_ci_calibration_cohorts_mdcd WHERE cohort_definition_id = 4')

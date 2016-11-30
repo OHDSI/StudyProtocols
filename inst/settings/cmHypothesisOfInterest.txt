@@ -1,0 +1,14 @@
+[
+  {
+    "targetId": {
+      "southworth": 1,
+      "graham": 3
+    },
+    "comparatorId": {
+      "southworth": 2,
+      "graham": 4
+    },
+    "outcomeIds": 5,
+    "attr_class": "drugComparatorOutcomes"
+  }
+]

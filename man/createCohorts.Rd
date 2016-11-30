@@ -6,7 +6,7 @@
 \usage{
 createCohorts(connectionDetails, cdmDatabaseSchema, workDatabaseSchema,
   studyCohortTable = "ohdsi_ci_calibration", oracleTempSchema,
-  study = "Dabigatran", workFolder)
+  study = "Tata", workFolder)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the
@@ -28,7 +28,8 @@ study.}
 \item{oracleTempSchema}{Should be used in Oracle to specify a schema where the user has write
 priviliges for storing temporary tables.}
 
-\item{study}{For which study should the cohorts be created? Options are "SSRIs" and "Dabigatran".}
+\item{study}{For which study should the cohorts be created? Options are "SSRIs" and
+"Dabigatran".}
 
 \item{workFolder}{Name of local folder to place results; make sure to use forward slashes
 (/)}

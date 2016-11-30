@@ -52,8 +52,10 @@ UNION  select c.concept_id
 ) I
 ) C;
 
-select row_number() over (order by P.person_id, P.start_date) as event_id, P.person_id, P.start_date, P.end_date, OP.observation_period_start_date as op_start_date, OP.observation_period_end_date as op_end_date
-INTO #primary_events
+
+with primary_events (event_id, person_id, start_date, end_date, op_start_date, op_end_date) as
+(
+select row_number() over (PARTITION BY P.person_id order by P.start_date) as event_id, P.person_id, P.start_date, P.end_date, OP.observation_period_start_date as op_start_date, OP.observation_period_end_date as op_end_date
 FROM
 (
   select P.person_id, P.start_date, P.end_date, ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY start_date ASC) ordinal
@@ -62,27 +64,26 @@ FROM
   select C.person_id, C.drug_era_start_date as start_date, C.drug_era_end_date as end_date, C.drug_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_era_start_date) as ordinal
+  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_era_start_date, de.drug_era_id) as ordinal
   FROM @cdm_database_schema.DRUG_ERA de
 where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 4)
 ) C
 JOIN @cdm_database_schema.PERSON P on C.person_id = P.person_id
-WHERE (C.drug_era_start_date >= DATEFROMPARTS(1990, 01, 01) and C.drug_era_start_date <= DATEFROMPARTS(2003, 11, 01))
-AND YEAR(C.drug_era_start_date) - P.year_of_birth >= 18
+WHERE YEAR(C.drug_era_start_date) - P.year_of_birth >= 16
 
   ) P
 ) P
-JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date between OP.observation_period_start_date and op.observation_period_end_date
-WHERE DATEADD(day,180,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,1,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE
-;
+JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date >=  OP.observation_period_start_date and P.start_date <= op.observation_period_end_date
+WHERE DATEADD(day,0,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,1,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE
 
 
+)
 SELECT event_id, person_id, start_date, end_date, op_start_date, op_end_date
 INTO #qualified_events
 FROM 
 (
   select pe.event_id, pe.person_id, pe.start_date, pe.end_date, pe.op_start_date, pe.op_end_date, row_number() over (partition by pe.person_id order by pe.start_date ASC) as ordinal
-  FROM #primary_events pe
+  FROM primary_events pe
   
 ) QE
 
@@ -92,6 +93,7 @@ FROM
 create table #inclusionRuleCohorts 
 (
   inclusion_rule_id bigint,
+  person_id bigint,
   event_id bigint
 )
 ;
@@ -104,7 +106,7 @@ with cteIncludedEvents(event_id, person_id, start_date, end_date, op_start_date,
   (
     select Q.event_id, Q.person_id, Q.start_date, Q.end_date, Q.op_start_date, Q.op_end_date, SUM(coalesce(POWER(cast(2 as bigint), I.inclusion_rule_id), 0)) as inclusion_rule_mask
     from #qualified_events Q
-    LEFT JOIN #inclusionRuleCohorts I on I.event_id = Q.event_id
+    LEFT JOIN #inclusionRuleCohorts I on I.person_id = Q.person_id and I.event_id = Q.event_id
     GROUP BY Q.event_id, Q.person_id, Q.start_date, Q.end_date, Q.op_start_date, Q.op_end_date
   ) MG -- matching groups
 
@@ -132,9 +134,9 @@ DELETE FROM @target_database_schema.@target_cohort_table where cohort_definition
 INSERT INTO @target_database_schema.@target_cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
 select @target_cohort_id as cohort_definition_id, F.person_id, F.start_date, F.end_date
 FROM (
-  select Q.person_id, Q.start_date, E.end_date, row_number() over (partition by Q.event_id order by E.end_date) as ordinal 
-  from #qualified_events Q
-  join #cohort_ends E on Q.event_id = E.event_id and Q.person_id = E.person_id and E.end_date >= Q.start_date
+  select I.person_id, I.start_date, E.end_date, row_number() over (partition by I.person_id, I.event_id order by E.end_date) as ordinal 
+  from #included_events I
+  join #cohort_ends E on I.event_id = E.event_id and I.person_id = E.person_id and E.end_date >= I.start_date
 ) F
 WHERE F.ordinal = 1
 ;
@@ -153,9 +155,6 @@ DROP TABLE #qualified_events;
 
 TRUNCATE TABLE #included_events;
 DROP TABLE #included_events;
-
-TRUNCATE TABLE #primary_events;
-DROP TABLE #primary_events;
 
 TRUNCATE TABLE #Codesets;
 DROP TABLE #Codesets;

@@ -7,35 +7,11 @@ CREATE TABLE #Codesets (
 INSERT INTO #Codesets (codeset_id, concept_id)
 SELECT 0 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
 ( 
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (21604709)and invalid_reason is null
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (1118084)and invalid_reason is null
 UNION  select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (21604709)
-  and c.invalid_reason is null
-
-) I
-) C;
-INSERT INTO #Codesets (codeset_id, concept_id)
-SELECT 1 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
-( 
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (715259,19080226,743670)and invalid_reason is null
-UNION  select c.concept_id
-  from @cdm_database_schema.CONCEPT c
-  join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (715259,19080226,743670)
-  and c.invalid_reason is null
-
-) I
-) C;
-INSERT INTO #Codesets (codeset_id, concept_id)
-SELECT 2 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
-( 
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (375415)and invalid_reason is null
-UNION  select c.concept_id
-  from @cdm_database_schema.CONCEPT c
-  join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (375415)
+  and ca.ancestor_concept_id in (1118084)
   and c.invalid_reason is null
 
 ) I
@@ -43,21 +19,21 @@ UNION  select c.concept_id
 INSERT INTO #Codesets (codeset_id, concept_id)
 SELECT 3 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
 ( 
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (374060,375557,4108356,4110192,441874,4043731,4162038)and invalid_reason is null
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (443392)and invalid_reason is null
 UNION  select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (374060,375557,4108356,4110192,441874,4043731,4162038)
+  and ca.ancestor_concept_id in (443392)
   and c.invalid_reason is null
 
 ) I
 LEFT JOIN
 (
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (4062247,316995,433832,440392,317305,4153351)and invalid_reason is null
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (4179980,4300118)and invalid_reason is null
 UNION  select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (4062247,316995,433832,440392,317305,4153351)
+  and ca.ancestor_concept_id in (4179980,4300118)
   and c.invalid_reason is null
 
 ) E ON I.concept_id = E.concept_id
@@ -66,25 +42,38 @@ WHERE E.concept_id is null
 INSERT INTO #Codesets (codeset_id, concept_id)
 SELECT 4 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
 ( 
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (376713,439847,436430,432923,439040)and invalid_reason is null
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (21603933)and invalid_reason is null
 UNION  select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (376713,436430,432923,439040)
+  and ca.ancestor_concept_id in (21603933)
   and c.invalid_reason is null
 
 ) I
-LEFT JOIN
-(
-  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (42873157,4174299,443752)and invalid_reason is null
+) C;
+INSERT INTO #Codesets (codeset_id, concept_id)
+SELECT 5 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
+( 
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (710062,713109,798834,716968,738156,778268,794147,721724,754270,705755)and invalid_reason is null
 UNION  select c.concept_id
   from @cdm_database_schema.CONCEPT c
   join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
-  and ca.ancestor_concept_id in (42873157,4174299,443752)
+  and ca.ancestor_concept_id in (710062,713109,798834,716968,738156,778268,794147,721724,754270,705755)
   and c.invalid_reason is null
 
-) E ON I.concept_id = E.concept_id
-WHERE E.concept_id is null
+) I
+) C;
+INSERT INTO #Codesets (codeset_id, concept_id)
+SELECT 6 as codeset_id, c.concept_id FROM (select distinct I.concept_id FROM
+( 
+  select concept_id from @cdm_database_schema.CONCEPT where concept_id in (710062,713109,798834,716968,738156,778268,794147,721724,754270,705755)and invalid_reason is null
+UNION  select c.concept_id
+  from @cdm_database_schema.CONCEPT c
+  join @cdm_database_schema.CONCEPT_ANCESTOR ca on c.concept_id = ca.descendant_concept_id
+  and ca.ancestor_concept_id in (710062,713109,798834,716968,738156,778268,794147,721724,754270,705755)
+  and c.invalid_reason is null
+
+) I
 ) C;
 
 
@@ -101,16 +90,15 @@ from
 (
   select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_era_start_date, de.drug_era_id) as ordinal
   FROM @cdm_database_schema.DRUG_ERA de
-where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
+where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 5)
 ) C
 JOIN @cdm_database_schema.PERSON P on C.person_id = P.person_id
-WHERE (C.drug_era_start_date >= DATEFROMPARTS(1988, 01, 01) and C.drug_era_start_date <= DATEFROMPARTS(2003, 11, 01))
-AND YEAR(C.drug_era_start_date) - P.year_of_birth >= 16
+WHERE YEAR(C.drug_era_start_date) - P.year_of_birth >= 16
 
   ) P
 ) P
 JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date >=  OP.observation_period_start_date and P.start_date <= op.observation_period_end_date
-WHERE DATEADD(day,0,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,0,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE
+WHERE DATEADD(day,0,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,1,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE
 
 
 )

@@ -7,7 +7,7 @@
       "deleteCovariatesSmallCount": 100,
       "studyStartDate": "19900101",
       "studyEndDate": "20031101",
-      "exposureIds": ["exposureId", "3431"],
+      "exposureIds": ["exposureId", "5", "6"],
       "customCovariateIds": "",
       "attr_class": "args"
     },
@@ -28,8 +28,20 @@
           "attr_class": "covariateSettings"
         },
         {
-          "includeCovariateIds": 3431,
+          "includeCovariateIds": 5,
           "label": "NSAIDs",
+          "stratifyById": true,
+          "start": 0,
+          "addExposedDaysToStart": false,
+          "end": 0,
+          "addExposedDaysToEnd": true,
+          "firstOccurrenceOnly": false,
+          "allowRegularization": false,
+          "attr_class": "covariateSettings"
+        },
+        {
+          "includeCovariateIds": 6,
+          "label": "TCAs",
           "stratifyById": true,
           "start": 0,
           "addExposedDaysToStart": false,
@@ -53,9 +65,10 @@
         }
       ],
       "ageSettings": {
-        "includeAge": false,
+        "includeAge": true,
         "ageKnots": 5,
         "allowRegularization": false,
+        "minAge": 18,
         "attr_class": "ageSettings"
       },
       "seasonalitySettings": {

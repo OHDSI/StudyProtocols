@@ -45,7 +45,6 @@ injectSignals <- function(connectionDetails,
                           oracleTempSchema,
                           study,
                           workFolder,
-                          exposureOutcomePairs = NULL,
                           maxCores = 4) {
     signalInjectionFolder <- file.path(workFolder, "signalInjection")
     if (!file.exists(signalInjectionFolder))
@@ -73,6 +72,8 @@ injectSignals <- function(connectionDetails,
     summ <- MethodEvaluation::injectSignals(connectionDetails = connectionDetails,
                                             cdmDatabaseSchema = cdmDatabaseSchema,
                                             oracleTempSchema = cdmDatabaseSchema,
+                                            exposureDatabaseSchema = workDatabaseSchema,
+                                            exposureTable = studyCohortTable,
                                             outcomeDatabaseSchema = workDatabaseSchema,
                                             outcomeTable = studyCohortTable,
                                             outputDatabaseSchema = workDatabaseSchema,

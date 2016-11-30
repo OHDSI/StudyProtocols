@@ -38,7 +38,7 @@
 #' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write
 #'                             priviliges for storing temporary tables.
 #' @param cdmVersion           Version of the CDM. Can be "4" or "5"
-#' @param workFolder         Name of local folder to place results; make sure to use forward slashes
+#' @param workFolder           Name of local folder to place results; make sure to use forward slashes
 #'                             (/)
 #'
 #' @examples

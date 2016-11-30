@@ -7,10 +7,14 @@ Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
 Description: What the study does (paragraph)
 Depends:
     R (>= 3.2.2),
-    DatabaseConnector (>= 1.3.0)
+    DatabaseConnector
 Imports:
-    SqlRender (>= 1.1.2),
-    CohortMethod (>= 1.1.0),
+    SqlRender,
+    MethodEvaluation,
+    FeatureExtraction,
+    CohortMethod,
+    SelfControlledCaseSeries,
+    CaseControl,
     EmpiricalCalibration,
     DBI,
     OhdsiSharing,

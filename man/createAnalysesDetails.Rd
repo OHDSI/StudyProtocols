@@ -4,7 +4,7 @@
 \alias{createAnalysesDetails}
 \title{Create the analyses details}
 \usage{
-createAnalysesDetails(connectionDetails, cdmDatabaseSchema, outputFolder)
+createAnalysesDetails(connectionDetails, cdmDatabaseSchema, workFolder)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the
@@ -15,7 +15,7 @@ DatabaseConnector package.}
 Note that for SQL Server, this should include both the database and
 schema name, for example 'cdm_data.dbo'.}
 
-\item{outputFolder}{Name of local folder to place results; make sure to use forward slashes
+\item{workFolder}{Name of local folder to place results; make sure to use forward slashes
 (/)}
 }
 \description{

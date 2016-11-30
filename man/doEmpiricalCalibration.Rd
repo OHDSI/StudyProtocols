@@ -4,16 +4,16 @@
 \alias{doEmpiricalCalibration}
 \title{Perform empirical calibration}
 \usage{
-doEmpiricalCalibration(outputFolder)
+doEmpiricalCalibration(workFolder, study)
 }
 \arguments{
-\item{outputFolder}{The path to the output folder containing the results.}
+\item{workFolder}{The path to the output folder containing the results.}
 }
 \description{
 Perform empirical calibration
 }
 \details{
-Performs empricical calibration using the negative control outcomes, and computes the calibrated
-p-values
+Performs empirical calibration of confidence intervals and p-values using the negative and positive
+control outcomes.
 }
 

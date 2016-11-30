@@ -27,8 +27,8 @@ shell("R CMD Rd2pdf ./ --output=extras/CiCalibration.pdf")
 pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "CiCalibration")
 cohortsToCreate <- read.csv(pathToCsv)
 for (i in 1:nrow(cohortsToCreate)) {
-    writeLines(paste("Inserting cohort:", cohortsToCreate$name[i]))
-    OhdsiRTools::insertCirceDefinitionInPackage(cohortsToCreate$atlasId[i], cohortsToCreate$name[i])
+  writeLines(paste("Inserting cohort:", cohortsToCreate$name[i]))
+  OhdsiRTools::insertCirceDefinitionInPackage(cohortsToCreate$atlasId[i], cohortsToCreate$name[i])
 }
 
 

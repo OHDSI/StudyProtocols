@@ -35,55 +35,56 @@
 #'
 #' @export
 runCaseControl <- function(connectionDetails,
-                            cdmDatabaseSchema,
-                            workDatabaseSchema = cdmDatabaseSchema,
-                            studyCohortTable = "ohdsi_ci_calibration",
-                            oracleTempSchema = NULL,
-                            maxCores = 4) {
-    ccFolder <- file.path(workFolder, "ccOutput")
-    if (!file.exists(ccFolder))
-        dir.create(ccFolder)
+                           cdmDatabaseSchema,
+                           workDatabaseSchema = cdmDatabaseSchema,
+                           studyCohortTable = "ohdsi_ci_calibration",
+                           oracleTempSchema = NULL,
+                           maxCores = 4) {
+  ccFolder <- file.path(workFolder, "ccOutput")
+  if (!file.exists(ccFolder))
+    dir.create(ccFolder)
 
-    writeLines("Running case-control")
-    ccAnalysisListFile <- system.file("settings", "ccAnalysisList.txt", package = "CiCalibration")
-    ccAnalysisList <- CaseControl::loadCcAnalysisList(ccAnalysisListFile)
+  writeLines("Running case-control")
+  ccAnalysisListFile <- system.file("settings", "ccAnalysisList.txt", package = "CiCalibration")
+  ccAnalysisList <- CaseControl::loadCcAnalysisList(ccAnalysisListFile)
 
-    pathToCsv <- system.file("settings", "HypothesesOfInterest.csv", package = "CiCalibration")
-    hypothesesOfInterest <- read.csv(pathToCsv)
-    hypothesesOfInterest <- hypothesesOfInterest[hypothesesOfInterest$study == "SSRIs", ]
+  pathToHoi <- system.file("settings", "ccHypothesisOfInterest.txt", package = "CiCalibration")
+  hypothesesOfInterest <- CaseControl::loadExposureOutcomeNestingCohortList(pathToHoi)
 
-    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
-    negativeControls <- read.csv(pathToCsv)
-    negativeControls <- negativeControls[negativeControls$study == "SSRIs", ]
+  # Add negative control outcomes:
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
+  negativeControls <- read.csv(pathToCsv)
+  negativeControls <- negativeControls[negativeControls$study == "SSRIs", ]
+  for (outcomeId in negativeControls$conceptId) {
+      hoi <- CaseControl::createExposureOutcomeNestingCohort(exposureId = hypothesesOfInterest[[1]]$exposureId,
+                                                             outcomeId = outcomeId)
+      hypothesesOfInterest[[length(hypothesesOfInterest) + 1]] <- hoi
+  }
 
-    summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_SSRIs.csv"))
-    outcomeIds <- c(hypothesesOfInterest$outcomeId,
-                    negativeControls$conceptId,
-                    summ$newOutcomeId)
-    eonList <- list()
-    for (outcomeId in outcomeIds) {
-        eon <- CaseControl::createExposureOutcomeNestingCohort(exposureId = hypothesesOfInterest$targetId,
-                                                                           outcomeId = outcomeId)
-        eonList[[length(eonList) + 1]] <- eon
-    }
+  # Add positive control outcomes:
+  summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_SSRIs.csv"))
+  for (outcomeId in summ$newOutcomeId) {
+      hoi <- CaseControl::createExposureOutcomeNestingCohort(exposureId = hypothesesOfInterest[[1]]$exposureId,
+                                                             outcomeId = outcomeId)
+      hypothesesOfInterest[[length(hypothesesOfInterest) + 1]] <- hoi
+  }
 
-    ccResult <- CaseControl::runCcAnalyses(connectionDetails = connectionDetails,
-                                           cdmDatabaseSchema = cdmDatabaseSchema,
-                                           oracleTempSchema = oracleTempSchema,
-                                           exposureTable = "drug_era",
-                                           outcomeDatabaseSchema = outcomeDatabaseSchema,
-                                           outcomeTable = outcomeTable,
-                                           nestingCohortDatabaseSchema = nestingCohortDatabaseSchema,
-                                           nestingCohortTable = nestingCohortTable,
-                                           ccAnalysisList = ccAnalysisList,
-                                           exposureOutcomeNestingCohortList = eonList,
-                                           outputFolder = ccFolder,
-                                           getDbCaseDataThreads = 1,
-                                           selectControlsThreads = min(3, maxCores),
-                                           getDbExposureDataThreads = min(3, maxCores),
-                                           createCaseControlDataThreads = min(5, maxCores),
-                                           fitCaseControlModelThreads = min(5, maxCores),
-                                           cvThreads = min(2,maxCores))
-    ccSummary <- CaseControl::summarizeCcAnalyses(ccResult)
-    write.csv(ccSummary, file.path(workFolder, "ccSummary.csv"), row.names = FALSE)
+  ccResult <- CaseControl::runCcAnalyses(connectionDetails = connectionDetails,
+                                         cdmDatabaseSchema = cdmDatabaseSchema,
+                                         oracleTempSchema = oracleTempSchema,
+                                         exposureDatabaseSchema = workDatabaseSchema,
+                                         exposureTable = studyCohortTable,
+                                         outcomeDatabaseSchema = workDatabaseSchema,
+                                         outcomeTable = studyCohortTable,
+                                         ccAnalysisList = ccAnalysisList,
+                                         exposureOutcomeNestingCohortList = hypothesesOfInterest,
+                                         outputFolder = ccFolder,
+                                         getDbCaseDataThreads = 1,
+                                         selectControlsThreads = min(3, maxCores),
+                                         getDbExposureDataThreads = min(3, maxCores),
+                                         createCaseControlDataThreads = min(5, maxCores),
+                                         fitCaseControlModelThreads = min(5, maxCores),
+                                         cvThreads = min(2, maxCores))
+  ccSummary <- CaseControl::summarizeCcAnalyses(ccResult)
+  write.csv(ccSummary, file.path(workFolder, "ccSummary.csv"), row.names = FALSE)
 }

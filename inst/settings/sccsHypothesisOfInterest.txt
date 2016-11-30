@@ -1,0 +1,7 @@
+[
+  {
+    "exposureId": 11,
+    "outcomeId": 14,
+    "attr_class": "exposureOutcome"
+  }
+]

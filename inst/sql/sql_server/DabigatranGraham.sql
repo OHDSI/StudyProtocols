@@ -194,8 +194,10 @@ UNION  select c.concept_id
 WHERE E.concept_id is null
 ) C;
 
-select row_number() over (order by P.person_id, P.start_date) as event_id, P.person_id, P.start_date, P.end_date, OP.observation_period_start_date as op_start_date, OP.observation_period_end_date as op_end_date
-INTO #primary_events
+
+with primary_events (event_id, person_id, start_date, end_date, op_start_date, op_end_date) as
+(
+select row_number() over (PARTITION BY P.person_id order by P.start_date) as event_id, P.person_id, P.start_date, P.end_date, OP.observation_period_start_date as op_start_date, OP.observation_period_end_date as op_end_date
 FROM
 (
   select P.person_id, P.start_date, P.end_date, ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY start_date ASC) ordinal
@@ -204,9 +206,9 @@ FROM
   select C.person_id, C.drug_era_start_date as start_date, C.drug_era_end_date as end_date, C.drug_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_era_start_date) as ordinal
+  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_era_start_date, de.drug_era_id) as ordinal
   FROM @cdm_database_schema.DRUG_ERA de
-where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 8)
+where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
 ) C
 JOIN @cdm_database_schema.PERSON P on C.person_id = P.person_id
 WHERE C.ordinal = 1
@@ -215,17 +217,17 @@ AND YEAR(C.drug_era_start_date) - P.year_of_birth >= 65
 
   ) P
 ) P
-JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date between OP.observation_period_start_date and op.observation_period_end_date
+JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date >=  OP.observation_period_start_date and P.start_date <= op.observation_period_end_date
 WHERE DATEADD(day,183,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,0,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE AND P.ordinal = 1
-;
 
 
+)
 SELECT event_id, person_id, start_date, end_date, op_start_date, op_end_date
 INTO #qualified_events
 FROM 
 (
   select pe.event_id, pe.person_id, pe.start_date, pe.end_date, pe.op_start_date, pe.op_end_date, row_number() over (partition by pe.person_id order by pe.start_date ASC) as ordinal
-  FROM #primary_events pe
+  FROM primary_events pe
   
 ) QE
 
@@ -235,32 +237,33 @@ FROM
 create table #inclusionRuleCohorts 
 (
   inclusion_rule_id bigint,
+  person_id bigint,
   event_id bigint
 )
 ;
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 0 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 0 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
+        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date, co.condition_occurrence_id) as ordinal
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 1)
 ) C
@@ -268,19 +271,19 @@ where co.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) >= 1
 
 
-UNION
-SELECT 1 as index_id, p.event_id
+UNION ALL
+SELECT 1 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
+        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date, co.condition_occurrence_id) as ordinal
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 2)
 ) C
@@ -288,83 +291,83 @@ where co.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) >= 1
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) > 0
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 1 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 1 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.drug_exposure_start_date as start_date, COALESCE(C.drug_exposure_end_date, DATEADD(day, 1, C.drug_exposure_start_date)) as end_date, C.drug_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_exposure_start_date) as ordinal
+  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_exposure_start_date, de.drug_exposure_id) as ordinal
   FROM @cdm_database_schema.DRUG_EXPOSURE de
-where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
+where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 8)
 ) C
 
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 1
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 2 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 2 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.drug_exposure_start_date as start_date, COALESCE(C.drug_exposure_end_date, DATEADD(day, 1, C.drug_exposure_start_date)) as end_date, C.drug_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_exposure_start_date) as ordinal
+  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_exposure_start_date, de.drug_exposure_id) as ordinal
   FROM @cdm_database_schema.DRUG_EXPOSURE de
 where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 3)
 ) C
@@ -372,19 +375,19 @@ where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id 
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 1 as index_id, p.event_id
+UNION ALL
+SELECT 1 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.drug_exposure_start_date as start_date, COALESCE(C.drug_exposure_end_date, DATEADD(day, 1, C.drug_exposure_start_date)) as end_date, C.drug_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_exposure_start_date) as ordinal
+  select de.*, ROW_NUMBER() over (PARTITION BY de.person_id ORDER BY de.drug_exposure_start_date, de.drug_exposure_id) as ordinal
   FROM @cdm_database_schema.DRUG_EXPOSURE de
 where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 4)
 ) C
@@ -392,41 +395,41 @@ where de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id 
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 2
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 3 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 3 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.visit_start_date as start_date, C.visit_end_date as end_date, C.visit_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select vo.*, ROW_NUMBER() over (PARTITION BY vo.person_id ORDER BY vo.visit_start_date) as ordinal
+  select vo.*, ROW_NUMBER() over (PARTITION BY vo.person_id ORDER BY vo.visit_start_date, vo.visit_occurrence_id) as ordinal
   FROM @cdm_database_schema.VISIT_OCCURRENCE vo
 where vo.visit_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 5)
 ) C
@@ -435,19 +438,19 @@ where vo.visit_concept_id in (SELECT concept_id from  #Codesets where codeset_id
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,0,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 1 as index_id, p.event_id
+UNION ALL
+SELECT 1 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.procedure_date as start_date, DATEADD(d,1,C.procedure_date) as END_DATE, C.procedure_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date) as ordinal
+  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date, po.procedure_occurrence_id) as ordinal
   FROM @cdm_database_schema.PROCEDURE_OCCURRENCE po
 where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 6)
 ) C
@@ -455,19 +458,19 @@ where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 2 as index_id, p.event_id
+UNION ALL
+SELECT 2 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.observation_date as start_date, DATEADD(d,1,C.observation_date) as END_DATE, C.observation_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select o.*, ROW_NUMBER() over (PARTITION BY o.person_id ORDER BY o.observation_date) as ordinal
+  select o.*, ROW_NUMBER() over (PARTITION BY o.person_id ORDER BY o.observation_date, o.observation_id) as ordinal
   FROM @cdm_database_schema.OBSERVATION o
 where o.observation_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 6)
 ) C
@@ -475,41 +478,41 @@ where o.observation_concept_id in (SELECT concept_id from  #Codesets where codes
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= P.OP_START_DATE and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 3
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 4 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 4 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
+        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date, co.condition_occurrence_id) as ordinal
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 10)
 ) C
@@ -517,19 +520,19 @@ where co.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 1 as index_id, p.event_id
+UNION ALL
+SELECT 1 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.procedure_date as start_date, DATEADD(d,1,C.procedure_date) as END_DATE, C.procedure_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date) as ordinal
+  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date, po.procedure_occurrence_id) as ordinal
   FROM @cdm_database_schema.PROCEDURE_OCCURRENCE po
 where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 10)
 ) C
@@ -537,19 +540,19 @@ where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 2 as index_id, p.event_id
+UNION ALL
+SELECT 2 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.observation_date as start_date, DATEADD(d,1,C.observation_date) as END_DATE, C.observation_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select o.*, ROW_NUMBER() over (PARTITION BY o.person_id ORDER BY o.observation_date) as ordinal
+  select o.*, ROW_NUMBER() over (PARTITION BY o.person_id ORDER BY o.observation_date, o.observation_id) as ordinal
   FROM @cdm_database_schema.OBSERVATION o
 where o.observation_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 10)
 ) C
@@ -557,41 +560,41 @@ where o.observation_concept_id in (SELECT concept_id from  #Codesets where codes
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 3
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 5 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 5 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
+        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date, co.condition_occurrence_id) as ordinal
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 7)
 ) C
@@ -599,19 +602,19 @@ where co.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 1 as index_id, p.event_id
+UNION ALL
+SELECT 1 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.procedure_date as start_date, DATEADD(d,1,C.procedure_date) as END_DATE, C.procedure_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date) as ordinal
+  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date, po.procedure_occurrence_id) as ordinal
   FROM @cdm_database_schema.PROCEDURE_OCCURRENCE po
 where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 7)
 ) C
@@ -619,19 +622,19 @@ where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 2 as index_id, p.event_id
+UNION ALL
+SELECT 2 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.observation_date as start_date, DATEADD(d,1,C.observation_date) as END_DATE, C.observation_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select o.*, ROW_NUMBER() over (PARTITION BY o.person_id ORDER BY o.observation_date) as ordinal
+  select o.*, ROW_NUMBER() over (PARTITION BY o.person_id ORDER BY o.observation_date, o.observation_id) as ordinal
   FROM @cdm_database_schema.OBSERVATION o
 where o.observation_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 7)
 ) C
@@ -639,41 +642,41 @@ where o.observation_concept_id in (SELECT concept_id from  #Codesets where codes
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 3
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 6 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 6 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
+        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date, co.condition_occurrence_id) as ordinal
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 11)
 ) C
@@ -681,19 +684,19 @@ where co.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-UNION
-SELECT 1 as index_id, p.event_id
+UNION ALL
+SELECT 1 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.condition_start_date as start_date, COALESCE(C.condition_end_date, DATEADD(day,1,C.condition_start_date)) as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
-        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date) as ordinal
+        select co.*, ROW_NUMBER() over (PARTITION BY co.person_id ORDER BY co.condition_start_date, co.condition_occurrence_id) as ordinal
         FROM @cdm_database_schema.CONDITION_OCCURRENCE co
 where co.condition_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 12)
 ) C
@@ -701,41 +704,41 @@ where co.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 2
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
-INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, event_id)
-select 7 as inclusion_rule_id, event_id
+INSERT INTO #inclusionRuleCohorts (inclusion_rule_id, person_id, event_id)
+select 7 as inclusion_rule_id, person_id, event_id
 FROM 
 (
-  select pe.event_id
+  select pe.person_id, pe.event_id
   FROM #qualified_events pe
   
 JOIN (
-select 0 as index_id, event_id
+select 0 as index_id, person_id, event_id
 FROM
 (
-  select E.event_id 
+  select E.person_id, E.event_id 
   FROM #qualified_events E
   LEFT JOIN
   (
-    SELECT 0 as index_id, p.event_id
+    SELECT 0 as index_id, p.person_id, p.event_id
 FROM #qualified_events P
 LEFT JOIN
 (
   select C.person_id, C.procedure_date as start_date, DATEADD(d,1,C.procedure_date) as END_DATE, C.procedure_concept_id as TARGET_CONCEPT_ID
 from 
 (
-  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date) as ordinal
+  select po.*, ROW_NUMBER() over (PARTITION BY po.person_id ORDER BY po.procedure_date, po.procedure_occurrence_id) as ordinal
   FROM @cdm_database_schema.PROCEDURE_OCCURRENCE po
 where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 9)
 ) C
@@ -743,15 +746,15 @@ where po.procedure_concept_id in (SELECT concept_id from  #Codesets where codese
 
 
 ) A on A.person_id = P.person_id and A.START_DATE >= P.OP_START_DATE AND A.START_DATE <= P.OP_END_DATE AND A.START_DATE >= DATEADD(day,-183,P.START_DATE) and A.START_DATE <= DATEADD(day,0,P.START_DATE)
-GROUP BY p.event_id
+GROUP BY p.person_id, p.event_id
 HAVING COUNT(A.TARGET_CONCEPT_ID) = 0
 
 
-  ) CQ on E.event_id = CQ.event_id
-  GROUP BY E.event_id
+  ) CQ on E.person_id = CQ.person_id and E.event_id = CQ.event_id
+  GROUP BY E.person_id, E.event_id
   HAVING COUNT(index_id) = 1
 ) G
-) AC on AC.event_id = pe.event_id
+) AC on AC.person_id = pe.person_id AND AC.event_id = pe.event_id
 ) Results
 ;
 
@@ -763,7 +766,7 @@ with cteIncludedEvents(event_id, person_id, start_date, end_date, op_start_date,
   (
     select Q.event_id, Q.person_id, Q.start_date, Q.end_date, Q.op_start_date, Q.op_end_date, SUM(coalesce(POWER(cast(2 as bigint), I.inclusion_rule_id), 0)) as inclusion_rule_mask
     from #qualified_events Q
-    LEFT JOIN #inclusionRuleCohorts I on I.event_id = Q.event_id
+    LEFT JOIN #inclusionRuleCohorts I on I.person_id = Q.person_id and I.event_id = Q.event_id
     GROUP BY Q.event_id, Q.person_id, Q.start_date, Q.end_date, Q.op_start_date, Q.op_end_date
   ) MG -- matching groups
 
@@ -799,7 +802,7 @@ JOIN
         COALESCE(DRUG_EXPOSURE_END_DATE, DATEADD(day,DAYS_SUPPLY,DRUG_EXPOSURE_START_DATE), DATEADD(day,1,DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE 
       FROM @cdm_database_schema.DRUG_EXPOSURE de
       JOIN #included_events et on de.PERSON_ID = et.PERSON_ID
-      WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 8)
+      WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
     ) DE
     JOIN 
     (
@@ -823,7 +826,7 @@ JOIN
                 COALESCE(DRUG_EXPOSURE_END_DATE, DATEADD(day,DAYS_SUPPLY,DRUG_EXPOSURE_START_DATE), DATEADD(day,1,DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE 
               FROM @cdm_database_schema.DRUG_EXPOSURE de
               JOIN #included_events et on de.PERSON_ID = et.PERSON_ID
-              WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 8)
+              WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
             ) D
 
             UNION ALL
@@ -836,7 +839,7 @@ JOIN
                 COALESCE(DRUG_EXPOSURE_END_DATE, DATEADD(day,DAYS_SUPPLY,DRUG_EXPOSURE_START_DATE), DATEADD(day,1,DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE 
               FROM @cdm_database_schema.DRUG_EXPOSURE de
               JOIN #included_events et on de.PERSON_ID = et.PERSON_ID
-              WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 8)
+              WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
             ) D
           ) RAWDATA
         ) E1
@@ -848,7 +851,7 @@ JOIN
               COALESCE(DRUG_EXPOSURE_END_DATE, DATEADD(day,DAYS_SUPPLY,DRUG_EXPOSURE_START_DATE), DATEADD(day,1,DRUG_EXPOSURE_START_DATE)) as DRUG_EXPOSURE_END_DATE 
             FROM @cdm_database_schema.DRUG_EXPOSURE de
             JOIN #included_events et on de.PERSON_ID = et.PERSON_ID
-            WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 8)
+            WHERE de.drug_concept_id in (SELECT concept_id from  #Codesets where codeset_id = 0)
           ) D
         ) E2 ON E1.PERSON_ID = E2.PERSON_ID AND E2.EVENT_DATE <= E1.EVENT_DATE
         GROUP BY E1.PERSON_ID, E1.EVENT_DATE, E1.START_ORDINAL, E1.OVERALL_ORD
@@ -867,9 +870,9 @@ DELETE FROM @target_database_schema.@target_cohort_table where cohort_definition
 INSERT INTO @target_database_schema.@target_cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
 select @target_cohort_id as cohort_definition_id, F.person_id, F.start_date, F.end_date
 FROM (
-  select Q.person_id, Q.start_date, E.end_date, row_number() over (partition by Q.event_id order by E.end_date) as ordinal 
-  from #qualified_events Q
-  join #cohort_ends E on Q.event_id = E.event_id and Q.person_id = E.person_id and E.end_date >= Q.start_date
+  select I.person_id, I.start_date, E.end_date, row_number() over (partition by I.person_id, I.event_id order by E.end_date) as ordinal 
+  from #included_events I
+  join #cohort_ends E on I.event_id = E.event_id and I.person_id = E.person_id and E.end_date >= I.start_date
 ) F
 WHERE F.ordinal = 1
 ;
@@ -888,9 +891,6 @@ DROP TABLE #qualified_events;
 
 TRUNCATE TABLE #included_events;
 DROP TABLE #included_events;
-
-TRUNCATE TABLE #primary_events;
-DROP TABLE #primary_events;
 
 TRUNCATE TABLE #Codesets;
 DROP TABLE #Codesets;
