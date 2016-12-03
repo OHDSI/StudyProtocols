@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#' @export
 calibrateEstimatesAndPvalues <- function(workFolder) {
     figuresAndTablesFolder <- file.path(workFolder, "figuresAndtables")
     if (!file.exists(figuresAndTablesFolder)) {
@@ -30,21 +31,21 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
     #exposureSummary <- exposureSummary[exposureSummary$tCohortDefinitionName == "duloxetine" & exposureSummary$cCohortDefinitionName == "Sertraline",]
     analysesSum <- read.csv(file.path(workFolder, "analysisSummary.csv"))
     analysesSumRev <- data.frame(analysisId = analysesSum$analysisId,
-                               targetId = analysesSum$comparatorId,
-                               comparatorId = analysesSum$targetId,
-                               outcomeId = analysesSum$outcomeId,
-                               rr = 1/analysesSum$rr,
-                               ci95lb = 1/analysesSum$ci95ub,
-                               ci95ub = 1/analysesSum$ci95lb,
-                               p = analysesSum$p,
-                               treated = analysesSum$comparator,
-                               comparator = analysesSum$treated,
-                               treatedDays = analysesSum$comparatorDays,
-                               comparatorDays = analysesSum$treatedDays,
-                               eventsTreated = analysesSum$eventsComparator,
-                               eventsComparator = analysesSum$eventsTreated,
-                               logRr = -analysesSum$logRr,
-                               seLogRr = analysesSum$seLogRr)
+                                 targetId = analysesSum$comparatorId,
+                                 comparatorId = analysesSum$targetId,
+                                 outcomeId = analysesSum$outcomeId,
+                                 rr = 1/analysesSum$rr,
+                                 ci95lb = 1/analysesSum$ci95ub,
+                                 ci95ub = 1/analysesSum$ci95lb,
+                                 p = analysesSum$p,
+                                 treated = analysesSum$comparator,
+                                 comparator = analysesSum$treated,
+                                 treatedDays = analysesSum$comparatorDays,
+                                 comparatorDays = analysesSum$treatedDays,
+                                 eventsTreated = analysesSum$eventsComparator,
+                                 eventsComparator = analysesSum$eventsTreated,
+                                 logRr = -analysesSum$logRr,
+                                 seLogRr = analysesSum$seLogRr)
     results <- rbind(analysesSum, analysesSumRev)
     results$calP <- NA
     results$calPlb <- NA
@@ -56,6 +57,7 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
     results$calCi95ub <- NA
     signalInjectionSum <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
     negativeControlIds <- unique(signalInjectionSum$outcomeId)
+    # i <- which(exposureSummary$tCohortDefinitionId == 4327941 & exposureSummary$cCohortDefinitionId == 40234834)
     for (i in 1:nrow(exposureSummary)) {
         treatmentId <- exposureSummary$tprimeCohortDefinitionId[i]
         comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
@@ -112,73 +114,74 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
                                            trueLogRr = 0)
             data <- rbind(injectedSignals, negativeControls)
             data <- merge(data, estimates[, c("outcomeId", "logRr", "seLogRr")])
+            if (length(unique(data$trueLogRr)) > 1) {
+                model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = data$logRr,
+                                                                       seLogRr = data$seLogRr,
+                                                                       trueLogRr = data$trueLogRr)
+                calibratedCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = estimates$logRr,
+                                                                                  seLogRr = estimates$seLogRr,
+                                                                                  model = model)
+                idx <- which(results$analysisId == analysisId & results$targetId == treatmentId & results$comparatorId == comparatorId)
+                idx <- idx[match(estimates$outcomeId, results$outcomeId[idx])]
+                results$calLogRr[idx] <- calibratedCi$logRr
+                results$calSeLogRr[idx] <- calibratedCi$seLogRr
+                results$calRr[idx] <- exp(calibratedCi$logRr)
+                results$calCi95lb[idx] <- exp(calibratedCi$logLb95Rr)
+                results$calCi95ub[idx] <- exp(calibratedCi$logUb95Rr)
 
-            model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = data$logRr,
-                                                                   seLogRr = data$seLogRr,
-                                                                   trueLogRr = data$trueLogRr)
-            calibratedCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = estimates$logRr,
-                                                                              seLogRr = estimates$seLogRr,
-                                                                              model = model)
-            idx <- which(results$analysisId == analysisId & results$targetId == treatmentId & results$comparatorId == comparatorId)
-            idx <- idx[match(estimates$outcomeId, results$outcomeId[idx])]
-            results$calLogRr[idx] <- calibratedCi$logRr
-            results$calSeLogRr[idx] <- calibratedCi$seLogRr
-            results$calRr[idx] <- exp(calibratedCi$logRr)
-            results$calCi95lb[idx] <- exp(calibratedCi$logLb95Rr)
-            results$calCi95ub[idx] <- exp(calibratedCi$logUb95Rr)
-
-            calibratedCi$outcomeId <- estimates$outcomeId
-            data <- rbind(injectedSignals, negativeControls[negativeControls$outcomeId %in% negativeControlIdSubsets,])
-            data <- merge(data, calibratedCi)
-            fileName <- file.path(calibrationFolder, paste0("trueAndObs_a", analysisId, "_t", treatmentId, "_c", comparatorId, ".png"))
-            analysisLabel <- "Crude"
-            if (analysisId != 1) {
-                analysisLabel <- "Adjusted"
+                calibratedCi$outcomeId <- estimates$outcomeId
+                data <- rbind(injectedSignals, negativeControls[negativeControls$outcomeId %in% negativeControlIdSubsets,])
+                data <- merge(data, calibratedCi)
+                fileName <- file.path(calibrationFolder, paste0("trueAndObs_a", analysisId, "_t", treatmentId, "_c", comparatorId, ".png"))
+                analysisLabel <- "Crude"
+                if (analysisId != 1) {
+                    analysisLabel <- "Adjusted"
+                }
+                title <- paste(treatmentName, "vs.", comparatorName, "-", analysisLabel)
+                EmpiricalCalibration::plotTrueAndObserved(logRr = data$logRr,
+                                                          seLogRr = data$seLogRr,
+                                                          trueLogRr = data$trueLogRr,
+                                                          xLabel = "Hazard ratio",
+                                                          title = title,
+                                                          fileName = fileName)
             }
-            title <- paste(treatmentName, "vs.", comparatorName, "-", analysisLabel)
-            EmpiricalCalibration::plotTrueAndObserved(logRr = data$logRr,
-                                                      seLogRr = data$seLogRr,
-                                                      trueLogRr = data$trueLogRr,
-                                                      xLabel = "Hazard ratio",
-                                                      title = title,
-                                                      fileName = fileName)
-
 
             injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == comparatorConceptId & signalInjectionSum$injectedOutcomes != 0, ]
             negativeControlIdSubsets <- unique(injectedSignals$outcomeId)
             injectedSignals <- data.frame(outcomeId = injectedSignals$newOutcomeId,
                                           trueLogRr = log(injectedSignals$targetEffectSize))
             negativeControls <- data.frame(outcomeId = negativeControlIds,
-                                           trueLogRr = 0)
+                                           trueLogRr = rep(0, length(negativeControlIds)))
             data <- rbind(injectedSignals, negativeControls)
             data <- merge(data, estimates[, c("outcomeId", "logRr", "seLogRr")])
+            if (length(unique(data$trueLogRr)) > 1) {
+                model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = -data$logRr,
+                                                                       seLogRr = data$seLogRr,
+                                                                       trueLogRr = data$trueLogRr)
+                calibratedCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = -estimates$logRr,
+                                                                                  seLogRr = estimates$seLogRr,
+                                                                                  model = model)
+                idx <- which(results$analysisId == analysisId & results$targetId == comparatorId & results$comparatorId == treatmentId)
+                idx <- idx[match(estimates$outcomeId, results$outcomeId[idx])]
+                results$calLogRr[idx] <- calibratedCi$logRr
+                results$calSeLogRr[idx] <- calibratedCi$seLogRr
+                results$calRr[idx] <- exp(calibratedCi$logRr)
+                results$calCi95lb[idx] <- exp(calibratedCi$logLb95Rr)
+                results$calCi95ub[idx] <- exp(calibratedCi$logUb95Rr)
 
-            model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = -data$logRr,
-                                                                   seLogRr = data$seLogRr,
-                                                                   trueLogRr = data$trueLogRr)
-            calibratedCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = -estimates$logRr,
-                                                                              seLogRr = estimates$seLogRr,
-                                                                              model = model)
-            idx <- which(results$analysisId == analysisId & results$targetId == comparatorId & results$comparatorId == treatmentId)
-            idx <- idx[match(estimates$outcomeId, results$outcomeId[idx])]
-            results$calLogRr[idx] <- calibratedCi$logRr
-            results$calSeLogRr[idx] <- calibratedCi$seLogRr
-            results$calRr[idx] <- exp(calibratedCi$logRr)
-            results$calCi95lb[idx] <- exp(calibratedCi$logLb95Rr)
-            results$calCi95ub[idx] <- exp(calibratedCi$logUb95Rr)
+                calibratedCi$outcomeId <- estimates$outcomeId
+                data <- rbind(injectedSignals, negativeControls[negativeControls$outcomeId %in% negativeControlIdSubsets,])
+                data <- merge(data, calibratedCi)
 
-            calibratedCi$outcomeId <- estimates$outcomeId
-            data <- rbind(injectedSignals, negativeControls[negativeControls$outcomeId %in% negativeControlIdSubsets,])
-            data <- merge(data, calibratedCi)
-
-            fileName <- file.path(calibrationFolder, paste0("trueAndObs_a", analysisId, "_t", comparatorId, "_c", treatmentId, ".png"))
-            title <- paste(comparatorName, "vs.", treatmentName, "-", analysisLabel)
-            EmpiricalCalibration::plotTrueAndObserved(logRr = data$logRr,
-                                                      seLogRr = data$seLogRr,
-                                                      trueLogRr = data$trueLogRr,
-                                                      xLabel = "Hazard ratio",
-                                                      title = title,
-                                                      fileName = fileName)
+                fileName <- file.path(calibrationFolder, paste0("trueAndObs_a", analysisId, "_t", comparatorId, "_c", treatmentId, ".png"))
+                title <- paste(comparatorName, "vs.", treatmentName, "-", analysisLabel)
+                EmpiricalCalibration::plotTrueAndObserved(logRr = data$logRr,
+                                                          seLogRr = data$seLogRr,
+                                                          trueLogRr = data$trueLogRr,
+                                                          xLabel = "Hazard ratio",
+                                                          title = title,
+                                                          fileName = fileName)
+            }
         }
     }
     write.csv(results, file.path(workFolder, "calibratedEstimates.csv"), row.names = FALSE)

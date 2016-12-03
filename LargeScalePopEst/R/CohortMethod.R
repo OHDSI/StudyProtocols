@@ -25,25 +25,23 @@
 #'                             this can speed up the analyses.
 #'
 #' @export
-runCohortMethod <- function(workFolder, excludePairs, maxCores = 4) {
+runCohortMethod <- function(workFolder, maxCores = 4) {
     cmFolder <- file.path(workFolder, "cmOutput")
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
-    dcos <- list()
-    for (i in 1:nrow(exposureSummary)) {
+    createDcos <- function(i, exposureSummary) {
         originalTargetId <- exposureSummary$tCohortDefinitionId[i]
         originalComparatorId <- exposureSummary$cCohortDefinitionId[i]
-        if (missing(excludePairs) || is.null(excludePairs) || !any(excludePairs$targetId == originalTargetId & excludePairs$comparatorId == originalComparatorId)) {
-            targetId <- exposureSummary$tprimeCohortDefinitionId[i]
-            comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
-            folderName <- file.path(cmFolder, paste0("CmData_l1_t", targetId, "_c", comparatorId))
-            cmData <- CohortMethod::loadCohortMethodData(folderName, readOnly = TRUE)
-            outcomeIds <-   attr(cmData$outcomes, "metaData")$outcomeIds
-            dco <- CohortMethod::createDrugComparatorOutcomes(targetId = targetId,
-                                                              comparatorId = comparatorId,
-                                                              outcomeIds = outcomeIds)
-            dcos[[length(dcos) + 1]] <- dco
-        }
+        targetId <- exposureSummary$tprimeCohortDefinitionId[i]
+        comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
+        folderName <- file.path(cmFolder, paste0("CmData_l1_t", targetId, "_c", comparatorId))
+        cmData <- CohortMethod::loadCohortMethodData(folderName, readOnly = TRUE)
+        outcomeIds <-   attr(cmData$outcomes, "metaData")$outcomeIds
+        dco <- CohortMethod::createDrugComparatorOutcomes(targetId = targetId,
+                                                          comparatorId = comparatorId,
+                                                          outcomeIds = outcomeIds)
+        return(dco)
     }
+    dcos <- lapply(1:nrow(exposureSummary), createDcos, exposureSummary)
     cmAnalysisListFile <- system.file("settings",
                                       "cmAnalysisList.txt",
                                       package = "LargeScalePopEst")
@@ -62,7 +60,7 @@ runCohortMethod <- function(workFolder, excludePairs, maxCores = 4) {
                                 drugComparatorOutcomesList = dcos,
                                 getDbCohortMethodDataThreads = 1,
                                 createStudyPopThreads = min(4, maxCores),
-                                createPsThreads = max(1, round(maxCores/6)),
+                                createPsThreads = max(1, round(maxCores/10)),
                                 #createPsThreads = 1,
                                 psCvThreads = min(10, maxCores),
                                 trimMatchStratifyThreads = min(4, maxCores),

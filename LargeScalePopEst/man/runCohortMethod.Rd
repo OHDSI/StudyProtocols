@@ -4,7 +4,7 @@
 \alias{runCohortMethod}
 \title{Run the cohort method package}
 \usage{
-runCohortMethod(workFolder, excludePairs, maxCores = 4)
+runCohortMethod(workFolder, maxCores = 4)
 }
 \arguments{
 \item{workFolder}{Name of local folder to place results; make sure to use forward slashes

@@ -106,15 +106,7 @@ fetchAllDataFromServer <- function(connectionDetails,
                                                                     useCovariateRiskScoresCHADS2VASc = TRUE,
                                                                     excludedCovariateConceptIds = 900000010,
                                                                     deleteCovariatesSmallCount = 100)
-    # covariateSettings <- FeatureExtraction::createCovariateSettings(useCovariateDemographics = TRUE,
-    #                                                                 useCovariateDemographicsGender = TRUE,
-    #                                                                 useCovariateDemographicsRace = TRUE,
-    #                                                                 useCovariateDemographicsEthnicity = TRUE,
-    #                                                                 useCovariateDemographicsAge = TRUE,
-    #                                                                 useCovariateDemographicsYear = TRUE,
-    #                                                                 useCovariateDemographicsMonth = TRUE,
-    #                                                                 deleteCovariatesSmallCount = 100)
-    covariates <- FeatureExtraction::getDbCovariateData(connection = conn,
+     covariates <- FeatureExtraction::getDbCovariateData(connection = conn,
                                                         oracleTempSchema = oracleTempSchema,
                                                         cdmDatabaseSchema = cdmDatabaseSchema,
                                                         cdmVersion = 5,
@@ -164,6 +156,8 @@ fetchAllDataFromServer <- function(connectionDetails,
     filterConcepts <- merge(filterConcepts, exposureIdToConceptId, by.x = "exposureConceptId", by.y = "conceptId")
     filterConcepts$exposureConceptId <- NULL
     saveRDS(filterConcepts, file.path(workFolder, "filterConceps.rds"))
+
+    DBI::dbDisconnect(conn)
 }
 
 constructCohortMethodDataObject <- function(targetId,

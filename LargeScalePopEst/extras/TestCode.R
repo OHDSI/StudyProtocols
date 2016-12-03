@@ -32,7 +32,7 @@ exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Mdcd"
 #workFolder <- "S:/PopEstDepression_Mdcd"
-maxCores <- 30
+maxCores <- 15
 
 pw <- NULL
 dbms <- "pdw"
@@ -45,7 +45,7 @@ studyCohortTable <- "mschuemie_depression_cohorts_ccae"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_ccae"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Ccae"
-maxCores <- 24
+maxCores <- 30
 
 pw <- NULL
 dbms <- "pdw"
@@ -71,7 +71,7 @@ studyCohortTable <- "mschuemie_depression_cohorts_optum"
 exposureCohortSummaryTable <- "mschuemie_t2dm_exposure_summary_optum"
 port <- 17001
 workFolder <- "r:/PopEstDepression_Optum"
-maxCores <- 10
+maxCores <- 20
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 server = server,
@@ -87,9 +87,9 @@ execute(connectionDetails = connectionDetails,
         exposureCohortSummaryTable = exposureCohortSummaryTable,
         workFolder = workFolder,
         maxCores = maxCores,
-        createCohorts = TRUE,
-        fetchAllDataFromServer = TRUE,
-        injectSignals = TRUE,
+        createCohorts = FALSE,
+        fetchAllDataFromServer = FALSE,
+        injectSignals = FALSE,
         generateAllCohortMethodDataObjects = TRUE,
         runCohortMethod = TRUE)
 
