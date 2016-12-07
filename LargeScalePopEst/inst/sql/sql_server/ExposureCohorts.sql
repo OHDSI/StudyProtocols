@@ -30,6 +30,7 @@ FROM (
 			) AS rn1
 	FROM @cdm_database_schema.drug_era
 	WHERE drug_concept_id IN (739138, 750982, 797617, 755695, 715939, 703547, 715259, 743670, 710062, 725131, 722031, 721724, 717607, 738156, 40234834)
+	AND drug_era_end_date > drug_era_start_date
 	) de1
 INNER JOIN @cdm_database_schema.observation_period op1
 	ON de1.person_id = op1.person_id
