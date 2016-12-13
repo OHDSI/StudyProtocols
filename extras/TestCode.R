@@ -44,7 +44,7 @@ workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_ci_calibration_cohorts_mdcr"
 port <- 17001
 workFolder <- "S:/Temp/CiCalibration_Mdcr"
-maxCores <- 30
+maxCores <- 10
 study <- "Graham"
 
 pw <- NULL
@@ -65,6 +65,20 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
                                                                 user = user,
                                                                 password = pw,
                                                                 port = port)
+
+execute(connectionDetails = connectionDetails,
+        cdmDatabaseSchema = cdmDatabaseSchema,
+        oracleTempSchema = oracleTempSchema,
+        workDatabaseSchema = workDatabaseSchema,
+        studyCohortTable = studyCohortTable,
+        study = study,
+        workFolder = workFolder,
+        createCohorts = FALSE,
+        injectSignals = FALSE,
+        runAnalyses = FALSE,
+        empiricalCalibration = TRUE,
+        maxCores = maxCores)
+
 
 createCohorts(connectionDetails = connectionDetails,
               cdmDatabaseSchema = cdmDatabaseSchema,

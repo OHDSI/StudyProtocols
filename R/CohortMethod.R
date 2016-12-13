@@ -59,7 +59,7 @@ runCohortMethodSouthworth <- function(connectionDetails,
 
     # Add positive control outcomes:
     summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_Southworth.csv"))
-    hypothesesOfInterest[[1]]$outcomeIds <- c(hypothesesOfInterest[[1]]$outcomeIds, summ$newhypothesesOfInterest)
+    hypothesesOfInterest[[1]]$outcomeIds <- c(hypothesesOfInterest[[1]]$outcomeIds, summ$newOutcomeId)
 
     cmResult <- CohortMethod::runCmAnalyses(connectionDetails = connectionDetails,
                                             cdmDatabaseSchema = cdmDatabaseSchema,
@@ -128,7 +128,7 @@ runCohortMethodGraham <- function(connectionDetails,
 
     # Add positive control outcomes:
     summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_Graham.csv"))
-    hypothesesOfInterest[[1]]$outcomeIds <- c(hypothesesOfInterest[[1]]$outcomeIds, summ$newhypothesesOfInterest)
+    hypothesesOfInterest[[1]]$outcomeIds <- c(hypothesesOfInterest[[1]]$outcomeIds, summ$newOutcomeId)
 
     cmResult <- CohortMethod::runCmAnalyses(connectionDetails = connectionDetails,
                                             cdmDatabaseSchema = cdmDatabaseSchema,
@@ -150,4 +150,19 @@ runCohortMethodGraham <- function(connectionDetails,
                                             refitPsForEveryOutcome = FALSE)
     cmSummary <- CohortMethod::summarizeAnalyses(cmResult)
     write.csv(cmSummary, file.path(workFolder, "cmSummaryGraham.csv"), row.names = FALSE)
+
+    # cmResult <- readRDS(file.path(cmFolder, "outcomeModelReference.rds"))
+    ps <- readRDS(cmResult$sharedPsFile[1])
+    fileName <- file.path(cmFolder, "ps.png")
+    CohortMethod::plotPs(ps, fileName = fileName)
+
+    strata <- readRDS(cmResult$strataFile[1])
+    cohortMethodData <- CohortMethod::loadCohortMethodData(cmResult$cohortMethodDataFolder[1])
+    balance <- CohortMethod::computeCovariateBalance(population = strata,
+                                                     cohortMethodData = cohortMethodData)
+    fileName <- file.path(cmFolder, "balanceScatterplot.png")
+    CohortMethod::plotCovariateBalanceScatterPlot(balance = balance, fileName = fileName)
+    fileName <- file.path(cmFolder, "balanceTopVarsplot.png")
+    CohortMethod::plotCovariateBalanceOfTopVariables(balance = balance, fileName = fileName)
 }
+

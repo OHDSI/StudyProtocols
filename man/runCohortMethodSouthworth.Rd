@@ -2,7 +2,7 @@
 % Please edit documentation in R/CohortMethod.R
 \name{runCohortMethodSouthworth}
 \alias{runCohortMethodSouthworth}
-\title{Run Cohort Method}
+\title{Run the Southworth study replication}
 \usage{
 runCohortMethodSouthworth(connectionDetails, cdmDatabaseSchema,
   workDatabaseSchema = cdmDatabaseSchema,
@@ -33,6 +33,6 @@ priviliges for storing temporary tables.}
 this can speed up the analyses.}
 }
 \description{
-Run Cohort Method
+Run the Southworth study replication
 }
 

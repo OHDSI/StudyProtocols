@@ -54,7 +54,7 @@ runSccs <- function(connectionDetails,
   # Add negative control outcomes:
   pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
   negativeControls <- read.csv(pathToCsv)
-  negativeControls <- negativeControls[negativeControls$study == "SSRIs", ]
+  negativeControls <- negativeControls[negativeControls$study == "Tata", ]
   for (outcomeId in negativeControls$conceptId) {
       hoi <- SelfControlledCaseSeries::createExposureOutcome(exposureId = hypothesesOfInterest[[1]]$exposureId,
                                                              outcomeId = outcomeId)
@@ -62,7 +62,7 @@ runSccs <- function(connectionDetails,
   }
 
   # Add positive control outcomes:
-  summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_SSRIs.csv"))
+  summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_Tata.csv"))
   for (outcomeId in summ$newOutcomeId) {
       hoi <- SelfControlledCaseSeries::createExposureOutcome(exposureId = hypothesesOfInterest[[1]]$exposureId,
                                                              outcomeId = outcomeId)
@@ -82,7 +82,7 @@ runSccs <- function(connectionDetails,
                                                           outputFolder = sccsFolder,
                                                           combineDataFetchAcrossOutcomes = TRUE,
                                                           getDbSccsDataThreads = 1,
-                                                          createSccsEraDataThreads = 1,#min(3, maxCores),
+                                                          createSccsEraDataThreads = min(3, maxCores),
                                                           fitSccsModelThreads = max(1, round(maxCores/6)),
                                                           cvThreads = min(10, maxCores))
   sccsSummary <- SelfControlledCaseSeries::summarizeSccsAnalyses(sccsResult)

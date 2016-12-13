@@ -54,7 +54,7 @@ runCaseControl <- function(connectionDetails,
   # Add negative control outcomes:
   pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
   negativeControls <- read.csv(pathToCsv)
-  negativeControls <- negativeControls[negativeControls$study == "SSRIs", ]
+  negativeControls <- negativeControls[negativeControls$study == "Tata", ]
   for (outcomeId in negativeControls$conceptId) {
       hoi <- CaseControl::createExposureOutcomeNestingCohort(exposureId = hypothesesOfInterest[[1]]$exposureId,
                                                              outcomeId = outcomeId)
@@ -62,7 +62,7 @@ runCaseControl <- function(connectionDetails,
   }
 
   # Add positive control outcomes:
-  summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_SSRIs.csv"))
+  summ <- read.csv(file.path(workFolder, "SignalInjectionSummary_Tata.csv"))
   for (outcomeId in summ$newOutcomeId) {
       hoi <- CaseControl::createExposureOutcomeNestingCohort(exposureId = hypothesesOfInterest[[1]]$exposureId,
                                                              outcomeId = outcomeId)
@@ -79,6 +79,7 @@ runCaseControl <- function(connectionDetails,
                                          ccAnalysisList = ccAnalysisList,
                                          exposureOutcomeNestingCohortList = hypothesesOfInterest,
                                          outputFolder = ccFolder,
+                                         prefetchExposureData = TRUE,
                                          getDbCaseDataThreads = 1,
                                          selectControlsThreads = min(3, maxCores),
                                          getDbExposureDataThreads = min(3, maxCores),

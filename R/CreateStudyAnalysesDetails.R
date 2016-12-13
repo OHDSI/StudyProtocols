@@ -148,7 +148,7 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                                                          stratified = FALSE,
                                                                          useCovariates = FALSE)
 
-    cmAnalysisGraham <- CohortMethod::createCmAnalysis(analysisId = 2,
+    cmAnalysisGraham <- CohortMethod::createCmAnalysis(analysisId = 1,
                                                        description = "Graham replication",
                                                        getDbCohortMethodDataArgs = getDbCmDataArgs,
                                                        createStudyPopArgs = createStudyPopArgsGraham,
@@ -158,7 +158,6 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                                        matchOnPsArgs = matchOnPsArgs,
                                                        fitOutcomeModel = TRUE,
                                                        fitOutcomeModelArgs = fitOutcomeModelArgsGraham)
-
 
     cmAnalysisListGraham <- list(cmAnalysisGraham)
 
@@ -215,7 +214,7 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
 
     getDbSccsDataArgs <- SelfControlledCaseSeries::createGetDbSccsDataArgs(studyStartDate = "19900101",
                                                                            studyEndDate = "20031101",
-                                                                           exposureIds = c("exposureId", 5, 6))
+                                                                           exposureIds = c("exposureId", 12, 13))
 
     covarExposureOfInt <- SelfControlledCaseSeries::createCovariateSettings(label = "Exposure of interest",
                                                                             includeCovariateIds = "exposureId",
@@ -224,13 +223,13 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                                                             addExposedDaysToEnd = TRUE)
 
     covarNsaids <- SelfControlledCaseSeries::createCovariateSettings(label = "NSAIDs",
-                                                                     includeCovariateIds = 5,
+                                                                     includeCovariateIds = 12,
                                                                      start = 0,
                                                                      end = 0,
                                                                      addExposedDaysToEnd = TRUE)
 
     covarTcas <- SelfControlledCaseSeries::createCovariateSettings(label = "TCAs",
-                                                                   includeCovariateIds = 6,
+                                                                   includeCovariateIds = 13,
                                                                    start = 0,
                                                                    end = 0,
                                                                    addExposedDaysToEnd = TRUE)

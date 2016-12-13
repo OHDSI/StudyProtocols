@@ -49,26 +49,45 @@ injectSignals <- function(connectionDetails,
     signalInjectionFolder <- file.path(workFolder, "signalInjection")
     if (!file.exists(signalInjectionFolder))
         dir.create(signalInjectionFolder)
-
     pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
     negativeControls <- read.csv(pathToCsv)
     negativeControls <- negativeControls[negativeControls$study == study, ]
-    pathToCsv <- system.file("settings", "HypothesesOfInterest.csv", package = "CiCalibration")
-    hypothesesOfInterest <- read.csv(pathToCsv)
-    hypothesesOfInterest <- hypothesesOfInterest[hypothesesOfInterest$study == study, ]
-    exposureOutcomePairs <- data.frame(exposureId = hypothesesOfInterest$targetId,
+
+    if (study == "Tata") {
+        modelType <- "poisson"
+        firstOutcomeOnly <- FALSE
+        removePeopleWithPriorOutcomes <- FALSE
+        firstExposureOnly <- FALSE
+        riskWindowEnd <- 30
+
+        pathToHoi <- system.file("settings", "sccsHypothesisOfInterest.txt", package = "CiCalibration")
+        hypothesesOfInterest <- SelfControlledCaseSeries::loadExposureOutcomeList(pathToHoi)
+        exposureOutcomePairs <- data.frame(exposureId = hypothesesOfInterest[[1]]$exposureId,
                                            outcomeId = negativeControls$conceptId)
-	if (study == "SSRIs") {
-   	  modelType <- "poisson"
-	  firstOutcomeOnly <- FALSE
-	  removePeopleWithPriorOutcomes <- FALSE
-	  firstExposureOnly <- FALSE
-	} else {
-	  modelType <- "survival"
-	  firstOutcomeOnly <- TRUE
-	  removePeopleWithPriorOutcomes <- TRUE
-	  firstExposureOnly <- TRUE
-	}
+    } else if (study == "Southworth") {
+        modelType <- "survival"
+        firstOutcomeOnly <- TRUE
+        removePeopleWithPriorOutcomes <- TRUE
+        firstExposureOnly <- TRUE
+        riskWindowEnd <- 0
+
+        pathToHoi <- system.file("settings", "cmHypothesisOfInterestSouthworth.txt", package = "CiCalibration")
+        hypothesesOfInterest <- CohortMethod::loadDrugComparatorOutcomesList(pathToHoi)
+        exposureOutcomePairs <- data.frame(exposureId = hypothesesOfInterest[[1]]$targetId,
+                                           outcomeId = negativeControls$conceptId)
+    } else if (study == "Graham") {
+        modelType <- "survival"
+        firstOutcomeOnly <- TRUE
+        removePeopleWithPriorOutcomes <- TRUE
+        firstExposureOnly <- TRUE
+        riskWindowEnd <- 0
+
+        pathToHoi <- system.file("settings", "cmHypothesisOfInterestGraham.txt", package = "CiCalibration")
+        hypothesesOfInterest <- CohortMethod::loadDrugComparatorOutcomesList(pathToHoi)
+        exposureOutcomePairs <- data.frame(exposureId = hypothesesOfInterest[[1]]$targetId,
+                                           outcomeId = negativeControls$conceptId)
+    }
+
     summ <- MethodEvaluation::injectSignals(connectionDetails = connectionDetails,
                                             cdmDatabaseSchema = cdmDatabaseSchema,
                                             oracleTempSchema = cdmDatabaseSchema,
@@ -95,7 +114,7 @@ injectSignals <- function(connectionDetails,
                                             firstExposureOnly = firstExposureOnly,
                                             washoutPeriod = 180,
                                             riskWindowStart = 0,
-                                            riskWindowEnd = 0,
+                                            riskWindowEnd = riskWindowEnd,
                                             addExposureDaysToEnd = TRUE,
                                             firstOutcomeOnly = firstOutcomeOnly,
                                             removePeopleWithPriorOutcomes = removePeopleWithPriorOutcomes,

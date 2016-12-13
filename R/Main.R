@@ -67,65 +67,76 @@ execute <- function(connectionDetails,
                     study,
                     workFolder,
                     createCohorts = TRUE,
+                    injectSignals = TRUE,
                     runAnalyses = TRUE,
                     empiricalCalibration = TRUE,
-                    packageResultsForSharing = TRUE) {
+                    packageResultsForSharing = TRUE,
+                    maxCores = 4) {
+    if (cdmVersion == 4) {
+        stop("CDM version 4 not supported")
+    }
+    if (study != "Southworth" && study != "Graham" && study != "Tata")
+        stop("Study must be 'Southworth', 'Graham', or 'Tata'")
 
-  if (cdmVersion == 4) {
-    stop("CDM version 4 not supported")
-  }
+    if (!file.exists(workFolder))
+        dir.create(workFolder)
 
-  if (!file.exists(workFolder))
-    dir.create(workFolder)
+    if (createCohorts) {
+        writeLines("Creating exposure and outcome cohorts")
+        createCohorts(connectionDetails = connectionDetails,
+                      cdmDatabaseSchema = cdmDatabaseSchema,
+                      oracleTempSchema = oracleTempSchema,
+                      workDatabaseSchema = workDatabaseSchema,
+                      studyCohortTable = studyCohortTable,
+                      study = study,
+                      workFolder = workFolder)
+    }
+    if (injectSignals) {
+        injectSignals(connectionDetails = connectionDetails,
+                      cdmDatabaseSchema = cdmDatabaseSchema,
+                      oracleTempSchema = oracleTempSchema,
+                      workDatabaseSchema = workDatabaseSchema,
+                      studyCohortTable = studyCohortTable,
+                      study = study,
+                      workFolder = workFolder,
+                      maxCores = maxCores)
+    }
+    if (runAnalyses) {
+        writeLines("Running analyses")
+        if (study == "Southworth") {
+            runCohortMethodSouthworth(connectionDetails = connectionDetails,
+                                      cdmDatabaseSchema = cdmDatabaseSchema,
+                                      workDatabaseSchema = workDatabaseSchema,
+                                      studyCohortTable = studyCohortTable,
+                                      oracleTempSchema = oracleTempSchema,
+                                      maxCores = maxCores)
 
-  if (createCohorts) {
-    writeLines("Creating exposure and outcome cohorts")
-    createCohorts(connectionDetails,
-                  cdmDatabaseSchema,
-                  workDatabaseSchema,
-                  studyCohortTable,
-                  oracleTempSchema,
-                  cdmVersion,
-                  workFolder)
-  }
+        } else if (study == "Graham") {
+            runCohortMethodGraham(connectionDetails = connectionDetails,
+                                  cdmDatabaseSchema = cdmDatabaseSchema,
+                                  workDatabaseSchema = workDatabaseSchema,
+                                  studyCohortTable = studyCohortTable,
+                                  oracleTempSchema = oracleTempSchema,
+                                  maxCores = maxCores)
+        } else if (study == "Tata") {
+            runSccs(connectionDetails = connectionDetails,
+                    cdmDatabaseSchema = cdmDatabaseSchema,
+                    workDatabaseSchema = workDatabaseSchema,
+                    studyCohortTable = studyCohortTable,
+                    oracleTempSchema = oracleTempSchema,
+                    maxCores = maxCores)
+            runCaseControl(connectionDetails = connectionDetails,
+                           cdmDatabaseSchema = cdmDatabaseSchema,
+                           workDatabaseSchema = workDatabaseSchema,
+                           studyCohortTable = studyCohortTable,
+                           oracleTempSchema = oracleTempSchema,
+                           maxCores = maxCores)
+        }
+    }
 
-  if (runAnalyses) {
-    writeLines("Running analyses")
-    cmAnalysisListFile <- system.file("settings",
-                                      "cmAnalysisList.txt",
-                                      package = "CelecoxibVsNsNSAIDs")
-    cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
-    drugComparatorOutcomesListFile <- system.file("settings",
-                                                  "drugComparatorOutcomesList.txt",
-                                                  package = "CelecoxibVsNsNSAIDs")
-    drugComparatorOutcomesList <- CohortMethod::loadDrugComparatorOutcomesList(drugComparatorOutcomesListFile)
-    CohortMethod::runCmAnalyses(connectionDetails = connectionDetails,
-                                cdmDatabaseSchema = cdmDatabaseSchema,
-                                exposureDatabaseSchema = workDatabaseSchema,
-                                exposureTable = studyCohortTable,
-                                outcomeDatabaseSchema = workDatabaseSchema,
-                                outcomeTable = studyCohortTable,
-                                workFolder = workFolder,
-                                cmAnalysisList = cmAnalysisList,
-                                cdmVersion = cdmVersion,
-                                drugComparatorOutcomesList = drugComparatorOutcomesList,
-                                getDbCohortMethodDataThreads = 1,
-                                createPsThreads = 1,
-                                psCvThreads = 10,
-                                computeCovarBalThreads = 2,
-                                trimMatchStratifyThreads = 10,
-                                fitOutcomeModelThreads = 3,
-                                outcomeCvThreads = 10)
-    # TODO: exposure multi-threading parameters
-  }
+    if (empiricalCalibration) {
+        writeLines("Performing empirical calibration")
+        doEmpiricalCalibration(workFolder = workFolder, study = study)
+    }
 
-  if (empiricalCalibration) {
-    writeLines("Performing empirical calibration")
-    doEmpiricalCalibration(workFolder = workFolder)
-  }
-
-  if (packageResultsForSharing) {
-    writeLines("Packaging results")
-    packageResults(workFolder = workFolder)
-  }
 }

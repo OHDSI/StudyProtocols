@@ -2,7 +2,7 @@
 % Please edit documentation in R/CohortMethod.R
 \name{runCohortMethodGraham}
 \alias{runCohortMethodGraham}
-\title{Run Cohort Method}
+\title{Run the Graham study replication}
 \usage{
 runCohortMethodGraham(connectionDetails, cdmDatabaseSchema,
   workDatabaseSchema = cdmDatabaseSchema,
@@ -33,6 +33,6 @@ priviliges for storing temporary tables.}
 this can speed up the analyses.}
 }
 \description{
-Run Cohort Method
+Run the Graham study replication
 }
 

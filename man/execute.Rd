@@ -8,8 +8,8 @@ execute(connectionDetails, cdmDatabaseSchema,
   workDatabaseSchema = cdmDatabaseSchema,
   studyCohortTable = "ohdsi_ci_calibration", oracleTempSchema = NULL,
   cdmVersion = 5, study, workFolder, createCohorts = TRUE,
-  runAnalyses = TRUE, empiricalCalibration = TRUE,
-  packageResultsForSharing = TRUE)
+  injectSignals = TRUE, runAnalyses = TRUE, empiricalCalibration = TRUE,
+  packageResultsForSharing = TRUE, maxCores = 4)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the

@@ -47,77 +47,79 @@ createCohorts <- function(connectionDetails,
                           oracleTempSchema,
                           study = "Tata",
                           workFolder) {
-  conn <- DatabaseConnector::connect(connectionDetails)
+    if (study != "Southworth" && study != "Graham" && study != "Tata")
+        stop("Study must be 'Southworth', 'Graham', or 'Tata'")
+    conn <- DatabaseConnector::connect(connectionDetails)
 
-  sql <- SqlRender::loadRenderTranslateSql("CreateCohortTable.sql",
-                                           "CiCalibration",
-                                           dbms = connectionDetails$dbms,
-                                           target_database_schema = workDatabaseSchema,
-                                           target_cohort_table = studyCohortTable)
-  DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
-
-  pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "CiCalibration")
-  cohortsToCreate <- read.csv(pathToCsv)
-  cohortsToCreate <- cohortsToCreate[cohortsToCreate$study == study, ]
-  for (i in 1:nrow(cohortsToCreate)) {
-    writeLines(paste("Creating cohort:", cohortsToCreate$name[i]))
-    sql <- SqlRender::loadRenderTranslateSql(paste0(cohortsToCreate$name[i], ".sql"),
+    sql <- SqlRender::loadRenderTranslateSql("CreateCohortTable.sql",
                                              "CiCalibration",
                                              dbms = connectionDetails$dbms,
-                                             oracleTempSchema = oracleTempSchema,
-                                             cdm_database_schema = cdmDatabaseSchema,
                                              target_database_schema = workDatabaseSchema,
-                                             target_cohort_table = studyCohortTable,
-                                             target_cohort_id = cohortsToCreate$cohortId[i])
-    DatabaseConnector::executeSql(conn, sql)
-  }
+                                             target_cohort_table = studyCohortTable)
+    DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
 
-  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
-  negativeControls <- read.csv(pathToCsv)
-  negativeControls <- negativeControls[negativeControls$study == study, ]
-  if (nrow(negativeControls) == 0) {
-      writeLines("- No negative controls to create!")
-  } else {
-      writeLines("- Creating negative control outcome cohort")
-      sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
-                                               "CiCalibration",
-                                               dbms = connectionDetails$dbms,
-                                               oracleTempSchema = oracleTempSchema,
-                                               cdm_database_schema = cdmDatabaseSchema,
-                                               target_database_schema = workDatabaseSchema,
-                                               target_cohort_table = studyCohortTable,
-                                               outcome_ids = negativeControls$conceptId)
-      DatabaseConnector::executeSql(conn, sql)
-  }
-  # Check number of subjects per cohort:
-  sql <- "SELECT cohort_definition_id, COUNT(*) AS count FROM @work_database_schema.@study_cohort_table GROUP BY cohort_definition_id"
-  sql <- SqlRender::renderSql(sql,
-                              work_database_schema = workDatabaseSchema,
-                              study_cohort_table = studyCohortTable)$sql
-  sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
-  counts <- DatabaseConnector::querySql(conn, sql)
-  RJDBC::dbDisconnect(conn)
+    pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "CiCalibration")
+    cohortsToCreate <- read.csv(pathToCsv)
+    cohortsToCreate <- cohortsToCreate[cohortsToCreate$study == study, ]
+    for (i in 1:nrow(cohortsToCreate)) {
+        writeLines(paste("Creating cohort:", cohortsToCreate$name[i]))
+        sql <- SqlRender::loadRenderTranslateSql(paste0(cohortsToCreate$name[i], ".sql"),
+                                                 "CiCalibration",
+                                                 dbms = connectionDetails$dbms,
+                                                 oracleTempSchema = oracleTempSchema,
+                                                 cdm_database_schema = cdmDatabaseSchema,
+                                                 target_database_schema = workDatabaseSchema,
+                                                 target_cohort_table = studyCohortTable,
+                                                 target_cohort_id = cohortsToCreate$cohortId[i])
+        DatabaseConnector::executeSql(conn, sql)
+    }
 
-  names(counts) <- SqlRender::snakeCaseToCamelCase(names(counts))
-  counts <- merge(counts,
-                  cohortsToCreate[,
-                  c("cohortId", "name")],
-                  by.x = "cohortDefinitionId",
-                  by.y = "cohortId",
-                  all.x = TRUE)
-  counts <- merge(counts,
-                  negativeControls[,
-                  c("conceptId", "name")],
-                  by.x = "cohortDefinitionId",
-                  by.y = "conceptId",
-                  all.x = TRUE)
-  counts$cohortName <- as.character(counts$name.x)
-  counts$cohortName[is.na(counts$name.x)] <- as.character(counts$name.y[is.na(counts$name.x)])
-  counts$name.x <- NULL
-  counts$name.y <- NULL
-  write.csv(counts, file.path(workFolder,
-                              paste0("CohortCounts_", study, ".csv")), row.names = FALSE)
-  print(counts)
+    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "CiCalibration")
+    negativeControls <- read.csv(pathToCsv)
+    negativeControls <- negativeControls[negativeControls$study == study, ]
+    if (nrow(negativeControls) == 0) {
+        writeLines("- No negative controls to create!")
+    } else {
+        writeLines("- Creating negative control outcome cohort")
+        sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
+                                                 "CiCalibration",
+                                                 dbms = connectionDetails$dbms,
+                                                 oracleTempSchema = oracleTempSchema,
+                                                 cdm_database_schema = cdmDatabaseSchema,
+                                                 target_database_schema = workDatabaseSchema,
+                                                 target_cohort_table = studyCohortTable,
+                                                 outcome_ids = negativeControls$conceptId)
+        DatabaseConnector::executeSql(conn, sql)
+    }
+    # Check number of subjects per cohort:
+    sql <- "SELECT cohort_definition_id, COUNT(*) AS count FROM @work_database_schema.@study_cohort_table GROUP BY cohort_definition_id"
+    sql <- SqlRender::renderSql(sql,
+                                work_database_schema = workDatabaseSchema,
+                                study_cohort_table = studyCohortTable)$sql
+    sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
+    counts <- DatabaseConnector::querySql(conn, sql)
+    RJDBC::dbDisconnect(conn)
+
+    names(counts) <- SqlRender::snakeCaseToCamelCase(names(counts))
+    counts <- merge(counts,
+                    cohortsToCreate[,
+                                    c("cohortId", "name")],
+                    by.x = "cohortDefinitionId",
+                    by.y = "cohortId",
+                    all.x = TRUE)
+    counts <- merge(counts,
+                    negativeControls[,
+                                     c("conceptId", "name")],
+                    by.x = "cohortDefinitionId",
+                    by.y = "conceptId",
+                    all.x = TRUE)
+    counts$cohortName <- as.character(counts$name.x)
+    counts$cohortName[is.na(counts$name.x)] <- as.character(counts$name.y[is.na(counts$name.x)])
+    counts$name.x <- NULL
+    counts$name.y <- NULL
+    write.csv(counts, file.path(workFolder,
+                                paste0("CohortCounts_", study, ".csv")), row.names = FALSE)
+    print(counts)
 }
 
 

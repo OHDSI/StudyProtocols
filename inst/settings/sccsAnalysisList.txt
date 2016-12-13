@@ -7,7 +7,7 @@
       "deleteCovariatesSmallCount": 100,
       "studyStartDate": "19900101",
       "studyEndDate": "20031101",
-      "exposureIds": ["exposureId", "5", "6"],
+      "exposureIds": ["exposureId", "12", "13"],
       "customCovariateIds": "",
       "attr_class": "args"
     },
@@ -28,7 +28,7 @@
           "attr_class": "covariateSettings"
         },
         {
-          "includeCovariateIds": 5,
+          "includeCovariateIds": 12,
           "label": "NSAIDs",
           "stratifyById": true,
           "start": 0,
@@ -40,7 +40,7 @@
           "attr_class": "covariateSettings"
         },
         {
-          "includeCovariateIds": 6,
+          "includeCovariateIds": 13,
           "label": "TCAs",
           "stratifyById": true,
           "start": 0,
