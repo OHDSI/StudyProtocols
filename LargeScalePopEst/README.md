@@ -78,7 +78,8 @@ How to run
     
 Getting Involved
 ================
-* Package manual: [LargeScalePopEst.pdf](https://raw.githubusercontent.com/OHDSI/StudyProtocols/LargeScalePopEst/master/extras/LargeScalePopEst.pdf)
+* Package manual: [LargeScalePopEst.pdf](
+https://github.com/OHDSI/StudyProtocols/raw/master/LargeScalePopEst/extras/LargeScalePopEst.pdf)
 * Developer questions/comments/feedback: <a href="http://forums.ohdsi.org/c/developers">OHDSI Forum</a>
 * We use the <a href="../../../issues">GitHub issue tracker</a> for all bugs/issues/enhancements
 
