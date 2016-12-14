@@ -11,7 +11,7 @@ findFilesInFolder <- function(folder, badIds) {
   files <- list.files(path = folder, recursive = TRUE, include.dirs = TRUE)
   toDel <- unique(do.call("c", sapply(badIds, findFiles, files)))
   toDel <- toDel[order(toDel)]
-  toDel <-  file.path(folder, toDel)
+  toDel <- file.path(folder, toDel)
   return(toDel)
 }
 toDel <- findFilesInFolder(file.path(workFolder, "cmOutput"), badIds)

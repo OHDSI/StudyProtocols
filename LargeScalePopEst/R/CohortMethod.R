@@ -29,8 +29,8 @@ runCohortMethod <- function(workFolder, maxCores = 4) {
     cmFolder <- file.path(workFolder, "cmOutput")
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
     createDcos <- function(i, exposureSummary) {
-        originalTargetId <- exposureSummary$tCohortDefinitionId[i]
-        originalComparatorId <- exposureSummary$cCohortDefinitionId[i]
+        # originalTargetId <- exposureSummary$tCohortDefinitionId[i]
+        # originalComparatorId <- exposureSummary$cCohortDefinitionId[i]
         targetId <- exposureSummary$tprimeCohortDefinitionId[i]
         comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]
         folderName <- file.path(cmFolder, paste0("CmData_l1_t", targetId, "_c", comparatorId))
@@ -47,6 +47,9 @@ runCohortMethod <- function(workFolder, maxCores = 4) {
                                       package = "LargeScalePopEst")
     cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
 
+    pathToCsv <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePopEst")
+    hois <- read.csv(pathToCsv)
+
     CohortMethod::runCmAnalyses(connectionDetails = NULL,
                                 cdmDatabaseSchema = NULL,
                                 exposureDatabaseSchema = NULL,
@@ -61,12 +64,12 @@ runCohortMethod <- function(workFolder, maxCores = 4) {
                                 getDbCohortMethodDataThreads = 1,
                                 createStudyPopThreads = min(4, maxCores),
                                 createPsThreads = max(1, round(maxCores/10)),
-                                #createPsThreads = 1,
                                 psCvThreads = min(10, maxCores),
                                 trimMatchStratifyThreads = min(4, maxCores),
                                 fitOutcomeModelThreads = min(4, maxCores),
                                 outcomeCvThreads = min(4, maxCores),
-                                refitPsForEveryOutcome = FALSE)
+                                refitPsForEveryOutcome = FALSE,
+                                outcomeIdsOfInterest = hois$cohortDefinitionId)
     outcomeModelReference <- readRDS(file.path(workFolder, "cmOutput", "outcomeModelReference.rds"))
     analysesSum <- CohortMethod::summarizeAnalyses(outcomeModelReference)
     write.csv(analysesSum, file.path(workFolder, "analysisSummary.csv"), row.names = FALSE)
@@ -101,7 +104,7 @@ createAnalysesDetails <- function(outputFolder) {
                                                                                       seed = 123),
                                                      stopOnError = FALSE)
 
-    matchOnPsArgs <- CohortMethod::createMatchOnPsArgs(maxRatio = 1)
+    # matchOnPsArgs <- CohortMethod::createMatchOnPsArgs(maxRatio = 1)
 
     stratifyByPsArgs <- CohortMethod::createStratifyByPsArgs(numberOfStrata = 10)
 
@@ -121,16 +124,16 @@ createAnalysesDetails <- function(outputFolder) {
                                                   fitOutcomeModel = TRUE,
                                                   fitOutcomeModelArgs = fitOutcomeModelArgs1)
 
-    cmAnalysis2 <- CohortMethod::createCmAnalysis(analysisId = 2,
-                                                  description = "1-on-1 matching plus conditioned outcome model",
-                                                  getDbCohortMethodDataArgs = getDbCmDataArgs,
-                                                  createStudyPopArgs = createStudyPopArgs,
-                                                  createPs = TRUE,
-                                                  createPsArgs = createPsArgs,
-                                                  matchOnPs = TRUE,
-                                                  matchOnPsArgs = matchOnPsArgs,
-                                                  fitOutcomeModel = TRUE,
-                                                  fitOutcomeModelArgs = fitOutcomeModelArgs2)
+    # cmAnalysis2 <- CohortMethod::createCmAnalysis(analysisId = 2,
+    #                                               description = "1-on-1 matching plus conditioned outcome model",
+    #                                               getDbCohortMethodDataArgs = getDbCmDataArgs,
+    #                                               createStudyPopArgs = createStudyPopArgs,
+    #                                               createPs = TRUE,
+    #                                               createPsArgs = createPsArgs,
+    #                                               matchOnPs = TRUE,
+    #                                               matchOnPsArgs = matchOnPsArgs,
+    #                                               fitOutcomeModel = TRUE,
+    #                                               fitOutcomeModelArgs = fitOutcomeModelArgs2)
 
     cmAnalysis3 <- CohortMethod::createCmAnalysis(analysisId = 3,
                                                   description = "PS stratification plus conditioned outcome model",

@@ -17,8 +17,8 @@
 # limitations under the License.
 
 library(LargeScalePopEst)
-options('fftempdir' = 'R:/fftemp')
-#options('fftempdir' = 'S:/fftemp')
+options(fftempdir = "R:/fftemp")
+# options('fftempdir' = 'S:/fftemp')
 
 pw <- NULL
 dbms <- "pdw"
@@ -31,14 +31,14 @@ studyCohortTable <- "mschuemie_depression_cohorts_mdcd"
 exposureCohortSummaryTable <- "mschuemie_depression_exposure_summary_mdcd"
 port <- 17001
 workFolder <- "R:/PopEstDepression_Mdcd"
-#workFolder <- "S:/PopEstDepression_Mdcd"
+# workFolder <- 'S:/PopEstDepression_Mdcd'
 maxCores <- 15
 
 pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_CCAE_V466.dbo"
+cdmDatabaseSchema <- "CDM_Truven_CCAE_V483.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_ccae"
@@ -89,7 +89,7 @@ execute(connectionDetails = connectionDetails,
         maxCores = maxCores,
         createCohorts = FALSE,
         fetchAllDataFromServer = FALSE,
-        injectSignals = FALSE,
+        injectSignals = TRUE,
         generateAllCohortMethodDataObjects = TRUE,
         runCohortMethod = TRUE)
 
@@ -137,14 +137,13 @@ eq <- read.csv(file.path(figuresAndTablesFolder, "Equipoise.csv"), stringsAsFact
 names <- unique(c(eq$cohortName1, eq$cohortName2))
 names <- names[order(names)]
 m <- combn(names, 2)
-m <- data.frame(cohortName1 = m[1, ],
-                cohortName2 = m[2, ])
+m <- data.frame(cohortName1 = m[1, ], cohortName2 = m[2, ])
 m <- merge(m, eq[, c("cohortName1", "cohortName2", "equipoise")], all.x = TRUE)
 
 
 m$equipoise[is.na(m$equipoise)] <- 0
 m <- m[order(m$cohortName1, m$cohortName2), ]
-d1 <- 1-m$equipoise
+d1 <- 1 - m$equipoise
 attr(d1, "Size") <- length(names)
 attr(d1, "Labels") <- names
 attr(d1, "Diag") <- FALSE

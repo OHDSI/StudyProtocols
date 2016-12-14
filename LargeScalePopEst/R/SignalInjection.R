@@ -51,13 +51,7 @@ injectSignals <- function(connectionDetails,
         dir.create(signalInjectionFolder)
 
 
-    createSignalInjectionDataFiles(connectionDetails,
-                                   cdmDatabaseSchema,
-                                   workDatabaseSchema,
-                                   studyCohortTable = "ohdsi_cohorts",
-                                   oracleTempSchema,
-                                   workFolder,
-                                   signalInjectionFolder)
+    createSignalInjectionDataFiles(workFolder, signalInjectionFolder)
 
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
 
@@ -104,7 +98,7 @@ injectSignals <- function(connectionDetails,
                                             outputIdOffset = 10000,
                                             workFolder = signalInjectionFolder,
                                             cdmVersion = "5",
-                                            modelThreads = max(1, round(maxCores/8)),
+                                            modelThreads = max(1, round(maxCores/10)),
                                             generationThreads = min(6, maxCores))
     # summ <- readRDS(file.path(signalInjectionFolder, "summary.rds"))
     write.csv(summ, file.path(workFolder, "signalInjectionSummary.csv"), row.names = FALSE)
@@ -136,13 +130,7 @@ injectSignals <- function(connectionDetails,
     ffbase::save.ffdf(injectedOutcomes, dir = injectedOutcomesFolder)
 }
 
-createSignalInjectionDataFiles <- function(connectionDetails,
-                                           cdmDatabaseSchema,
-                                           workDatabaseSchema,
-                                           studyCohortTable = "ohdsi_cohorts",
-                                           oracleTempSchema,
-                                           workFolder,
-                                           signalInjectionFolder) {
+createSignalInjectionDataFiles <- function(workFolder, signalInjectionFolder) {
     # Creating all data files needed by MethodEvaluation::injectSignals from our big data fetch.
     exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
     cohortDefinitionIdToConceptId <- rbind(data.frame(cohortDefinitionId = exposureSummary$tprimeCohortDefinitionId,

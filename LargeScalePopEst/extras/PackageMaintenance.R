@@ -19,15 +19,15 @@ OhdsiRTools::formatRFolder()
 OhdsiRTools::checkUsagePackage("LargeScalePopEst")
 
 # Create manual
-shell("rm extras/PopEstT2Dm.pdf")
+shell("rm extras//LargeScalePopEst.pdf")
 shell("R CMD Rd2pdf ./ --output=extras/LargeScalePopEst.pdf")
 
 # Import outcome definitions
 pathToCsv <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePopEst")
 outcomes <- read.csv(pathToCsv)
 for (i in 1:nrow(outcomes)) {
-    writeLines(paste0("Inserting HOI: ", outcomes$name[i]))
-    OhdsiRTools::insertCirceDefinitionInPackage(outcomes$cohortDefinitionId[i], outcomes$name[i])
+  writeLines(paste0("Inserting HOI: ", outcomes$name[i]))
+  OhdsiRTools::insertCirceDefinitionInPackage(outcomes$cohortDefinitionId[i], outcomes$name[i])
 }
 
 # Create analysis details

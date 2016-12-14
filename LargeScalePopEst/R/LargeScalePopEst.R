@@ -14,6 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#' LargeScalePopEst
+#'
+#' @docType package
+#' @name LargeScalePopEst
+#' @import DatabaseConnector
+NULL
+
 .onLoad <- function(libname, pkgname) {
     missing(libname)  # suppresses R CMD check note
     missing(pkgname)  # suppresses R CMD check note
