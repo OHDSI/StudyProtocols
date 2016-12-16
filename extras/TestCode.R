@@ -73,9 +73,9 @@ execute(connectionDetails = connectionDetails,
         studyCohortTable = studyCohortTable,
         study = study,
         workFolder = workFolder,
-        createCohorts = FALSE,
-        injectSignals = FALSE,
-        runAnalyses = FALSE,
+        createCohorts = TRUE,
+        injectSignals = TRUE,
+        runAnalyses = TRUE,
         empiricalCalibration = TRUE,
         maxCores = maxCores)
 

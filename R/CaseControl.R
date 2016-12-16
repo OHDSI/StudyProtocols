@@ -88,4 +88,11 @@ runCaseControl <- function(connectionDetails,
                                          cvThreads = min(2, maxCores))
   ccSummary <- CaseControl::summarizeCcAnalyses(ccResult)
   write.csv(ccSummary, file.path(workFolder, "ccSummary.csv"), row.names = FALSE)
+
+  # ccResult <- readRDS(file.path(ccFolder, "outcomeModelReference.rds"))
+
+  caseControlDataFile <- ccResult$caseControlDataFile[ccResult$outcomeId == hypothesesOfInterest[[1]]$outcomeId]
+  caseControlData <- readRDS(caseControlDataFile)
+  mdrr <- CaseControl::computeMdrr(caseControlData = caseControlData)
+  write.csv(mdrr, file.path(workFolder, "ccMdrrTata.csv"), row.names = FALSE)
 }

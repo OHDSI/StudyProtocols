@@ -79,8 +79,14 @@ runCohortMethodSouthworth <- function(connectionDetails,
                                             fitOutcomeModelThreads = min(4, maxCores),
                                             outcomeCvThreads = min(4, maxCores),
                                             refitPsForEveryOutcome = FALSE)
+    # cmResult <- readRDS(file.path(cmFolder, "outcomeModelReference.rds"))
     cmSummary <- CohortMethod::summarizeAnalyses(cmResult)
     write.csv(cmSummary, file.path(workFolder, "cmSummarySouthworth.csv"), row.names = FALSE)
+
+    studyPopFile <- cmResult$studyPopFile[cmResult$outcomeId == hypothesesOfInterest[[1]]$outcomeIds[1]]
+    studyPop <- readRDS(studyPopFile)
+    mdrr <- CohortMethod::computeMdrr(population = studyPop, modelType = "cox")
+    write.csv(mdrr, file.path(workFolder, "cmMdrrSouthworth.csv"), row.names = FALSE)
 }
 
 #' Run the Graham study replication
@@ -164,5 +170,10 @@ runCohortMethodGraham <- function(connectionDetails,
     CohortMethod::plotCovariateBalanceScatterPlot(balance = balance, fileName = fileName)
     fileName <- file.path(cmFolder, "balanceTopVarsplot.png")
     CohortMethod::plotCovariateBalanceOfTopVariables(balance = balance, fileName = fileName)
+
+    studyPopFile <- cmResult$studyPopFile[cmResult$outcomeId == hypothesesOfInterest[[1]]$outcomeIds[1]]
+    studyPop <- readRDS(studyPopFile)
+    mdrr <- CohortMethod::computeMdrr(population = studyPop, modelType = "cox")
+    write.csv(mdrr, file.path(workFolder, "cmMdrrGraham.csv"), row.names = FALSE)
 }
 
