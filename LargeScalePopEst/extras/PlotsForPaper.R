@@ -8,53 +8,14 @@ if (!file.exists(paperFolder)) {
 # Plot evaluation ---------------------------------------------------------
 calibrated <- read.csv("r:/DepressionResults.csv")
 
+source("extras/SharedPlots.R")
 d <- calibrated[calibrated$analysisId == 3 & !is.na(calibrated$trueRr), ]
-d$Group <- as.factor(d$trueRr)
-d$Significant <- d$ci95lb > d$trueRr | d$ci95ub < d$trueRr
-
-
-temp1 <- aggregate(Significant ~ Group, data = d, length)
-temp1$nLabel <- paste0(formatC(temp1$Significant, big.mark = ","), " estimates")
-temp1$Significant <- NULL
-temp2 <- aggregate(Significant ~ Group, data = d, mean)
-temp2$meanLabel <- paste0(formatC(100 * (1 - temp2$Significant), digits = 1, format = "f"),
-                          "% of CIs includes ",
-                          temp2$Group)
-temp2$Significant <- NULL
-dd <- merge(temp1, temp2)
-dd$tes <- as.numeric(as.character(dd$Group))
-
-require(ggplot2)
-breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
-theme <- element_text(colour = "#000000", size = 12)
-themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
-themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
-
-d$Group <- paste("True hazard ratio =", d$Group)
-dd$Group <- paste("True hazard ratio =", dd$Group)
-
-ggplot(d, aes(x = logRr, y= seLogRr), environment = environment()) +
-    geom_vline(xintercept = log(breaks), colour = "#AAAAAA", lty = 1, size = 0.5) +
-    geom_abline(aes(intercept = (-log(dd$tes))/qnorm(0.025), slope = 1/qnorm(0.025)), colour = rgb(0.8, 0, 0), linetype = "dashed", size = 1, alpha = 0.5, data = dd) +
-    geom_abline(aes(intercept = (-log(dd$tes))/qnorm(0.975), slope = 1/qnorm(0.975)), colour = rgb(0.8, 0, 0), linetype = "dashed", size = 1, alpha = 0.5, data = dd) +
-    geom_point(size = 1, color = rgb(0, 0, 0, alpha = 0.05), alpha = 0.05, shape = 16) +
-    geom_hline(yintercept = 0) +
-    geom_label(x = log(0.3), y = 0.95, alpha = 1, hjust = "left", label = dd$nLabel, size = 5, data = dd) +
-    geom_label(x = log(0.3), y = 0.8, alpha = 1, hjust = "left", label = dd$meanLabel, size = 5, data = dd) +
-    scale_x_continuous("Hazard ratio", limits = log(c(0.25, 10)), breaks = log(breaks), labels = breaks) +
-    scale_y_continuous("Standard Error", limits = c(0, 1)) +
-    facet_grid(. ~ Group) +
-    theme(panel.grid.minor = element_blank(),
-          panel.background = element_blank(),
-          panel.grid.major = element_blank(),
-          axis.ticks = element_blank(),
-          axis.text.y = themeRA,
-          axis.text.x = theme,
-          legend.key = element_blank(),
-          strip.text.x = theme,
-          strip.background = element_blank(),
-          legend.position = "none")
-
+d <- data.frame(trueRr = d$trueRr,
+                logRr = d$logRr,
+                ci95lb = d$ci95lb,
+                ci95ub = d$ci95ub,
+                seLogRr = d$seLogRr)
+plotScatter(d)
 ggsave(file.path(paperFolder, "Eval.png"), width = 13.5, height = 3, dpi = 500)
 
 
@@ -63,55 +24,15 @@ ggsave(file.path(paperFolder, "Eval.png"), width = 13.5, height = 3, dpi = 500)
 
 calibrated <- read.csv("r:/DepressionResults.csv")
 
+source("extras/SharedPlots.R")
 d <- calibrated[calibrated$analysisId == 3 & !is.na(calibrated$trueRr), ]
-d$Group <- as.factor(d$trueRr)
-d$Significant <- d$calCi95lb > d$trueRr | d$calCi95ub < d$trueRr
-
-
-temp1 <- aggregate(Significant ~ Group, data = d, length)
-temp1$nLabel <- paste0(formatC(temp1$Significant, big.mark = ","), " estimates")
-temp1$Significant <- NULL
-temp2 <- aggregate(Significant ~ Group, data = d, mean)
-temp2$meanLabel <- paste0(formatC(100 * (1 - temp2$Significant), digits = 1, format = "f"),
-                          "% of CIs includes ",
-                          temp2$Group)
-temp2$Significant <- NULL
-dd <- merge(temp1, temp2)
-dd$tes <- as.numeric(as.character(dd$Group))
-
-require(ggplot2)
-breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
-theme <- element_text(colour = "#000000", size = 12)
-themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
-themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
-
-d$Group <- paste("True hazard ratio =", d$Group)
-dd$Group <- paste("True hazard ratio =", dd$Group)
-
-ggplot(d, aes(x = calLogRr, y = calSeLogRr), environment = environment()) +
-    geom_vline(xintercept = log(breaks), colour = "#AAAAAA", lty = 1, size = 0.5) +
-    geom_abline(aes(intercept = (-log(dd$tes))/qnorm(0.025), slope = 1/qnorm(0.025)), colour = rgb(0.8, 0, 0), linetype = "dashed", size = 1, alpha = 0.5, data = dd) +
-    geom_abline(aes(intercept = (-log(dd$tes))/qnorm(0.975), slope = 1/qnorm(0.975)), colour = rgb(0.8, 0, 0), linetype = "dashed", size = 1, alpha = 0.5, data = dd) +
-    geom_point(size = 1, color = rgb(0, 0, 0, alpha = 0.05), alpha = 0.05, shape = 16) +
-    geom_hline(yintercept = 0) +
-    geom_label(x = log(0.3), y = 0.95, alpha = 1, hjust = "left", label = dd$nLabel, size = 5, data = dd) +
-    geom_label(x = log(0.3), y = 0.8, alpha = 1, hjust = "left", label = dd$meanLabel, size = 5, data = dd) +
-    scale_x_continuous("Hazard ratio", limits = log(c(0.25, 10)), breaks = log(breaks), labels = breaks) +
-    scale_y_continuous("Standard Error", limits = c(0, 1)) +
-    facet_grid(. ~ Group) +
-    theme(panel.grid.minor = element_blank(),
-          panel.background = element_blank(),
-          panel.grid.major = element_blank(),
-          axis.ticks = element_blank(),
-          axis.text.y = themeRA,
-          axis.text.x = theme,
-          legend.key = element_blank(),
-          strip.text.x = theme,
-          strip.background = element_blank(),
-          legend.position = "none")
-
+d <- data.frame(trueRr = d$trueRr,
+                logRr = d$calLogRr,
+                ci95lb = d$calCi95lb,
+                ci95ub = d$calCi95ub,
+                seLogRr = d$calSeLogRr)
+plotScatter(d)
 ggsave(file.path(paperFolder, "EvalCal.png"), width = 13.5, height = 3, dpi = 500)
-
 
 # Plot results for literature and our depression study ---------------------------------------------
 
@@ -128,7 +49,8 @@ d2$seLogRr <- seFromCI
 d2$seLogRr[is.na(d2$seLogRr)] <- seFromP[is.na(d2$seLogRr)]
 d2 <- d2[!is.na(d2$seLogRr), ]
 d2 <- d2[d2$EffectEstimate_jitter > 0, ]
-d3 <- d2[d2$Depression == 1, ]
+#d3 <- d2[d2$Depression == 1, ]
+d3 <- d2[d2$DepressionTreatment == 1, ]
 
 pmids <- read.csv("C:/home/Research/PublicationBias/Pmids_main.txt")
 writeLines(paste("Total number of hits on query: ", nrow(pmids)))
@@ -136,9 +58,13 @@ writeLines(paste("Total number of hits on query: ", nrow(pmids)))
 writeLines(paste("Total number of estimates: ", nrow(d2)))
 writeLines(paste("Total number of abstracts: ", length(unique(d2$PMID))))
 
+writeLines(paste("Total estimates  for our results: ", nrow(d1)))
+writeLines(paste("Total estimates significant for our results: ", sum(d1$Significant, na.rm = TRUE)))
+writeLines(paste("Total significant expected when null is true for all: ", nrow(d1)*0.05))
+
 d <- rbind(data.frame(logRr = d1$calLogRr,
                       seLogRr = d1$calSeLogRr,
-                      Group = "C\nOur large-scale depression study",
+                      Group = "C\nOur large-scale study on depression treatments",
                       Significant = d1$Significant),
            data.frame(logRr = log(d2$EffectEstimate_jitter),
                       seLogRr = d2$seLogRr,
@@ -146,10 +72,10 @@ d <- rbind(data.frame(logRr = d1$calLogRr,
                       Significant = d2$Significant),
            data.frame(logRr = log(d3$EffectEstimate_jitter),
                       seLogRr = d3$seLogRr,
-                      Group = "B\nObservational literature on depression",
+                      Group = "B\nObservational literature on depression treatments",
                       Significant = d3$Significant))
 
-d$Group <- factor(d$Group, levels = c("A\nAll observational literature", "B\nObservational literature on depression", "C\nOur large-scale depression study"))
+d$Group <- factor(d$Group, levels = c("A\nAll observational literature", "B\nObservational literature on depression treatments", "C\nOur large-scale study on depression treatments"))
 
 temp1 <- aggregate(Significant ~ Group, data = d, length)
 temp1$nLabel <- paste0(formatC(temp1$Significant, big.mark = ","), " estimates")
@@ -168,13 +94,13 @@ ggplot(d, aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
     geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
     geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
     geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
-    geom_point(size=1, color = rgb(0,0,0), shape = 16) +
+    geom_point(size=0.5, color = rgb(0,0,0), shape = 16) +
     geom_hline(yintercept=0) +
     geom_label(x = log(0.3), y = 1, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
     geom_label(x = log(0.3), y = 0.9, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
     scale_x_continuous("Effect size",limits = log(c(0.25,10)), breaks=log(breaks),labels=breaks) +
     scale_y_continuous("Standard Error",limits = c(0,1)) +
-    scale_alpha_manual(values = c(0.1, 0.2, 0.1)) +
+    scale_alpha_manual(values = c(0.1, 0.8, 0.2)) +
     facet_grid(.~Group) +
     theme(
         panel.grid.minor = element_blank(),
@@ -204,6 +130,7 @@ calibrated <- read.csv("r:/DepressionResults.csv")
 d <- calibrated[calibrated$analysisId == 3 & calibrated$outcomeType == "hoi", ]
 
 names <- as.character(unique(d$targetName))
+names <- names[names != "Electroconvulsive therapy"]
 names <- names[order(names)]
 m <- combn(names, 2)
 m <- data.frame(cohortName1 = m[1, ],
@@ -214,6 +141,8 @@ computeDistance <- function(i, m, d) {
     subset <- d[(d$targetName ==  m$cohortName1[i] & d$comparatorName ==  m$cohortName2[i]) |
                     (d$targetName ==  m$cohortName2[i] & d$comparatorName ==  m$cohortName1[i]),
                 c("calLogRr", "calSeLogRr")]
+    if (nrow(subset) == 0)
+        return(NA)
     subset <- subset[!is.na(subset$calSeLogRr), ]
     meta <- metagen(subset$calLogRr, subset$calSeLogRr, sm = "RR")
     return(meta$tau)
@@ -244,7 +173,7 @@ ggplot(segment(ddata)) +
                aes(x = x, y = y, shape = class, color = class, fill = class), size = 2) +
     coord_flip() +
     scale_y_reverse(expand = c(0.2, 0)) +
-    scale_shape_manual(values = c(21, 22, 23, 24, 25)) +
+    scale_shape_manual(values = c(21, 22, 23, 24, 25,26)) +
     theme_dendro()
 ggsave("r:/temp/Dendo.png", width = 7, height = 4, dpi = 300)
 
@@ -294,7 +223,7 @@ ggplot(mSym, aes(class1, class2)) +
           axis.title = element_blank(),
           legend.position = "none")
 
-ggsave("r:/temp/ClassSim.png", width = 2, height = 2, dpi = 300)
+ggsave(file.path(paperFolder, "ClassSim.png"), width = 2, height = 2, dpi = 300)
 
 
 # Transitivity (significance) ------------------------------------------------------------
@@ -332,7 +261,8 @@ abcPlusAc <- merge(abc, ac)
 
 agree <- (abcPlusAc$increase & abcPlusAc$lbAC > 1) | (!abcPlusAc$increase & abcPlusAc$ubAC < 1)
 mean(agree)
-
+length(agree)
+sum(agree)
 expected <- 2 * 0.025 * 0.025 * 180852
 
 
@@ -431,6 +361,7 @@ d <- calibrated[calibrated$outcomeType == "hoi" & calibrated$analysisId == 3, ]
 dd <- aggregate(calLogRr ~ targetName + comparatorName + outcomeName, data = d, length)
 dd <- dd[dd$calLogRr == 4, ]
 dd$calLogRr <- NULL
+nrow(dd)
 
 computeI2 <- function(i, dd, d, calibrated = TRUE) {
     triplet <- dd[i,]
@@ -467,12 +398,187 @@ ggplot(ddd, aes(x=i2, group = group, color = group, fill = group)) +
           panel.grid.major.y = element_line(color = rgb(0.25,0.25,0.25, alpha = 0.2)),
           panel.grid.major.x = element_line(color = rgb(0.25,0.25,0.25, alpha = 0.2)))
 
-ggsave("r:/temp/I2.png", width = 6, height = 3, dpi=300)
+ggsave(file.path(paperFolder, "I2.png"), width = 6, height = 3, dpi=300)
 
 mean(i2Cal < 0.25)
 mean(i2 <0.25)
 
-# return(meta$tau)
+
+
+# Exemplar study: duloxetine vs sertraline for stroke in CCAE -------------
+
+workFolder <- "R:/PopEstDepression_Ccae"
+exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
+outcomeModelReference <- readRDS(file.path(workFolder, "cmOutput", "outcomeModelReference.rds"))
+analysesSum <- read.csv(file.path(workFolder, "analysisSummary.csv"))
+signalInjectionSum <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
+negativeControlIds <- unique(signalInjectionSum$outcomeId)
+
+row <- exposureSummary[exposureSummary$tCohortDefinitionName == "duloxetine" & exposureSummary$cCohortDefinitionName == "Sertraline", ]
+treatmentId <- row$tprimeCohortDefinitionId
+comparatorId <- row$cprimeCohortDefinitionId
+estimates <- analysesSum[analysesSum$targetId == treatmentId & analysesSum$comparatorId == comparatorId, ]
+calibrated <- read.csv(file.path(workFolder, "calibratedEstimates.csv"))
+calibrated <- calibrated[calibrated$analysisId == 3 & calibrated$targetId == treatmentId & calibrated$comparatorId == comparatorId, ]
+
+########################################################################### Get PS plot #
+psFile <- outcomeModelReference$sharedPsFile[outcomeModelReference$analysisId == 3 & outcomeModelReference$targetId ==
+                                                 treatmentId & outcomeModelReference$comparatorId == comparatorId][1]
+ps <- readRDS(psFile)
+fileName <- file.path(paperFolder, "PsExamplar.png")
+CohortMethod::plotPs(ps,
+                     scale = "preference",
+                     treatmentLabel = "Duloxetine",
+                     comparatorLabel = "Sertraline",
+                     fileName = fileName)
+
+########################################################################### Create covariate balance plot #
+cohortMethodDataFolder <- outcomeModelReference$cohortMethodDataFolder[outcomeModelReference$targetId ==
+                                                                           treatmentId & outcomeModelReference$comparatorId == comparatorId & outcomeModelReference$analysisId ==
+                                                                           3 & outcomeModelReference$outcomeId == 2559]
+strataFile <- outcomeModelReference$strataFile[outcomeModelReference$targetId == treatmentId & outcomeModelReference$comparatorId ==
+                                                   comparatorId & outcomeModelReference$analysisId == 3 & outcomeModelReference$outcomeId == 2559]
+
+cohortMethodDataFolder <- gsub("^S:", "R:", cohortMethodDataFolder)
+strataFile <- gsub("^S:", "R:", strataFile)
+cohortMethodData <- CohortMethod::loadCohortMethodData(cohortMethodDataFolder)
+strata <- readRDS(strataFile)
+balance <- CohortMethod::computeCovariateBalance(strata, cohortMethodData)
+nrow(balance)
+tableFileName <- file.path(paperFolder, "balance.csv")
+write.csv(balance, tableFileName, row.names = FALSE)
+
+plotFileName <- file.path(paperFolder, "balanceScatterPlot.png")
+balance$beforeMatchingStdDiff <- abs(balance$beforeMatchingStdDiff)
+balance$afterMatchingStdDiff <- abs(balance$afterMatchingStdDiff)
+limits <- c(min(c(balance$beforeMatchingStdDiff, balance$afterMatchingStdDiff), na.rm = TRUE),
+            max(c(balance$beforeMatchingStdDiff, balance$afterMatchingStdDiff), na.rm = TRUE))
+plot <- ggplot2::ggplot(balance,
+                        ggplot2::aes(x = beforeMatchingStdDiff, y = afterMatchingStdDiff)) +
+    ggplot2::geom_point(color = rgb(0, 0, 0.8, alpha = 0.3)) +
+    ggplot2::geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::geom_vline(xintercept = 0) +
+    #ggplot2::ggtitle("Standardized difference of mean") +
+    ggplot2::scale_x_continuous("Before stratification", limits = limits) +
+    ggplot2::scale_y_continuous("After stratification", limits = limits)
+
+plot <- plot + ggplot2::geom_hline(yintercept = 0.1, alpha = 0.5, linetype = "dotted")
+
+ggplot2::ggsave(plotFileName, plot, width = 4, height = 4, dpi = 400)
+
+
+###################################################################### Get signal injection and calibration plots #
+
+injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == row$tCohortDefinitionId, ]
+injectedSignals <- data.frame(outcomeId = injectedSignals$newOutcomeId,
+                              oldOutcomeId = injectedSignals$outcomeId,
+                              trueLogRr = log(injectedSignals$targetEffectSize))
+# negativeControlIdSubsets <- unique(signalInjectionSum$outcomeId[signalInjectionSum$exposureId == row$tCohortDefinitionId &
+#                                                                     signalInjectionSum$injectedOutcomes != 0])
+negativeControls <- data.frame(outcomeId = negativeControlIds,
+                               oldOutcomeId = negativeControlIds,
+                               trueLogRr = 0)
+
+source("extras/SharedPlots.R")
+
+d <- rbind(injectedSignals, negativeControls)
+d <- merge(d, estimates[estimates$analysisId == 3, ])
+d$trueRr <- exp(d$trueLogRr)
+plotScatter(d)
+ggsave(file.path(paperFolder, "exemplarEval.png"), width = 13.5, height = 3, dpi = 500)
+
+d <- rbind(injectedSignals, negativeControls)
+d <- merge(d, estimates[estimates$analysisId == 3, ])
+d$logRr <- d$calLogRr
+d$seLogRr <- d$calSeLogRr
+d$ci95lb <- d$calCi95lb
+d$ci95ub <- d$calCi95ub
+d$trueRr <- exp(d$trueLogRr)
+d$Group <- as.factor(d$trueRr)
+plotScatter(d)
+ggsave(file.path(paperFolder, "exemplarCalibration.png"), width = 13.5, height = 3, dpi = 500)
+
+calibrated[calibrated$outcomeId == 2559 & calibrated$db == "CCAE",]
+
+
+
+
+
+
+data$trueRr <- exp(data$trueLogRr)
+data$logLb <- data$logRr - (data$seLogRr * qnorm(0.975))
+data$logUb <- data$logRr + (data$seLogRr * qnorm(0.975))
+data$covered <- data$trueLogRr >= data$logLb & data$trueLogRr <= data$logUb
+aggregate(covered ~ trueRr, data = data, mean)
+
+ingrownNail <- 139099
+data <- data[order(data$trueRr), ]
+data$rr <- exp(data$logRr)
+data$lb <- exp(data$logLb)
+data$ub <- exp(data$logUb)
+round(data[data$oldOutcomeId == ingrownNail, c("trueRr", "rr", "lb", "ub")], 2)
+
+########################################################################### P-value calibration #
+file.copy(from = file.path(workFolder,
+                           "figuresAndtables",
+                           "calibration",
+                           paste0("negControls_a3_t", treatmentId, "_c", comparatorId, ".png")),
+          to = file.path(symposiumFolder, "pCalEffectPlot.png"),
+          overwrite = TRUE)
+
+negControls <- estimates[estimates$outcomeId %in% negativeControlIds & estimates$analysisId == 3, ]
+EmpiricalCalibration::plotCalibration(logRr = negControls$logRr,
+                                      seLogRr = negControls$seLogRr,
+                                      useMcmc = TRUE)
+writeLines(paste0("Adjusted negative control p < 0.05: ", mean(negControls$p < 0.05)))
+
+negControls <- calibrated[calibrated$analysisId == 3 & calibrated$targetId == treatmentId & calibrated$comparatorId ==
+                              comparatorId & calibrated$outcomeId %in% negativeControlIds, ]
+writeLines(paste0("Calibrated negative control p < 0.05: ", mean(negControls$calP < 0.05)))
+
+########################################################################### CI calibration #
+file.copy(from = file.path(workFolder,
+                           "figuresAndtables",
+                           "calibration",
+                           paste0("trueAndObs_a3_t", treatmentId, "_c", comparatorId, ".png")),
+          to = file.path(symposiumFolder, "trueAndObsCali.png"),
+          overwrite = TRUE)
+
+injectedSignals <- signalInjectionSum[signalInjectionSum$exposureId == row$tCohortDefinitionId, ]
+injectedSignals <- data.frame(outcomeId = injectedSignals$newOutcomeId,
+                              trueLogRr = log(injectedSignals$targetEffectSize))
+negativeControlIdSubsets <- unique(signalInjectionSum$outcomeId[signalInjectionSum$exposureId == row$tCohortDefinitionId &
+                                                                    signalInjectionSum$injectedOutcomes != 0])
+negativeControls <- data.frame(outcomeId = negativeControlIdSubsets, trueLogRr = 0)
+data <- rbind(injectedSignals, negativeControls)
+data <- merge(data,
+              calibrated[calibrated$analysisId == 3 & calibrated$targetId == treatmentId & calibrated$comparatorId ==
+                             comparatorId, c("outcomeId", "calRr", "calCi95lb", "calCi95ub", "logRr", "seLogRr")])
+data$trueRr <- exp(data$trueLogRr)
+data$covered <- data$trueRr >= data$calCi95lb & data$trueRr <= data$calCi95ub
+aggregate(covered ~ trueRr, data = data, mean)
+
+ingrownNail <- 139099
+data[data$outcomeId == ingrownNail, ]
+
+model <- EmpiricalCalibration::fitSystematicErrorModel(data$logRr, data$seLogRr, log(data$trueRr))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Fit mixture model ###
 

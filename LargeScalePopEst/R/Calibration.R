@@ -34,9 +34,9 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
   }
 
   exposureSummary <- read.csv(file.path(workFolder, "exposureSummaryFilteredBySize.csv"))
-  exposureSummary <- exposureSummary[exposureSummary$tCohortDefinitionName != "Psychotherapy" & exposureSummary$tCohortDefinitionName !=
-    "Electroconvulsive therapy" & exposureSummary$cCohortDefinitionName != "Psychotherapy" & exposureSummary$cCohortDefinitionName !=
-    "Electroconvulsive therapy", ]
+  # exposureSummary <- exposureSummary[exposureSummary$tCohortDefinitionName != "Psychotherapy" & exposureSummary$tCohortDefinitionName !=
+  #   "Electroconvulsive therapy" & exposureSummary$cCohortDefinitionName != "Psychotherapy" & exposureSummary$cCohortDefinitionName !=
+  #   "Electroconvulsive therapy", ]
   analysesSum <- read.csv(file.path(workFolder, "analysisSummary.csv"))
   analysesSumRev <- data.frame(analysisId = analysesSum$analysisId,
                                targetId = analysesSum$comparatorId,
@@ -65,7 +65,7 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
   results$calCi95ub <- NA
   signalInjectionSum <- read.csv(file.path(workFolder, "signalInjectionSummary.csv"))
   negativeControlIds <- unique(signalInjectionSum$outcomeId)
-  # i <- which(exposureSummary$tprimeCohortDefinitionId == 721724071)
+  # i <- which(exposureSummary$tprimeCohortDefinitionId == 4327941136)
   for (i in 1:nrow(exposureSummary)) {
     treatmentId <- exposureSummary$tprimeCohortDefinitionId[i]
     comparatorId <- exposureSummary$cprimeCohortDefinitionId[i]

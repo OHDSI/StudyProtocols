@@ -51,7 +51,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_Truven_MDCR_V467.dbo"
+cdmDatabaseSchema <- "CDM_Truven_MDCR_V489.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_mdcr"
@@ -64,7 +64,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "cdm_optum_extended_ses_v469.dbo"
+cdmDatabaseSchema <- "cdm_optum_extended_ses_v486.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_depression_cohorts_optum"
@@ -89,8 +89,8 @@ execute(connectionDetails = connectionDetails,
         maxCores = maxCores,
         createCohorts = FALSE,
         fetchAllDataFromServer = FALSE,
-        injectSignals = TRUE,
-        generateAllCohortMethodDataObjects = TRUE,
+        injectSignals = FALSE,
+        generateAllCohortMethodDataObjects = FALSE,
         runCohortMethod = TRUE)
 
 analysePsDistributions(workFolder)

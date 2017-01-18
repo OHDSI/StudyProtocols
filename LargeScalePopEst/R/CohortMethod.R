@@ -66,8 +66,8 @@ runCohortMethod <- function(workFolder, maxCores = 4) {
                                 createPsThreads = max(1, round(maxCores/10)),
                                 psCvThreads = min(10, maxCores),
                                 trimMatchStratifyThreads = min(4, maxCores),
-                                fitOutcomeModelThreads = min(4, maxCores),
-                                outcomeCvThreads = min(4, maxCores),
+                                fitOutcomeModelThreads = min(6, maxCores),
+                                outcomeCvThreads = min(2, maxCores),
                                 refitPsForEveryOutcome = FALSE,
                                 outcomeIdsOfInterest = hois$cohortDefinitionId)
     outcomeModelReference <- readRDS(file.path(workFolder, "cmOutput", "outcomeModelReference.rds"))

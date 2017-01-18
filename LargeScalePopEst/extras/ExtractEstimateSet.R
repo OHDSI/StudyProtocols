@@ -1,6 +1,6 @@
-workFolder <- "R:/PopEstDepression_Ccae_old"
+workFolder <- "R:/PopEstDepression_Ccae"
 
-dbs <- c("CCAE_old", "MDCD", "MDCR", "Optum")
+dbs <- c("CCAE", "MDCD", "MDCR", "Optum")
 
 exposures <- read.csv(paste0(workFolder, "/exposureSummaryFilteredBySize.csv"))
 exposures1 <- data.frame(targetId = exposures$tprimeCohortDefinitionId,
@@ -54,7 +54,7 @@ for (db in dbs) {
 }
 #temp[temp$outcomeId == 436634 & temp$targetId == 710062026 & temp$analysisId == 3, ]
 
-calibrated <- calibrated[!(calibrated$targetName %in% c("Psychotherapy" , "Electroconvulsive therapy")) & !(calibrated$comparatorName %in% c("Psychotherapy" , "Electroconvulsive therapy")), ]
+#calibrated <- calibrated[!(calibrated$targetName %in% c("Psychotherapy" , "Electroconvulsive therapy")) & !(calibrated$comparatorName %in% c("Psychotherapy" , "Electroconvulsive therapy")), ]
 write.csv(calibrated, "r:/DepressionResults.csv", row.names = FALSE)
 
 
