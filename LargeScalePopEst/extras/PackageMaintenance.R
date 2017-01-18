@@ -32,3 +32,7 @@ for (i in 1:nrow(outcomes)) {
 
 # Create analysis details
 createAnalysesDetails("inst/settings/")
+
+# Store environment in which the study was executed
+pathToCsv <- file.path("inst", "settings", "rEnvironmentSnapshot.csv")
+write.csv(OhdsiRTools::takeEnvironmentSnapshot("LargeScalePopEst"), pathToCsv, row.names = FALSE)
