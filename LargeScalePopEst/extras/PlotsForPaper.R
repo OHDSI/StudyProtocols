@@ -65,21 +65,24 @@ writeLines(paste("Total significant expected when null is true for all: ", nrow(
 d <- rbind(data.frame(logRr = d1$calLogRr,
                       seLogRr = d1$calSeLogRr,
                       Group = "C\nOur large-scale study on depression treatments",
-                      Significant = d1$Significant),
+                      Significant = d1$Significant,
+                      dummy = 1),
            data.frame(logRr = log(d2$EffectEstimate_jitter),
                       seLogRr = d2$seLogRr,
                       Group = "A\nAll observational literature",
-                      Significant = d2$Significant),
+                      Significant = d2$Significant,
+                      dummy = 1),
            data.frame(logRr = log(d3$EffectEstimate_jitter),
                       seLogRr = d3$seLogRr,
                       Group = "B\nObservational literature on depression treatments",
-                      Significant = d3$Significant))
+                      Significant = d3$Significant,
+                      dummy = 1))
 
 d$Group <- factor(d$Group, levels = c("A\nAll observational literature", "B\nObservational literature on depression treatments", "C\nOur large-scale study on depression treatments"))
 
-temp1 <- aggregate(Significant ~ Group, data = d, length)
-temp1$nLabel <- paste0(formatC(temp1$Significant, big.mark = ","), " estimates")
-temp1$Significant <- NULL
+temp1 <- aggregate(dummy ~ Group, data = d, length)
+temp1$nLabel <- paste0(formatC(temp1$dummy, big.mark = ","), " estimates")
+temp1$dummy <- NULL
 temp2 <- aggregate(Significant ~ Group, data = d, mean)
 temp2$meanLabel <- paste0(formatC(100 * (1-temp2$Significant), digits = 1, format = "f"), "% of CIs include 1")
 temp2$Significant <- NULL

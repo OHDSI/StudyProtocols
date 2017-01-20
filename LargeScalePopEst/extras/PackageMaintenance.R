@@ -27,12 +27,11 @@ pathToCsv <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeS
 outcomes <- read.csv(pathToCsv)
 for (i in 1:nrow(outcomes)) {
   writeLines(paste0("Inserting HOI: ", outcomes$name[i]))
-  OhdsiRTools::insertCirceDefinitionInPackage(outcomes$cohortDefinitionId[i], outcomes$name[i])
+  OhdsiRTools::insertCohortDefinitionInPackage(outcomes$cohortDefinitionId[i], outcomes$name[i])
 }
 
 # Create analysis details
 createAnalysesDetails("inst/settings/")
 
 # Store environment in which the study was executed
-pathToCsv <- file.path("inst", "settings", "rEnvironmentSnapshot.csv")
-write.csv(OhdsiRTools::takeEnvironmentSnapshot("LargeScalePopEst"), pathToCsv, row.names = FALSE)
+OhdsiRTools::insertEnvironmentSnapshotInPackage("LargeScalePopEst")
