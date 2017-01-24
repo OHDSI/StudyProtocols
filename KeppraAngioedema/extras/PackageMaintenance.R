@@ -58,3 +58,8 @@ dbDisconnect(connection)
 
 writeLines(paste(excludeIds$DESCENDANT_CONCEPT_ID, collapse = ", "))
 
+# Store environment in which the study was executed
+OhdsiRTools::insertEnvironmentSnapshotInPackage("KeppraAngioedema")
+
+
+

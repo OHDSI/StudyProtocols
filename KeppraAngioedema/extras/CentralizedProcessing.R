@@ -3,6 +3,9 @@ library(KeppraAngioedema)
 # Create per-database reports:
 studyFolder <- "S:/Angioedema"
 folders <- c("Truven_CCAE", "Truven_MDCD", "Truven_MDCR", "Optum")
+folders <- "Ims_Amb_Emr"
+folders <- "Pplus_Ims"
+folders <- "Ims_Da_French_Emr"
 #for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
 for (file in folders) {
     if (file.info(file.path(studyFolder, file))$isdir) {
@@ -14,7 +17,7 @@ for (file in folders) {
 
 # Create summary csv file:
 allResults <- data.frame()
-skip <- c("IMEDS_MDCR", "Regenstrief")
+skip <- c("IMEDS_MDCR", "Regenstrief", "Pplus")
 for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
     if (!(file %in% skip)) {
         if (file.info(file.path(studyFolder, file))$isdir) {
