@@ -15,7 +15,7 @@ d <- data.frame(trueRr = d$trueRr,
                 ci95lb = d$ci95lb,
                 ci95ub = d$ci95ub,
                 seLogRr = d$seLogRr)
-plotScatter(d)
+plotScatter(d, size = 0.5)
 ggsave(file.path(paperFolder, "Eval.png"), width = 13.5, height = 3, dpi = 500)
 
 
@@ -33,6 +33,33 @@ d <- data.frame(trueRr = d$trueRr,
                 seLogRr = d$calSeLogRr)
 plotScatter(d)
 ggsave(file.path(paperFolder, "EvalCal.png"), width = 13.5, height = 3, dpi = 500)
+
+
+# Plot evaluation and calibration as one plot -----------------------------
+calibrated <- read.csv("r:/DepressionResults.csv")
+
+source("extras/SharedPlots.R")
+d <- calibrated[calibrated$analysisId == 3 & !is.na(calibrated$trueRr), ]
+d1 <- data.frame(trueRr = d$trueRr,
+                logRr = d$logRr,
+                ci95lb = d$ci95lb,
+                ci95ub = d$ci95ub,
+                seLogRr = d$seLogRr,
+                yGroup = "Uncalibrated")
+
+d2 <- data.frame(trueRr = d$trueRr,
+                logRr = d$calLogRr,
+                ci95lb = d$calCi95lb,
+                ci95ub = d$calCi95ub,
+                seLogRr = d$calSeLogRr,
+                yGroup = "Calibrated")
+d <- rbind(d1, d2)
+d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
+plotScatter(d, yPanelGroup = TRUE)
+
+ggsave(file.path(paperFolder, "EvalCalCombined.png"), width = 13.5, height = 5, dpi = 500)
+
+
 
 # Plot results for literature and our depression study ---------------------------------------------
 
@@ -485,25 +512,59 @@ negativeControls <- data.frame(outcomeId = negativeControlIds,
 
 source("extras/SharedPlots.R")
 
-d <- rbind(injectedSignals, negativeControls)
-d <- merge(d, estimates[estimates$analysisId == 3, ])
-d$trueRr <- exp(d$trueLogRr)
-plotScatter(d)
-ggsave(file.path(paperFolder, "exemplarEval.png"), width = 13.5, height = 3, dpi = 500)
+d1 <- rbind(injectedSignals, negativeControls)
+d1 <- merge(d1, estimates[estimates$analysisId == 3, ])
+d1$trueRr <- exp(d1$trueLogRr)
+d1$yGroup <- "Uncalibrated"
 
-d <- rbind(injectedSignals, negativeControls)
-d <- merge(d, estimates[estimates$analysisId == 3, ])
-d$logRr <- d$calLogRr
-d$seLogRr <- d$calSeLogRr
-d$ci95lb <- d$calCi95lb
-d$ci95ub <- d$calCi95ub
-d$trueRr <- exp(d$trueLogRr)
-d$Group <- as.factor(d$trueRr)
-plotScatter(d)
-ggsave(file.path(paperFolder, "exemplarCalibration.png"), width = 13.5, height = 3, dpi = 500)
+d2 <- rbind(injectedSignals, negativeControls)
+d2 <- merge(d2, calibrated[calibrated$analysisId == 3, ])
+d2$logRr <- d2$calLogRr
+d2$seLogRr <- d2$calSeLogRr
+d2$ci95lb <- d2$calCi95lb
+d2$ci95ub <- d2$calCi95ub
+d2$trueRr <- exp(d2$trueLogRr)
+d2$Group <- as.factor(d2$trueRr)
+d2$yGroup <- "Calibrated"
+d <- rbind(d1[, c("logRr", "seLogRr", "ci95lb", "ci95ub", "yGroup", "trueRr")],
+           d2[, c("logRr", "seLogRr", "ci95lb", "ci95ub", "yGroup", "trueRr")])
+d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
+plotScatter(d, yPanelGroup = TRUE)
+ggsave(file.path(paperFolder, "exemplarEvalCali.png"), width = 13.5, height = 5, dpi = 500)
 
 calibrated[calibrated$outcomeId == 2559 & calibrated$db == "CCAE",]
 
+
+# Leave-one-out cross-validation ------------------------------------------
+calibrated <- read.csv("r:/DepressionResults.csv")
+library(ggplot2)
+d <- calibrated[calibrated$analysisId == 3 & !is.na(calibrated$trueRr),]
+d$group <- sub("_.*", "", d$outcomeName)
+source("extras/SharedPlots.R")
+plotCiCalibration(d)
+ggsave(file.path(paperFolder, "leaveOneOutCv.png"), width = 9, height = 3.5, dpi = 500)
+
+
+# Supplementary table S1 --------------------------------------------------
+calibrated <- read.csv("r:/DepressionResults.csv")
+d <- calibrated[calibrated$analysisId == 3,]
+d <- d[, c("targetName", "comparatorName", "outcomeName", "outcomeType", "trueRr", "db", "treated", "comparator", "treatedDays", "comparatorDays", "eventsTreated", "eventsComparator", "rr", "ci95lb", "ci95ub", "p", "calRr", "calCi95lb", "calCi95ub", "calP")]
+names(d) <- c("Target", "Comparator", "Outcome", "Outcome type", "True hazard ratio", "Database", "Target persons", "Comparator persons", "Target days", "Comparator days", "Target events", "Comparator events", "Hazard ratio", "Lower bound 95% CI", "Upper bound 95% CI", "P-value", "Calibrated hazard ratio", "Calibrated lower bound 95% CI", "Calibrated upper bound 95% CI", "Calibrated P-value")
+write.csv(d, file.path(paperFolder, "SupplementaryTableS1.csv"), row.names = FALSE)
+
+# Supplementary table S2 --------------------------------------------------
+literature <- read.csv("C:/home/Research/PublicationBias/AnalysisJitter.csv")
+d <- literature
+seFromCI <- (log(d$EffectEstimate_jitter)-log(d$CI.LB_jitter))/qnorm(0.975)
+seFromP <- abs(log(d$EffectEstimate_jitter)/qnorm(d$P.value_jitter))
+d$seLogRr <- seFromCI
+d$seLogRr[is.na(d$seLogRr)] <- seFromP[is.na(d$seLogRr)]
+d <- d[!is.na(d$seLogRr), ]
+d <- d[d$EffectEstimate_jitter > 0, ]
+d <- d[, c("PMID", "Year", "DepressionTreatment", "EffectEstimate", "CI.LB", "CI.UB", "P.value")]
+names(d) <- c("PMID", "Year", "Depression treatment", "Effect estimate", "Lower bound 95% CI", "Upper bound 95% CI", "P-value")
+
+write.csv(d, file.path(paperFolder, "SupplementaryTableS2.csv"), row.names = FALSE)
 
 
 

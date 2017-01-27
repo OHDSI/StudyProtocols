@@ -1,7 +1,7 @@
 library(shiny)
 
 shinyUI(fluidPage(style = 'width:1000px;',
-  titlePanel("Supplementary data for 'Resolving  irreproducibility and paucity in the learning healthcare system'"),
+  titlePanel("Supplementary data for 'Honest learning for the healthcare system: large-scale evidence from real-world data'"),
   tabsetPanel(
     tabPanel("Systematically generated evidence",
              fluidRow(
@@ -86,6 +86,13 @@ shinyUI(fluidPage(style = 'width:1000px;',
                       uiOutput("abstract")
                       )
                )
+    ),
+    tabPanel("About",
+             br(),
+             p("Supplementary data for:"),
+             p("Schuemie MJ, Ryan PB, Hripcsak G, Madigan D, Suchard MA,", 
+               em("Honest learning for the healthcare system: large-scale evidence from real-world data"), 
+               ", ...")
     )
   )
 )
