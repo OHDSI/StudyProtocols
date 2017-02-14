@@ -32,10 +32,47 @@ for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
 }
 write.csv(allResults, file.path(studyFolder, "AllResults.csv"), row.names = FALSE)
 
+
+
+# Meta analysis -----------------------------------------------------------
+allResults <- read.csv(file.path(studyFolder, "AllResults.csv"), stringsAsFactors = FALSE)
+allResults$db[allResults$db == "Ims_Amb_Emr"] <- "IMS Ambulatory"
+allResults$db[allResults$db == "Optum"] <- "Optum"
+allResults$db[allResults$db == "Pplus_Ims"] <- "IMS P-Plus"
+allResults$db[allResults$db == "Truven_CCAE"] <- "Truven CCAE"
+allResults$db[allResults$db == "Truven_MDCD"] <- "Truven MDCD"
+allResults$db[allResults$db == "Truven_MDCR"] <- "Truven MDCR"
+allResults$db[allResults$db == "UT_Cerner"] <- "UT EMR"
+source("extras/MetaAnalysis.R")
+
+fileName <- file.path(studyFolder, "ForestPp.png")
 results <- allResults[allResults$analysisId == 3, ]
 results <- results[!is.na(results$seLogRr), ]
+plotForest(logRr = results$logRr,
+           logLb95Ci = log(results$ci95lb),
+           logUb95Ci = log(results$ci95ub),
+           names = results$db,
+           xLabel = "Hazard Ratio",
+           fileName = fileName)
 
-library(meta)
+fileName <- file.path(studyFolder, "ForestItt.png")
+results <- allResults[allResults$analysisId == 7, ]
+results <- results[!is.na(results$seLogRr), ]
+plotForest(logRr = results$logRr,
+           logLb95Ci = log(results$ci95lb),
+           logUb95Ci = log(results$ci95ub),
+           names = results$db,
+           xLabel = "Hazard Ratio",
+           fileName = fileName)
+
+meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
+s <- summary(meta)$random
+exp(s$TE)
+
+forest(meta)
+
+results <- allResults[allResults$analysisId == 7, ]
+results <- results[!is.na(results$seLogRr), ]
 meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
 forest(meta)
 

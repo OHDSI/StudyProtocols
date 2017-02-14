@@ -1,6 +1,6 @@
 Package: KeppraAngioedema
 Title: Keppra and the Risk of Angioedema
-Version: 0.1.3
+Version: 0.1.4
 Author: Martijn Schuemie [aut, cre],
     Patrick Ryan [aut],
     Jon Duke [aut],
@@ -24,7 +24,12 @@ Imports:
     OhdsiRTools,
     RJDBC,
     Cyclops,
-    rmarkdown
+    rmarkdown,
+    ggplot2
+Suggests:
+    gridExtra,
+    meta,
+    grid
 License: Apache License 2.0
 LazyData: true
 RoxygenNote: 5.0.1
