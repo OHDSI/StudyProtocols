@@ -28,7 +28,7 @@ cdmVersion <- "4"
 
 dbms <- "pdw"
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "cdm_jmdc_v429.dbo"
+cdmDatabaseSchema <- "cdm_jmdc_v512.dbo"
 port <- 17001
 cdmVersion <- "5"
 

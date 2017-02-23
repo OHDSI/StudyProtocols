@@ -38,5 +38,8 @@ classification <- DatabaseConnector::querySql(conn, "SELECT * FROM #my_drug_clas
 write.csv(classification, "inst/csv/CustomClassification.csv", row.names = FALSE)
 RJDBC::dbDisconnect(conn)
 
+# Store environment in which the study was executed
+OhdsiRTools::insertEnvironmentSnapshotInPackage("DrugsInPeds")
+
 
 
