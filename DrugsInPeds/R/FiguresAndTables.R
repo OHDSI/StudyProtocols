@@ -167,11 +167,9 @@ createTable2 <- function(conn, cdmDatabaseSchema, denominatorType) {
     }
 }
 
-createTable3 <- function(conn, cdmDatabaseSchema, oracleTempSchema, cdmVersion, denominatorType) {
+createTable3 <- function(denominatorType, drugsPerClass = 5) {
     denominator <- read.csv("Denominator.csv", stringsAsFactors = FALSE)
     numerator <- read.csv("NumeratorByIngredient.csv", stringsAsFactors = FALSE)
-
-
 
     pathToCsv <- system.file("csv",
                              "CustomClassification.csv",
@@ -186,7 +184,7 @@ createTable3 <- function(conn, cdmDatabaseSchema, oracleTempSchema, cdmVersion, 
         for (classId in unique(classes$classId)){
             subset <- numerator[numerator$classId == classId & numerator$inpatient == inpatient,]
             subset <- subset[order(-subset$personCount), ]
-            subset <- subset[1:min(5,nrow(subset)), ]
+            subset <- subset[1:min(drugsPerClass,nrow(subset)), ]
             temp[[length(temp)+1]] <- subset
         }
     }
@@ -372,11 +370,7 @@ createFiguresAndTables <- function(connectionDetails,
     createTable2(conn = conn,
                  cdmDatabaseSchema = cdmDatabaseSchema,
                  denominatorType = denominatorType)
-    createTable3(conn = conn,
-                 cdmDatabaseSchema = cdmDatabaseSchema,
-                 oracleTempSchema = oracleTempSchema,
-                 cdmVersion = cdmVersion,
-                 denominatorType = denominatorType)
+    createTable3(denominatorType = denominatorType)
     createFigure1(denominatorType = denominatorType)
     createFigure2(denominatorType = denominatorType)
     createFigure3(denominatorType = denominatorType)
