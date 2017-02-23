@@ -23,7 +23,9 @@
 {DEFAULT @cdm_version = '4'}
 
 {@split_by_drug_level == 'ingredient'} ? {
-SELECT *
+SELECT DISTINCT drug_concept_id,
+	concept_id,
+	concept_name
 INTO #drug_mapping
 FROM (
 	SELECT drug.concept_id AS drug_concept_id,
@@ -57,15 +59,29 @@ FROM (
 } 
 
 {@split_by_drug_level == 'class'} ? {
-SELECT concept_id AS drug_concept_id,
+SELECT DISTINCT drug_concept_id,
 	0 AS concept_id,
-	class_id AS concept_name
+	concept_name
 INTO #drug_mapping
-FROM #drug_classes;
+FROM (
+	SELECT drug.concept_id AS drug_concept_id,
+		drug_classes.class_id AS concept_name
+	FROM #drug_classes drug_classes
+	INNER JOIN @cdm_database_schema.concept_ancestor
+		ON concept_ancestor.ancestor_concept_id = drug_classes.concept_id
+	INNER JOIN @cdm_database_schema.concept drug
+		ON concept_ancestor.descendant_concept_id = drug.concept_id
+	
+	UNION
+	
+	SELECT drug_classes.concept_id AS drug_concept_id,
+		drug_classes.class_id AS concept_name
+	FROM #drug_classes drug_classes
+	) TEMP;
 } 
 
 {@split_by_drug_level == 'none'} ? {
-SELECT drug.concept_id AS drug_concept_id,
+SELECT DISTINCT drug.concept_id AS drug_concept_id,
 	0 AS concept_id,
 	CAST('drug' AS VARCHAR) AS concept_name
 INTO #drug_mapping
