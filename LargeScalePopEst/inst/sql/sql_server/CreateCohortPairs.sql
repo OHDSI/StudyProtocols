@@ -37,14 +37,14 @@ FROM (
 			ORDER BY s1.cohort_definition_id,
 				s2.cohort_definition_id
 			) AS pair_id,
-		s1.cohort_definition_id AS t_cohort_definition_id,
-		s2.cohort_definition_id AS c_cohort_definition_id,
-		CASE 
+		CAST(s1.cohort_definition_id AS BIGINT) AS t_cohort_definition_id,
+	    CAST(s2.cohort_definition_id AS BIGINT) AS c_cohort_definition_id,
+		CASE
 			WHEN s1.min_cohort_date > s2.min_cohort_date
 				THEN s1.min_cohort_date
 			ELSE s2.min_cohort_date
 			END AS min_cohort_date,
-		CASE 
+		CASE
 			WHEN s1.max_cohort_date < s2.max_cohort_date
 				THEN s1.max_cohort_date
 			ELSE s2.max_cohort_date
@@ -65,7 +65,7 @@ WHERE cohort_definition_id IN (
 		FROM #exposure_cohort_pairs
 		);
 
---get tprime	  
+--get tprime
 INSERT INTO @target_database_schema.@target_cohort_table (
 	cohort_definition_id,
 	subject_id,
@@ -150,7 +150,7 @@ INNER JOIN #exposure_cohort_summary ecs2
 	ON cp1.c_cohort_definition_id = ecs2.cohort_definition_id
 INNER JOIN #exposure_pair_cohort_summary epcs2
 	ON cp1.cprime_cohort_definition_id = epcs2.cohort_definition_id;
-	
+
 TRUNCATE TABLE #exposure_cohorts;
 DROP TABLE #exposure_cohorts;
 
