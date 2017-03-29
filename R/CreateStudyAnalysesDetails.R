@@ -167,15 +167,15 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                                                    excludeDrugsFromCovariates = FALSE,
                                                                    covariateSettings = covariateSettings)
 
-  createStudyPopArgs <- CohortMethod::createCreateStudyPopulationArgs(removeSubjectsWithPriorOutcome = TRUE,
-                                                                      firstExposureOnly = FALSE,
-                                                                      washoutPeriod = 365,
-                                                                      removeDuplicateSubjects = TRUE,
-                                                                      minDaysAtRisk = 0,
-                                                                      riskWindowStart = 90,
-                                                                      addExposureDaysToStart = FALSE,
-                                                                      riskWindowEnd = 9999,
-                                                                      addExposureDaysToEnd = FALSE)
+  createStudyPopArgs1 <- CohortMethod::createCreateStudyPopulationArgs(removeSubjectsWithPriorOutcome = TRUE,
+                                                                       firstExposureOnly = FALSE,
+                                                                       washoutPeriod = 365,
+                                                                       removeDuplicateSubjects = TRUE,
+                                                                       minDaysAtRisk = 0,
+                                                                       riskWindowStart = 90,
+                                                                       addExposureDaysToStart = FALSE,
+                                                                       riskWindowEnd = 9999,
+                                                                       addExposureDaysToEnd = FALSE)
 
   fitOutcomeModelArgs1 <- CohortMethod::createFitOutcomeModelArgs(useCovariates = FALSE,
                                                                   modelType = "cox",
@@ -192,9 +192,9 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
   stratifyByPsArgs1 <- CohortMethod::createStratifyByPsArgs(numberOfStrata = 5)
 
   cmAnalysis1 <- CohortMethod::createCmAnalysis(analysisId = 1,
-                                                description = "Sisyphus challenge:  Comparative effectiveness of alendronate vs. raloxifenee in patients with osteoporosis for the risk of hip fracture",
+                                                description = "Main analysis: ITT",
                                                 getDbCohortMethodDataArgs = getDbCmDataArgs,
-                                                createStudyPopArgs = createStudyPopArgs,
+                                                createStudyPopArgs = createStudyPopArgs1,
                                                 createPs = TRUE,
                                                 createPsArgs = createPsArgs1,
                                                 trimByPs = FALSE,
@@ -209,7 +209,35 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                                 fitOutcomeModel = TRUE,
                                                 fitOutcomeModelArgs = fitOutcomeModelArgs1)
 
-  cmAnalysisList <- list(cmAnalysis1)
+  createStudyPopArgs2 <- CohortMethod::createCreateStudyPopulationArgs(removeSubjectsWithPriorOutcome = TRUE,
+                                                                       firstExposureOnly = FALSE,
+                                                                       washoutPeriod = 365,
+                                                                       removeDuplicateSubjects = TRUE,
+                                                                       minDaysAtRisk = 0,
+                                                                       riskWindowStart = 90,
+                                                                       addExposureDaysToStart = FALSE,
+                                                                       riskWindowEnd = 0,
+                                                                       addExposureDaysToEnd = TRUE)
+
+  cmAnalysis2 <- CohortMethod::createCmAnalysis(analysisId = 2,
+                                                description = "Sensitivity analysis: Per-protocol",
+                                                getDbCohortMethodDataArgs = getDbCmDataArgs,
+                                                createStudyPopArgs = createStudyPopArgs2,
+                                                createPs = TRUE,
+                                                createPsArgs = createPsArgs1,
+                                                trimByPs = FALSE,
+                                                trimByPsArgs = trimByPsArgs1,
+                                                trimByPsToEquipoise = TRUE,
+                                                trimByPsToEquipoiseArgs = trimByPsToEquipoiseArgs1,
+                                                matchOnPs = FALSE,
+                                                matchOnPsArgs = matchOnPsArgs1,
+                                                stratifyByPs = TRUE,
+                                                stratifyByPsArgs = stratifyByPsArgs1,
+                                                computeCovariateBalance = FALSE,
+                                                fitOutcomeModel = TRUE,
+                                                fitOutcomeModelArgs = fitOutcomeModelArgs1)
+
+  cmAnalysisList <- list(cmAnalysis1, cmAnalysis2)
 
   # Save settings to package ------------------------------------------------
   CohortMethod::saveCmAnalysisList(cmAnalysisList, file.path(workFolder, "cmAnalysisList.txt"))

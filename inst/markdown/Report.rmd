@@ -38,7 +38,7 @@ This reports describes the results from a comparative effectiveness study compar
 
 ## Analysis variations
 
-In total, 1 analyses variation was executed:
+In total, 2 analyses variations were executed:
 
 ```{r, echo = FALSE, results = "asis"}
     for (analysisId in analysisIds) {
@@ -58,11 +58,11 @@ knitr::include_graphics(file.path(exportFolder, "PsPrefScale.png"))
 
 ### After stratification
 
-```{r, echo = FALSE, fig.width = 5, fig.height= 5, fig.cap = "Balance scatter plot. This plot shows the standardized difference before and after matching for all covariates used in the propensity score model."}
+```{r, echo = FALSE, fig.width = 5, fig.height= 5, fig.cap = "Balance scatter plot. This plot shows the standardized difference before and after stratification for all covariates used in the propensity score model."}
 knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceScatterPlot.png"))
 ```
 
-```{r, echo = FALSE, fig.width = 7, fig.height= 5, fig.cap = "Balance plot for top covariates. This plot shows the standardized difference before and after stratification for those covariates with the largest difference before matching (top) and after matching (bottom). A negative difference means the value in the treated group was lower than in the comparator group."}
+```{r, echo = FALSE, fig.width = 7, fig.height= 5, fig.cap = "Balance plot for top covariates. This plot shows the standardized difference before and after stratification for those covariates with the largest difference before stratification (top) and after stratification (bottom). A negative difference means the value in the treated group was lower than in the comparator group."}
 knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceTopVariables.png"))
 ```
 
@@ -100,7 +100,7 @@ knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceTopV
 ```
 # Attrition
 
-```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using 1-on-1 matching on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in CIRCE."}
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using stratification on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in CIRCE."}
 knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "Attrition.png"))
 ```
 
