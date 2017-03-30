@@ -26,6 +26,7 @@ How to run
 
 3. In `R`, use the following code to install the study package and its dependencies:
 	```r
+	library(devtools)
 	install_github("ohdsi/SqlRender")
 	install_github("ohdsi/DatabaseConnector")
 	install_github("ohdsi/OhdsiRTools")
@@ -33,7 +34,7 @@ How to run
 	install_github("ohdsi/FeatureExtraction")
 	install_github("ohdsi/CohortMethod")
 	install_github("ohdsi/EmpiricalCalibration")
-	install_github("ohdsi/AlendronateVsRaloxifene")
+	install_github("ohdsi/StudyProtocolSandbox/AlendronateVsRaloxifene")
 	```
 4. Once installed, you can execute the sutyd by modifying and using the following code:
 
