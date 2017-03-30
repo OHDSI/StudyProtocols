@@ -39,9 +39,7 @@ Tata,254443,Sjogren's syndrome
 Tata,374923,Bell's palsy
 Tata,4156115,Malignant neoplasm of endocrine gland
 Tata,380038,Viral conjunctivitis
-Tata,77650,Aseptic necrosis of bone
 Tata,441589,Endocarditis
-Tata,196236,Septic shock
 Tata,438688,Sarcoidosis
 Tata,437082,Ankylosing spondylitis
 Tata,4254542,Hypopituitarism
@@ -60,21 +58,21 @@ Southworth,4324765,Arthropathy of knee joint
 Southworth,261880,Atelectasis
 Southworth,443344,Barrett's esophagus
 Southworth,378425,Blepharitis
+Southworth,256449,Bronchiectasis
 Southworth,313791,Bundle branch block
 Southworth,435613,Cellulitis
 Southworth,257012,Chronic sinusitis
 Southworth,134441,Chronic ulcer of skin
-Southworth,4307254,Closed fracture
 Southworth,4150614,Communication disorder
 Southworth,201606,Crohn's disease
 Southworth,73302,Curvature of spine
+Southworth,4242416,Cutis laxa
 Southworth,192279,Diabetic renal disease
 Southworth,4174977,Diabetic retinopathy
 Southworth,74726,Dislocation of joint
 Southworth,435657,Dyssomnia
 Southworth,197684,Dysuria
 Southworth,79903,Effusion of joint
-Southworth,442560,Fracture of femur
 Southworth,4050747,Fracture of upper limb
 Southworth,196456,Gallstone
 Southworth,4007453,Gammopathy
@@ -110,21 +108,21 @@ Graham,4324765,Arthropathy of knee joint
 Graham,261880,Atelectasis
 Graham,443344,Barrett's esophagus
 Graham,378425,Blepharitis
+Graham,256449,Bronchiectasis
 Graham,313791,Bundle branch block
 Graham,435613,Cellulitis
 Graham,257012,Chronic sinusitis
 Graham,134441,Chronic ulcer of skin
-Graham,4307254,Closed fracture
 Graham,4150614,Communication disorder
 Graham,201606,Crohn's disease
 Graham,73302,Curvature of spine
+Graham,4242416,Cutis laxa
 Graham,192279,Diabetic renal disease
 Graham,4174977,Diabetic retinopathy
 Graham,74726,Dislocation of joint
 Graham,435657,Dyssomnia
 Graham,197684,Dysuria
 Graham,79903,Effusion of joint
-Graham,442560,Fracture of femur
 Graham,4050747,Fracture of upper limb
 Graham,196456,Gallstone
 Graham,4007453,Gammopathy

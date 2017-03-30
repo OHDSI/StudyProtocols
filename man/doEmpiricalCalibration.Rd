@@ -16,4 +16,3 @@ Perform empirical calibration
 Performs empirical calibration of confidence intervals and p-values using the negative and positive
 control outcomes.
 }
-

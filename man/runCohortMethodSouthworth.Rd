@@ -35,4 +35,3 @@ this can speed up the analyses.}
 \description{
 Run the Southworth study replication
 }
-

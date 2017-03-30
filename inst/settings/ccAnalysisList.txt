@@ -23,6 +23,7 @@
       "visitDateCaliper": 30,
       "matchOnTimeInCohort": false,
       "daysInCohortCaliper": 30,
+      "minAge": 18,
       "removedUnmatchedCases": true,
       "attr_class": "args"
     },

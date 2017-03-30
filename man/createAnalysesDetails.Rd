@@ -24,4 +24,3 @@ Create the analyses details
 \details{
 This function creates files specifying the analyses that will be performed.
 }
-

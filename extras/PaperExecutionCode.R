@@ -1,6 +1,6 @@
 # @file TestCode.R
 #
-# Copyright 2016 Observational Health Data Sciences and Informatics
+# Copyright 2017 Observational Health Data Sciences and Informatics
 #
 # This file is part of CiCalibration
 #
@@ -24,8 +24,8 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- 'CDM_Truven_MDCD_V464.dbo'
-#cdmDatabaseSchema <- "CDM_CPRD_V474.dbo"
+cdmDatabaseSchema <- 'CDM_Truven_MDCD_V521.dbo'
+#cdmDatabaseSchema <- "CDM_CPRD_V510.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_ci_calibration_cohorts_mdcd"
@@ -38,7 +38,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "CDM_TRUVEN_MDCR_V489.dbo"
+cdmDatabaseSchema <- "CDM_TRUVEN_MDCR_V520.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_ci_calibration_cohorts_mdcr"
@@ -51,7 +51,7 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- "cdm_optum_extended_ses_V486.dbo"
+cdmDatabaseSchema <- "cdm_optum_extended_ses_V515.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
 studyCohortTable <- "mschuemie_ci_calibration_cohorts_optum"
@@ -73,8 +73,8 @@ execute(connectionDetails = connectionDetails,
         studyCohortTable = studyCohortTable,
         study = study,
         workFolder = workFolder,
-        createCohorts = TRUE,
-        injectSignals = TRUE,
+        createCohorts = FALSE,
+        injectSignals = FALSE,
         runAnalyses = TRUE,
         empiricalCalibration = TRUE,
         maxCores = maxCores)
@@ -88,7 +88,7 @@ createCohorts(connectionDetails = connectionDetails,
               study = study,
               workFolder = workFolder)
 
-injectSignals(connectionDetails = connectionDetails,
+CiCalibration::injectSignals(connectionDetails = connectionDetails,
               cdmDatabaseSchema = cdmDatabaseSchema,
               oracleTempSchema = oracleTempSchema,
               workDatabaseSchema = workDatabaseSchema,

@@ -35,4 +35,3 @@ this can speed up the analyses.}
 \description{
 Run the self-controlled case series
 }
-

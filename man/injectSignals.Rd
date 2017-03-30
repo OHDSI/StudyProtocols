@@ -40,4 +40,3 @@ Inject outcomes on top of negative controls
 \details{
 This function injects outcomes on top of negative controls to create controls with predefined relative risks greater than one.
 }
-

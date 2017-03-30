@@ -214,3 +214,72 @@ ggplot(results,
 ggsave(file.path(paperFolder, "DabiWarfarin.png"), width = 6, height = 2.2, dpi = 300)
 
 
+
+# Person counts -----------------------------------------------------------
+library(ffbase)
+
+sccsData <- SelfControlledCaseSeries::loadSccsData("S:/Temp/CiCalibration_Mdcd/sccsOutput/SccsData_l1")
+sum(sccsData$eras$conceptId == 14)
+sccsEraData <- SelfControlledCaseSeries::loadSccsEraData("S:/Temp/CiCalibration_Mdcd/sccsOutput/Analysis_1/SccsEraData_e11_o14")
+length(unique(sccsEraData$outcomes$stratumId[sccsEraData$outcomes$y == 1]))
+strataId <- unique(sccsEraData$outcomes$stratumId[sccsEraData$outcomes$y == 1])
+x <- sccsData$cases[sccsData$cases$observationPeriodId %in% strataId, ]
+same <- x$personId[x$personId %in% ccUnmatched$personId]
+notSame <- ccUnmatched[!(ccUnmatched$personId %in% ff::as.ram(x$personId)) & ccUnmatched$isCase,]
+
+sccsData$cases[sccsData$cases$personId == 1306285,]
+sccsData$eras[sccsData$eras$observationPeriodId == 95029,]
+sccsEraData$outcomes[sccsEraData$outcomes$stratumId == 3148630, ]
+sccsEraData$covariates[sccsEraData$covariates$stratumId == 3317610, ]
+ccData$nestingCohorts[ccData$nestingCohorts$personId == 9337461, ]
+ccData$cases[ccData$cases$nestingCohortId == 3148630, ]
+
+ccOm <- readRDS("S:/Temp/CiCalibration_Mdcd/ccOutput/Analysis_1/model_e11_o14.rds")
+
+ccData <- CaseControl::loadCaseData("S:/Temp/CiCalibration_Mdcd/ccOutput/caseData_cd1")
+length(unique(ccData$cases$nestingCohortId[ccData$cases$outcomeId == 14]))
+
+cc <- readRDS("S:/Temp/CiCalibration_Mdcd/ccOutput/caseControls_cd1_cc1_o14.rds")
+CaseControl::getAttritionTable(cc)
+ccd <- readRDS("S:/Temp/CiCalibration_Mdcd/ccOutput/ccd_cd1_cc1_o14_ed1_e11_ccd1.rds")
+CaseControl::computeMdrr(caseControlData = ccd)
+
+ccUnmatched <- CaseControl::selectControls(caseData = ccData,
+                            outcomeId = 14,
+                            firstOutcomeOnly = TRUE,
+                            washoutPeriod = 180,
+                            controlsPerCase = 6,
+                            matchOnAge = TRUE,
+                            ageCaliper = 1,
+                            matchOnGender = TRUE,
+                            matchOnProvider = FALSE,
+                            matchOnCareSite = TRUE,
+                            matchOnVisitDate = FALSE,
+                            removedUnmatchedCases = FALSE,
+                            minAge = 18)
+sum(ccUnmatched$isCase)
+
+
+
+options(fftempdir = "s:/fftemp")
+sccsData <- SelfControlledCaseSeries::loadSccsData("S:/Temp/CiCalibration_Mdcd/sccsOutput/SccsData_l1")
+covarExposureOfInt <- SelfControlledCaseSeries::createCovariateSettings(label = "Exposure of interest",
+                                                                        includeCovariateIds = 12,
+                                                                        start = 0,
+                                                                        end = 0,
+                                                                        addExposedDaysToEnd = TRUE)
+
+
+ageSettings <- SelfControlledCaseSeries::createAgeSettings(includeAge = TRUE,
+                                                           ageKnots = 5,
+                                                           minAge = 18)
+
+temp <- list(cases = sccsData$cases[sccsData$cases$personId == 1306285 | sccsData$cases$personId == 651320,],
+             eras = sccsData$eras[sccsData$eras$observationPeriodId == 95029 | sccsData$eras$observationPeriodId == 65,],
+             covariateRef = sccsData$covariateRef,
+             metaData = sccsData$metaData)
+
+z <- SelfControlledCaseSeries::createSccsEraData(sccsData = temp,
+                                                 naivePeriod = 180,
+                                                 firstOutcomeOnly = FALSE,
+                                                 covariateSettings = covarExposureOfInt)

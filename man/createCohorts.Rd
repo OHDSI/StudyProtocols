@@ -41,4 +41,3 @@ Create the exposure and outcome cohorts
 This function will create the exposure and outcome cohorts following the definitions included in
 this package.
 }
-

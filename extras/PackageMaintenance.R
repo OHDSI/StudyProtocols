@@ -1,4 +1,4 @@
-# Copyright 2016 Observational Health Data Sciences and Informatics
+# Copyright 2017 Observational Health Data Sciences and Informatics
 #
 # This file is part of CiCalibration
 #
@@ -14,25 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Format and check code
+# Format and check code ----
 OhdsiRTools::formatRFolder()
 OhdsiRTools::checkUsagePackage("CiCalibration")
 OhdsiRTools::updateCopyrightYearFolder()
 
-# Create manual and vignette
+# Create manual and vignette ----
 shell("CiCalibration.pdf")
 shell("R CMD Rd2pdf ./ --output=extras/CiCalibration.pdf")
 
-# Insert cohort definitions into package
+# Insert cohort definitions into package ----
 pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "CiCalibration")
 cohortsToCreate <- read.csv(pathToCsv)
 for (i in 1:nrow(cohortsToCreate)) {
   writeLines(paste("Inserting cohort:", cohortsToCreate$name[i]))
-  OhdsiRTools::insertCirceDefinitionInPackage(cohortsToCreate$atlasId[i], cohortsToCreate$name[i])
+  OhdsiRTools::insertCohortDefinitionInPackage(cohortsToCreate$atlasId[i], cohortsToCreate$name[i])
 }
 
 
-# Create analysis details
+# Create analysis details ----
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "pdw",
                                                                 server = "JRDUSAPSCTL01",
                                                                 user = NULL,
@@ -40,4 +40,9 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "pdw",
                                                                 port = 17001)
 cdmDatabaseSchema <- "cdm_truven_ccae_v483.dbo"
 createAnalysesDetails(connectionDetails, cdmDatabaseSchema, "inst/settings/")
+
+# Store environment in which the study was executed ----
+OhdsiRTools::insertEnvironmentSnapshotInPackage("CiCalibration")
+
+
 

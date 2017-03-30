@@ -31,13 +31,15 @@ WHERE E.concept_id is null
 
 with primary_events (event_id, person_id, start_date, end_date, op_start_date, op_end_date) as
 (
+-- Begin Primary Events
 select row_number() over (PARTITION BY P.person_id order by P.start_date) as event_id, P.person_id, P.start_date, P.end_date, OP.observation_period_start_date as op_start_date, OP.observation_period_end_date as op_end_date
 FROM
 (
   select P.person_id, P.start_date, P.end_date, ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY start_date ASC) ordinal
   FROM 
   (
-  select C.person_id, C.condition_era_start_date as start_date, C.condition_era_end_date as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
+  -- Begin Condition Era Criteria
+select C.person_id, C.condition_era_id as event_id, C.condition_era_start_date as start_date, C.condition_era_end_date as end_date, C.CONDITION_CONCEPT_ID as TARGET_CONCEPT_ID
 from 
 (
   select ce.*, ROW_NUMBER() over (PARTITION BY ce.person_id ORDER BY ce.condition_era_start_date, ce.condition_era_id) as ordinal
@@ -46,12 +48,13 @@ where ce.condition_concept_id in (SELECT concept_id from  #Codesets where codese
 ) C
 
 
+-- End Condition Era Criteria
 
   ) P
 ) P
 JOIN @cdm_database_schema.observation_period OP on P.person_id = OP.person_id and P.start_date >=  OP.observation_period_start_date and P.start_date <= op.observation_period_end_date
 WHERE DATEADD(day,0,OP.OBSERVATION_PERIOD_START_DATE) <= P.START_DATE AND DATEADD(day,0,P.START_DATE) <= OP.OBSERVATION_PERIOD_END_DATE
-
+-- End Primary Events
 
 )
 SELECT event_id, person_id, start_date, end_date, op_start_date, op_end_date
@@ -90,7 +93,7 @@ with cteIncludedEvents(event_id, person_id, start_date, end_date, op_start_date,
 select event_id, person_id, start_date, end_date, op_start_date, op_end_date
 into #included_events
 FROM cteIncludedEvents Results
-WHERE Results.ordinal = 1
+
 ;
 
 -- Apply end date stratagies
@@ -98,6 +101,8 @@ WHERE Results.ordinal = 1
 select event_id, person_id, op_end_date as end_date
 into #cohort_ends
 from #included_events;
+
+
 
 
 

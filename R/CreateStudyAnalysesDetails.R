@@ -1,4 +1,4 @@
-# Copyright 2016 Observational Health Data Sciences and Informatics
+# Copyright 2017 Observational Health Data Sciences and Informatics
 #
 # This file is part of CiCalibration
 #
@@ -182,7 +182,8 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                                                 matchOnAge = TRUE,
                                                                 ageCaliper = 1,
                                                                 matchOnGender = TRUE,
-                                                                matchOnCareSite = TRUE)
+                                                                matchOnCareSite = TRUE,
+                                                                minAge = 18)
 
     getDbExposureDataArgs <- CaseControl::createGetDbExposureDataArgs()
 

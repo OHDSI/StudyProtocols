@@ -16,12 +16,11 @@ Imports:
     CohortMethod,
     SelfControlledCaseSeries,
     CaseControl,
-    EmpiricalCalibration,
+    EmpiricalCalibration (>= 1.2.2),
     DBI,
-    OhdsiSharing,
     ggplot2
 Suggests:
     testthat
 License: Apache License 2.0
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
