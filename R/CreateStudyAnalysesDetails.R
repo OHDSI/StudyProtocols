@@ -47,7 +47,8 @@ createAnalysesDetails <- function(connectionDetails, cdmDatabaseSchema, workFold
                                            noiseLevel = "quiet",
                                            tolerance  = 2e-07,
                                            cvRepetitions = 10,
-                                           threads = 1)
+                                           threads = 1,
+                                           seed = 123)
 
 
 
