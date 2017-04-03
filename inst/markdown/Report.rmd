@@ -5,7 +5,7 @@ output:
         fig_caption: yes
         toc: yes
 params: 
-    exportFolder: S:/temp/AlendronateVsRaloxifeneMdcd/export
+    exportFolder: S:/temp/AlendronateVsRaloxifeneCcae/export
 ---
 
 ```{r, echo = FALSE, message = FALSE}
@@ -19,7 +19,7 @@ hois <- c(99323, 100791, 100792, 100793, 100794, 100795)
 
 # Introduction
 
-This reports describes the results from a comparative effectiveness study comparing new users of alendronate to new users of raloxifene Propensity scores were generated using large scale regression, and stratification and trimming on propensity scores was performed. Effect sizes were estimated using a univariate Cox regression, conditioned on the matched sets. A set of negative control outcomes was included to estimate residual bias and calibrate p-values.
+This reports describes the results from a comparative effectiveness study comparing new users of alendronate to new users of raloxifene Propensity scores were generated using large scale regression, and stratification and trimming on propensity scores was performed. Effect sizes were estimated using a univariate Cox regression, conditioned on the strata. A set of negative control outcomes was included to estimate residual bias and calibrate p-values.
 
 ## Population characteristics
 
@@ -100,7 +100,7 @@ knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceTopV
 ```
 # Attrition
 
-```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using stratification on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in CIRCE."}
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using stratification on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in ATLAS."}
 knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "Attrition.png"))
 ```
 
@@ -120,11 +120,11 @@ knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "Attrition.p
         return(formatted)
     }
     
-    table <- results[results$outcomeId %in% hois, c("analysisId", "treated", "comparator", "eventsTreated", "eventsComparator")]
+    table <- results[results$outcomeId %in% hois, c("analysisId", "outcomeName", "treated", "comparator", "eventsTreated", "eventsComparator")]
     table <- table[order(table$analysisId), ]
     table$eventsTreated <- removeLowCounts(table$eventsTreated)
     table$eventsComparator <- removeLowCounts(table$eventsComparator)
-    colnames(table) <- c("Analysis ID", "# treated", "# comparator", "# treated with event", "# comparator with event")
+    colnames(table) <- c("Analysis ID", "Outcome", "# treated", "# comparator", "# treated with event", "# comparator with event")
     
     knitr::kable(table, 
                  caption = "Counts of subjects and events for the treated and comparator groups.", 
@@ -133,18 +133,18 @@ knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "Attrition.p
 ```  
 
 ```{r, echo = FALSE}
-    table <- results[results$outcomeId %in% hois, c("analysisId", "rr", "ci95lb" , "ci95ub", "p", "calibratedP" ,"calibratedP_lb95ci" ,"calibratedP_ub95ci")]
+    table <- results[results$outcomeId %in% hois, c("analysisId", "outcomeName", "rr", "ci95lb" , "ci95ub", "p", "calibratedP")]
     table <- table[order(table$analysisId), ]
-    colnames(table) <- c("Analysis ID", "Hazard Ratio", "95% CI LB", "95% CI UB", "P", "Calibrated P", "Cal. P 95% CI LB", "Cal. P 95% CI UB")
+    colnames(table) <- c("Analysis ID", "Outcome", "Hazard Ratio", "95% CI LB", "95% CI UB", "P", "Cal. P")
    knitr::kable(table, 
-                 caption = "Harard ratios for angioedema in the levetiracetam group compared to the phenytoin group. Also included are traditional and calibrated p-values, as well as the 95% credible interval for the calibrated p-value.", 
+                 caption = "Harard ratios for the various outcomes in the alendronate group compared to the raloxifene group. Also included are traditional and calibrated p-values.", 
                  row.names = FALSE, 
-                 format.args = list(big.mark = ','), digits = 2)
+                 format.args = list(big.mark = ',', scientific = FALSE), digits = 2)
 ```  
 
 ## Kaplan-Meier plots
 
 
-```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Kaplan-Meier plot. Shaded areas indicate the 95% confidence interval. Note that this plot does not take into account stratification, as done when fitting the Cox model."}
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Kaplan-Meier plot for the ITT analysis for hip fracture. Shaded areas indicate the 95% confidence interval. Note that this plot does not take into account stratification, as done when fitting the Cox model."}
 knitr::include_graphics(file.path(exportFolder, "KaplanMeier.png"))
 ```

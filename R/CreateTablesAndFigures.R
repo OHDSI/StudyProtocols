@@ -86,11 +86,13 @@ createTableAndFigures <- function(exportFolder) {
   # Balance plots:
   balance <- read.csv(file.path(exportFolder, "Balance.csv"))
   CohortMethod::plotCovariateBalanceScatterPlot(balance,
-                                                fileName = file.path(tablesAndFiguresFolder,
-                                                                              "BalanceScatterPlot.png"))
+                                                fileName = file.path(tablesAndFiguresFolder, "BalanceScatterPlot.png"),
+                                                beforeLabel = "Before trimming & stratification",
+                                                afterLabel = "After trimming & stratification")
   CohortMethod::plotCovariateBalanceOfTopVariables(balance,
-                                                   fileName = file.path(tablesAndFiguresFolder,
-                                                                                 "BalanceTopVariables.png"))
+                                                   fileName = file.path(tablesAndFiguresFolder, "BalanceTopVariables.png"),
+                                                   beforeLabel = "before trimming & stratification",
+                                                   afterLabel = "after trimming & stratification")
 
   ### Population characteristics table
   balance <- read.csv(file.path(exportFolder, "Balance.csv"))

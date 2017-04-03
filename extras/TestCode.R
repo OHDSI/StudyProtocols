@@ -66,17 +66,18 @@ writeReport(file.path(outputFolder, "export"), file.path(outputFolder, "export",
 
 
 # Test on PostgreSQL ------------------------------------------------------
-
+library(AlendronateVsRaloxifene)
+options(fftempdir = "s:/FFtemp")
 pw <- Sys.getenv("pwPostgres")
 connectionDetails <- createConnectionDetails(dbms = "postgresql",
                                              server = "localhost/ohdsi",
                                              user = "postgres",
                                              password = pw)
-cdmDatabaseSchema <- "cdm_truven_ccae_6k_v5"
+cdmDatabaseSchema <- "cdm_mdcr_sample"
 workDatabaseSchema <- "scratch"
 studyCohortTable <- "ohdsi_alendronate_raloxifene"
 oracleTempSchema <- NULL
-outputFolder <- "S:/temp/AlendronateVsRaloxifeneSynpuf"
+outputFolder <- "S:/temp/AlendronateVsRaloxifeneMdcrSample"
 
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
