@@ -29,9 +29,16 @@ install:
   - Rscript -e 'if (!require("drat")) install.packages("drat")'
   - echo 'drat::addRepo("OHDSI")' >> .Rprofile
   - echo 'drat::addRepo("cloudyr")' >> .Rprofile  
-  - Rscript -e 'if (!require("CohortMethod")) install.packages("CohortMethod", dependencies = TRUE)'
-  - Rscript -e 'if (!require("OhdsiSharing")) install.packages("OhdsiSharing", dependencies = TRUE)'
-  - Rscript -e 'if (!require("OhdsiRTools")) install.packages("OhdsiRTools", dependencies = TRUE)'      
+  
+  # Install OHDSI dependencies
+  - Rscript -e 'devtools::install_github("OHDSI/OhdsiRTools")'
+  - Rscript -e 'devtools::install_github("OHDSI/SqlRender")'
+  - Rscript -e 'devtools::install_github("OHDSI/DatabaseConnector")'
+  - Rscript -e 'devtools::install_github("OHDSI/FeatureExtraction")'  
+  
+#  - Rscript -e 'if (!require("CohortMethod")) install.packages("CohortMethod", dependencies = TRUE)'
+#  - Rscript -e 'if (!require("OhdsiSharing")) install.packages("OhdsiSharing", dependencies = TRUE)'
+#  - Rscript -e 'if (!require("OhdsiRTools")) install.packages("OhdsiRTools", dependencies = TRUE)'      
   - Rscript -e 'if (!require("mailR")) install.packages("mailR", dependencies = TRUE)'
   - Rscript -e 'if (!require("ReporteRs")) install.packages("ReporteRs", dependencies = TRUE)'  
   - Rscript -e 'update.packages(ask = FALSE, instlib = "~/Rlib")'
