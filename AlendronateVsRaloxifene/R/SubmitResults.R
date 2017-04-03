@@ -35,7 +35,7 @@ submitResults <- function(exportFolder, key, secret) {
   }
   writeLines(paste0("Uploading file '", zipName, "' to study coordinating center"))
   result <- OhdsiSharing::putS3File(file = zipName,
-                                    bucket = "ohdsi-study-bisphosponates",
+                                    bucket = "ohdsi-study-hip-fracture",
                                     key = key,
                                     secret = secret)
   if (result) {
