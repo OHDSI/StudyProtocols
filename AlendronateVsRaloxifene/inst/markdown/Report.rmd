@@ -1,0 +1,150 @@
+---
+title: "Alendronate vs Raloxifene study"
+output: 
+    word_document:
+        fig_caption: yes
+        toc: yes
+params: 
+    exportFolder: S:/temp/AlendronateVsRaloxifeneCcae/export
+---
+
+```{r, echo = FALSE, message = FALSE}
+exportFolder <- params$exportFolder
+results <- read.csv(file.path(exportFolder, "tablesAndFigures", "EmpiricalCalibration.csv"))
+analysisIds <- unique(results$analysisId)
+analysisIds <- analysisIds[order(analysisIds)]
+hois <- c(99323, 100791, 100792, 100793, 100794, 100795)
+```
+
+
+# Introduction
+
+This reports describes the results from a comparative effectiveness study comparing new users of alendronate to new users of raloxifene Propensity scores were generated using large scale regression, and stratification and trimming on propensity scores was performed. Effect sizes were estimated using a univariate Cox regression, conditioned on the strata. A set of negative control outcomes was included to estimate residual bias and calibrate p-values.
+
+## Population characteristics
+
+```{r, echo = FALSE}
+    if (file.exists(file.path(exportFolder, "tablesAndFigures", "PopChar.csv"))){
+        table <- read.csv(file.path(exportFolder, "tablesAndFigures", "PopChar.csv"))
+        table <- data.frame(group = table$group,
+                            treated = paste0(formatC(table$countTreated, format="d", big.mark=","), " (", round(table$fractionTreated*100, 1), ")"),
+                            comparator = paste0(formatC(table$countComparator, format="d", big.mark=","), " (", round(table$fractionComparator*100, 1), ")"))
+        colnames(table) <- c("Group", "Number in treated (%)", "Number in comparator (%)")
+        knitr::kable(table, 
+                     caption = "Key characteristics of the study population, stratified by treatment group.", 
+                     row.names = FALSE)
+    }
+```  
+
+## Analysis variations
+
+In total, 2 analyses variations were executed:
+
+```{r, echo = FALSE, results = "asis"}
+    for (analysisId in analysisIds) {
+        cat(paste0(analysisId, ". ", results$analysisDescription[results$analysisId == analysisId][1], "\n"))
+    }
+```
+
+# Model diagnostics
+
+## Propensity score distribution
+
+```{r, echo = FALSE, fig.width = 6.5, fig.height= 5, fig.cap = "Propensity score distribution plot. This plot shows the propensity score distribution using the preference score scale."}
+knitr::include_graphics(file.path(exportFolder, "PsPrefScale.png"))
+```
+
+## Covariate balance
+
+### After stratification
+
+```{r, echo = FALSE, fig.width = 5, fig.height= 5, fig.cap = "Balance scatter plot. This plot shows the standardized difference before and after stratification for all covariates used in the propensity score model."}
+knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceScatterPlot.png"))
+```
+
+```{r, echo = FALSE, fig.width = 7, fig.height= 5, fig.cap = "Balance plot for top covariates. This plot shows the standardized difference before and after stratification for those covariates with the largest difference before stratification (top) and after stratification (bottom). A negative difference means the value in the treated group was lower than in the comparator group."}
+knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "BalanceTopVariables.png"))
+```
+
+## Empirical calibration
+
+```{r, echo = FALSE, results="asis", include=FALSE}
+    out <- c()
+    for (analysisId in analysisIds) {
+        text <- c()
+        text <- c(text, paste0("### Analysis {{id}}: {{desc}}"))
+        text <- c(text, "")
+        text <- c(text, "```{r echo = FALSE, fig.width = 5, fig.height= 5, fig.cap = \"Calibration effect plot. Blue dots represent the negative controls used in this study. The dashed line indicates the boundary below which p < 0.05 using traditional p-value computation. The orange area indicated the area where p < 0.05 using calibrated p-value computation.\"}")
+        text <- c(text, "  if (file.exists(file.path(exportFolder, \"tablesAndFigures\", \"CalEffectNoHoi_a{{id}}.png\"))) {")
+        text <- c(text, "    knitr::include_graphics(file.path(exportFolder, \"tablesAndFigures\", \"CalEffectNoHoi_a{{id}}.png\"))")
+        text <- c(text, "  } else {")
+        text <- c(text, "    writeLines(\"Not enough data to compute null distribution.\")")
+        text <- c(text, "  }")
+        text <- c(text, "```")
+        text <- c(text, "")
+        text <- c(text, "```{r echo = FALSE, fig.width = 5, fig.height= 5, fig.cap = \"Calibration plot. This plot shows the fraction of negative controls with p-values below alpha, for every level of alpha. Ideally, the plots should follow the diagonal. This plot has been generated using leave-one-out: when computing the calibrated p-value for a negative control, the bias distribution was fitted using all other negative controls.\"}")
+        text <- c(text, "  if (file.exists(file.path(exportFolder, \"tablesAndFigures\", \"Cal_a{{id}}.png\"))) {")
+        text <- c(text, "    knitr::include_graphics(file.path(exportFolder, \"tablesAndFigures\", \"Cal_a{{id}}.png\"))")
+        text <- c(text, "  }")
+        text <- c(text, "```")
+        text <- c(text, "")
+
+        src <- knitr::knit_expand(text = text, id = analysisId, desc = results$analysisDescription[results$analysisId == analysisId][1])
+        src <- knitr::knit_child(text = src)
+        out <- c(out, src)
+    } 
+```
+
+```{r, echo = FALSE, results="asis"}
+    cat(out)
+```
+# Attrition
+
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Attrition diagram when using stratification on propensity scores. Original cohorts are the treatment and comparator cohorts as defined in ATLAS."}
+knitr::include_graphics(file.path(exportFolder, "tablesAndFigures", "Attrition.png"))
+```
+
+# Main results
+
+```{r, echo = FALSE, results = "asis"}
+    for (analysisId in analysisIds) {
+        cat(paste0(analysisId, ". ", results$analysisDescription[results$analysisId == analysisId][1], "\n"))
+    }
+```
+
+
+```{r, echo = FALSE}
+    removeLowCounts <- function(counts) {
+        formatted <- formatC(counts, big.mark = ',')
+        formatted[counts <= 5 & counts > 0] <- "<6" 
+        return(formatted)
+    }
+    
+    table <- results[results$outcomeId %in% hois, c("analysisId", "outcomeName", "treated", "comparator", "eventsTreated", "eventsComparator")]
+    table <- table[order(table$analysisId), ]
+    table$eventsTreated <- removeLowCounts(table$eventsTreated)
+    table$eventsComparator <- removeLowCounts(table$eventsComparator)
+    colnames(table) <- c("Analysis ID", "Outcome", "# treated", "# comparator", "# treated with event", "# comparator with event")
+    
+    knitr::kable(table, 
+                 caption = "Counts of subjects and events for the treated and comparator groups.", 
+                 row.names = FALSE, 
+                 format.args = list(big.mark = ','), digits = 2)
+```  
+
+```{r, echo = FALSE}
+    table <- results[results$outcomeId %in% hois, c("analysisId", "outcomeName", "rr", "ci95lb" , "ci95ub", "p", "calibratedP")]
+    table <- table[order(table$analysisId), ]
+    colnames(table) <- c("Analysis ID", "Outcome", "Hazard Ratio", "95% CI LB", "95% CI UB", "P", "Cal. P")
+   knitr::kable(table, 
+                 caption = "Harard ratios for the various outcomes in the alendronate group compared to the raloxifene group. Also included are traditional and calibrated p-values.", 
+                 row.names = FALSE, 
+                 format.args = list(big.mark = ',', scientific = FALSE), digits = 2)
+```  
+
+## Kaplan-Meier plots
+
+
+```{r, echo = FALSE, fig.width = 5, fig.height= 4, fig.cap = "Kaplan-Meier plot for the ITT analysis for hip fracture. Shaded areas indicate the 95% confidence interval. Note that this plot does not take into account stratification, as done when fitting the Cox model."}
+knitr::include_graphics(file.path(exportFolder, "KaplanMeier.png"))
+```
