@@ -35,7 +35,11 @@ install:
   - Rscript -e 'devtools::install_github("OHDSI/SqlRender")'
   - Rscript -e 'devtools::install_github("OHDSI/DatabaseConnector")'
   - Rscript -e 'devtools::install_github("OHDSI/FeatureExtraction")'  
-  
+  - Rscript -e 'devtools::install_github("OHDSI/Cyclops")' 
+  - Rscript -e 'devtools::install_github("OHDSI/CohortMethod")' 
+  - Rscript -e 'devtools::install_github("OHDSI/EmpiricalCalibration")'
+  - Rscript -e 'devtools::install_github("OHDSI/OhdsiSharing")'    
+        
 #  - Rscript -e 'if (!require("CohortMethod")) install.packages("CohortMethod", dependencies = TRUE)'
 #  - Rscript -e 'if (!require("OhdsiSharing")) install.packages("OhdsiSharing", dependencies = TRUE)'
 #  - Rscript -e 'if (!require("OhdsiRTools")) install.packages("OhdsiRTools", dependencies = TRUE)'      
