@@ -37,14 +37,20 @@ install:
   - Rscript -e 'update.packages(ask = FALSE, instlib = "~/Rlib")'
 
 before_script:
-  - export PKG_NAME=$(Rscript -e 'cat(paste0(devtools::as.package("./KeppraAngioedema")$package))')
-  - export PKG_TARBALL=$(Rscript -e 'pkg <- devtools::as.package("./KeppraAngioedema"); cat(paste0(pkg$package,"_",pkg$version,".tar.gz"))')
+  - export PKG_NAME_KA=$(Rscript -e 'cat(paste0(devtools::as.package("./KeppraAngioedema")$package))')
+  - export PKG_TARBALL_KA=$(Rscript -e 'pkg <- devtools::as.package("./KeppraAngioedema"); cat(paste0(pkg$package,"_",pkg$version,".tar.gz"))')
+  - export PKG_NAME_AR=$(Rscript -e 'cat(paste0(devtools::as.package("./AlendronateVsRaloxifene")$package))')
+  - export PKG_TARBALL_AR=$(Rscript -e 'pkg <- devtools::as.package("./AlendronateVsRaloxifene"); cat(paste0(pkg$package,"_",pkg$version,".tar.gz"))')
+  
 
 # Build and check NoacStudy package
 script:
   - R CMD build KeppraAngioedema --no-build-vignettes --no-manual
-  - _R_CHECK_CRAN_INCOMING_=FALSE R CMD check "${PKG_TARBALL}" --no-build-vignettes --no-manual
-  - cat ${PKG_NAME}.Rcheck/00install.out # Print out install / compile log
+  - _R_CHECK_CRAN_INCOMING_=FALSE R CMD check "${PKG_TARBALL_KA}" --no-build-vignettes --no-manual
+  - cat ${PKG_NAME_KA}.Rcheck/00install.out # Print out install / compile log
+  - R CMD build AlendronateVsRaloxifene --no-build-vignettes --no-manual
+  - _R_CHECK_CRAN_INCOMING_=FALSE R CMD check "${PKG_TARBALL_AR}" --no-build-vignettes --no-manual
+  - cat ${PKG_NAME_AR}.Rcheck/00install.out # Print out install / compile log  
 
 notifications:
   recipients:
