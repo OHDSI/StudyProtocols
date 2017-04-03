@@ -101,7 +101,7 @@ How to run
 
 Getting Involved
 ================
-* Package manual: [AlendronateVsRaloxifene.pdf](https://raw.githubusercontent.com/OHDSI/StudyProtocolSandbox/AlendronateVsRaloxifene/master/extras/AlendronateVsRaloxifene.pdf)
+* Package manual: [AlendronateVsRaloxifene.pdf](https://raw.githubusercontent.com/OHDSI/StudyProtocol/AlendronateVsRaloxifene/master/extras/AlendronateVsRaloxifene.pdf)
 * Developer questions/comments/feedback: <a href="http://forums.ohdsi.org/c/developers">OHDSI Forum</a>
 * We use the <a href="../../issues">GitHub issue tracker</a> for all bugs/issues/enhancements
 
