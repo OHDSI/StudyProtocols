@@ -44,7 +44,7 @@ install:
   - Rscript -e 'if (!require("CohortMethod")) install.packages("CohortMethod", dependencies = TRUE)'
   - Rscript -e 'if (!require("OhdsiSharing")) install.packages("OhdsiSharing", dependencies = TRUE)'
   - Rscript -e 'if (!require("OhdsiRTools")) install.packages("OhdsiRTools", dependencies = TRUE)'  
-  - Rscript -e 'if (!require("meta")) install.packages("mailR", dependencies = TRUE)'      
+  - Rscript -e 'if (!require("meta")) install.packages("meta", dependencies = TRUE)'      
   - Rscript -e 'if (!require("mailR")) install.packages("mailR", dependencies = TRUE)'
   - Rscript -e 'if (!require("ReporteRs")) install.packages("ReporteRs", dependencies = TRUE)'  
   - Rscript -e 'update.packages(ask = FALSE, instlib = "~/Rlib")'
