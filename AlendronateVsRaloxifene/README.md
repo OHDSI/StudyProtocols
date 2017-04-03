@@ -34,7 +34,7 @@ How to run
 	install_github("ohdsi/FeatureExtraction")
 	install_github("ohdsi/CohortMethod")
 	install_github("ohdsi/EmpiricalCalibration")
-	install_github("ohdsi/StudyProtocolSandbox/AlendronateVsRaloxifene")
+	install_github("ohdsi/StudyProtocols/AlendronateVsRaloxifene")
 	```
 4. Once installed, you can execute the sutyd by modifying and using the following code:
 
