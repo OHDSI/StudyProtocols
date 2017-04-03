@@ -24,6 +24,7 @@ install:
   - mkdir -p ~/Rlib
   - echo 'R_LIBS=~/Rlib' > .Renviron
   - echo 'options(repos = "http://cran.rstudio.com")' > .Rprofile
+  - echo 'options(download.file.method = "wget")' >> .Rprofile
   - mkdir -p ~/.R
   - Rscript -e 'if (!require("devtools")) install.packages("devtools")'
   - Rscript -e 'if (!require("drat")) install.packages("drat")'
@@ -31,18 +32,19 @@ install:
   - echo 'drat::addRepo("cloudyr")' >> .Rprofile  
   
   # Install OHDSI dependencies
-  - Rscript -e 'devtools::install_github("OHDSI/OhdsiRTools")'
-  - Rscript -e 'devtools::install_github("OHDSI/SqlRender")'
-  - Rscript -e 'devtools::install_github("OHDSI/DatabaseConnector")'
-  - Rscript -e 'devtools::install_github("OHDSI/FeatureExtraction")'  
-  - Rscript -e 'devtools::install_github("OHDSI/Cyclops")' 
-  - Rscript -e 'devtools::install_github("OHDSI/CohortMethod")' 
-  - Rscript -e 'devtools::install_github("OHDSI/EmpiricalCalibration")'
-  - Rscript -e 'devtools::install_github("OHDSI/OhdsiSharing")'    
+#  - Rscript -e 'devtools::install_github("OHDSI/OhdsiRTools")'
+#  - Rscript -e 'devtools::install_github("OHDSI/SqlRender")'
+#  - Rscript -e 'devtools::install_github("OHDSI/DatabaseConnector")'
+#  - Rscript -e 'devtools::install_github("OHDSI/FeatureExtraction")'  
+#  - Rscript -e 'devtools::install_github("OHDSI/Cyclops")' 
+#  - Rscript -e 'devtools::install_github("OHDSI/CohortMethod")' 
+#  - Rscript -e 'devtools::install_github("OHDSI/EmpiricalCalibration")'
+#  - Rscript -e 'devtools::install_github("OHDSI/OhdsiSharing")'    
         
-#  - Rscript -e 'if (!require("CohortMethod")) install.packages("CohortMethod", dependencies = TRUE)'
-#  - Rscript -e 'if (!require("OhdsiSharing")) install.packages("OhdsiSharing", dependencies = TRUE)'
-#  - Rscript -e 'if (!require("OhdsiRTools")) install.packages("OhdsiRTools", dependencies = TRUE)'      
+  - Rscript -e 'if (!require("CohortMethod")) install.packages("CohortMethod", dependencies = TRUE)'
+  - Rscript -e 'if (!require("OhdsiSharing")) install.packages("OhdsiSharing", dependencies = TRUE)'
+  - Rscript -e 'if (!require("OhdsiRTools")) install.packages("OhdsiRTools", dependencies = TRUE)'  
+  - Rscript -e 'if (!require("meta")) install.packages("mailR", dependencies = TRUE)'      
   - Rscript -e 'if (!require("mailR")) install.packages("mailR", dependencies = TRUE)'
   - Rscript -e 'if (!require("ReporteRs")) install.packages("ReporteRs", dependencies = TRUE)'  
   - Rscript -e 'update.packages(ask = FALSE, instlib = "~/Rlib")'
