@@ -26,13 +26,12 @@ shell("R CMD Rd2pdf ./ --output=extras/AlendronateVsRaloxifene.pdf")
 
 
 # Insert cohort definitions from ATLAS into package -----------------------
-pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "AlendronateVsRaloxifene")
-cohortsToCreate <- read.csv(pathToCsv)
-for (i in 1:nrow(cohortsToCreate)) {
-  writeLines(paste("Inserting cohort:", cohortsToCreate$name[i]))
-  OhdsiRTools::insertCohortDefinitionInPackage(cohortsToCreate$atlasId[i], cohortsToCreate$name[i], "http://api.ohdsi.org/WebAPI")
-}
-
+OhdsiRTools::insertCohortDefinitionSetInPackage(fileName = "CohortsToCreate.csv",
+                                                baseUrl = "http://api.ohdsi.org/WebAPI",
+                                                insertTableSql = TRUE,
+                                                insertCohortCreationR = TRUE,
+                                                generateStats = TRUE,
+                                                packageName = "AlendronateVsRaloxifene")
 
 # Create analysis details -------------------------------------------------
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "pdw",

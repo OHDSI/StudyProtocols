@@ -35,18 +35,18 @@ studyCohortTable <- "ohdsi_alendronate_raloxifene_optum"
 oracleTempSchema <- NULL
 outputFolder <- "S:/temp/AlendronateVsRaloxifeneOptum"
 
-connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
-                                                                server = server,
-                                                                user = user,
-                                                                password = pw,
-                                                                port = port)
+cdmDatabaseSchema <- "cdm_ims_germany_da_v506.dbo"
+workDatabaseSchema <- "scratch.dbo"
+studyCohortTable <- "ohdsi_alendronate_raloxifene_germany"
+oracleTempSchema <- NULL
+outputFolder <- "S:/temp/AlendronateVsRaloxifeneImsGermany"
 
-assessFeasibility(connectionDetails = connectionDetails,
-                  cdmDatabaseSchema = cdmDatabaseSchema,
-                  workDatabaseSchema = workDatabaseSchema,
-                  studyCohortTable = studyCohortTable,
-                  oracleTempSchema = oracleTempSchema,
-                  outputFolder = outputFolder)
+# assessFeasibility(connectionDetails = connectionDetails,
+#                   cdmDatabaseSchema = cdmDatabaseSchema,
+#                   workDatabaseSchema = workDatabaseSchema,
+#                   studyCohortTable = studyCohortTable,
+#                   oracleTempSchema = oracleTempSchema,
+#                   outputFolder = outputFolder)
 
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
@@ -54,7 +54,7 @@ execute(connectionDetails = connectionDetails,
         studyCohortTable = studyCohortTable,
         oracleTempSchema = oracleTempSchema,
         outputFolder = outputFolder,
-        createCohorts = FALSE,
+        createCohorts = TRUE,
         runAnalyses = TRUE,
         packageResults = TRUE,
         maxCores = 30)
@@ -63,6 +63,7 @@ createTableAndFigures(file.path(outputFolder, "export"))
 
 writeReport(file.path(outputFolder, "export"), file.path(outputFolder, "export", "report.docx"))
 
+submitResults(file.path(outputFolder, "export"), key = Sys.getenv("keyAlendronate"), secret = Sys.getenv("secretAlendronate"))
 
 
 # Test on PostgreSQL ------------------------------------------------------

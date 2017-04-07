@@ -14,100 +14,96 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Create the exposure and outcome cohorts
-#'
-#' @details
-#' This function will create the exposure and outcome cohorts following the definitions included in
-#' this package.
-#'
-#' @param connectionDetails    An object of type \code{connectionDetails} as created using the
-#'                             \code{\link[DatabaseConnector]{createConnectionDetails}} function in the
-#'                             DatabaseConnector package.
-#' @param cdmDatabaseSchema    Schema name where your patient-level data in OMOP CDM format resides.
-#'                             Note that for SQL Server, this should include both the database and
-#'                             schema name, for example 'cdm_data.dbo'.
-#' @param workDatabaseSchema   Schema name where intermediate data can be stored. You will need to have
-#'                             write priviliges in this schema. Note that for SQL Server, this should
-#'                             include both the database and schema name, for example 'cdm_data.dbo'.
-#' @param studyCohortTable     The name of the table that will be created in the work database schema.
-#'                             This table will hold the exposure and outcome cohorts used in this
-#'                             study.
-#' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write
-#'                             priviliges for storing temporary tables.
-#' @param outputFolder         Name of local folder to place results; make sure to use forward slashes
-#'                             (/)
-#'
-#' @export
-createCohorts <- function(connectionDetails,
-                          cdmDatabaseSchema,
-                          workDatabaseSchema,
-                          studyCohortTable = "ohdsi_alendronate_raloxifene",
-                          oracleTempSchema,
-                          outputFolder) {
-  conn <- DatabaseConnector::connect(connectionDetails)
-
+.createCohorts <- function(connection,
+                           cdmDatabaseSchema,
+                           cohortDatabaseSchema,
+                           cohortTable,
+                           oracleTempSchema,
+                           outputFolder) {
+  
   # Create study cohort table structure:
-  sql <- "IF OBJECT_ID('@work_database_schema.@study_cohort_table', 'U') IS NOT NULL\n  DROP TABLE @work_database_schema.@study_cohort_table;\n    CREATE TABLE @work_database_schema.@study_cohort_table (cohort_definition_id INT, subject_id BIGINT, cohort_start_date DATE, cohort_end_date DATE);"
-  sql <- SqlRender::renderSql(sql,
-                              work_database_schema = workDatabaseSchema,
-                              study_cohort_table = studyCohortTable)$sql
-  sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
-  DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
-
+  sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "CreateCohortTable.sql",
+                                           packageName = "AlendronateVsRaloxifene",
+                                           dbms = attr(connection, "dbms"),
+                                           oracleTempSchema = oracleTempSchema,
+                                           cohort_database_schema = cohortDatabaseSchema,
+                                           cohort_table = cohortTable)
+  DatabaseConnector::executeSql(connection, sql, progressBar = FALSE, reportOverallTime = FALSE)
+  
+  
+  # Insert rule names in cohort_inclusion table:
+  pathToCsv <- system.file("cohorts", "InclusionRules.csv", package = "AlendronateVsRaloxifene")
+  inclusionRules <- read.csv(pathToCsv)  
+  inclusionRules <- data.frame(cohort_definition_id = inclusionRules$cohortId,
+                               rule_sequence = inclusionRules$ruleSequence,
+                               name = inclusionRules$ruleName)
+  DatabaseConnector::insertTable(connection = connection,
+                                 tableName = "#cohort_inclusion",
+                                 data = inclusionRules,
+                                 dropTableIfExists = FALSE,
+                                 createTable = FALSE,
+                                 tempTable = TRUE,
+                                 oracleTempSchema = oracleTempSchema)
+  
+  
+  # Instantiate cohorts:
   pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "AlendronateVsRaloxifene")
   cohortsToCreate <- read.csv(pathToCsv)
   for (i in 1:nrow(cohortsToCreate)) {
     writeLines(paste("Creating cohort:", cohortsToCreate$name[i]))
-    sql <- SqlRender::loadRenderTranslateSql(paste0(cohortsToCreate$name[i], ".sql"),
-                                             "AlendronateVsRaloxifene",
-                                             dbms = connectionDetails$dbms,
+    sql <- SqlRender::loadRenderTranslateSql(sqlFilename = paste0(cohortsToCreate$name[i], ".sql"),
+                                             packageName = "AlendronateVsRaloxifene",
+                                             dbms = attr(connection, "dbms"),
                                              oracleTempSchema = oracleTempSchema,
                                              cdm_database_schema = cdmDatabaseSchema,
-                                             target_database_schema = workDatabaseSchema,
-                                             target_cohort_table = studyCohortTable,
+                                             
+                                             results_database_schema.cohort_inclusion = "#cohort_inclusion",  
+                                             results_database_schema.cohort_inclusion_result = "#cohort_inc_result",  
+                                             results_database_schema.cohort_inclusion_stats = "#cohort_inc_stats",  
+                                             results_database_schema.cohort_summary_stats = "#cohort_summary_stats",  
+                                                
+                                             target_database_schema = cohortDatabaseSchema,
+                                             target_cohort_table = cohortTable,
                                              target_cohort_id = cohortsToCreate$cohortId[i])
-    DatabaseConnector::executeSql(conn, sql)
+    DatabaseConnector::executeSql(connection, sql)
   }
-
-  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "AlendronateVsRaloxifene")
-  negativeControls <- read.csv(pathToCsv)
-  writeLines("- Creating negative control outcome cohorts")
-  sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
-                                           "AlendronateVsRaloxifene",
-                                           dbms = connectionDetails$dbms,
-                                           oracleTempSchema = oracleTempSchema,
-                                           cdm_database_schema = cdmDatabaseSchema,
-                                           target_database_schema = workDatabaseSchema,
-                                           target_cohort_table = studyCohortTable,
-                                           outcome_ids = negativeControls$conceptId)
-  DatabaseConnector::executeSql(conn, sql)
-
-  # Check number of subjects per cohort:
-  writeLines("Counting cohorts")
-  countCohorts(connectionDetails = connectionDetails,
-               cdmDatabaseSchema = cdmDatabaseSchema,
-               workDatabaseSchema = workDatabaseSchema,
-               studyCohortTable = studyCohortTable,
-               oracleTempSchema = oracleTempSchema,
-               outputFolder = outputFolder)
+  
+  # Fetch cohort counts:
+  sql <- "SELECT cohort_definition_id, COUNT(*) AS count FROM @cohort_database_schema.@cohort_table GROUP BY cohort_definition_id"
+  sql <- SqlRender::renderSql(sql,
+                              cohort_database_schema = cohortDatabaseSchema,
+                              cohort_table = cohortTable)$sql
+  sql <- SqlRender::translateSql(sql, targetDialect = attr(connection, "dbms"))$sql
+  counts <- DatabaseConnector::querySql(connection, sql)
+  names(counts) <- SqlRender::snakeCaseToCamelCase(names(counts))
+  counts <- merge(counts, data.frame(cohortDefinitionId = cohortsToCreate$cohortId[i],
+                                     cohortName  = cohortsToCreate$name[i]))
+  write.csv(counts, file.path(outputFolder, "CohortCounts.csv"))
+  
+  
+  # Fetch inclusion rule stats and drop tables:
+  fetchStats <- function(tableName) {
+    sql <- "SELECT * FROM #@table_name"
+    sql <- SqlRender::renderSql(sql, table_name = tableName)$sql
+    sql <- SqlRender::translateSql(sql = sql, 
+                                   targetDialect = attr(connection, "dbms"),
+                                   oracleTempSchema = oracleTempSchema)$sql
+    stats <- DatabaseConnector::querySql(connection, sql)
+    names(stats) <- SqlRender::snakeCaseToCamelCase(names(stats))
+    fileName <- file.path(outputFolder, paste0(SqlRender::snakeCaseToCamelCase(tableName), ".csv"))
+    write.csv(stats, fileName, row.names = FALSE)
+    
+    sql <- "TRUNCATE TABLE #@table_name; DROP TABLE #@table_name;"
+    sql <- SqlRender::renderSql(sql, table_name = tableName)$sql
+    sql <- SqlRender::translateSql(sql = sql, 
+                                   targetDialect = attr(connection, "dbms"),
+                                   oracleTempSchema = oracleTempSchema)$sql
+    DatabaseConnector::executeSql(connection, sql)
+  }
+  fetchStats("cohort_inclusion")
+  fetchStats("cohort_inc_result")
+  fetchStats("cohort_inc_stats")
+  fetchStats("cohort_summary_stats")
+  
 }
 
-
-addCohortNames <- function(data, IdColumnName = "cohortDefinitionId", nameColumnName = "cohortName") {
-  pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "AlendronateVsRaloxifene")
-  cohortsToCreate <- read.csv(pathToCsv)
-  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "AlendronateVsRaloxifene")
-  negativeControls <- read.csv(pathToCsv)
-
-  idToName <- data.frame(cohortId = c(cohortsToCreate$cohortId, negativeControls$conceptId),
-                         cohortName = c(as.character(cohortsToCreate$name), as.character(negativeControls$name)))
-  names(idToName)[1] <- IdColumnName
-  names(idToName)[2] <- nameColumnName
-  data <- merge(data, idToName, all.x = TRUE)
-  # Change order of columns:
-  idCol <- which(colnames(data) == IdColumnName)
-  if (idCol < ncol(data) - 1) {
-    data <- data[, c(1:idCol, ncol(data) , (idCol+1):(ncol(data)-1))]
-  }
-  return(data)
-}
