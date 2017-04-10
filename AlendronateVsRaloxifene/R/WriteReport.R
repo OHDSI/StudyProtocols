@@ -20,12 +20,15 @@
 #' Requires that the \code{\link{createTableAndFigures}} has been executed first.
 #'
 #' @param exportFolder   The path to the export folder containing the results.
-#' @param outputFile     The name of the .docx file that will be created.
+#' @param outputFile     The name of the output file that will be created.
+#' @param outputFormat   Format for output
 #'
 #' @export
-writeReport <- function(exportFolder, outputFile) {
+writeReport <- function(exportFolder, outputFile,
+                        outputFormat = rmarkdown::word_document(toc = TRUE, fig_caption = TRUE)) {
     rmarkdown::render(system.file("markdown", "Report.rmd", package = "AlendronateVsRaloxifene"),
                       params = list(exportFolder = exportFolder),
                       output_file = outputFile,
-                      rmarkdown::word_document(toc = TRUE, fig_caption = TRUE))
+                      output_format = outputFormat
+                      )
 }
