@@ -111,6 +111,10 @@ packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder, m
     ### Copy cohort counts ###
     counts <- read.csv(file.path(outputFolder, "CohortCounts.csv"))
     write.csv(counts, file.path(exportFolder, "CohortCounts.csv"), row.names = FALSE)
+    counts <- read.csv(file.path(outputFolder, "cohortIncStats.csv"))
+    write.csv(counts, file.path(exportFolder, "cohortIncStats.csv"), row.names = FALSE)
+    counts <- read.csv(file.path(outputFolder, "cohortSummaryStats.csv"))
+    write.csv(counts, file.path(exportFolder, "cohortSummaryStats.csv"), row.names = FALSE)
 
     ### Add all to zip file ###
     zipName <- file.path(exportFolder, "StudyResults.zip")

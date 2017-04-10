@@ -36,7 +36,7 @@ How to run
 	install_github("ohdsi/EmpiricalCalibration")
 	install_github("ohdsi/StudyProtocols/AlendronateVsRaloxifene")
 	```
-4. Once installed, you can execute the sutyd by modifying and using the following code:
+4. Once installed, you can execute the study by modifying and using the following code:
 
 	```r
 	library(AlendronateVsRaloxifene)
@@ -116,4 +116,4 @@ AlendronateVsRaloxifene was developed in R Studio.
 
 ### Development status
 
-Beta
+In production. We're running this study at multiple sites.

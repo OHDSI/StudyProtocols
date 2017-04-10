@@ -1,0 +1,18 @@
+"cohortName","ruleSequence","ruleName","cohortId"
+"Alendronate",0,"is woman >45 yo",99321
+"Alendronate",1,"has osteoporosis diagnosis in 365d prior to index date",99321
+"Alendronate",2,"has no prior raloxifene exposure",99321
+"Alendronate",3,"has no prior hip fractures",99321
+"Alendronate",4,"has no prior hip replacement",99321
+"Alendronate",5,"has no prior drugs that should be excluded",99321
+"Alendronate",6,"no prior disease related to pathological fractures including Pagets disease",99321
+"Alendronate",7,"no prior high energy trauma fractures",99321
+"AtypicalFemuralFracture",0,"no high energy trauma fractures around atypical fracture event",100795
+"Raloxifene",0,"is woman >45 yo",99322
+"Raloxifene",1,"has osteoporosis diagnosis in 365d prior to index date",99322
+"Raloxifene",2,"has no prior alendronate exposure",99322
+"Raloxifene",3,"has no prior hip fractures",99322
+"Raloxifene",4,"has no prior hip replacement",99322
+"Raloxifene",5,"has no prior drugs that should be excluded",99322
+"Raloxifene",6,"no prior disease related to pathological fractures including Pagets disease",99322
+"Raloxifene",7,"no prior high energy trauma fractures",99322
