@@ -1,5 +1,6 @@
 library(AlendronateVsRaloxifene)
 library(gridExtra)
+library(meta)
 
 table.png <- function(obj, name) {
 
@@ -29,7 +30,18 @@ table.png <- function(obj, name) {
 
 # Create per-database reports:
 studyFolder <- "/Users/msuchard/Dropbox/OHDSI/hip_fracture"
-folders <- c("MDCD_JRD", "CCAE_JRD", "MDCR_JRD", "MDCR_UNM", "Optum_JRD", "GEDA_XXX", "Columbia")
+folders <- c("MDCD_JRD",
+             "CCAE_JRD",
+             "MDCR_JRD",
+             "MDCR_UNM",
+             "Optum_JRD",
+             "GEDA_XXX",
+             "Columbia",
+             "Stride",
+             "Cerner")
+
+skip <- c("MDCR_JRD", "GEDA_XXX")
+
 for (file in folders) {
     if (file.info(file.path(studyFolder, file))$isdir) {
         writeLines(paste("Processing", file))
@@ -51,8 +63,6 @@ invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId,
   allResults <- data.frame()
   filename <- paste0("AllResults_", name, ".csv")
 
-  #skip <- c("IMEDS_MDCR", "Regenstrief", "Pplus")
-  skip <- c()
   for (file in folders) {
     if (!(file %in% skip)) {
       if (file.info(file.path(studyFolder, file))$isdir) {
@@ -69,7 +79,6 @@ invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId,
 }))
 
 
-
 # Meta analysis -----------------------------------------------------------
 source("extras/MetaAnalysis.R")
 invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId, name) {
@@ -84,7 +93,7 @@ invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId,
   # allResults$db[allResults$db == "Truven_MDCR"] <- "Truven MDCR"
   # allResults$db[allResults$db == "UT_Cerner"] <- "UT EMR"
 
-  fileName <- file.path(studyFolder, paste0("ForestItt_", name, ".png"))
+  # fileName <- file.path(studyFolder, paste0("ForestItt_", name, ".png"))
 
   results <- allResults[allResults$analysisId == 1, ]
   crude <- results[,c("db","treated","comparator","treatedDays","comparatorDays","eventsTreated","eventsComparator")]
@@ -96,14 +105,17 @@ invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId,
   dev.off()
 
   results <- results[!is.na(results$seLogRr), ]
-  plotForest(logRr = results$logRr,
-             logLb95Ci = log(results$ci95lb),
-             logUb95Ci = log(results$ci95ub),
-             names = results$db,
-             xLabel = "Hazard Ratio",
-             fileName = fileName)
+  if (length(results$logRr) > 0) {
+    plotForest(logRr = results$logRr,
+               logLb95Ci = log(results$ci95lb),
+               logUb95Ci = log(results$ci95ub),
+               names = results$db,
+               xLabel = "Hazard Ratio",
+               fileName = file.path(studyFolder, paste0("ForestItt_", name, ".png")))
+    dev.off()
+  }
 
-  fileName <- file.path(studyFolder, paste0("ForestPp_", name, ".png"))
+  # fileName <- file.path(studyFolder, paste0("ForestPp_", name, ".png"))
 
   results <- allResults[allResults$analysisId == 2, ]
   crude <- results[,c("db","treated","comparator","treatedDays","comparatorDays","eventsTreated","eventsComparator")]
@@ -115,25 +127,26 @@ invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId,
   dev.off()
 
   results <- results[!is.na(results$seLogRr), ]
-  plotForest(logRr = results$logRr,
-             logLb95Ci = log(results$ci95lb),
-             logUb95Ci = log(results$ci95ub),
-             names = results$db,
-             xLabel = "Hazard Ratio",
-             fileName = fileName)
+  if (length(results$logRr) > 0) {
+    plotForest(logRr = results$logRr,
+               logLb95Ci = log(results$ci95lb),
+               logUb95Ci = log(results$ci95ub),
+               names = results$db,
+               xLabel = "Hazard Ratio",
+               fileName = file.path(studyFolder, paste0("ForestPp_", name, ".png")))
+    dev.off()
+  }
 }))
 
-
-
-meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
-s <- summary(meta)$random
-exp(s$TE)
-
-forest(meta)
-
-results <- allResults[allResults$analysisId == 7, ]
-results <- results[!is.na(results$seLogRr), ]
-meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
-forest(meta)
+# meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
+# s <- summary(meta)$random
+# exp(s$TE)
+#
+# forest(meta)
+#
+# results <- allResults[allResults$analysisId == 7, ]
+# results <- results[!is.na(results$seLogRr), ]
+# meta <- metagen(results$logRr, results$seLogRr, studlab = results$db, sm = "RR")
+# forest(meta)
 
 

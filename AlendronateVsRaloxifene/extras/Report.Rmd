@@ -1,0 +1,228 @@
+---
+title: "Study Results"
+author: "Marc A. Suchard, MD, PhD"
+date: "April 13, 2017"
+output: pdf_document
+header-includes:
+- \usepackage{pdflscape}
+- \usepackage{rotating}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xtable)
+#options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+
+# Functions
+
+getStratifiedCounts <- function(strata, folders, isNumeric = TRUE) {
+  zero <- data.frame(group = strata, countTreated = 0, countComparator = 0,
+                     fractionTreated = 0, fractionComparator = 0)
+
+  do.call(rbind, 
+          lapply(folders, FUN = function(file) {
+            table <- read.csv(file.path(studyFolder, 
+                                        file, "tablesAndFigures", 
+                                        "PopChar.csv"), as.is = TRUE)
+            table <- table[table$group %in% strata,]
+            start <- ifelse(isNumeric, 1, 2)
+            table[,start:ncol(table)] <- sapply(table[,start:ncol(table)],
+                                                as.numeric)
+            table <- rbind(table, zero[!(zero$group %in% table$group), ])
+            table <- table[order(table$group),]
+            table$database <- file
+            table
+          }))
+}
+
+makeStratifiedPlot <- function(data, strata, databases, 
+                               label1, label2,
+                               strataLabel = strata,
+                               ymax = 10000) {
+  
+  nstrata <- length(strata)
+  
+  # Make plot
+  layout(matrix(1:(length(databases) + 2), ncol = 1))
+  par(mar = c(1,4,1,6) + 0.1, xpd = NA)
+  
+  # Skip header plot
+  plot(0,0, type = "n", axes = FALSE, ylab = "", xlab = "")
+  
+  # Body
+  for (i in 1:length(databases)) {
+    file <- databases[i]
+    table <- data[data$database == file, ]
+    
+    barplot(as.matrix(data.frame(log(table$countTreated, 10),
+                                 log(table$countComparator, 10))),
+            axes = FALSE,
+            axisnames = FALSE,
+            ylim = c(0,log(ymax,10)), beside = TRUE)
+    axis(2, at = c(0,1,2,3,4), 
+         labels = c("0","10","100","1,000","10,000"), 
+         las = 1)
+    
+    for (y in 0:4) {
+      lines(c(0,3 + 2 * nstrata), rep(y, 2), lty = 2, lwd = 0.25)
+    }
+    
+    lines(c(1,nstrata + 1), c(0,0))
+    lines(c(nstrata + 2,2 * nstrata + 2), c(0,0))
+    
+    text(2 * nstrata + 5.5, 2, label1[i], srt = -90, cex = 1.5)
+    text(2 * nstrata + 4,   2, label2[i], srt = -90, cex = 1.5)
+    
+    if (i == 1) {
+      text(mean(1:nstrata)  + 1, 5.5, "Alendronate", cex = 1.5)
+      text(mean((nstrata + 2):(2 * nstrata + 1)) + 1, 5.5, 
+           "Raloxifene",  cex = 1.5)
+    }
+  }
+  
+  text(1:nstrata + 0.5, -0.5, strataLabel, srt = -90, adj = c(0,0.5))
+  text((nstrata + 2):(2 * nstrata + 1) + 0.5, -0.5, 
+       strataLabel, srt = -90, adj = c(0,0.5))
+}
+
+```
+
+
+```{r echo=FALSE}
+studyFolder <- "/Users/msuchard/Dropbox/OHDSI/hip_fracture"
+folders <- c("MDCD_JRD",
+             "CCAE_JRD",
+             "MDCR_JRD",
+             #"MDCR_UNM",
+             "Optum_JRD",
+             #"GEDA_XXX",
+             "Columbia",
+             "Stride",
+             "Cerner")
+
+label2 <- c("MDCD",
+            "CCAE",
+            "MDCR",
+            #"MDCR",
+            "Optum",
+            #"GEDA",
+            "EHR",
+            "Stride",
+            "EHR")
+
+label1 <- c("Trueven",
+            "Trueven",
+            "Trueven",
+            #"Trueven",
+            "Trueven",
+            #"???",
+            "Columbia",
+            "Stanford",
+            "Cerner")
+```
+
+
+## Population characteristics
+
+Year of study entry, stratified by drug exposure (alendronate / raloxifene) and data source.  Note patient counts are on the log-scale.
+
+```{r echo=FALSE, fig.width=4.5, fig.height=6}
+yearStrata <- c(2001:2012)
+yearData <- getStratifiedCounts(yearStrata, folders)
+
+makeStratifiedPlot(yearData, yearStrata, folders, label1, label2)
+```
+
+
+Age at study entry, stratified by drug exposure (alendronate / raloxifene) and data source.  Note patient counts are on the log-scale.
+
+```{r echo=FALSE, fig.width=4.5, fig.height=6}
+tmp <- seq(from = 45, to = 95, by = 5)
+ageStrata <- paste0("Age group: ", tmp, "-", (tmp + 4))
+ageData <- getStratifiedCounts(ageStrata, folders, isNumeric = FALSE)
+
+makeStratifiedPlot(ageData, ageStrata, folders, label1, label2,
+                   strataLabel = paste0(tmp, "-", (tmp + 4)))
+```
+<!--
+```{r echo=FALSE, results = "asis"}
+pop <- data.frame(group = 1, tn = 1, tp = 1, cn = 1, cp = 1)
+for (file in folders) {
+  table <- read.csv(file.path(studyFolder, file, "tablesAndFigures", "PopChar.csv"))
+  table <- data.frame(group = table$group,
+                      tn =  paste0(formatC(table$countTreated,
+                                               format = "d",
+                                               big.mark = ",")),
+                      tp = paste0("(",
+                                  formatC(round(table$fractionTreated * 100, 1), format = "f", digits = 1),")"),
+
+                      cn = paste0(formatC(table$countComparator,
+                                                  format = "d",
+                                                  big.mark = ",")),
+                      cp = paste0("(",
+                                  formatC(round(table$fractionComparator * 100, 1), format = "f", digits = 1),
+                                  ")")
+                      )
+  # table$treated <- as.character(table$treated)
+  # table$comparator <- as.character(table$comparator)
+  # table$treated[is.na(table$treated)] <- ""
+  # table$comparator[is.na(table$comparator)] <- ""
+  
+  pop <- merge(pop, table, by = "group", all = TRUE)
+  colnames(pop)[which(colnames(pop) == "tn.x")] <- "tn"
+  colnames(pop)[which(colnames(pop) == "tp.x")] <- "tp"
+  colnames(pop)[which(colnames(pop) == "cn.x")] <- "cn"
+  colnames(pop)[which(colnames(pop) == "cp.x")] <- "cp"
+  
+  # pop$treated.y <- as.character(pop$treated.y)
+  # pop$comparator.y <- as.character(pop$comparator.y)
+  # pop$treated.y[is.na(pop$treated.y)] <- ""
+  # pop$comparator.y[is.na(pop$comparator.y)] <- ""
+  
+  colnames(pop)[which(colnames(pop) == "tn.y")] <- paste0("tn_", file)
+  colnames(pop)[which(colnames(pop) == "tp.y")] <- paste0("tp_", file)
+  colnames(pop)[which(colnames(pop) == "cn.y")] <- paste0("cn_", file)
+  colnames(pop)[which(colnames(pop) == "cp.y")] <- paste0("cp_", file)
+}
+
+pop <- pop[pop$group != "FEMALE",]
+pop <- pop[pop$group != 1,]
+pop <- pop[,colnames(pop) != "tn"]
+pop <- pop[,colnames(pop) != "tp"]
+pop <- pop[,colnames(pop) != "cn"]
+pop <- pop[,colnames(pop) != "cp"]
+pop[] <- lapply(pop, as.character)
+pop[is.na(pop)] <- ""
+
+colnames(pop) <- NULL
+row.names(pop) <- NULL
+
+# knitr::kable(pop[1:12,], row.names = FALSE, align = "c")
+tab <- xtable(pop[1:12,])
+align(tab) <- c("l","l",rep(c("r","l"),2 * length(folders)))
+print(tab, include.rownames = FALSE, floating.environment = "sidewaystable")
+```
+-->
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
