@@ -2,7 +2,7 @@ require(ggplot2)
 
 mdcrFolder <- "S:/Temp/CiCalibration_Mdcr"
 optumFolder <- "S:/Temp/CiCalibration_Optum"
-mdcdFolder <- "S:/Temp/CiCalibration_Mdcd"
+cprdFolder <- "S:/Temp/CiCalibration_Cprd"
 
 paperFolder <- "S:/temp/CiCalibrationPaper/data"
 if (!file.exists(paperFolder))
@@ -59,14 +59,14 @@ calibrated <- calibrated[!is.na(calibrated$trueLogRr), c("outcomeId", "trueLogRr
 calibrated$study <- "Graham"
 estimates <- rbind(estimates, calibrated)
 
-calibratedFile <- file.path(mdcdFolder, "Calibrated_Tata_case_control.csv")
+calibratedFile <- file.path(cprdFolder, "Calibrated_Tata_case_control.csv")
 calibrated <- read.csv(calibratedFile)
 calibrated$outcomeId[!is.na(calibrated$oldOutcomeId)] <- calibrated$oldOutcomeId[!is.na(calibrated$oldOutcomeId)]
 calibrated <- calibrated[!is.na(calibrated$trueLogRr), c("outcomeId", "trueLogRr", "rr", "ci95lb", "ci95ub", "logRr", "seLogRr", "calibratedRr", "calibratedCi95lb", "calibratedCi95ub", "calibratedLogRr", "calibratedSeLogRr")]
 calibrated$study <- "Tata - CC"
 estimates <- rbind(estimates, calibrated)
 
-calibratedFile <- file.path(mdcdFolder, "Calibrated_Tata_sccs.csv")
+calibratedFile <- file.path(cprdFolder, "Calibrated_Tata_sccs.csv")
 calibrated <- read.csv(calibratedFile)
 calibrated$outcomeId[!is.na(calibrated$oldOutcomeId)] <- calibrated$oldOutcomeId[!is.na(calibrated$oldOutcomeId)]
 calibrated <- calibrated[!is.na(calibrated$trueLogRr), c("outcomeId", "trueLogRr", "rr", "ci95lb", "ci95ub", "logRr", "seLogRr", "calibratedRr", "calibratedCi95lb", "calibratedCi95ub", "calibratedLogRr", "calibratedSeLogRr")]
@@ -118,6 +118,8 @@ prepareCalibration <- function(logRr,
         subset <- dataLeftOut[dataLeftOut$strata == subResult$strata[j],]
         if (nrow(subset) == 0)
             return(0)
+        #writeLines(paste0("ciWidth: ", subResult$ciWidth[j], ", strata: ", subResult$strata[j], ", model: ", paste(model, collapse = ",")))
+        #writeLines(paste0("ciWidth: ", subResult$ciWidth[j], ", logRr: ", paste(subset$logRr, collapse = ","), ", seLogRr:", paste(subset$seLogRr, collapse = ","), ", model: ", paste(model, collapse = ",")))
         ci <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = subset$logRr,
                                                                 seLogRr = subset$seLogRr,
                                                                 ciWidth = subResult$ciWidth[j],
@@ -205,7 +207,7 @@ prepareCalibration <- function(logRr,
                      belowUncali[, c("strata", "label", "type", "ciWidth", "coverage")],
                      withinUncali[, c("strata", "label", "type", "ciWidth", "coverage")],
                      aboveUncali[, c("strata", "label", "type", "ciWidth", "coverage")])
-        names(vizData)[names(vizData) == "type"] <- "Confidence interval calculation"
+    names(vizData)[names(vizData) == "type"] <- "Confidence interval calculation"
     vizData$trueRr <- as.factor(exp(as.numeric(as.character(vizData$strata))))
     return(vizData)
 }
@@ -318,7 +320,7 @@ result <- data.frame(group = "Original study",
                      ub = 1.98)
 results <- rbind(results, result)
 
-cal <- read.csv(file.path(mdcdFolder, "Calibrated_Tata_case_control.csv"))
+cal <- read.csv(file.path(cprdFolder, "Calibrated_Tata_case_control.csv"))
 cal <- cal[is.na(cal$trueLogRr), ]
 result <- data.frame(group = "Our replication",
                      topic = "SSRIs and upper GI bleed",
@@ -340,7 +342,7 @@ result <- data.frame(group = "Our replication",
                      ub = cal$calibratedCi95ub)
 results <- rbind(results, result)
 
-cal <- read.csv(file.path(mdcdFolder, "Calibrated_Tata_sccs.csv"))
+cal <- read.csv(file.path(cprdFolder, "Calibrated_Tata_sccs.csv"))
 cal <- cal[is.na(cal$trueLogRr), ]
 result <- data.frame(group = "Our replication",
                      topic = "SSRIs and upper GI bleed",
@@ -387,16 +389,67 @@ for (study in unique(estimates$study)) {
     print(study)
     studyData <- estimates[estimates$study == study, ]
     m <- fitSystematicErrorModel(logRr = studyData$logRr,
-                                    seLogRr = studyData$seLogRr,
-                                    trueLogRr = studyData$trueLogRr,
-                                    estimateCovarianceMatrix = FALSE)
-    model <- as.vector(m)
+                                 seLogRr = studyData$seLogRr,
+                                 trueLogRr = studyData$trueLogRr,
+                                 estimateCovarianceMatrix = TRUE)
+    model <- paste0(formatC(as.vector(m), digits = 2, format = "f"),
+                    " (",
+                    formatC(attr(m, "LB95CI"), digits = 2, format = "f"),
+                    "-",
+                    formatC(attr(m, "UB95CI"), digits = 2, format = "f"),
+                    ")")
     names(model) <- names(m)
     model <- as.data.frame(t(model))
     model$study <- study
     models <- rbind(models, model)
 }
 saveRDS(models, file.path(paperFolder, "models.rds"))
+
+
+# Covariate counts in all studies -----------------------------------------
+
+library(ffbase)
+load.ffdf(file.path(cprdFolder, "signalInjection", "covariates"))
+cprdCovs <- nrow(covariateRef)
+
+load.ffdf(file.path(optumFolder, "signalInjection", "covariates"))
+optumCovs <- nrow(covariateRef)
+
+load.ffdf(file.path(mdcrFolder, "signalInjection", "covariates"))
+mdcrCovs <- nrow(covariateRef)
+
+covCounts <- data.frame(study = c("Tata - SCCS", "Tata - CC", "Southworth", "Graham"),
+                        covariateCount = c(cprdCovs, cprdCovs, optumCovs, mdcrCovs))
+saveRDS(covCounts, file.path(paperFolder, "covCounts.rds"))
+
+
+# Population counts -------------------------------------------------------
+
+
+cal <- read.csv(file.path(optumFolder, "Calibrated_Southworth_cohort_method.csv"))
+cal <- cal[cal$outcomeId == 3, ]
+southworthCounts <- c(cal$treated, cal$comparator)
+
+cal <- read.csv(file.path(mdcrFolder, "Calibrated_Graham_cohort_method.csv"))
+cal <- cal[cal$outcomeId == 6, ]
+grahamCounts <- c(cal$treated, cal$comparator)
+
+cal <- read.csv(file.path(cprdFolder, "Calibrated_Tata_case_control.csv"))
+cal <- cal[cal$outcomeId == 14, ]
+tataCcCounts <- c(cal$cases, cal$control)
+
+cal <- read.csv(file.path(cprdFolder, "Calibrated_Tata_sccs.csv"))
+cal <- cal[cal$outcomeId == 14, ]
+tataSccsCounts <- c(cal$caseCount)
+
+popCounts <- data.frame(southworthTarget = southworthCounts[1],
+                     southworthComparator = southworthCounts[2],
+                     grahamTarget = grahamCounts[1],
+                     grahamComparator = grahamCounts[2],
+                     ccCases = tataCcCounts[1],
+                     ccControls = tataCcCounts[2],
+                     sccsCases = tataSccsCounts[1])
+saveRDS(popCounts, file.path(paperFolder, "popCounts.rds"))
 
 
 # All estimates for supporting information --------------------------------
@@ -428,7 +481,7 @@ calibrated$trueRr <- exp(calibrated$trueLogRr)
 calibrated <- calibrated[, c("study", "outcomeName", "trueRr", "rr", "ci95lb", "ci95ub", "p", "calibratedRr", "calibratedCi95lb", "calibratedCi95ub", "calibratedP")]
 estimates <- rbind(estimates, calibrated)
 
-calibratedFile <- file.path(mdcdFolder, "Calibrated_Tata_case_control.csv")
+calibratedFile <- file.path(cprdFolder, "Calibrated_Tata_case_control.csv")
 calibrated <- read.csv(calibratedFile)
 calibrated$outcomeId[!is.na(calibrated$oldOutcomeId)] <- calibrated$oldOutcomeId[!is.na(calibrated$oldOutcomeId)]
 calibrated$study <- "Tata case-control replication"
@@ -437,7 +490,7 @@ calibrated$trueRr <- exp(calibrated$trueLogRr)
 calibrated <- calibrated[, c("study", "outcomeName", "trueRr", "rr", "ci95lb", "ci95ub", "p", "calibratedRr", "calibratedCi95lb", "calibratedCi95ub", "calibratedP")]
 estimates <- rbind(estimates, calibrated)
 
-calibratedFile <- file.path(mdcdFolder, "Calibrated_Tata_sccs.csv")
+calibratedFile <- file.path(cprdFolder, "Calibrated_Tata_sccs.csv")
 calibrated <- read.csv(calibratedFile)
 calibrated$outcomeId[!is.na(calibrated$oldOutcomeId)] <- calibrated$oldOutcomeId[!is.na(calibrated$oldOutcomeId)]
 calibrated$study <- "Tata SCCS replication"

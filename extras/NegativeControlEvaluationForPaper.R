@@ -1,3 +1,21 @@
+# @file NegativeControlEvaluationForPaper.R
+#
+# Copyright 2017 Observational Health Data Sciences and Informatics
+#
+# This file is part of CiCalibration
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # Extract data from Sherlock ----------------------------------------------
 
 library(DatabaseConnector)
@@ -58,13 +76,13 @@ extractData <- function(data, type = "nonserious") {
   dataMerged <- merge(treatment, placebo)
   dataMerged$numeratorTreatment[is.na(dataMerged$numeratorTreatment)] <- 0
   dataMerged$numeratorPlacebo[is.na(dataMerged$numeratorPlacebo)] <- 0
-  
+
   # Detect trials with more than 2 arms and eliminate them:
   dataMerged$count <- 1
-  counts <- aggregate(count ~ CLINICALTRIALSID + INTERVENTIONOMOPCONCEPTID + EVENTTERMPTOMOPCONCEPTID, dataMerged, sum) 
+  counts <- aggregate(count ~ CLINICALTRIALSID + INTERVENTIONOMOPCONCEPTID + EVENTTERMPTOMOPCONCEPTID, dataMerged, sum)
   counts <- counts[counts$count > 1, ]
   dataMerged <- dataMerged[!(dataMerged$CLINICALTRIALSID %in% unique(counts$CLINICALTRIALSID)), ]
-  
+
   computeRr <- function(x) {
     outcome <- matrix(c(x["denominatorPlacebo"],
                         x["numeratorPlacebo"],
@@ -151,10 +169,10 @@ sql <- "SELECT ep.exposureId,
 ep.exposureName,
 ep.outcomeId,
 ep.outcomeName,
-COUNT(*) AS concept_count, 
+COUNT(*) AS concept_count,
 MIN(nc_candidate) AS nc_candidate
 FROM #eval_pairs_in_universe ep
-LEFT JOIN ExposureOutcomePairsWithEvidenceBase eb 
+LEFT JOIN ExposureOutcomePairsWithEvidenceBase eb
 ON ep.exposureId = eb.exposureId AND ep.outcomeId = eb.outcomeId
 WHERE prediction IS NOT NULL
 GROUP BY ep.exposureId,

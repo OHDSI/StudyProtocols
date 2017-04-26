@@ -1,4 +1,4 @@
-# @file TestCode.R
+# @file PaperExecutionCode.R
 #
 # Copyright 2017 Observational Health Data Sciences and Informatics
 #
@@ -24,13 +24,12 @@ pw <- NULL
 dbms <- "pdw"
 user <- NULL
 server <- "JRDUSAPSCTL01"
-cdmDatabaseSchema <- 'CDM_Truven_MDCD_V521.dbo'
-#cdmDatabaseSchema <- "CDM_CPRD_V510.dbo"
+cdmDatabaseSchema <- "CDM_CPRD_V510.dbo"
 oracleTempSchema <- NULL
 workDatabaseSchema <- "scratch.dbo"
-studyCohortTable <- "mschuemie_ci_calibration_cohorts_mdcd"
+studyCohortTable <- "mschuemie_ci_calibration_cohorts_cprd"
 port <- 17001
-workFolder <- "S:/Temp/CiCalibration_Mdcd"
+workFolder <- "S:/Temp/CiCalibration_Cprd"
 maxCores <- 30
 study <- "Tata"
 
@@ -75,7 +74,7 @@ execute(connectionDetails = connectionDetails,
         workFolder = workFolder,
         createCohorts = FALSE,
         injectSignals = FALSE,
-        runAnalyses = TRUE,
+        runAnalyses = FALSE,
         empiricalCalibration = TRUE,
         maxCores = maxCores)
 
