@@ -33,8 +33,8 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms,
 folder <- "C:/home/Research/DrugsInPeds/results"
 privateKey <- file.path(folder, "private.key")
 
-#dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "PBS", "NHIRD"), inpatient = c(TRUE, TRUE, TRUE, FALSE, TRUE), ambulatory = c(FALSE, FALSE, TRUE, TRUE, TRUE), stringsAsFactors = FALSE)
-dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "NHIRD"), inpatient = c(TRUE, TRUE, TRUE, TRUE), ambulatory = c(FALSE, FALSE, TRUE, TRUE), stringsAsFactors = FALSE)
+dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "NHIRD", "PBS"), inpatient = c(TRUE, TRUE, TRUE, TRUE, FALSE), ambulatory = c(FALSE, FALSE, TRUE, TRUE, TRUE), stringsAsFactors = FALSE)
+# dbs <- data.frame(name = c("AUSOM","CDARS","JMDC", "NHIRD"), inpatient = c(TRUE, TRUE, TRUE, TRUE), ambulatory = c(FALSE, FALSE, TRUE, TRUE), stringsAsFactors = FALSE)
 
 pathToCsv <- system.file("csv",
                          "CustomClassification.csv",
@@ -44,11 +44,11 @@ classes <- unique(read.csv(pathToCsv, as.is = TRUE)$CLASS_ID)
 ### Decrypt, decompress, and generate tables and figures per DB ###
 for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
-    if (dbs$name[i] != "PBS") {
-        try(OhdsiSharing::decryptAndDecompressFolder(file.path(dbFolder, "StudyResults.zip.enc"),
-                                                     dbFolder,
-                                                     privateKey))
-    }
+    #if (dbs$name[i] != "PBS" & dbs$name[i] != "AUSOM") {
+    #    try(OhdsiSharing::decryptAndDecompressFolder(file.path(dbFolder, "StudyResults.zip.enc"),
+    #                                                 dbFolder,
+    #                                                 privateKey))
+    #}
     createFiguresAndTables(connectionDetails = connectionDetails,
                            cdmDatabaseSchema = cdmDatabaseSchema,
                            oracleTempSchema = oracleTempSchema,
@@ -88,7 +88,7 @@ for (i in 1:nrow(dbs)) {
         if (is.null(table2a)){
             table2a <- dbTable2a
         } else {
-            table2a <- merge(table2a, dbTable2a, all.x = TRUE)
+            table2a <- merge(table2a, dbTable2a, all = TRUE)
         }
     }
     if (dbs$ambulatory[i]) {
@@ -97,7 +97,7 @@ for (i in 1:nrow(dbs)) {
         if (is.null(table2b)){
             table2b <- dbTable2b
         } else {
-            table2b <- merge(table2b, dbTable2b, all.x = TRUE)
+            table2b <- merge(table2b, dbTable2b, all = TRUE)
         }
     }
 }
@@ -135,6 +135,7 @@ for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     if (dbs$ambulatory[i]) {
         dbTable3b <- read.csv(file.path(dbFolder, "table3b.csv"), stringsAsFactors = FALSE)
+        dbTable3b <- dbTable3b[!is.na(dbTable3b$Class),]
         counts <- aggregate(Drug ~ Class, data = dbTable3b, length)
         counts$Drug <- 5 - counts$Drug
         counts <- counts[counts$Drug != 0, ]
@@ -184,9 +185,10 @@ if (denominatorType == "persons") {
     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
 }
 data$ageGroup <- factor(data$ageGroup, levels = c("<2 years","2-11 years","12-18 years"))
-ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
-    ggplot2::facet_grid(.~ conceptName) +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
+    ggplot2::xlab("Age group") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(folder, "Figure1a.png"), width = 9, height = 7, dpi= 200)
@@ -199,9 +201,10 @@ if (denominatorType == "persons") {
     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
 }
 data$ageGroup <- factor(data$ageGroup, levels = c("<2 years","2-11 years","12-18 years"))
-ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
-    ggplot2::facet_grid(.~ conceptName) +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
+    ggplot2::xlab("Age group") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(folder, "Figure1b.png"), width = 9, height = 7, dpi= 200)
@@ -235,9 +238,9 @@ if (denominatorType == "persons") {
 }
 data$Gender <- "Male"
 data$Gender[data$genderConceptId == 8532] <- "Female"
-ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
-    ggplot2::facet_grid(.~ conceptName) +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(folder, "Figure2a.png"), width = 9, height = 9, dpi= 200)
@@ -251,9 +254,9 @@ if (denominatorType == "persons") {
 }
 data$Gender <- "Male"
 data$Gender[data$genderConceptId == 8532] <- "Female"
-ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
-    ggplot2::facet_grid(.~ conceptName) +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(folder, "Figure2b.png"), width = 9, height = 9, dpi= 200)
