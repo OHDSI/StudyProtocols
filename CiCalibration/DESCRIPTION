@@ -1,0 +1,26 @@
+Package: CiCalibration
+Title: Confidence Interval Calibration Evaluation study
+Version: 0.0.1
+Author: Martijn J. Schuemie [aut, cre],
+    Patrick B. Ryan [aut],
+    Marc A. Suchard [aut]
+Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
+Description: What the study does (paragraph)
+Depends:
+    R (>= 3.2.2),
+    DatabaseConnector
+Imports:
+    SqlRender,
+    MethodEvaluation,
+    FeatureExtraction,
+    CohortMethod,
+    SelfControlledCaseSeries,
+    CaseControl,
+    EmpiricalCalibration (>= 1.2.2),
+    DBI,
+    ggplot2
+Suggests:
+    testthat
+License: Apache License 2.0
+LazyData: true
+RoxygenNote: 6.0.1

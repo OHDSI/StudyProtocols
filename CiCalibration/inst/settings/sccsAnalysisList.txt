@@ -1,0 +1,121 @@
+[
+  {
+    "analysisId": 1,
+    "description": "Tata SCCS replication",
+    "getDbSccsDataArgs": {
+      "useCustomCovariates": false,
+      "deleteCovariatesSmallCount": 100,
+      "studyStartDate": "19900101",
+      "studyEndDate": "20031101",
+      "exposureIds": ["exposureId", "12", "13"],
+      "customCovariateIds": "",
+      "attr_class": "args"
+    },
+    "createSccsEraDataArgs": {
+      "naivePeriod": 180,
+      "firstOutcomeOnly": false,
+      "covariateSettings": [
+        {
+          "includeCovariateIds": "exposureId",
+          "label": "Exposure of interest",
+          "stratifyById": true,
+          "start": 0,
+          "addExposedDaysToStart": false,
+          "end": 0,
+          "addExposedDaysToEnd": true,
+          "firstOccurrenceOnly": false,
+          "allowRegularization": false,
+          "attr_class": "covariateSettings"
+        },
+        {
+          "includeCovariateIds": 12,
+          "label": "NSAIDs",
+          "stratifyById": true,
+          "start": 0,
+          "addExposedDaysToStart": false,
+          "end": 0,
+          "addExposedDaysToEnd": true,
+          "firstOccurrenceOnly": false,
+          "allowRegularization": false,
+          "attr_class": "covariateSettings"
+        },
+        {
+          "includeCovariateIds": 13,
+          "label": "TCAs",
+          "stratifyById": true,
+          "start": 0,
+          "addExposedDaysToStart": false,
+          "end": 0,
+          "addExposedDaysToEnd": true,
+          "firstOccurrenceOnly": false,
+          "allowRegularization": false,
+          "attr_class": "covariateSettings"
+        },
+        {
+          "includeCovariateIds": "exposureId",
+          "label": "Pre-exposure",
+          "stratifyById": true,
+          "start": -30,
+          "addExposedDaysToStart": false,
+          "end": -1,
+          "addExposedDaysToEnd": false,
+          "firstOccurrenceOnly": false,
+          "allowRegularization": false,
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "ageSettings": {
+        "includeAge": true,
+        "ageKnots": 5,
+        "allowRegularization": false,
+        "minAge": 18,
+        "attr_class": "ageSettings"
+      },
+      "seasonalitySettings": {
+        "includeSeasonality": false,
+        "seasonKnots": 5,
+        "allowRegularization": false,
+        "attr_class": "seasonalitySettings"
+      },
+      "eventDependentObservation": false,
+      "attr_class": "args"
+    },
+    "fitSccsModelArgs": {
+      "prior": {
+        "priorType": "laplace",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": true,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 1e-006,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 1,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.1,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "sccsAnalysis"
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "analysisId": 1,
+    "description": "Tata case-control replication",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "19900101",
+      "studyEndDate": "20031101",
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 180,
+      "controlsPerCase": 6,
+      "matchOnAge": true,
+      "ageCaliper": 1,
+      "matchOnGender": true,
+      "matchOnProvider": false,
+      "matchOnCareSite": true,
+      "matchOnVisitDate": false,
+      "visitDateCaliper": 30,
+      "matchOnTimeInCohort": false,
+      "daysInCohortCaliper": 30,
+      "minAge": 18,
+      "removedUnmatchedCases": true,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -30,
+      "riskWindowEnd": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": false,
+      "prior": {
+        "priorType": "laplace",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": true,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  }
+]

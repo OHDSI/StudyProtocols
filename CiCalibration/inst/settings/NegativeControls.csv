@@ -1,0 +1,151 @@
+study,conceptId,name
+Tata,73008,Enthesopathy
+Tata,441788,Human papilloma virus infection
+Tata,4110709,Benign epithelial neoplasm of skin
+Tata,75354,Osteochondropathy
+Tata,4134455,Mononeuropathy
+Tata,141932,Seborrheic keratosis
+Tata,75576,Irritable bowel syndrome
+Tata,196456,Gallstone
+Tata,4050747,Fracture of upper limb
+Tata,4215978,Onychomycosis
+Tata,438531,Chondromalacia
+Tata,4249170,Epicondylitis
+Tata,4087647,Rectal mass
+Tata,4234533,Tonsillitis
+Tata,441818,Hemangioma
+Tata,443285,Lesion of cervix
+Tata,139099,Ingrowing nail
+Tata,373478,Presbyopia
+Tata,4112731,Polyp of intestine
+Tata,378424,Astigmatism
+Tata,134461,Tietze's disease
+Tata,443767,Diabetic oculopathy
+Tata,4169984,Scar
+Tata,74855,Genital herpes simplex
+Tata,140480,Impetigo
+Tata,381581,Chalazion
+Tata,4248870,Visceroptosis
+Tata,436634,Acariasis
+Tata,4291005,Viral hepatitis
+Tata,4030042,Toxic goiter
+Tata,4345472,Epstein-Barr virus disease
+Tata,81893,Ulcerative colitis
+Tata,434926,Iridocyclitis
+Tata,200775,Endometrial hyperplasia
+Tata,201606,Crohn's disease
+Tata,440638,Lyme disease
+Tata,254443,Sjogren's syndrome
+Tata,374923,Bell's palsy
+Tata,4156115,Malignant neoplasm of endocrine gland
+Tata,380038,Viral conjunctivitis
+Tata,441589,Endocarditis
+Tata,438688,Sarcoidosis
+Tata,437082,Ankylosing spondylitis
+Tata,4254542,Hypopituitarism
+Tata,192606,Paraplegia
+Tata,260134,Croup
+Tata,253954,Pulmonary tuberculosis
+Tata,4038835,Hodgkin's disease
+Tata,380688,Hypoglycemic coma
+Tata,432595,Amyloidosis
+Southworth,437643,Abnormal gait
+Southworth,260139,Acute bronchitis
+Southworth,257007,Allergic rhinitis
+Southworth,442077,Anxiety disorder
+Southworth,4153359,Arthritis of spine
+Southworth,4324765,Arthropathy of knee joint
+Southworth,261880,Atelectasis
+Southworth,443344,Barrett's esophagus
+Southworth,378425,Blepharitis
+Southworth,256449,Bronchiectasis
+Southworth,313791,Bundle branch block
+Southworth,435613,Cellulitis
+Southworth,257012,Chronic sinusitis
+Southworth,134441,Chronic ulcer of skin
+Southworth,4150614,Communication disorder
+Southworth,201606,Crohn's disease
+Southworth,73302,Curvature of spine
+Southworth,4242416,Cutis laxa
+Southworth,192279,Diabetic renal disease
+Southworth,4174977,Diabetic retinopathy
+Southworth,74726,Dislocation of joint
+Southworth,435657,Dyssomnia
+Southworth,197684,Dysuria
+Southworth,79903,Effusion of joint
+Southworth,4050747,Fracture of upper limb
+Southworth,196456,Gallstone
+Southworth,4007453,Gammopathy
+Southworth,441788,Human papilloma virus infection
+Southworth,197032,Hyperplasia of prostate
+Southworth,4208390,Inflammation of sacroiliac joint
+Southworth,139099,Ingrowing nail
+Southworth,4112853,Malignant tumor of breast
+Southworth,374919,Multiple sclerosis
+Southworth,24134,Neck pain
+Southworth,443730,Neurologic disorder associated with diabetes mellitus
+Southworth,433736,Obesity
+Southworth,141663,Osteomyelitis
+Southworth,372328,Otitis media
+Southworth,78162,Peripheral vertigo
+Southworth,4002650,Plantar fasciitis
+Southworth,373478,Presbyopia
+Southworth,199876,Prolapse of female genital organs
+Southworth,436073,Psychotic disorder
+Southworth,141932,Seborrheic keratosis
+Southworth,141825,Simple goiter
+Southworth,313459,Sleep apnea
+Southworth,4077081,Superficial mycosis
+Southworth,193326,Urge incontinence of urine
+Southworth,81902,Urinary tract infectious disease
+Southworth,140641,Verruca vulgaris
+Graham,437643,Abnormal gait
+Graham,260139,Acute bronchitis
+Graham,257007,Allergic rhinitis
+Graham,442077,Anxiety disorder
+Graham,4153359,Arthritis of spine
+Graham,4324765,Arthropathy of knee joint
+Graham,261880,Atelectasis
+Graham,443344,Barrett's esophagus
+Graham,378425,Blepharitis
+Graham,256449,Bronchiectasis
+Graham,313791,Bundle branch block
+Graham,435613,Cellulitis
+Graham,257012,Chronic sinusitis
+Graham,134441,Chronic ulcer of skin
+Graham,4150614,Communication disorder
+Graham,201606,Crohn's disease
+Graham,73302,Curvature of spine
+Graham,4242416,Cutis laxa
+Graham,192279,Diabetic renal disease
+Graham,4174977,Diabetic retinopathy
+Graham,74726,Dislocation of joint
+Graham,435657,Dyssomnia
+Graham,197684,Dysuria
+Graham,79903,Effusion of joint
+Graham,4050747,Fracture of upper limb
+Graham,196456,Gallstone
+Graham,4007453,Gammopathy
+Graham,441788,Human papilloma virus infection
+Graham,197032,Hyperplasia of prostate
+Graham,4208390,Inflammation of sacroiliac joint
+Graham,139099,Ingrowing nail
+Graham,4112853,Malignant tumor of breast
+Graham,374919,Multiple sclerosis
+Graham,24134,Neck pain
+Graham,443730,Neurologic disorder associated with diabetes mellitus
+Graham,433736,Obesity
+Graham,141663,Osteomyelitis
+Graham,372328,Otitis media
+Graham,78162,Peripheral vertigo
+Graham,4002650,Plantar fasciitis
+Graham,373478,Presbyopia
+Graham,199876,Prolapse of female genital organs
+Graham,436073,Psychotic disorder
+Graham,141932,Seborrheic keratosis
+Graham,141825,Simple goiter
+Graham,313459,Sleep apnea
+Graham,4077081,Superficial mycosis
+Graham,193326,Urge incontinence of urine
+Graham,81902,Urinary tract infectious disease
+Graham,140641,Verruca vulgaris

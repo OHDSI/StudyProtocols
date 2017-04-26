@@ -8,9 +8,9 @@
 .Rdata
 .Rproj.user
 
+R/TC
 statement_*.sql
 errorReport.txt
-R/TC
 
 #C++ objects
 src/*.o
