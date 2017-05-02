@@ -171,8 +171,14 @@ createSignalInjectionDataFiles <- function(workFolder, signalInjectionFolder) {
     negativeControlOutcomes <- merge(negativeControlOutcomes, ff::as.ffdf(exposures[, c("rowId", "daysAtRisk")]))
 
     dedupeAndCount <- function(outcomeId, data) {
+        if (!ffbase::any.ff(data$outcomeId == outcomeId)) {
+            return(data.frame())
+        }
         data <- ff::as.ram(data[data$outcomeId == outcomeId, ])
         data <- data[data$daysToEvent >= 0 & data$daysToEvent <= data$daysAtRisk, ]
+        if (nrow(data) == 0) {
+            return(data.frame())
+        }
         y <- aggregate(outcomeId ~ rowId, data, length)
         colnames(y)[colnames(y) == "outcomeId"] <- "y"
         timeToEvent <- aggregate(daysToEvent ~ rowId, data, min)
@@ -187,6 +193,9 @@ createSignalInjectionDataFiles <- function(workFolder, signalInjectionFolder) {
 
     priorOutcomes <- negativeControlOutcomes[negativeControlOutcomes$daysToEvent < 0, c("rowId", "outcomeId")]
     dedupe <- function(outcomeId, data) {
+        if (!ffbase::any.ff(data$outcomeId == outcomeId)) {
+            return(data.frame())
+        }
         data <- data[data$outcomeId == outcomeId, ]
         rowIds <- ff::as.ram(ffbase::unique.ff(data$rowId))
         return(data.frame(rowId = rowIds, outcomeId = outcomeId))
