@@ -59,7 +59,6 @@ createCohorts <- function(connectionDetails,
                                              "LargeScalePopEst",
                                              dbms = connectionDetails$dbms,
                                              oracleTempSchema = oracleTempSchema,
-                                             cdm_database_schema = cdmDatabaseSchema,
                                              target_database_schema = workDatabaseSchema,
                                              target_cohort_table = studyCohortTable)
     DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
