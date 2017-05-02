@@ -1,4 +1,4 @@
-# Copyright 2016 Observational Health Data Sciences and Informatics
+# Copyright 2017 Observational Health Data Sciences and Informatics
 #
 # This file is part of LargeScalePopEst
 #
@@ -17,6 +17,7 @@
 # Format and check code
 OhdsiRTools::formatRFolder()
 OhdsiRTools::checkUsagePackage("LargeScalePopEst")
+OhdsiRTools::updateCopyrightYearFolder()
 
 # Create manual
 shell("rm extras//LargeScalePopEst.pdf")
