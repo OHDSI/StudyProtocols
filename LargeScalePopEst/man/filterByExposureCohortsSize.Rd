@@ -16,4 +16,3 @@ cohorts.}
 \description{
 Filter exposure pairs by size of the cohorts
 }
-

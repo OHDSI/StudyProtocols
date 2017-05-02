@@ -55,7 +55,7 @@ d2 <- data.frame(trueRr = d$trueRr,
                 yGroup = "Calibrated")
 d <- rbind(d1, d2)
 d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
-plotScatter(d, yPanelGroup = TRUE)
+plotScatter(d, yPanelGroup = TRUE, size = 0.5)
 
 ggsave(file.path(paperFolder, "EvalCalCombined.png"), width = 13.5, height = 5, dpi = 500)
 

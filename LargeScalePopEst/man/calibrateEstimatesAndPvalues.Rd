@@ -14,4 +14,3 @@ performance.}
 \description{
 Created calibrated confidence intervals, estimates, and p-values.
 }
-

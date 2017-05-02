@@ -17,4 +17,3 @@ Analyse propensity score distributions
 This function plots all propensity score distributions, and computes AUC
 and equipoise for every exposure pair.
 }
-

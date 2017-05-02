@@ -36,4 +36,3 @@ Fetch all data on the cohorts for analysis
 \details{
 This function will create covariates and fetch outcomes and person information from the server.
 }
-

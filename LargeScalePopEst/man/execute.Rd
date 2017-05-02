@@ -57,4 +57,3 @@ Execute OHDSI Large-Scale Population-Level Evidence Generation study
 \details{
 This function executes the OHDSI Large-Scale Population-Level Evidence Generation study.
 }
-

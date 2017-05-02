@@ -1,6 +1,6 @@
 Package: LargeScalePopEst
 Title: Large-Scale Population-Level Evidence Generation
-Version: 0.1.0
+Version: 0.1.1
 Author: Martijn J. Schuemie [aut, cre],
     Patrick B. Ryan [aut]
 Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
@@ -26,4 +26,4 @@ Suggests:
     ggplot2
 License: Apache License 2.0
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

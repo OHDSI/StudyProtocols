@@ -19,4 +19,3 @@ Run the cohort method package
 \details{
 Runs the cohort method package to produce propensity scores and outcome models.
 }
-

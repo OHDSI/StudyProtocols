@@ -17,4 +17,3 @@ Construct all cohortMethodData object
 This function constructs all cohortMethodData objects using the data
 fetched earlier using the \code{\link{fetchAllDataFromServer}} function.
 }
-
