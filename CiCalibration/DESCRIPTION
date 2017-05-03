@@ -12,7 +12,7 @@ Depends:
 Imports:
     SqlRender,
     MethodEvaluation,
-    FeatureExtraction,
+    FeatureExtraction (>= 1.2.0),
     CohortMethod,
     SelfControlledCaseSeries,
     CaseControl,

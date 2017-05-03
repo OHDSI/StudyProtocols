@@ -33,7 +33,9 @@ How to run
 			studyCohortTable = "ci_calibration",
 			oracleTempSchema = NULL,
 			outputFolder = "c:/temp/study_results",
-			cdmVersion = "5")
+			cdmVersion = "5",
+			maxCores = 4,
+			study = "Southworth")
 	```
 
 	* For details on how to configure```createConnectionDetails``` in your environment type this for help:
@@ -52,8 +54,27 @@ How to run
 	* ```cdmVersion``` is the version of the CDM. Can be "4" or "5".
 	
 	* ```outputFolder``` a location in your local file system where results can be written.
+	
+	* ```study``` indicates which replication study to execute. Possible values are 'Southworth', 'Graham', and 'Tata'.
 
-4. Mail the file ```export/studyResult.zip``` in the output folder to the study coordinator.
+Getting Involved
+================
+* Package manual: [CiCalibration.pdf](https://raw.githubusercontent.com/OHDSI/StudyProtocol/CiCalibration/master/extras/CiCalibration.pdf)
+* Developer questions/comments/feedback: <a href="http://forums.ohdsi.org/c/developers">OHDSI Forum</a>
+* We use the <a href="../../issues">GitHub issue tracker</a> for all bugs/issues/enhancements
+
+
+License
+=======
+The CiCalibration package is licensed under Apache License 2.0
+
+Development
+===========
+CiCalibration was developed in R Studio.
+
+### Development status
+
+This study is completed.
 
   
 

@@ -255,7 +255,7 @@ cal <- cal[is.na(cal$trueLogRr), ]
 result <- data.frame(group = "Our replication",
                      topic = "Dabigatran, warfarin and GI bleed",
                      study = "Southworth",
-                     label = "Our replication (uncalibrated)",
+                     label = "Our replication",
                      estimate = "Uncalibrated",
                      rr = cal$rr,
                      lb = cal$ci95lb,
@@ -277,7 +277,7 @@ cal <- cal[is.na(cal$trueLogRr), ]
 result <- data.frame(group = "Our replication",
                      topic = "Dabigatran, warfarin and GI bleed",
                      study = "Graham",
-                     label = "Our replication (uncalibrated)",
+                     label = "Our replication",
                      estimate = "Uncalibrated",
                      rr = cal$rr,
                      lb = cal$ci95lb,
@@ -295,7 +295,7 @@ result <- data.frame(group = "Our replication",
 results <- rbind(results, result)
 
 results$label <- factor(results$label,
-                        levels = c("Our replication (calibrated)","Our replication (uncalibrated)","Original study"))
+                        levels = c("Our replication (calibrated)","Our replication","Original study"))
 saveRDS(results, file.path(paperFolder, "hoiEstimatesDabi.rds"))
 
 results <- data.frame()
@@ -325,7 +325,7 @@ cal <- cal[is.na(cal$trueLogRr), ]
 result <- data.frame(group = "Our replication",
                      topic = "SSRIs and upper GI bleed",
                      study = "Tata - CC",
-                     label = "Our replication (uncalibrated)",
+                     label = "Our replication",
                      estimate = "Uncalibrated",
                      rr = cal$rr,
                      lb = cal$ci95lb,
@@ -347,7 +347,7 @@ cal <- cal[is.na(cal$trueLogRr), ]
 result <- data.frame(group = "Our replication",
                      topic = "SSRIs and upper GI bleed",
                      study = "Tata - SCCS",
-                     label = "Our replication (uncalibrated)",
+                     label = "Our replication",
                      estimate = "Uncalibrated",
                      rr = cal$rr,
                      lb = cal$ci95lb,
@@ -365,7 +365,7 @@ result <- data.frame(group = "Our replication",
 results <- rbind(results, result)
 
 results$label <- factor(results$label,
-                        levels = c("Our replication (calibrated)","Our replication (uncalibrated)","Original study"))
+                        levels = c("Our replication (calibrated)","Our replication","Original study"))
 
 saveRDS(results, file.path(paperFolder, "hoiEstimatesTata.rds"))
 

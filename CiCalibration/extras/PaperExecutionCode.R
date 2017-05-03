@@ -74,25 +74,6 @@ execute(connectionDetails = connectionDetails,
         workFolder = workFolder,
         createCohorts = FALSE,
         injectSignals = FALSE,
-        runAnalyses = FALSE,
+        runAnalyses = TRUE,
         empiricalCalibration = TRUE,
         maxCores = maxCores)
-
-
-createCohorts(connectionDetails = connectionDetails,
-              cdmDatabaseSchema = cdmDatabaseSchema,
-              oracleTempSchema = oracleTempSchema,
-              workDatabaseSchema = workDatabaseSchema,
-              studyCohortTable = studyCohortTable,
-              study = study,
-              workFolder = workFolder)
-
-CiCalibration::injectSignals(connectionDetails = connectionDetails,
-              cdmDatabaseSchema = cdmDatabaseSchema,
-              oracleTempSchema = oracleTempSchema,
-              workDatabaseSchema = workDatabaseSchema,
-              studyCohortTable = studyCohortTable,
-              study = study,
-              workFolder = workFolder,
-              maxCores = maxCores)
-
