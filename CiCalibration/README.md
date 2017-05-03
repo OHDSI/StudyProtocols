@@ -59,9 +59,9 @@ How to run
 
 Getting Involved
 ================
-* Package manual: [CiCalibration.pdf](https://raw.githubusercontent.com/OHDSI/StudyProtocol/CiCalibration/master/extras/CiCalibration.pdf)
+* Package manual: [CiCalibration.pdf](https://github.com/OHDSI/StudyProtocols/raw/master/CiCalibration/extras/CiCalibration.pdf)
 * Developer questions/comments/feedback: <a href="http://forums.ohdsi.org/c/developers">OHDSI Forum</a>
-* We use the <a href="../../issues">GitHub issue tracker</a> for all bugs/issues/enhancements
+* We use the <a href="https://github.com/OHDSI/StudyProtocols/issues">GitHub issue tracker</a> for all bugs/issues/enhancements
 
 
 License
