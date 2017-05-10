@@ -24,4 +24,3 @@ Create metadata file
 Creates a file containing metadata about the source data (taken from the cdm_source table) and R
 package versions.
 }
-

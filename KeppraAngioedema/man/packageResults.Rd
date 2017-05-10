@@ -27,4 +27,3 @@ Package the results for sharing with OHDSI researchers
 \details{
 This function packages the results.
 }
-

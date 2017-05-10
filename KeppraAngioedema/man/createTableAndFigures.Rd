@@ -16,4 +16,3 @@ Create tables and figures
 Creates tables and figures for viewing and interpreting the results. Requires that the
 \code{\link{execute}} function has completed first.
 }
-

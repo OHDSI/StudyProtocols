@@ -69,4 +69,3 @@ execute(connectionDetails,
 }
 
 }
-

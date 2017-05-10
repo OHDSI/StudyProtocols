@@ -114,11 +114,12 @@ createTableAndFigures <- function(exportFolder) {
   removedAgeGroup <- removedCovars[grep("Age group:", removedCovars$covariateName), ]
   if (nrow(removedAgeGroup) == 1) {
       totalTreated <- age$countTreated[1] / age$fractionTreated[1]
+      totalComparator <- age$countComparator[1] / age$fractionComparator[1]
       missingFractionTreated <- 1 - sum(age$fractionTreated)
       missingFractionComparator <- 1 - sum(age$fractionComparator)
       removedAgeGroup <- data.frame(group = removedAgeGroup$covariateName,
                                     countTreated = round(missingFractionTreated * totalTreated),
-                                    countComparator = round(missingFractionComparator * totalTreated),
+                                    countComparator = round(missingFractionComparator * totalComparator),
                                     fractionTreated = missingFractionTreated,
                                     fractionComparator = missingFractionComparator)
       age <- rbind(age, removedAgeGroup)

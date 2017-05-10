@@ -26,6 +26,7 @@ plotForest <- function(logRr, logLb95Ci, logUb95Ci, names, xLabel = "Relative ri
     d$name <- factor(d$name, levels = c("Summary", rev(sort(as.character(names))), "Source"))
 
     breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+    myText <- ggplot2::element_text(family = "Calibri")
     p <- ggplot2::ggplot(d,ggplot2::aes(x = exp(logRr), y = name, xmin = exp(logLb95Ci), xmax = exp(logUb95Ci))) +
         ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.2) +
         ggplot2::geom_vline(xintercept = 1, size = 0.5) +
@@ -34,7 +35,10 @@ plotForest <- function(logRr, logLb95Ci, logUb95Ci, names, xLabel = "Relative ri
         ggplot2::scale_fill_manual(values = c("#000000", "#FFFFFF", "#FFFFFF")) +
         ggplot2::scale_x_continuous(xLabel, trans = "log10", breaks = breaks, labels = breaks) +
         ggplot2::coord_cartesian(xlim = c(0.25, 10)) +
-        ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+        ggplot2::theme(
+              axis.text.x = myText,
+              axis.title.x = myText,
+              panel.grid.major = ggplot2::element_blank(),
               panel.grid.minor = ggplot2::element_blank(),
               panel.background = ggplot2::element_blank(),
               legend.position = "none",
@@ -58,7 +62,7 @@ plotForest <- function(logRr, logLb95Ci, logUb95Ci, names, xLabel = "Relative ri
     levels(labels$label)[1] <-  paste(xLabel,"(95% CI)")
 
     data_table <- ggplot2::ggplot(labels, ggplot2::aes(x = x, y = y, label = label)) +
-        ggplot2::geom_text(size = 4, hjust=0, vjust=0.5) +
+        ggplot2::geom_text(size = 4, hjust=0, vjust=0.5, family = "Calibri") +
         ggplot2::geom_hline(ggplot2::aes(yintercept=nrow(d) - 0.5)) +
         ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
               panel.grid.minor = ggplot2::element_blank(),

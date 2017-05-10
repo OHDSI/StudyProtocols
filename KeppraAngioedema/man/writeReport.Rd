@@ -17,4 +17,3 @@ Write a report summarizing all the results for a single database
 \details{
 Requires that the \code{\link{createTableAndFigures}} has been executed first.
 }
-

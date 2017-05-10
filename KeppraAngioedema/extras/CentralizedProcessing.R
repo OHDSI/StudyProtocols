@@ -84,3 +84,23 @@ mr <- KeppraAngioedema:::addCohortNames(mr, "outcomeId", "outcomeName")
 # mr <- KeppraAngioedema:::addCohortNames(mr, "targetId", "targetName")
 # mr <- KeppraAngioedema:::addCohortNames(mr, "comparatorId", "comparatorName")
 # write.csv(mr, file.path(exportFolder, "MainResults.csv"), row.names = FALSE)
+
+
+
+# Grab all PS model files -------------------------------------------------
+
+allModels <- data.frame()
+skip <- c("IMEDS_MDCR", "Regenstrief", "Pplus")
+for (file in list.files(path = studyFolder, include.dirs = TRUE)) {
+    if (!(file %in% skip)) {
+        if (file.info(file.path(studyFolder, file))$isdir) {
+            writeLines(paste("Processing", file))
+            model <- read.csv(file.path(studyFolder, file, "PsModel.csv"))
+            model$db <- file
+            allModels <- rbind(allModels, model)
+        }
+    }
+}
+write.csv(allModels, file.path(studyFolder, "AllPSModels.csv"), row.names = FALSE)
+
+
