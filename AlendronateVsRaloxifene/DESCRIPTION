@@ -1,7 +1,7 @@
 Package: AlendronateVsRaloxifene
 Type: Package
 Title: Alendronate versus Raloxifene and the risk of Hip Fracture
-Version: 0.2.1
+Version: 0.3.0
 Author: Martijn Schuemie [aut, cre],
     Yeesuk Kim [aut],
     Patrick Ryan [aut],
