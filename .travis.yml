@@ -66,7 +66,3 @@ notifications:
 after_success:
   # Deploy to drat repo
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
-
-env:
-  global:
-  - secure: ZzKAG80CmhulFZniuqpsR7uzxZltY1JkI7MZvluf/78KYAAYAZxeojElv6MVlHBGE7pCv00Y3Sd9LUKcv68i9fiCGGG3BsNqA6+4aXZd+Z+tscvmhza/86IEHet55rH4im1nhrEtD6K7FSrMzgyzJtMhilhG9DfVo/kBDpJjREk=
