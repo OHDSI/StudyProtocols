@@ -76,4 +76,6 @@ plotForest <- function(logRr, logLb95Ci, logUb95Ci, names, xLabel = "Relative ri
 
     if (!is.null(fileName))
         ggplot2::ggsave(fileName, plot, width = 7, height = 1 + length(logRr) * 0.4, dpi = 400)
+
+    plot
 }

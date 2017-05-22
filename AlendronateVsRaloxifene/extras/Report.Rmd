@@ -6,6 +6,7 @@ output: pdf_document
 header-includes:
 - \usepackage{pdflscape}
 - \usepackage{rotating}
+- \usepackage{multirow}
 - \newcommand{\blandscape}{\begin{landscape}}
 - \newcommand{\elandscape}{\end{landscape}}
 ---
@@ -13,10 +14,22 @@ header-includes:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(xtable)
-#options(xtable.floating = FALSE)
+options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
+options(xtable.comment = FALSE)
 
 # Functions
+
+getData <- function(folders) {
+  do.call(rbind,
+          lapply(folders, FUN = function(file) {
+            table <- read.csv(file.path(studyFolder,
+                                        file, "tablesAndFigures",
+                                        "EmpiricalCalibration.csv"))
+            table$db <- file
+            table
+          }))
+}
 
 getStratifiedCounts <- function(strata, folders, isNumeric = TRUE) {
   zero <- data.frame(group = strata, countTreated = 0, countComparator = 0,
@@ -88,58 +101,61 @@ makeStratifiedPlot <- function(data, strata, databases,
        strataLabel, srt = -90, adj = c(0,0.5))
 }
 
+getOrder <- function(dbs, folders) {
+  unlist(sapply(dbs, 
+                function(x) { 
+                  which(folders == x)
+                }))
+}
+
 ```
 
 
 ```{r echo=FALSE}
 studyFolder <- "/Users/msuchard/Dropbox/OHDSI/hip_fracture"
-folders <- c("MDCD_JRD",
-             "CCAE_JRD",
-             "MDCR_JRD",
-             #"MDCR_UNM",
-             "Optum_JRD",
-             #"GEDA_XXX",
-             "Columbia",
-             "Stride",
-             "Cerner")
 
-label2 <- c("MDCD",
-            "CCAE",
-            "MDCR",
-            #"MDCR",
-            "Optum",
-            #"GEDA",
-            "EHR",
-            "Stride",
-            "EHR")
+folders <- c("PPlus", 
+             "Optum_JRD", "CCAE_JRD", "CCAE_UNM",
+             "MDCR_JRD", "MDCR_UNM", "MDCD_JRD", "Cerner", 
+             "Columbia", "Stride")
 
-label1 <- c("Trueven",
-            "Trueven",
-            "Trueven",
-            #"Trueven",
-            "Trueven",
-            #"???",
-            "Columbia",
-            "Stanford",
-            "Cerner")
+label1 <- c("IMS", 
+            "Truven", "Truven", "Truven",
+            "Truven", "Truven", "Truven", "Cerner", 
+            "Columbia", "Stanford")
+
+label2 <-  c("PPlus", 
+             "Optum", expression(CCAE^1), expression(CCAE^2),
+             expression(MDCR^1), expression(MDCR^2), "MDCD" ,"EHR" , 
+             "EHR" , "Stride")
+
+label3 <- c("IMS PPlus", 
+            "Truven Optum", 
+            "Truven CCAE (1)", "Truven CCAE (2)",
+            "Truven MDCR (1)", "Truven MDCR (2)", 
+            "Truven MDCD", 
+            "Cerner EHR", "Columbia EHR", "Stanford Stride")
 ```
 
 
 ## Population characteristics
 
+\clearpage
+
 Year of study entry, stratified by drug exposure (alendronate / raloxifene) and data source.  Note patient counts are on the log-scale.
 
-```{r echo=FALSE, fig.width=4.5, fig.height=6}
+```{r echo=FALSE, fig.width=4.5, fig.height=9}
 yearStrata <- c(2001:2012)
 yearData <- getStratifiedCounts(yearStrata, folders)
 
 makeStratifiedPlot(yearData, yearStrata, folders, label1, label2)
 ```
 
+\clearpage
 
 Age at study entry, stratified by drug exposure (alendronate / raloxifene) and data source.  Note patient counts are on the log-scale.
 
-```{r echo=FALSE, fig.width=4.5, fig.height=6}
+```{r echo=FALSE, fig.width=4.5, fig.height=9}
 tmp <- seq(from = 45, to = 95, by = 5)
 ageStrata <- paste0("Age group: ", tmp, "-", (tmp + 4))
 ageData <- getStratifiedCounts(ageStrata, folders, isNumeric = FALSE)
@@ -207,22 +223,562 @@ print(tab, include.rownames = FALSE, floating.environment = "sidewaystable")
 ```
 -->
 
-## R Markdown
+## Total patient and event counts (Intent-to-treat)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r echo=FALSE, results="asis"}
+# allCohorts <- read.csv(system.file("settings", 
+#                                    "CohortsToCreate.csv", 
+#                                    package = "AlendronateVsRaloxifene"))
+# allCohorts <- allCohorts[3:nrow(allCohorts),]
 
-```{r cars}
-summary(cars)
+
+# invisible(mapply(allCohorts$cohortId, allCohorts$name, 
+#                  FUN = function(outcomeId, name) {
+
+printOutcomeTable <- function(analysisId,
+                              folders, 
+                              labels, 
+                              cohortOrder, 
+                              prettyCohortNames) {
+  
+  
+  allCohorts <- read.csv(system.file("settings", 
+                                     "CohortsToCreate.csv", 
+                                     package = "AlendronateVsRaloxifene"))
+  allCohorts <- allCohorts[3:nrow(allCohorts),]  
+  
+  allCohorts <- allCohorts[allCohorts$name %in% cohortOrder, ]
+
+  allResults <- getData(folders)
+  
+  results <- allResults
+  results <- results[results$analysisId == analysisId, ]
+  results <- results[results$outcomeName %in% cohortOrder, ]
+  results <- results[results$db %in% folders, ]
+  
+  results$space1 <- ""
+  results$space2 <- ""
+  
+  results$order1 <- getOrder(results$db, folders)
+  results$order2 <- getOrder(as.character(results$outcomeName), cohortOrder)
+  results <- results[order(results$order2, 
+                           results$order1,
+                           decreasing = FALSE),]
+
+  crude <- results[,c(# "space1",
+                      "db","treated","treatedDays","eventsTreated",
+                      "space2",
+                      "comparator", "comparatorDays","eventsComparator")]
+  
+  crude$db <- labels # paste0(label1, " ", label2)
+  crude$db <- sub("\\^(\\d)", "$^\\1$", crude$db)
+  
+  for (column in c("treated","comparator")) {
+  crude[,column] <- formatC(crude[,column],
+                            format = "d", big.mark = ",")
+  }
+  
+  for (column in c("treatedDays", "comparatorDays")) {
+    crude[,column] <- formatC(round(crude[,column] / 1), # / 1000?
+                              format = "d", big.mark = ",")
+  }
+  
+  for (column in c("eventsTreated", "eventsComparator")) {
+    crude[,column] <- ifelse(crude[,column] < 6, 
+                             ifelse(crude[,column] == 0, 0, "<6"), 
+                             formatC(crude[,column],
+                                     format = "d", big.mark = ","))
+  }
+  
+  # colnames(crude) <- c("Data source", 
+  #                      "Patients", "Exposed days", "Events",
+  #                      "Patients", "Exposed days", "Events" )
+  addtorow <- list()
+  addtorow$pos <- c(list(0, 0, 0),
+                    # as.list((length(folders)) * (0:(length(cohortOrder) - 1)) + 1),
+                    as.list(length(folders) * (0:(length(cohortOrder) - 1)))
+                    )
+                       
+  
+  getNameInBox <- function(name) {
+    paste0("\\parbox[t]{2mm}{\\multirow{",
+           round(length(folders) / 2),
+           "}{*}{\\rotatebox[origin=c]{90}{",
+           name,
+           "}}}")    
+  }
+  
+  getNameAcross <- function(name) {
+    paste0("\\\\[-0.5em]\n \\multicolumn{8}{c}{",
+           name,
+           "} \\\\\n")
+  }
+  
+  addtorow$command <- c("& \\multicolumn{3}{c}{Alendronate} & & \\multicolumn{3}{c}{Raloxifene} \\\\\n",
+                        "\\cline{2-4} \\cline{6-8} \n",
+                        "Data source & Patients & Days & Events & & Patients & Days & Events \\\\\n \\hline \n",
+                        # getNameInBox(prettyCohortNames),
+                        # rep("\\\\\n\\\\\n", length(cohortOrder))
+                        getNameAcross(prettyCohortNames)
+                        )  
+  tab <- xtable(crude)
+  
+  align(tab) <- "clrrrcrrr"
+  print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
+               add.to.row = addtorow,
+               hline.after = c(-1,nrow(tab)),
+               sanitize.text.function=function(x) { x }
+               )
+}
+
+cohortOrder1 <- c("HipFracture", 
+                  "VertebralFracture", 
+                  "AtypicalFemuralFracture")
+
+prettyCohortNames1 <- c("Hip fracture", 
+                        "Vertebal fracture", 
+                        "Atypical femural fracture")
+
+printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), cohortOrder1, prettyCohortNames1)
 ```
 
-## Including Plots
+```{r echo=FALSE, results="asis"}
+cohortOrder2 <- c("EsophagealCancer",
+                   "OsteonecrosisOfJaw")
 
-You can also embed plots, for example:
+prettyCohortNames2 <- c("Esophageal cancer", 
+                        "Osteonecrosis of the jaw")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), cohortOrder2, prettyCohortNames2)
+# }))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Total patient and event counts (Per-protocol)
+
+
+```{r echo=FALSE, results="asis"}
+
+notPPlus <- !(folders == "PPlus")
+
+printOutcomeTable(analysisId = 2,
+                  folders = folders[notPPlus], paste0(label1, " ", label2)[notPPlus],
+                  cohortOrder1, prettyCohortNames1)
+```
+
+```{r echo=FALSE, results="asis"}
+printOutcomeTable(analysisId = 2,
+                  folders = folders[-1], paste0(label1, " ", label2)[-1],
+                  cohortOrder2, prettyCohortNames2)
+
+```
+
+\clearpage
+
+## Covariate balance statistics
+
+```{r, echo=FALSE, results="asis"}
+table <-
+  do.call(rbind, 
+          lapply(folders, FUN = function(file) {
+            table <- read.csv(file.path(studyFolder, 
+                                        file, 
+                                        "Balance.csv"), as.is = TRUE)
+            idx <- which(folders == file)
+            name <- paste0(label1[idx], " ", label2[idx])
+            name <-  sub("\\^(\\d)", "$^\\1$", name)
+            table <- data.frame(db = name,
+                                before = max(abs(table$beforeMatchingStdDiff),
+                                             na.rm = TRUE),
+                                after = max(abs(table$afterMatchingStdDiff),
+                                            na.rm = TRUE))
+            table
+          }))
+
+  addtorow <- list()
+  addtorow$pos <- list()
+  addtorow$pos[[1]] <- 0
+  addtorow$command <- c("Data source & \\multicolumn{1}{c}{Before} & \\multicolumn{1}{c}{After}  \\\\\n \\hline ")  
+
+  output <- xtable(table)
+  
+  align(output) <- "clrr"
+  print.xtable(output, include.rownames = FALSE, include.colnames = FALSE,
+               add.to.row = addtorow,
+               hline.after = c(-1,nrow(output)),
+               sanitize.text.function=function(x) { x }
+               )
+```
+
+## Residual bias using negative controls
+
+```{r, echo=FALSE, warning=FALSE, fig.height=8}
+library(grid)
+library(gridExtra)
+library(ggplot2)
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL, byrow = FALSE) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols), byrow = byrow)
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+  pathToCsv <- system.file("settings", "NegativeControls.csv", package = "AlendronateVsRaloxifene")
+  negativeControls <- read.csv(pathToCsv)
+  negControlCohortIds <- negativeControls$conceptId
+
+# layout(matrix(1:(2 * length(folders)), ncol = 2, byrow = TRUE))
+#par(mar = c(1,1,1,1) + 0.1, xpd = NA)
+
+# plot(0,0, type = "n",
+#      xlim = c(0,2),
+#      ylim = c(0,length(folders)))
+
+# for (idx in 1:length(folders)) {
+  pl <- lapply(1:length(folders), FUN = function(idx) {
+  
+  file <- folders[idx]
+  # fig <- png::readPNG(file.path(studyFolder, 
+  #                                       file, "tablesAndFigures",
+  #                                       "CalEffectNoHoi_a1.png"))
+  # rasterImage(fig, 0.1, 0.1, 1.9, 9.9)
+  #plot(0,0)
+  #plot(0,0)
+  print(file)
+  
+   emp <-  read.csv(file.path(studyFolder, 
+                                        file, "tablesAndFigures",
+                                        "EmpiricalCalibration.csv"))
+
+   emp <- emp[emp$analysisId == 1 & emp$outcomeId %in% negControlCohortIds, ]
+  base <- EmpiricalCalibration::plotCalibrationEffect(emp$logRr, emp$seLogRr)
+  text <- textGrob(label = paste0(label1[idx], " ", label2[idx]),
+                    gp = gpar(cex = 1.25),
+                    rot = 0)
+  ann <- ggplot2::annotation_custom(
+    grob = text,
+    ymin = 1.4, ymax = 1.4,
+    xmin = 0.4, xmax = log(2))
+  # list(base,ggplot() + ann)
+  base + ann
+})
+  multiplot(plotlist = pl, cols = 2)
+  
+#   pl[[1]] + ggplot2::annotation_custom(
+#     grob = textGrob(label = paste0("HELLO"),
+#                     gp = gpar(cex = 1.5),
+#                     rot = -90),
+#     ymin = 0.75, ymax = 0.75,
+#     xmin = log(8), xmax = 0)
+#   
+# multiplot(
+#   pl[[1]][[1]],
+#  pl[[1]][[2]] + 
+#    theme(panel.background = element_blank()) + 
+#    coord_fixed(ratio = 0.5)  ,
+#  cols = 2
+# )
+  
+```
+
+\clearpage
+
+## Hip fracture effect estimate (intent-to-treat)
+
+```{r, echo=FALSE, warning=FALSE, fig.height=4, fig.width=7}
+
+plotForest <- function(logRr, logLb95Ci, logUb95Ci, names, labels,
+                       xLabel = "Relative risk", 
+                       breaks = c(0.25, 0.5, 1, 2, 4, 6, 8, 10),
+                       summaryExclude = c(),
+                       plotExclude = c(),
+                       fileName = NULL) {
+  
+              # logRr = results$logRr
+              # logLb95Ci = log(results$ci95lb)
+              # logUb95Ci = log(results$ci95ub)
+              # names = results$db
+              # labels = label3
+              # xLabel = "Hazard Ratio"
+              # breaks = c(0.25, 0.5, 1, 2, 4)
+              # fileName = NULL
+              # summaryExclude = c("CCAE_UNM", "MDCR_UNM")
+
+  
+    seLogRr <- (logUb95Ci-logLb95Ci) / (2 * qnorm(0.975))
+    
+    include <- !(names %in% summaryExclude)
+    
+    meta <- meta::metagen(logRr[include], seLogRr[include], studlab = names[include], sm = "RR")
+    s <- summary(meta)$random
+    
+    d1 <- data.frame(logRr = logRr,
+                     logLb95Ci = logLb95Ci,
+                     logUb95Ci = logUb95Ci,
+                     name = labels,
+                     type = "db")
+    d2 <- data.frame(logRr = s$TE,
+                     logLb95Ci = s$lower,
+                     logUb95Ci = s$upper,
+                     name = "Summary",
+                     type = "ma")
+    d3 <- data.frame(logRr = NA,
+                     logLb95Ci = NA,
+                     logUb95Ci = NA,
+                     name = "Data source",
+                     type = "header")
+    d <- rbind(d1, d2, d3)
+    
+    idx <- which(is.na(d$logRr))
+    d$logLb95Ci[idx] <- NA
+    d$logUb95Ci[idx] <- NA
+
+    d$name <- factor(d$name, 
+                     levels = c("Summary", rev(as.character(labels)), "Source")
+                     )
+
+    p <- ggplot2::ggplot(d,ggplot2::aes(x = exp(logRr), 
+                                        y = name, xmin = exp(logLb95Ci), xmax = exp(logUb95Ci))) +
+        ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.2) +
+        ggplot2::geom_vline(xintercept = 1, size = 0.5) +
+        ggplot2::geom_errorbarh(height = 0.15) +
+        ggplot2::geom_point(size=3, shape = 23, ggplot2::aes(fill=type)) +
+        ggplot2::scale_fill_manual(values = c("#000000", "#FFFFFF", "#FFFFFF")) +
+        ggplot2::scale_x_continuous(xLabel, trans = "log10", breaks = breaks, labels = breaks) +
+        ggplot2::coord_cartesian(xlim = c(min(breaks), max(breaks))) +
+        ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+              panel.grid.minor = ggplot2::element_blank(),
+              panel.background = ggplot2::element_blank(),
+              legend.position = "none",
+              panel.border = ggplot2::element_blank(),
+              axis.text.y = ggplot2::element_blank(),
+              axis.title.y = ggplot2::element_blank(),
+              axis.ticks = ggplot2::element_blank(),
+              plot.margin = grid::unit(c(0,0,0.1,0), "lines"))
+    
+    rr <- exp(d$logRr)
+    rrf <- formatC(rr,  digits = 2, format = "f")
+    lo <- exp(d$logLb95Ci)
+    lof <- formatC(lo,  digits = 2, format = "f")
+    up <- exp(d$logUb95Ci)
+    upf <- ifelse(up > 10, 
+                  formatC(up,  digits = 1, format = "f"),
+                  formatC(up,  digits = 2, format = "f"))
+    
+
+    labels <- ifelse(d$type == "header", paste(xLabel, "(95% CI)"), 
+      ifelse(is.na(d$logRr), " -- ",
+                     paste0(
+                     rrf, # formatC(rr,  digits = 2, format = "f")
+                     " (",
+                     lof, # formatC(lo, digits = 2, format = "f"),
+                     "-",
+                     upf, # formatC(up, digits = digits, format = "f"),
+                     ")")))
+
+    labels <- data.frame(y = rep(d$name, 2),
+                         x = rep(1:2, each = nrow(d)),
+                         label = c(as.character(d$name), labels))
+    
+    # levels(labels$label)[1] <-  paste(xLabel,"(95% CI)")
+    
+    data_table <- ggplot2::ggplot(labels, 
+                                  ggplot2::aes(x = x, y = y, label = label,
+                                               parse = TRUE)) +
+        ggplot2::geom_text(size = 4, hjust=0, vjust=0.5) +
+        ggplot2::geom_hline(ggplot2::aes(yintercept=nrow(d) - 0.5)) +
+        ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+              panel.grid.minor = ggplot2::element_blank(),
+              legend.position = "none",
+              panel.border = ggplot2::element_blank(),
+              panel.background = ggplot2::element_blank(),
+              axis.text.x = ggplot2::element_text(colour="white"),#element_blank(),
+              axis.text.y = ggplot2::element_blank(),
+              axis.ticks = ggplot2::element_line(colour="white"),#element_blank(),
+              plot.margin = grid::unit(c(0,0,0.1,0), "lines")) +
+        ggplot2::labs(x="",y="") +
+        ggplot2::coord_cartesian(xlim=c(1,3))
+
+  #  plot <- gridExtra::grid.arrange(data_table, p, ncol=2)
+
+    if (!is.null(fileName))
+        ggplot2::ggsave(fileName, 
+                        gridExtra::grid.arrange(data_table, p, ncol=2), 
+                        width = 7, height = 1 + length(logRr) * 0.4, dpi = 400)
+
+    return(list(data_table = data_table,
+                p = p, 
+                meta = meta))
+}
+
+  
+  allCohorts <- read.csv(system.file("settings",
+                                     "CohortsToCreate.csv",
+                                     package = "AlendronateVsRaloxifene"))
+  allCohorts <- allCohorts[3:nrow(allCohorts),]
+  
+buildOutcomeResults <- function(folders, analysisId, cohort, summaryExclude, allExclude = c()) {
+
+  # analysisId <- 2
+  # cohort <- "HipFracture"
+  # allExclude <- c()
+  
+  allResults <- getData(folders)
+  results <- allResults
+  results <- results[results$analysisId == analysisId, ]
+  results <- results[results$outcomeName == cohort, ]
+  results <- results[results$db %in% folders, ]
+  results$labels <- label3
+  results <- results[!(results$db %in% allExclude),]
+  
+  results$logRr <- ifelse(abs(results$logRr) > 10, NA, results$logRr)
+  
+  results$order1 <- getOrder(results$db, folders)
+  results <- results[order(results$order1,
+                           decreasing = FALSE),]
+  
+  forest <- plotForest(logRr = results$logRr,
+              logLb95Ci = log(results$ci95lb),
+              logUb95Ci = log(results$ci95ub),
+              names = results$db,
+              labels = results$labels,
+              xLabel = "Hazard Ratio",
+              breaks = c(0.25, 0.5, 1, 2, 4),
+              summaryExclude = summaryExclude,
+              fileName = NULL)
+}
+  
+ hip1 <- buildOutcomeResults(folders, analysisId = 1, cohort = "HipFracture",
+                                c("CCAE_UNM", "MDCR_UNM"))
+ gridExtra::grid.arrange(hip1$data_table, hip1$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  hip1$meta
+```
+
+\clearpage
+
+## Hip fracture effect estimate (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+hip2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "HipFracture",
+                                c("CCAE_UNM", "MDCR_UNM"),
+                            c("PPlus"))
+ gridExtra::grid.arrange(hip2$data_table, hip2$p, ncol = 2)
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  hip2$meta
+```
+
+\clearpage
+
+## Vertebral fracture effect estimate (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+vert1 <- buildOutcomeResults(folders, analysisId = 1, cohort = "VertebralFracture",
+                                c("CCAE_UNM", "MDCR_UNM"))
+ gridExtra::grid.arrange(vert1$data_table, vert1$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  vert1$meta
+```
+
+
+\clearpage
+
+## Vertebral fracture effect estimate (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+vert2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "VertebralFracture",
+                                c("CCAE_UNM", "MDCR_UNM"),
+                             c("PPlus"))
+ gridExtra::grid.arrange(vert2$data_table, vert2$p, ncol = 2)
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE, warning=FALSE}
+  vert2$meta
+```
+
+\clearpage
+
+## Atypical femural fracture effect estimate (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+atyp1 <- buildOutcomeResults(folders, analysisId = 1, cohort = "AtypicalFemuralFracture",
+                                c("CCAE_UNM", "MDCR_UNM"))
+ gridExtra::grid.arrange(atyp1$data_table, atyp1$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  atyp1$meta
+```
+
+
+\clearpage
+
+## Atypical femural  fracture effect estimate (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+atyp2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "AtypicalFemuralFracture",
+                                c("CCAE_UNM", "MDCR_UNM"),
+                             c("PPlus"))
+ gridExtra::grid.arrange(atyp2$data_table, atyp2$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE, warning=FALSE}
+  atyp2$meta
+```
+

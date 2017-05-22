@@ -30,8 +30,10 @@ table.png <- function(obj, name) {
 
 # Create per-database reports:
 studyFolder <- "/Users/msuchard/Dropbox/OHDSI/hip_fracture"
-folders <- c("MDCD_JRD",
+folders <- c("PPlus",
+             "MDCD_JRD",
              "CCAE_JRD",
+             "CCAE_UNM",
              "MDCR_JRD",
              "MDCR_UNM",
              "Optum_JRD",
@@ -40,7 +42,8 @@ folders <- c("MDCD_JRD",
              "Stride",
              "Cerner")
 
-skip <- c("MDCR_JRD", "GEDA_XXX")
+# skip <- c("MDCR_JRD", "GEDA_XXX")
+skip <- c()
 
 for (file in folders) {
     if (file.info(file.path(studyFolder, file))$isdir) {
@@ -78,6 +81,8 @@ invisible(mapply(allCohorts$cohortId, allCohorts$name, FUN = function(outcomeId,
   write.csv(allResults, file.path(studyFolder, filename), row.names = FALSE)
 }))
 
+
+# TODO Move below into report rmarkdown
 
 # Meta analysis -----------------------------------------------------------
 source("extras/MetaAnalysis.R")
