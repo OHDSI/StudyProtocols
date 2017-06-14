@@ -54,3 +54,16 @@ createFiguresAndTables(connectionDetails,
 
 #OhdsiSharing::decryptAndDecompressFolder("s:/temp/DrugsInPeds/StudyResults.zip.enc","s:/temp/test","s:/temp/private.key")
 
+
+
+# Find drugs in multiple classes ------------------------------------------
+pathToCsv <- system.file("csv",
+                         "CustomClassification.csv",
+                         package = "DrugsInPeds")
+classification <- read.csv(pathToCsv, as.is = TRUE)
+classification$CONCEPT_NAME <- tolower(classification$CONCEPT_NAME)
+classification <- unique(classification[, c("CONCEPT_NAME", "CLASS_ID")])
+classCounts <- aggregate(CLASS_ID ~ CONCEPT_NAME, data = classification, length)
+classCounts <- classCounts[classCounts$CLASS_ID > 1, ]
+duplicates <- classification[classification$CONCEPT_NAME %in% classCounts$CONCEPT_NAME, ]
+write.csv(duplicates, "s:/temp/duplicateDrugs.csv", row.names = FALSE)

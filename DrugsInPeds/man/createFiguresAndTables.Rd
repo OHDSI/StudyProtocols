@@ -28,4 +28,3 @@ This function creates the figures and tables specified in the protocol, based on
 
 Note that this function requires access to a CDM database to query the vocabulary.
 }
-
