@@ -138,7 +138,8 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
       if (length(unique(data$trueLogRr)) > 1) {
         model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = data$logRr,
                                                                seLogRr = data$seLogRr,
-                                                               trueLogRr = data$trueLogRr)
+                                                               trueLogRr = data$trueLogRr,
+                                                               estimateCovarianceMatrix = FALSE)
         calibratedCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = estimates$logRr,
                                                                           seLogRr = estimates$seLogRr,
                                                                           model = model)
@@ -188,7 +189,8 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
       if (length(unique(data$trueLogRr)) > 1) {
         model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = -data$logRr,
                                                                seLogRr = data$seLogRr,
-                                                               trueLogRr = data$trueLogRr)
+                                                               trueLogRr = data$trueLogRr,
+                                                               estimateCovarianceMatrix = FALSE)
         calibratedCi <- EmpiricalCalibration::calibrateConfidenceInterval(logRr = -estimates$logRr,
                                                                           seLogRr = estimates$seLogRr,
                                                                           model = model)

@@ -21,7 +21,7 @@ plotScatter <- function(d, selected, xLabel) {
     nLabel = paste0(formatC(nrow(d), big.mark = ","), " estimates"),
     meanLabel = paste0(formatC(100 * mean(!d$Significant, na.rm = TRUE), digits = 1, format = "f"), "% of CIs includes 1"))
   
-  breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+  breaks <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10)
   theme <- element_text(colour = "#000000", size = 12)
   themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
   themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
@@ -33,9 +33,9 @@ plotScatter <- function(d, selected, xLabel) {
     geom_abline(aes(intercept = 0, slope = 1/qnorm(0.975)), colour = rgb(0.8, 0, 0), linetype = "dashed", size = 1, alpha = 0.5) +
     geom_point(size = 2, color = rgb(0, 0, 0, alpha = 0.05), alpha = alpha, shape = 16) +
     geom_hline(yintercept = 0) +
-    geom_label(x = log(0.3), y = 0.97, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = oneRow) +
-    geom_label(x = log(0.3), y = 0.9, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = oneRow) +
-    scale_x_continuous(xLabel, limits = log(c(0.25, 10)), breaks = log(breaks), labels = breaks) +
+    geom_label(x = log(0.11), y = 1, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = oneRow) +
+    geom_label(x = log(0.11), y = 0.935, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = oneRow) +
+    scale_x_continuous(xLabel, limits = log(c(0.1, 10)), breaks = log(breaks), labels = breaks) +
     scale_y_continuous("Standard Error", limits = c(0, 1)) +
     theme(panel.grid.minor = element_blank(),
           panel.background = element_blank(),
@@ -49,7 +49,12 @@ plotScatter <- function(d, selected, xLabel) {
           strip.background = element_blank(),
           legend.position = "none")
   if (!is.null(selected) && nrow(selected) != 0) {
+    if (!is.null(selected$db)) {
+      otherDbs <- d[d$db != selected$db[1] & d$targetName == selected$targetName[1] & d$comparatorName == selected$comparatorName[1] & d$outcomeName == selected$outcomeName[1], ]
+      plot <- plot + geom_point(data = otherDbs, size=4, color = rgb(0,0,0), fill = rgb(0.5, 0.5, 1), shape = 23, alpha = 0.8)
+    }
     plot <- plot + geom_point(data = selected, size=4, color = rgb(0,0,0), fill = rgb(1,1,0), shape = 23)
+
   }
   return(plot)
 }
@@ -77,17 +82,17 @@ plotPs <- function(ps, target, comparator) {
 
 plotForest <- function(estimate) {
   d1 <- data.frame(logRr = estimate$logRr,
-                   seLogRr = estimate$seLogRr,
+                   logLb95Rr = log(estimate$ci95lb),
+                   logUb95Rr = log(estimate$ci95ub),
                    database = estimate$db,
                    type = "Uncalibrated")
   d2 <- data.frame(logRr = estimate$calLogRr,
-                   seLogRr = estimate$calSeLogRr,
+                   logLb95Rr = log(estimate$calCi95lb),
+                   logUb95Rr = log(estimate$calCi95ub),
                    database = estimate$db,
                    type = "Calibrated")
   
   d <- rbind(d1, d2)
-  d$logLb95Rr <- d$logRr + qnorm(0.025) * d$seLogRr
-  d$logUb95Rr <- d$logRr + qnorm(0.975) * d$seLogRr
   d$significant <- d$logLb95Rr > 0 | d$logUb95Rr < 0
   
   breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)

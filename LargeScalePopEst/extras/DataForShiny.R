@@ -135,8 +135,6 @@ for (db in dbs) {
             return(gsub(" ", "_", tolower(name)))
         }
         tcFileName <- normName(file.path(dataFolder, paste0("balance_", tc$targetName, "_", tc$comparatorName, "_", db, ".rds")))
-        #ctFileName <- normName(file.path(dataFolder, paste0("balance_", tc$comparatorName, "_", tc$targetName, "_", db, ".rds")))
-        #if (file.exists(tcFileName) && file.exists(ctFileName)) {
         if (file.exists(tcFileName)) {
             return(NULL)
         }
@@ -151,10 +149,6 @@ for (db in dbs) {
         balance <- CohortMethod::computeCovariateBalance(strata, cmData)
         balance <- balance[, c("beforeMatchingStdDiff", "afterMatchingStdDiff", "covariateName")]
         saveRDS(balance, tcFileName)
-
-        # balance$beforeMatchingStdDiff <- -balance$beforeMatchingStdDiff
-        # balance$afterMatchingStdDiff <- -balance$afterMatchingStdDiff
-        # saveRDS(balance, ctFileName)
     }
     cluster <- makeCluster(8)
     clusterRequire(cluster, "CohortMethod")

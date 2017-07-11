@@ -57,7 +57,7 @@ d <- rbind(d1, d2)
 d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
 plotScatter(d, yPanelGroup = TRUE, size = 0.5)
 
-ggsave(file.path(paperFolder, "EvalCalCombined.png"), width = 13.5, height = 5, dpi = 500)
+ggsave(file.path(paperFolder, "EvalCalCombined.png"), width = 14.5, height = 4.5, dpi = 500)
 
 
 
@@ -91,21 +91,21 @@ writeLines(paste("Total significant expected when null is true for all: ", nrow(
 
 d <- rbind(data.frame(logRr = d1$calLogRr,
                       seLogRr = d1$calSeLogRr,
-                      Group = "C\nOur large-scale study on depression treatments",
+                      Group = "A\nOur large-scale study on depression treatments",
                       Significant = d1$Significant,
                       dummy = 1),
            data.frame(logRr = log(d2$EffectEstimate_jitter),
                       seLogRr = d2$seLogRr,
-                      Group = "A\nAll observational literature",
+                      Group = "B\nAll observational literature",
                       Significant = d2$Significant,
                       dummy = 1),
            data.frame(logRr = log(d3$EffectEstimate_jitter),
                       seLogRr = d3$seLogRr,
-                      Group = "B\nObservational literature on depression treatments",
+                      Group = "C\nObservational literature on depression treatments",
                       Significant = d3$Significant,
                       dummy = 1))
 
-d$Group <- factor(d$Group, levels = c("A\nAll observational literature", "B\nObservational literature on depression treatments", "C\nOur large-scale study on depression treatments"))
+d$Group <- factor(d$Group, levels = c("A\nOur large-scale study on depression treatments", "B\nAll observational literature", "C\nObservational literature on depression treatments"))
 
 temp1 <- aggregate(dummy ~ Group, data = d, length)
 temp1$nLabel <- paste0(formatC(temp1$dummy, big.mark = ","), " estimates")
@@ -115,7 +115,8 @@ temp2$meanLabel <- paste0(formatC(100 * (1-temp2$Significant), digits = 1, forma
 temp2$Significant <- NULL
 dd <- merge(temp1, temp2)
 
-breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+#breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+breaks <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10)
 theme <- element_text(colour = "#000000", size = 12)
 themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
 themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
@@ -126,11 +127,14 @@ ggplot(d, aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
     geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
     geom_point(size=0.5, color = rgb(0,0,0), shape = 16) +
     geom_hline(yintercept=0) +
-    geom_label(x = log(0.3), y = 1, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
-    geom_label(x = log(0.3), y = 0.9, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
-    scale_x_continuous("Effect size",limits = log(c(0.25,10)), breaks=log(breaks),labels=breaks) +
+    #geom_label(x = log(0.3), y = 1, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
+    #geom_label(x = log(0.3), y = 0.9, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
+    geom_label(x = log(0.11), y = 0.99, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
+    geom_label(x = log(0.11), y = 0.88, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
+    #scale_x_continuous("Effect size",limits = log(c(0.25,10)), breaks=log(breaks),labels=breaks) +
+    scale_x_continuous("Effect size",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
     scale_y_continuous("Standard Error",limits = c(0,1)) +
-    scale_alpha_manual(values = c(0.1, 0.8, 0.2)) +
+    scale_alpha_manual(values = c(0.2, 0.1, 0.8)) +
     facet_grid(.~Group) +
     theme(
         panel.grid.minor = element_blank(),
@@ -146,7 +150,8 @@ ggplot(d, aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
         legend.position = "none"
     )
 
-ggsave(file.path(paperFolder, "LitVsUs.png"), width = 14, height = 3.75, dpi = 500)
+#ggsave(file.path(paperFolder, "LitVsUs.png"), width = 14, height = 3.75, dpi = 500)
+ggsave(file.path(paperFolder, "LitVsUs.png"), width = 15, height = 3.5, dpi = 500)
 
 
 
@@ -429,7 +434,7 @@ ggplot(ddd, aes(x=i2, group = group, color = group, fill = group)) +
           panel.grid.major.x = element_line(color = rgb(0.25,0.25,0.25, alpha = 0.2)))
 
 ggsave(file.path(paperFolder, "I2.png"), width = 6, height = 3, dpi=300)
-
+length(i2Cal)
 mean(i2Cal < 0.25)
 mean(i2 <0.25)
 
@@ -530,9 +535,9 @@ d <- rbind(d1[, c("logRr", "seLogRr", "ci95lb", "ci95ub", "yGroup", "trueRr")],
            d2[, c("logRr", "seLogRr", "ci95lb", "ci95ub", "yGroup", "trueRr")])
 d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
 plotScatter(d, yPanelGroup = TRUE)
-ggsave(file.path(paperFolder, "exemplarEvalCali.png"), width = 13.5, height = 5, dpi = 500)
+ggsave(file.path(paperFolder, "exemplarEvalCali.png"), width = 14.5, height = 4.5, dpi = 500)
 
-calibrated[calibrated$outcomeId == 2559 & calibrated$db == "CCAE",]
+calibrated[calibrated$outcomeId == 2559,]
 
 
 # Leave-one-out cross-validation ------------------------------------------
