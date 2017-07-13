@@ -72,6 +72,9 @@ plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
 
 
 plotCiCalibration <- function(d) {
+
+    # data <- d[d$targetId == 750982076 & d$comparatorId ==721724076, ]
+    # data <- d[d$comparatorName == "Psychotherapy", ]
     data <- d
     data$trueLogRr <- log(data$trueRr)
     data$strata = as.factor(data$trueLogRr)
@@ -146,18 +149,21 @@ plotCiCalibration <- function(d) {
 
     #rm(calibrated)
     #rm(d)
-    cluster <- OhdsiRTools::makeCluster(25)
+    cluster <- OhdsiRTools::makeCluster(15)
     coverages <- OhdsiRTools::clusterApply(cluster, 1:nrow(result), computeLooCoverage, data = data, result = result)
     OhdsiRTools::stopCluster(cluster)
     #coverages <- lapply(unique(leaveOutGrouping), computeLooCoverage, data = data)
     coverage <- do.call("rbind", coverages)
     data$count <- 1
     counts <- aggregate(count ~ strata, data = data, sum)
+    naCounts <- aggregate(coverage ~ strata + ciWidth, data = coverage, function(x) sum(is.na(x)), na.action = na.pass)
+    colnames(naCounts)[colnames(naCounts) == "coverage"] <- "naCount"
     coverageCali <- aggregate(coverage ~ strata + ciWidth, data = coverage, sum)
     coverageCali <- merge(coverageCali, counts, by = "strata")
-    coverageCali$coverage <- coverageCali$coverage / coverageCali$count
+    coverageCali <- merge(coverageCali, naCounts, by = c("strata", "ciWidth"))
+    coverageCali$coverage <- coverageCali$coverage / (coverageCali$count - coverageCali$naCount)
     coverageCali$label <- "Calibrated"
-    coverageTheoretical <- aggregate(theoreticalCoverage ~ strata + ciWidth, data = coverage, sum)
+    coverageTheoretical <- aggregate(theoreticalCoverage ~ strata + ciWidth, data = coverage, sum, na.action = na.pass)
     coverageTheoretical <- merge(coverageTheoretical, counts, by = "strata")
     coverageTheoretical$coverage <- coverageTheoretical$theoreticalCoverage / coverageCali$count
     coverageTheoretical$label <- "Uncalibrated"
