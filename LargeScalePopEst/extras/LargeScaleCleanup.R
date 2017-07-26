@@ -23,3 +23,11 @@ unlink(file.path(workFolder, "injectedOutcomes"), recursive = TRUE)
 unlink(file.path(workFolder, "allCohorts"), recursive = TRUE)
 unlink(file.path(workFolder, "allCovariates"), recursive = TRUE)
 unlink(file.path(workFolder, "allOutcomes"), recursive = TRUE)
+
+
+# Reuse PS models ---------------------------------------------------------
+
+workFolder <- "R:/PopEstDepression_MDCD"
+files <- list.files(path = file.path(workFolder, "cmOutput"), pattern = "Ps_l1_s1_p2_t[0-9]+_c[0-9]+.rds")
+newFiles <- gsub("_s1_", "_s2_", files)
+file.copy(file.path(workFolder, "cmOutput", files), file.path(workFolder, "cmOutput", newFiles))

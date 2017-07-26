@@ -73,7 +73,7 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
     comparatorConceptId <- exposureSummary$cCohortDefinitionId[i]
     treatmentName <- exposureSummary$tCohortDefinitionName[i]
     comparatorName <- exposureSummary$cCohortDefinitionName[i]
-    for (analysisId in c(1, 3)) {
+    for (analysisId in c(1, 3, 4)) {
       estimates <- analysesSum[analysesSum$analysisId == analysisId & analysesSum$targetId == treatmentId &
         analysesSum$comparatorId == comparatorId, ]
 
@@ -103,9 +103,13 @@ calibrateEstimatesAndPvalues <- function(workFolder) {
                                                       "_c",
                                                       comparatorId,
                                                       ".png"))
-      analysisLabel <- "Crude"
-      if (analysisId != 1) {
-        analysisLabel <- "Adjusted"
+
+      if (analysisId == 1) {
+          analysisLabel <- "Crude"
+      } else if (analysisId == 3) {
+          analysisLabel <- "Adjusted"
+      } else if (analysisId == 4) {
+          analysisLabel <- "ITT"
       }
       title <- paste(treatmentName, "vs.", comparatorName, "-", analysisLabel)
       EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = negControls$logRr,

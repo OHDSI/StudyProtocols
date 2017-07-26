@@ -62,7 +62,7 @@ runCohortMethod <- function(workFolder, maxCores = 4) {
                                 cdmVersion = 5,
                                 drugComparatorOutcomesList = dcos,
                                 getDbCohortMethodDataThreads = 1,
-                                createStudyPopThreads = min(4, maxCores),
+                                createStudyPopThreads = 1,#min(4, maxCores),
                                 createPsThreads = max(1, round(maxCores/10)),
                                 psCvThreads = min(10, maxCores),
                                 trimMatchStratifyThreads = min(4, maxCores),
@@ -136,7 +136,7 @@ createAnalysesDetails <- function(outputFolder) {
     #                                               fitOutcomeModelArgs = fitOutcomeModelArgs2)
 
     cmAnalysis3 <- CohortMethod::createCmAnalysis(analysisId = 3,
-                                                  description = "PS stratification plus conditioned outcome model",
+                                                  description = "PS stratification plus conditioned outcome model: Per-protocol",
                                                   getDbCohortMethodDataArgs = getDbCmDataArgs,
                                                   createStudyPopArgs = createStudyPopArgs,
                                                   createPs = TRUE,
@@ -146,8 +146,25 @@ createAnalysesDetails <- function(outputFolder) {
                                                   fitOutcomeModel = TRUE,
                                                   fitOutcomeModelArgs = fitOutcomeModelArgs2)
 
-   # cmAnalysisList <- list(cmAnalysis1, cmAnalysis2, cmAnalysis3)
-    cmAnalysisList <- list(cmAnalysis1, cmAnalysis3)
+    createStudyPopArgsItt <- CohortMethod::createCreateStudyPopulationArgs(removeDuplicateSubjects = FALSE,
+                                                                        removeSubjectsWithPriorOutcome = TRUE,
+                                                                        riskWindowStart = 0,
+                                                                        riskWindowEnd = 99999,
+                                                                        minDaysAtRisk = 1)
+
+    cmAnalysis4 <- CohortMethod::createCmAnalysis(analysisId = 4,
+                                                  description = "PS stratification plus conditioned outcome model: ITT",
+                                                  getDbCohortMethodDataArgs = getDbCmDataArgs,
+                                                  createStudyPopArgs = createStudyPopArgsItt,
+                                                  createPs = TRUE,
+                                                  createPsArgs = createPsArgs,
+                                                  stratifyByPs =  TRUE,
+                                                  stratifyByPsArgs = stratifyByPsArgs,
+                                                  fitOutcomeModel = TRUE,
+                                                  fitOutcomeModelArgs = fitOutcomeModelArgs2)
+
+    # cmAnalysisList <- list(cmAnalysis1, cmAnalysis2, cmAnalysis3)
+    cmAnalysisList <- list(cmAnalysis1, cmAnalysis3, cmAnalysis4)
 
     CohortMethod::saveCmAnalysisList(cmAnalysisList, file.path(outputFolder, "cmAnalysisList.txt"))
 }

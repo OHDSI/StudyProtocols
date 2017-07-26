@@ -2,6 +2,8 @@ require(ggplot2)
 
 plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
     d <- d[!is.na(d$logRr), ]
+    d <- d[!is.na(d$ci95lb), ]
+    d <- d[!is.na(d$ci95ub), ]
     if (nrow(d) == 0) {
         return(NULL)
     }

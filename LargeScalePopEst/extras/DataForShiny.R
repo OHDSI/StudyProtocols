@@ -22,6 +22,8 @@ saveRDS(fullSet, file.path(dataFolder, normName("fullset.rds")))
 tcs <- unique(d[, c("targetId", "comparatorId")])
 for (i in 1:nrow(tcs)) {
     tc <- tcs[i,]
+
+    # Main analysis:
     subset <- d[d$targetId == tc$targetId & d$comparatorId == tc$comparatorId & d$outcomeType == "hoi", ]
     targetName <- subset$targetName[1]
     comparatorName <- subset$comparatorName[1]
@@ -34,6 +36,21 @@ for (i in 1:nrow(tcs)) {
     subset$outcomeType <- NULL
     subset$trueRr <- NULL
     fileName <- file.path(dataFolder, normName(paste0("est_", targetName, "_", comparatorName, ".rds")))
+    saveRDS(subset, normName(fileName))
+
+    # Sensitivity analysis:
+    subset <- calibrated[calibrated$analysisId == 4 & calibrated$targetId == tc$targetId & calibrated$comparatorId == tc$comparatorId & calibrated$outcomeType == "hoi", ]
+    targetName <- subset$targetName[1]
+    comparatorName <- subset$comparatorName[1]
+    subset$targetName <- NULL
+    subset$targetId <- NULL
+    subset$comparatorName <- NULL
+    subset$outcomeId <- NULL
+    subset$comparatorId <- NULL
+    subset$analysisId <- NULL
+    subset$outcomeType <- NULL
+    subset$trueRr <- NULL
+    fileName <- file.path(dataFolder, normName(paste0("sens_", targetName, "_", comparatorName, ".rds")))
     saveRDS(subset, normName(fileName))
 }
 

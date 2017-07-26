@@ -482,7 +482,7 @@ balance <- CohortMethod::computeCovariateBalance(strata, cohortMethodData)
 nrow(balance)
 tableFileName <- file.path(paperFolder, "balance.csv")
 write.csv(balance, tableFileName, row.names = FALSE)
-
+# balance <- read.csv(tableFileName)
 plotFileName <- file.path(paperFolder, "balanceScatterPlot.png")
 balance$beforeMatchingStdDiff <- abs(balance$beforeMatchingStdDiff)
 balance$afterMatchingStdDiff <- abs(balance$afterMatchingStdDiff)
@@ -495,8 +495,8 @@ plot <- ggplot2::ggplot(balance,
     ggplot2::geom_hline(yintercept = 0) +
     ggplot2::geom_vline(xintercept = 0) +
     #ggplot2::ggtitle("Standardized difference of mean") +
-    ggplot2::scale_x_continuous("Before stratification", limits = limits) +
-    ggplot2::scale_y_continuous("After stratification", limits = limits)
+    ggplot2::scale_x_continuous("Standardized diff. of mean before stratification", limits = limits) +
+    ggplot2::scale_y_continuous("Standardized diff. of mean after stratification", limits = limits)
 
 plot <- plot + ggplot2::geom_hline(yintercept = 0.1, alpha = 0.5, linetype = "dotted")
 
@@ -537,7 +537,9 @@ d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
 plotScatter(d, yPanelGroup = TRUE)
 ggsave(file.path(paperFolder, "exemplarEvalCali.png"), width = 14.5, height = 4.5, dpi = 500)
 
-calibrated[calibrated$outcomeId == 2559,]
+calibrated <- read.csv(file.path(workFolder, "calibratedEstimates.csv"))
+
+calibrated[calibrated$outcomeId == 2559 & calibrated$targetId == treatmentId & calibrated$comparatorId == comparatorId,]
 
 
 # Leave-one-out cross-validation ------------------------------------------
