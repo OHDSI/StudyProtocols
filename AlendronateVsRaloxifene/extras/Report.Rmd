@@ -113,6 +113,7 @@ getOrder <- function(dbs, folders) {
 
 ```{r echo=FALSE}
 studyFolder <- "/Users/msuchard/Dropbox/OHDSI/hip_fracture"
+studyFolder <- "/Users/yuxitian/Dropbox/hip_fracture/"
 
 folders <- c("PPlus", 
              "Optum_JRD", "CCAE_JRD", "CCAE_UNM",
@@ -267,11 +268,28 @@ printOutcomeTable <- function(analysisId,
                            decreasing = FALSE),]
 
   crude <- results[,c(# "space1",
+                      "outcomeName",
                       "db","treated","treatedDays","eventsTreated",
                       "space2",
-                      "comparator", "comparatorDays","eventsComparator")]
+                      "comparator", "comparatorDays","eventsComparator",
+                      "order1","order2")]
+  temp = aggregate(crude[,c("treated","treatedDays","eventsTreated",
+                            "comparator","comparatorDays","eventsComparator")],
+                   by = list(outcomeName = crude$outcomeName),
+                   sum)
+  temp$db = "Sum"
+  temp$space2 = ""
+  temp$order1 = rep(max(getOrder(results$db, folders))+1, nrow(temp))
+  temp$order2 = getOrder(as.character(temp$outcomeName), cohortOrder)
+  crude <- rbind(crude, temp)
+  crude$outcomeName <- NULL
+  crude <- crude[order(crude$order2,
+                       crude$order1,
+                       decreasing = FALSE),]
+  crude$order1 <- NULL
+  crude$order2 <- NULL
   
-  crude$db <- labels # paste0(label1, " ", label2)
+  crude$db <- c(labels, "Sum") # paste0(label1, " ", label2)
   crude$db <- sub("\\^(\\d)", "$^\\1$", crude$db)
   
   for (column in c("treated","comparator")) {
@@ -297,7 +315,8 @@ printOutcomeTable <- function(analysisId,
   addtorow <- list()
   addtorow$pos <- c(list(0, 0, 0),
                     # as.list((length(folders)) * (0:(length(cohortOrder) - 1)) + 1),
-                    as.list(length(folders) * (0:(length(cohortOrder) - 1)))
+                    as.list((length(folders)+1) * (0:(length(cohortOrder) - 1)))
+                    # as.list(length(folders) * (0:(length(cohortOrder) - 1)))
                     )
                        
   
@@ -354,6 +373,131 @@ printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), cohortOr
 # }))
 ```
 
+## Incidence Among All
+```{r echo=FALSE, results="asis"}
+printOverallIncidence <- function(analysisId,
+                                  folders, 
+                                  labels, 
+                                  cohortOrder, 
+                                  prettyCohortNames) {
+  
+  
+  allCohorts <- read.csv(system.file("settings", 
+                                     "CohortsToCreate.csv", 
+                                     package = "AlendronateVsRaloxifene"))
+  allCohorts <- allCohorts[3:nrow(allCohorts),]  
+  
+  allCohorts <- allCohorts[allCohorts$name %in% cohortOrder, ]
+
+  allResults <- getData(folders)
+  
+  results <- allResults
+  results <- results[results$analysisId == analysisId, ]
+  results <- results[results$outcomeName %in% cohortOrder, ]
+  results <- results[results$db %in% folders, ]
+  
+  results$space1 <- ""
+  results$space2 <- ""
+  
+  results$order1 <- getOrder(results$db, folders)
+  results$order2 <- getOrder(as.character(results$outcomeName), cohortOrder)
+  results <- results[order(results$order2, 
+                           results$order1,
+                           decreasing = FALSE),]
+
+  crude <- results[,c(# "space1",
+                      "outcomeName",
+                      "treated","eventsTreated",
+                      "comparator","eventsComparator")]
+  
+  crude <- aggregate(crude[,-c(1)], by = list(outcomeName = crude$outcomeName), sum)
+  crude <- crude[match(cohortOrder,crude$outcomeName),]
+  crude$outcomeName <- prettyCohortNames
+  crude$treatedIncidence = crude$eventsTreated/crude$treated
+  crude$comparatorIncidence = crude$eventsComparator/crude$comparator
+  crude$space = ""
+
+  crude = crude[,c("outcomeName","treated","eventsTreated","treatedIncidence","space",
+                   "comparator","eventsComparator","comparatorIncidence")]
+
+  for (column in c("treatedIncidence", "comparatorIncidence")) {
+    crude[,column] <- paste0(formatC(100 * crude[,column], digits = 3), "\\%")
+  }
+  
+  for (column in c("eventsTreated", "eventsComparator")) {
+    crude[,column] <- ifelse(crude[,column] < 6,
+                             ifelse(crude[,column] == 0, 0, "<6"),
+                             formatC(crude[,column],
+                                     format = "d", big.mark = ","))
+  }
+  
+  for (row in 1:nrow(crude)) {
+    if (crude$eventsTreated[row] == "<6") {
+      crude$treatedIncidence[row] = paste0("<",formatC(100*6/crude$treated[row], digits = 3), "\\%")
+    }
+    if (crude$eventsComparator[row] == "<6") {
+      crude$comparatorIncidence[row] = paste0("<",formatC(100*6/crude$comparator[row], digits = 3), "\\%")
+    }
+  }
+  
+  for (column in c("treated","comparator")) {
+    crude[,column] <- formatC(crude[,column],
+                              format = "d", big.mark = ",")
+  }
+  
+
+  addtorow <- list()
+  addtorow$pos <- c(list(0,0,0))
+
+
+  getNameInBox <- function(name) {
+    paste0("\\parbox[t]{2mm}{\\multirow{",
+           round(length(folders) / 2),
+           "}{*}{\\rotatebox[origin=c]{90}{",
+           name,
+           "}}}")
+  }
+
+  getNameAcross <- function(name) {
+    paste0("\\\\[-0.5em]\n \\multicolumn{8}{c}{",
+           name,
+           "} \\\\\n")
+  }
+
+  addtorow$command <- c("& \\multicolumn{3}{c}{Alendronate} & & \\multicolumn{3}{c}{Raloxifene} \\\\\n",
+                        "\\cline{2-4} \\cline{6-8} \n",
+                        "Outcome & Patients & Events & Incidence & & Patients & Events & Incidence \\\\\n                           \\hline \n")
+  
+  tab <- xtable(crude)
+  
+  align(tab) <- "ccrrrcrrr"
+  print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
+               add.to.row = addtorow,
+               # hline.after = c(-1,nrow(tab)),
+               sanitize.text.function=function(x) { x }
+               )
+}
+cohortOrder3 <- c("HipFracture", 
+                  "VertebralFracture", 
+                  "AtypicalFemuralFracture",
+                  "EsophagealCancer",
+                   "OsteonecrosisOfJaw")
+prettyCohortNames3 <- c("Hip fracture", 
+                        "Vertebal fracture", 
+                        "Atypical femural fracture",
+                        "Esophageal cancer", 
+                        "Osteonecrosis of the jaw")
+
+labels = paste0(label1, " ", label2)
+printOverallIncidence(analysisId = 1, folders, labels, cohortOrder3, prettyCohortNames3)
+```
+
+## Incidence with 1 CCAE and MDCR
+```{r echo=FALSE, results="asis"}
+toRemove = match(c("CCAE_UNM","MDCR_UNM"),folders)
+printOverallIncidence(analysisId = 1, folders[-toRemove], lables[-toRemove], cohortOrder3, prettyCohortNames3)
+```
+
 
 ## Total patient and event counts (Per-protocol)
 
@@ -372,6 +516,18 @@ printOutcomeTable(analysisId = 2,
                   folders = folders[-1], paste0(label1, " ", label2)[-1],
                   cohortOrder2, prettyCohortNames2)
 
+```
+
+## Incidence Among All
+```{r echo=FALSE, results="asis"}
+toRemove = match(c("PPlus"),folders)
+printOverallIncidence(analysisId = 2, folders[-toRemove], labels[-toRemove], cohortOrder3, prettyCohortNames3)
+```
+
+## Incidence with 1 CCAE and MDCR
+```{r echo=FALSE, results="asis"}
+toRemove = match(c("PPlus","CCAE_UNM","MDCR_UNM"),folders)
+printOverallIncidence(analysisId = 2, folders[-toRemove], labels[-toRemove], cohortOrder3, prettyCohortNames3)
 ```
 
 \clearpage
