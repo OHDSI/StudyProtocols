@@ -2,6 +2,8 @@ require(ggplot2)
 
 plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
     d <- d[!is.na(d$logRr), ]
+    d <- d[!is.na(d$ci95lb), ]
+    d <- d[!is.na(d$ci95ub), ]
     if (nrow(d) == 0) {
         return(NULL)
     }
@@ -26,7 +28,8 @@ plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
     dd <- merge(temp1, temp2)
     dd$tes <- as.numeric(as.character(dd$Group))
 
-    breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+    #breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+    breaks <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10)
     theme <- element_text(colour = "#000000", size = 12)
     themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
     themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
@@ -40,9 +43,12 @@ plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
         geom_abline(aes(intercept = (-log(tes))/qnorm(0.975), slope = 1/qnorm(0.975)), colour = rgb(0.8, 0, 0), linetype = "dashed", size = 1, alpha = 0.5, data = dd) +
         geom_point(size = size, color = rgb(0, 0, 0, alpha = 0.05), alpha = alpha, shape = 16) +
         geom_hline(yintercept = 0) +
-        geom_label(x = log(0.3), y = 0.95, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
-        geom_label(x = log(0.3), y = 0.8, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
-        scale_x_continuous("Hazard ratio", limits = log(c(0.25, 10)), breaks = log(breaks), labels = breaks) +
+        #geom_label(x = log(0.3), y = 0.95, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
+        geom_label(x = log(0.15), y = 0.95, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
+        #geom_label(x = log(0.3), y = 0.8, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
+        geom_label(x = log(0.15), y = 0.8, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
+        #scale_x_continuous("Hazard ratio", limits = log(c(0.25, 10)), breaks = log(breaks), labels = breaks) +
+        scale_x_continuous("Hazard ratio", limits = log(c(0.1, 10)), breaks = log(breaks), labels = breaks) +
         scale_y_continuous("Standard Error", limits = c(0, 1)) +
         theme(panel.grid.minor = element_blank(),
               panel.background = element_blank(),
@@ -68,6 +74,9 @@ plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
 
 
 plotCiCalibration <- function(d) {
+
+    # data <- d[d$targetId == 750982076 & d$comparatorId ==721724076, ]
+    # data <- d[d$comparatorName == "Psychotherapy", ]
     data <- d
     data$trueLogRr <- log(data$trueRr)
     data$strata = as.factor(data$trueLogRr)
@@ -106,40 +115,16 @@ plotCiCalibration <- function(d) {
             ciWidth <- subResult$ciWidth[j]
             return(sum((subset$trueLogRr >= subset$logRr + qnorm((1-ciWidth)/2)*subset$seLogRr) & (subset$trueLogRr <= subset$logRr - qnorm((1-ciWidth)/2)*subset$seLogRr)))
         }
-        fitSystematicErrorModel <- function(logRr, seLogRr, trueLogRr) {
-            gaussianProduct <- function(mu1, mu2, sd1, sd2) {
-                (2 * pi)^(-1/2) * (sd1^2 + sd2^2)^(-1/2) * exp(-(mu1 - mu2)^2/(2 * (sd1^2 + sd2^2)))
-            }
-
-            LL <- function(theta, logRr, seLogRr, trueLogRr) {
-                result <- 0
-                for (i in 1:length(logRr)) {
-                    mean <- theta[1] + theta[2] * trueLogRr[i]
-                    sd <- theta[3] + theta[4] * trueLogRr[i]
-                    result <- result - log(gaussianProduct(logRr[i], mean, seLogRr[i], sd))
-                }
-                if (is.infinite(result))
-                    result <- 99999
-                result
-            }
-            theta <- c(0, 1, 0.5, 0)
-            fit <- optim(theta, LL, logRr = logRr, seLogRr = seLogRr, trueLogRr = trueLogRr)
-            model <- fit$par
-            names(model) <- c("meanIntercept", "meanSlope", "sdIntercept", "sdSlope")
-            class(model) <- "systematicErrorModel"
-            model
-        }
-
-        print(result[i,])
         tcdbIndex <- data$targetId == result$targetId[i] & data$comparatorId == result$comparatorId[i] & data$db == result$db[i]
         dataLeaveOneOut <- data[tcdbIndex & data$group != result$leaveOutGroup[i], ]
         dataLeftOut <- data[tcdbIndex & data$group == result$leaveOutGroup[i], ]
         if (nrow(dataLeaveOneOut) == 0 || nrow(dataLeftOut) == 0)
             return(data.frame())
 
-        model <- fitSystematicErrorModel(logRr = dataLeaveOneOut$logRr,
-                                         seLogRr = dataLeaveOneOut$seLogRr,
-                                         trueLogRr = dataLeaveOneOut$trueLogRr)
+        model <- EmpiricalCalibration::fitSystematicErrorModel(logRr = dataLeaveOneOut$logRr,
+                                                               seLogRr = dataLeaveOneOut$seLogRr,
+                                                               trueLogRr = dataLeaveOneOut$trueLogRr,
+                                                               estimateCovarianceMatrix = FALSE)
 
         strata <- unique(data$strata)
         ciWidth <- seq(0.01, 0.99, by = 0.01)
@@ -166,18 +151,21 @@ plotCiCalibration <- function(d) {
 
     #rm(calibrated)
     #rm(d)
-    cluster <- OhdsiRTools::makeCluster(25)
+    cluster <- OhdsiRTools::makeCluster(15)
     coverages <- OhdsiRTools::clusterApply(cluster, 1:nrow(result), computeLooCoverage, data = data, result = result)
     OhdsiRTools::stopCluster(cluster)
     #coverages <- lapply(unique(leaveOutGrouping), computeLooCoverage, data = data)
     coverage <- do.call("rbind", coverages)
     data$count <- 1
     counts <- aggregate(count ~ strata, data = data, sum)
+    naCounts <- aggregate(coverage ~ strata + ciWidth, data = coverage, function(x) sum(is.na(x)), na.action = na.pass)
+    colnames(naCounts)[colnames(naCounts) == "coverage"] <- "naCount"
     coverageCali <- aggregate(coverage ~ strata + ciWidth, data = coverage, sum)
     coverageCali <- merge(coverageCali, counts, by = "strata")
-    coverageCali$coverage <- coverageCali$coverage / coverageCali$count
+    coverageCali <- merge(coverageCali, naCounts, by = c("strata", "ciWidth"))
+    coverageCali$coverage <- coverageCali$coverage / (coverageCali$count - coverageCali$naCount)
     coverageCali$label <- "Calibrated"
-    coverageTheoretical <- aggregate(theoreticalCoverage ~ strata + ciWidth, data = coverage, sum)
+    coverageTheoretical <- aggregate(theoreticalCoverage ~ strata + ciWidth, data = coverage, sum, na.action = na.pass)
     coverageTheoretical <- merge(coverageTheoretical, counts, by = "strata")
     coverageTheoretical$coverage <- coverageTheoretical$theoreticalCoverage / coverageCali$count
     coverageTheoretical$label <- "Uncalibrated"

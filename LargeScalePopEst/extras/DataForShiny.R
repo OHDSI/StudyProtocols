@@ -22,6 +22,8 @@ saveRDS(fullSet, file.path(dataFolder, normName("fullset.rds")))
 tcs <- unique(d[, c("targetId", "comparatorId")])
 for (i in 1:nrow(tcs)) {
     tc <- tcs[i,]
+
+    # Main analysis:
     subset <- d[d$targetId == tc$targetId & d$comparatorId == tc$comparatorId & d$outcomeType == "hoi", ]
     targetName <- subset$targetName[1]
     comparatorName <- subset$comparatorName[1]
@@ -34,6 +36,21 @@ for (i in 1:nrow(tcs)) {
     subset$outcomeType <- NULL
     subset$trueRr <- NULL
     fileName <- file.path(dataFolder, normName(paste0("est_", targetName, "_", comparatorName, ".rds")))
+    saveRDS(subset, normName(fileName))
+
+    # Sensitivity analysis:
+    subset <- calibrated[calibrated$analysisId == 4 & calibrated$targetId == tc$targetId & calibrated$comparatorId == tc$comparatorId & calibrated$outcomeType == "hoi", ]
+    targetName <- subset$targetName[1]
+    comparatorName <- subset$comparatorName[1]
+    subset$targetName <- NULL
+    subset$targetId <- NULL
+    subset$comparatorName <- NULL
+    subset$outcomeId <- NULL
+    subset$comparatorId <- NULL
+    subset$analysisId <- NULL
+    subset$outcomeType <- NULL
+    subset$trueRr <- NULL
+    fileName <- file.path(dataFolder, normName(paste0("sens_", targetName, "_", comparatorName, ".rds")))
     saveRDS(subset, normName(fileName))
 }
 
@@ -135,8 +152,6 @@ for (db in dbs) {
             return(gsub(" ", "_", tolower(name)))
         }
         tcFileName <- normName(file.path(dataFolder, paste0("balance_", tc$targetName, "_", tc$comparatorName, "_", db, ".rds")))
-        #ctFileName <- normName(file.path(dataFolder, paste0("balance_", tc$comparatorName, "_", tc$targetName, "_", db, ".rds")))
-        #if (file.exists(tcFileName) && file.exists(ctFileName)) {
         if (file.exists(tcFileName)) {
             return(NULL)
         }
@@ -151,10 +166,6 @@ for (db in dbs) {
         balance <- CohortMethod::computeCovariateBalance(strata, cmData)
         balance <- balance[, c("beforeMatchingStdDiff", "afterMatchingStdDiff", "covariateName")]
         saveRDS(balance, tcFileName)
-
-        # balance$beforeMatchingStdDiff <- -balance$beforeMatchingStdDiff
-        # balance$afterMatchingStdDiff <- -balance$afterMatchingStdDiff
-        # saveRDS(balance, ctFileName)
     }
     cluster <- makeCluster(8)
     clusterRequire(cluster, "CohortMethod")

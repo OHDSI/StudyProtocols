@@ -61,6 +61,19 @@ shinyUI(fluidPage(style = 'width:1000px;',
                                  plotOutput("calibration", height = "200px"),
                                  div(strong("Figure S1.5."),"Hazard ratios and corresponding standard errors after empirical calibration for our negative and positive controls. The estimates are stratified by the true hazard ratio"))
                         )
+               ),
+               tabPanel("Sensitivity analysis",
+                        fluidRow(
+                          column(8, 
+                                 uiOutput("sensitivityAnalysisText"),
+                                 tableOutput("sensitivityAnalysisTable"),
+                                 div(strong("Table S1.2."),"Counts of subjects, person-days and outcomes in the target and comparator population.")),
+                          column(4, 
+                                 plotOutput("sensitivityAnalysisPlot", height = "200px"),
+                                 div(strong("Figure S1.6."),"Hazard ratios and confidence intervals (CI) across the databases, both
+                                     calibrated (top) and uncalibrated (bottom). Blue indicates the CI includes one, orange indicates
+                                     the CI does not include one."))
+                        )
                )
              )
              )

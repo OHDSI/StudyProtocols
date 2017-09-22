@@ -4,13 +4,13 @@ dbs <- c("CCAE", "MDCD", "MDCR", "Optum")
 
 exposures <- read.csv(paste0(workFolder, "/exposureSummaryFilteredBySize.csv"))
 exposures1 <- data.frame(targetId = exposures$tprimeCohortDefinitionId,
-                               comparatorId = exposures$cprimeCohortDefinitionId,
-                               targetName = exposures$tCohortDefinitionName,
-                               comparatorName = exposures$cCohortDefinitionName)
+                         comparatorId = exposures$cprimeCohortDefinitionId,
+                         targetName = exposures$tCohortDefinitionName,
+                         comparatorName = exposures$cCohortDefinitionName)
 exposures2 <- data.frame(targetId = exposures$cprimeCohortDefinitionId,
-                               comparatorId = exposures$tprimeCohortDefinitionId,
-                               targetName = exposures$cCohortDefinitionName,
-                               comparatorName = exposures$tCohortDefinitionName)
+                         comparatorId = exposures$tprimeCohortDefinitionId,
+                         targetName = exposures$cCohortDefinitionName,
+                         comparatorName = exposures$tCohortDefinitionName)
 exposures <- rbind(exposures1, exposures2)
 
 pathToCsv <- system.file("settings", "OutcomesOfInterest.csv", package = "LargeScalePopEst")
@@ -23,9 +23,9 @@ hois <- data.frame(outcomeId = hois$cohortDefinitionId,
 pathToCsv <- system.file("settings", "NegativeControls.csv", package = "LargeScalePopEst")
 negativeControls <- read.csv(pathToCsv)
 negativeControls <- data.frame(outcomeId = negativeControls$conceptId,
-                        outcomeName = negativeControls$name,
-                        outcomeType = "negative control",
-                        trueRr = 1)
+                               outcomeName = negativeControls$name,
+                               outcomeType = "negative control",
+                               trueRr = 1)
 
 calibrated <- data.frame()
 for (db in dbs) {
@@ -55,6 +55,13 @@ for (db in dbs) {
 #temp[temp$outcomeId == 436634 & temp$targetId == 710062026 & temp$analysisId == 3, ]
 
 #calibrated <- calibrated[!(calibrated$targetName %in% c("Psychotherapy" , "Electroconvulsive therapy")) & !(calibrated$comparatorName %in% c("Psychotherapy" , "Electroconvulsive therapy")), ]
+## Rewrite calibrated SE to take asymmetry of CI into account:
+temp <- calibrated$calSeLogRr
+idx <- !is.na(calibrated$calLogRr) & calibrated$calLogRr > 0
+calibrated$calSeLogRr[idx] <- (log(calibrated$calCi95lb[idx]) - calibrated$calLogRr[idx]) / qnorm(0.025)
+idx <- !is.na(calibrated$calLogRr) & calibrated$calLogRr < 0
+calibrated$calSeLogRr[idx] <- (log(calibrated$calCi95ub[idx]) - calibrated$calLogRr[idx]) / qnorm(0.975)
+
 write.csv(calibrated, "r:/DepressionResults.csv", row.names = FALSE)
 
 
@@ -79,19 +86,21 @@ aggregate(analysisId ~ db, data = result, length)
 
 # calibrated and uncalibrated are correlated?
 library(ggplot2)
-ggplot(result, aes(x = rr, y = calRr)) +
+plot <- ggplot(result, aes(x = rr, y = calRr)) +
     geom_point() +
     scale_x_log10(limits = c(0.1,10)) +
     scale_y_log10(limits = c(0.1,10)) +
     facet_wrap(~db)
+ggsave("r:/temp/corr.png", plot, width = 5, height = 5, dpi = 300)
 
 # A to B correlated with B to A?
 half1 <- result[result$targetId < result$comparatorId & result$outcomeType == "hoi", c("targetId", "comparatorId", "outcomeId", "analysisId", "db", "calRr")]
 half2 <- result[result$targetId > result$comparatorId & result$outcomeType == "hoi", c("targetId", "comparatorId", "outcomeId", "analysisId", "db", "calRr")]
 d <- merge(half1, half2, by.x = c("targetId", "comparatorId", "outcomeId", "analysisId", "db"), by.y = c("comparatorId", "targetId", "outcomeId", "analysisId", "db"))
 library(ggplot2)
-ggplot(d, aes(x = calRr.x, y = calRr.y)) +
+plot <- ggplot(d, aes(x = calRr.x, y = calRr.y)) +
     geom_point() +
     scale_x_log10(limits = c(0.1,10)) +
     scale_y_log10(limits = c(0.1,10)) +
     facet_wrap(~db)
+ggsave("r:/temp/corr2.png", plot, width = 5, height = 5, dpi = 300)

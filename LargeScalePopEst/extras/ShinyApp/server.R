@@ -57,6 +57,14 @@ shinyServer(function(input, output) {
     return(estimate[estimate$outcomeName == point$outcomeName, ])
   })
   
+  sensitivityAnalysis <- reactive({
+    point <- clickedPoint()
+    fileName <- file.path("data", normName(paste0("sens_", point$targetName, "_", point$comparatorName, ".rds")))
+    if (!file.exists(fileName)) return(NULL)
+    estimate <- readRDS(fileName)
+    return(estimate[estimate$outcomeName == point$outcomeName, ])
+  })
+  
   details <- reactive({
     point <- clickedPoint()
     fileName <- file.path("data", normName(paste0("details_", point$targetName, "_", point$comparatorName, "_", point$db, ".rds")))
@@ -228,13 +236,49 @@ shinyServer(function(input, output) {
                   " and ", point$comparatorName, " in the ", point$db, 
                   " database, the estimated <b>uncalibrated hazard ratio</b> was <b>",hr,
                   "</b>, the estimated <b>calibrated hazard ratio</b> was <b>", calHr, "</b>.")))
+  })
+  
+  output$sensitivityAnalysisPlot <- renderPlot({
+    sensitivityAnalysis <- sensitivityAnalysis()
+    if (is.null(sensitivityAnalysis)) return(NULL)
+    plotForest(sensitivityAnalysis)
+  })
+  
+  output$sensitivityAnalysisTable <-  renderTable({
+    sensitivityAnalysis <- sensitivityAnalysis()
+    if (is.null(sensitivityAnalysis)) return(NULL)
+    sensitivityAnalysis <- sensitivityAnalysis[sensitivityAnalysis$db == clickedPoint()$db,
+                         c("treated", "comparator", "treatedDays", "comparatorDays", "eventsTreated", "eventsComparator")]
+    names(sensitivityAnalysis) <- c("Nr. of subjects (target)", "Nr. of subjects (comparator)", "Days at risk (target)", "Days at risk (comparator)", "Outcomes (target)", "outcomes (comparator)")
+    sensitivityAnalysis
+  })
+  
+  output$sensitivityAnalysisText <-  renderUI({
+    point <- clickedPoint()
+    sensitivityAnalysis <- sensitivityAnalysis()
+    if (is.null(sensitivityAnalysis)) return(NULL)
+    estimate <- sensitivityAnalysis[sensitivityAnalysis$db == point$db, ]
     
-    # p(HTML(paste0("<b> Hazard ratio: </b>", hr, "<br/>",
-    #               "<b> P-value: </b>", formatC(estimate$p, digits = 2, format = "f"), "<br/>",
-    #               "<br/>",
-    #               "<b> Calibrated hazard ratio: </b>", calHr, "<br/>",
-    #               "<b> Calibrated p-value: </b>", calP, "<br/>")))
-    # 
+    hr <- paste0(formatC(estimate$rr, digits = 2, format = "f"), 
+                 " (95% CI: ",
+                 formatC(estimate$ci95lb, digits = 2, format = "f"), 
+                 "-",
+                 formatC(estimate$ci95ub, digits = 2, format = "f"), 
+                 ", p = ",
+                 formatC(estimate$p, digits = 2, format = "f"),
+                 ")")
+    calHr <- paste0(formatC(estimate$calRr, digits = 2, format = "f"), 
+                    " (95% CI: ",
+                    formatC(estimate$calCi95lb, digits = 2, format = "f"), 
+                    "-",
+                    formatC(estimate$calCi95ub, digits = 2, format = "f"), 
+                    ", p = ",
+                    formatC(estimate$calP, digits = 2, format = "f"),
+                    ")")
+    p(HTML(paste0("Using an intent-to-treat  instead of a per-protocol analysis, when comparing the risk of ", point$outcomeName, " between new users of ", point$targetName, 
+                  " and ", point$comparatorName, " in the ", point$db, 
+                  " database, the estimated <b>uncalibrated hazard ratio</b> was <b>",hr,
+                  "</b>, the estimated <b>calibrated hazard ratio</b> was <b>", calHr, "</b>.")))
   })
   
   # Literature --------------------------------------------------------------

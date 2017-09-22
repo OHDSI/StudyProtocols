@@ -19,6 +19,9 @@
 library(LargeScalePopEst)
 options(fftempdir = "R:/fftemp")
 # options('fftempdir' = 'S:/fftemp')
+# install.packages("C:/Users/mschuemi/Downloads/FeatureExtraction_1.0.2.tar.gz", repos = NULL, type="source")
+# install.packages("C:/Users/mschuemi/Downloads/CohortMethod_2.1.1.tar.gz", repos = NULL, type="source")
+# install.packages("C:/Users/mschuemi/Downloads/MethodEvaluation_0.0.4.tar.gz", repos = NULL, type="source")
 
 pw <- NULL
 dbms <- "pdw"
@@ -92,6 +95,15 @@ execute(connectionDetails = connectionDetails,
         injectSignals = FALSE,
         generateAllCohortMethodDataObjects = FALSE,
         runCohortMethod = TRUE)
+
+workFolder <- "R:/PopEstDepression_Mdcd"
+calibrateEstimatesAndPvalues(workFolder)
+workFolder <- "R:/PopEstDepression_Ccae"
+calibrateEstimatesAndPvalues(workFolder)
+workFolder <- "R:/PopEstDepression_Mdcr"
+calibrateEstimatesAndPvalues(workFolder)
+workFolder <- "R:/PopEstDepression_Optum"
+calibrateEstimatesAndPvalues(workFolder)
 
 analysePsDistributions(workFolder)
 
