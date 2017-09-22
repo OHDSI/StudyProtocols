@@ -148,15 +148,12 @@ for (i in 1:nrow(dbs)) {
 write.csv(table3a, file.path(antibioticsFolder, "table3a.csv"), row.names = FALSE, na = "")
 write.csv(table3b, file.path(antibioticsFolder, "table3b.csv"), row.names = FALSE, na = "")
 
-
-### Combine figures 1a and 1b across DBs ###
 denominator <- data.frame()
 numerator <- data.frame()
 for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByAgeGroup.csv"), stringsAsFactors = FALSE)
     dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByAgeGroupByClass.csv"), stringsAsFactors = FALSE)
-    dbNumerator <- dbNumerator[dbNumerator$conceptName %in% classes, ]
     dbDenominator$db <- dbs$name[i]
     dbNumerator$db <- dbs$name[i]
     if (!dbs$inpatient[i]) {
@@ -177,8 +174,10 @@ if (denominatorType == "persons") {
     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
 }
 data$ageGroup <- factor(data$ageGroup, levels = c("<2 years","2-11 years","12-18 years"))
-ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
+    ggplot2::xlab("Age group") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(antibioticsFolder, "Figure1a.png"), width = 9, height = 7, dpi= 200)
@@ -191,8 +190,10 @@ if (denominatorType == "persons") {
     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
 }
 data$ageGroup <- factor(data$ageGroup, levels = c("<2 years","2-11 years","12-18 years"))
-ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
+    ggplot2::xlab("Age group") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(antibioticsFolder, "Figure1b.png"), width = 9, height = 7, dpi= 200)
@@ -205,7 +206,6 @@ for (i in 1:nrow(dbs)) {
     dbFolder <- file.path(folder, dbs$name[i])
     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByGender.csv"), stringsAsFactors = FALSE)
     dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByGenderByClass.csv"), stringsAsFactors = FALSE)
-    dbNumerator <- dbNumerator[dbNumerator$conceptName %in% classes, ]
     dbDenominator$db <- dbs$name[i]
     dbNumerator$db <- dbs$name[i]
     if (!dbs$inpatient[i]) {
@@ -227,8 +227,9 @@ if (denominatorType == "persons") {
 }
 data$Gender <- "Male"
 data$Gender[data$genderConceptId == 8532] <- "Female"
-ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(antibioticsFolder, "Figure2a.png"), width = 9, height = 9, dpi= 200)
@@ -242,11 +243,112 @@ if (denominatorType == "persons") {
 }
 data$Gender <- "Male"
 data$Gender[data$genderConceptId == 8532] <- "Female"
-ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence, group = db, color = db, fill = db)) +
+ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence)) +
     ggplot2::geom_bar(stat = "identity") +
+    ggplot2::facet_grid(db ~ conceptName, scales = "free_y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
                    strip.text.x = ggplot2::element_text(angle=-90))
 ggplot2::ggsave(file.path(antibioticsFolder, "Figure2b.png"), width = 9, height = 9, dpi= 200)
+
+
+# ### Combine figures 1a and 1b across DBs ###
+# denominator <- data.frame()
+# numerator <- data.frame()
+# for (i in 1:nrow(dbs)) {
+#     dbFolder <- file.path(folder, dbs$name[i])
+#     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByAgeGroup.csv"), stringsAsFactors = FALSE)
+#     dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByAgeGroupByClass.csv"), stringsAsFactors = FALSE)
+#     dbNumerator <- dbNumerator[dbNumerator$conceptName %in% classes, ]
+#     dbDenominator$db <- dbs$name[i]
+#     dbNumerator$db <- dbs$name[i]
+#     if (!dbs$inpatient[i]) {
+#         dbNumerator <- dbNumerator[dbNumerator$inpatient == 0,]
+#     }
+#     if (!dbs$ambulatory[i]) {
+#         dbNumerator <- dbNumerator[dbNumerator$inpatient == 1,]
+#     }
+#     denominator <- rbind(denominator, dbDenominator)
+#     numerator <- rbind(numerator, dbNumerator)
+# }
+# numeratorInpatient <- numerator[numerator$inpatient == 1,]
+#
+# data <- merge(denominator, numeratorInpatient)
+# if (denominatorType == "persons") {
+#     data$Prevalence <- data$personCount/(data$persons / 1000)
+# } else {
+#     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
+# }
+# data$ageGroup <- factor(data$ageGroup, levels = c("<2 years","2-11 years","12-18 years"))
+# ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, color = db, fill = db)) +
+#     ggplot2::geom_bar(stat = "identity") +
+#     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
+#                    strip.text.x = ggplot2::element_text(angle=-90))
+# ggplot2::ggsave(file.path(antibioticsFolder, "Figure1a.png"), width = 9, height = 7, dpi= 200)
+#
+# numeratorNotInpatient <- numerator[numerator$inpatient == 0,]
+# data <- merge(denominator, numeratorNotInpatient)
+# if (denominatorType == "persons") {
+#     data$Prevalence <- data$personCount/(data$persons / 1000)
+# } else {
+#     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
+# }
+# data$ageGroup <- factor(data$ageGroup, levels = c("<2 years","2-11 years","12-18 years"))
+# ggplot2::ggplot(data, ggplot2::aes(x = ageGroup, y = Prevalence, group = db, color = db, fill = db)) +
+#     ggplot2::geom_bar(stat = "identity") +
+#     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
+#                    strip.text.x = ggplot2::element_text(angle=-90))
+# ggplot2::ggsave(file.path(antibioticsFolder, "Figure1b.png"), width = 9, height = 7, dpi= 200)
+#
+#
+# ### Combine figures 2a and 2b across DBs ###
+# denominator <- data.frame()
+# numerator <- data.frame()
+# for (i in 1:nrow(dbs)) {
+#     dbFolder <- file.path(folder, dbs$name[i])
+#     dbDenominator <- read.csv(file.path(dbFolder, "DenominatorByGender.csv"), stringsAsFactors = FALSE)
+#     dbNumerator <- read.csv(file.path(dbFolder, "NumeratorByGenderByClass.csv"), stringsAsFactors = FALSE)
+#     dbNumerator <- dbNumerator[dbNumerator$conceptName %in% classes, ]
+#     dbDenominator$db <- dbs$name[i]
+#     dbNumerator$db <- dbs$name[i]
+#     if (!dbs$inpatient[i]) {
+#         dbNumerator <- dbNumerator[dbNumerator$inpatient == 0,]
+#     }
+#     if (!dbs$ambulatory[i]) {
+#         dbNumerator <- dbNumerator[dbNumerator$inpatient == 1,]
+#     }
+#     denominator <- rbind(denominator, dbDenominator)
+#     numerator <- rbind(numerator, dbNumerator)
+# }
+# numeratorInpatient <- numerator[numerator$inpatient == 1,]
+#
+# data <- merge(denominator, numeratorInpatient)
+# if (denominatorType == "persons") {
+#     data$Prevalence <- data$personCount/(data$persons / 1000)
+# } else {
+#     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
+# }
+# data$Gender <- "Male"
+# data$Gender[data$genderConceptId == 8532] <- "Female"
+# ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence, group = db, color = db, fill = db)) +
+#     ggplot2::geom_bar(stat = "identity") +
+#     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
+#                    strip.text.x = ggplot2::element_text(angle=-90))
+# ggplot2::ggsave(file.path(antibioticsFolder, "Figure2a.png"), width = 9, height = 9, dpi= 200)
+#
+# numeratorNotInpatient <- numerator[numerator$inpatient == 0,]
+# data <- merge(denominator, numeratorNotInpatient)
+# if (denominatorType == "persons") {
+#     data$Prevalence <- data$personCount/(data$persons / 1000)
+# } else {
+#     data$Prevalence <- data$personCount/(data$days / 365.25 / 1000)
+# }
+# data$Gender <- "Male"
+# data$Gender[data$genderConceptId == 8532] <- "Female"
+# ggplot2::ggplot(data, ggplot2::aes(x = Gender, y = Prevalence, group = db, color = db, fill = db)) +
+#     ggplot2::geom_bar(stat = "identity") +
+#     ggplot2::theme(axis.text.x = ggplot2::element_text(angle=-90),
+#                    strip.text.x = ggplot2::element_text(angle=-90))
+# ggplot2::ggsave(file.path(antibioticsFolder, "Figure2b.png"), width = 9, height = 9, dpi= 200)
 
 
 ### Combine figures 3a and 3b across DBs ###
