@@ -504,3 +504,70 @@ idx <- !is.na(estimates$trueRr) & !estimates$trueRr == 1
 estimates$outcomeName <- as.character(estimates$outcomeName)
 estimates$outcomeName[idx] <- paste0(estimates$outcomeName[idx], "(RR=", estimates$trueRr[idx], ")")
 write.csv(estimates, file.path(paperFolder, "AllEstimates.csv"), row.names = FALSE)
+
+
+# Sample size evaluation --------------------------------------------------
+
+estimates <- readRDS(file.path(paperFolder, "controlEstimates.rds"))
+
+library(EmpiricalCalibration)
+study <- "Southworth"
+i <- 1
+outcomeId <- outcomeIds[1]
+result <- expand.grid(study = unique(estimates$study), i = 1:100)
+
+computeCoverageForOutcomeId <- function(outcomeId, sampledOutcomeIds, subset) {
+    sampleOutcomeIdsWithoutControl <- sampledOutcomeIds[sampledOutcomeIds != outcomeId]
+    sampleWithoutControl <- subset[subset$outcomeId %in% sampleOutcomeIdsWithoutControl, ]
+    model <- fitSystematicErrorModel(logRr = sampleWithoutControl$logRr,
+                                     seLogRr = sampleWithoutControl$seLogRr,
+                                     trueLogRr = sampleWithoutControl$trueLogRr,
+                                     estimateCovarianceMatrix = FALSE)
+    control <- subset[subset$outcomeId == outcomeId, ]
+    ci <- calibrateConfidenceInterval(logRr = control$logRr,
+                                      seLogRr = control$seLogRr,
+                                      model = model,
+                                      ciWidth = 0.95)
+    ci <- ci[!is.na(ci$seLogRr), ]
+    return(ci$logLb95Rr < control$trueLogRr & ci$logUb95Rr > control$trueLogRr)
+}
+
+computeCoverage <- function(i, sampleSize, outcomeIds, subset) {
+    sampledOutcomeIds <- outcomeIds[sample.int(length(outcomeIds), sampleSize, replace = TRUE)]
+    coverage <- lapply(outcomeIds, computeCoverageForOutcomeId, sampledOutcomeIds = sampledOutcomeIds, subset = subset)
+    coverage <- do.call("c", coverage)
+    return(mean(coverage))
+}
+
+computeCoverageForSampleSize <- function(sampleSize, outcomeIds, subset) {
+    writeLines(paste("- Sample size =", sampleSize))
+    coverage <- sapply(1:100, computeCoverage, sampleSize = sampleSize, outcomeIds = outcomeIds, subset = subset)
+    return(data.frame(sampleSize = sampleSize, i = 1:100, coverage = coverage))
+}
+
+results <- data.frame()
+for (study in unique(estimates$study)) {
+    writeLines(study)
+    subset <- estimates[estimates$study == study, ]
+    outcomeIds <- unique(subset$outcomeId)
+    result <- lapply(seq(5, length(outcomeIds), by = 5), computeCoverageForSampleSize, outcomeIds = outcomeIds, subset = subset)
+    result <- do.call("rbind", result)
+    result$study <- study
+    results <- rbind(results, result)
+}
+write.csv(result, file.path(paperFolder, "powerConsiderations.csv"), row.names = FALSE)
+library(ggplot2)
+yBreaks <- c(0, 0.25, 0.5, 0.75, 0.95)
+ggplot(results, aes(x = sampleSize, y = coverage, group = sampleSize)) +
+    geom_boxplot(fill = rgb(0, 0, 0.8, alpha = 0.25)) +
+    geom_hline(yintercept = 0.95, alpha = 0.5, linetype = "dashed") +
+    scale_x_continuous("Number of negative controls", limits = c(0,55), breaks = unique(results$sampleSize), labels = unique(results$sampleSize)) +
+    scale_y_continuous("Coverage", breaks = yBreaks, labels = yBreaks) +
+    facet_wrap(~ study) +
+    theme(panel.grid.minor = element_blank(),
+          panel.background = element_rect(fill = "#FAFAFA", colour = NA), panel.grid.major = ggplot2::element_blank(),
+          axis.ticks = element_blank(),
+          strip.background = element_blank(),
+          legend.position = "none")
+ggsave(file.path(paperFolder, "numberOfControls.png"), width = 7, height = 5, dpi = 400)
+

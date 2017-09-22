@@ -91,21 +91,21 @@ writeLines(paste("Total significant expected when null is true for all: ", nrow(
 
 d <- rbind(data.frame(logRr = d1$calLogRr,
                       seLogRr = d1$calSeLogRr,
-                      Group = "A\nOur large-scale study on depression treatments",
+                      Group = "C\nOur large-scale study on depression treatments",
                       Significant = d1$Significant,
                       dummy = 1),
            data.frame(logRr = log(d2$EffectEstimate_jitter),
                       seLogRr = d2$seLogRr,
-                      Group = "B\nAll observational literature",
+                      Group = "A\nAll observational literature",
                       Significant = d2$Significant,
                       dummy = 1),
            data.frame(logRr = log(d3$EffectEstimate_jitter),
                       seLogRr = d3$seLogRr,
-                      Group = "C\nObservational literature on depression treatments",
+                      Group = "B\nObservational literature on depression treatments",
                       Significant = d3$Significant,
                       dummy = 1))
 
-d$Group <- factor(d$Group, levels = c("A\nOur large-scale study on depression treatments", "B\nAll observational literature", "C\nObservational literature on depression treatments"))
+d$Group <- factor(d$Group, levels = c("A\nAll observational literature", "B\nObservational literature on depression treatments", "C\nOur large-scale study on depression treatments"))
 
 temp1 <- aggregate(dummy ~ Group, data = d, length)
 temp1$nLabel <- paste0(formatC(temp1$dummy, big.mark = ","), " estimates")
@@ -121,20 +121,18 @@ theme <- element_text(colour = "#000000", size = 12)
 themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
 themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
 
-ggplot(d, aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
+# One plot
+plot <- ggplot(d, aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
     geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
     geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
     geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
     geom_point(size=0.5, color = rgb(0,0,0), shape = 16) +
     geom_hline(yintercept=0) +
-    #geom_label(x = log(0.3), y = 1, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
-    #geom_label(x = log(0.3), y = 0.9, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
     geom_label(x = log(0.11), y = 0.99, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
     geom_label(x = log(0.11), y = 0.88, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
-    #scale_x_continuous("Effect size",limits = log(c(0.25,10)), breaks=log(breaks),labels=breaks) +
     scale_x_continuous("Effect size",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
     scale_y_continuous("Standard Error",limits = c(0,1)) +
-    scale_alpha_manual(values = c(0.2, 0.1, 0.8)) +
+    scale_alpha_manual(values = c(0.1, 0.8, 0.2)) +
     facet_grid(.~Group) +
     theme(
         panel.grid.minor = element_blank(),
@@ -149,11 +147,53 @@ ggplot(d, aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
         strip.background = element_blank(),
         legend.position = "none"
     )
+ggsave(plot = plot, file.path(paperFolder, "LitVsUs.png"), width = 15, height = 3.5, dpi = 500)
 
-#ggsave(file.path(paperFolder, "LitVsUs.png"), width = 14, height = 3.75, dpi = 500)
-ggsave(file.path(paperFolder, "LitVsUs.png"), width = 15, height = 3.5, dpi = 500)
+# Two plots
+subset <-  c("A\nAll observational literature", "B\nObservational literature on depression treatments")
+alpha <- c(0.1, 0.8)
+strip <- theme
+
+subset <-  c("C\nOur large-scale study on depression treatments")
+alpha <- c(0.2)
+strip <- element_blank()
+
+plot <- ggplot(d[d$Group %in% subset, ], aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
+    geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
+    geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_point(size=0.5, color = rgb(0,0,0), shape = 16) +
+    geom_hline(yintercept=0) +
+    geom_label(x = log(0.11), y = 0.99, alpha = 1, hjust = "left", aes(label = nLabel), size = 4, data = dd[dd$Group %in% subset, ]) +
+    geom_label(x = log(0.11), y = 0.88, alpha = 1, hjust = "left", aes(label = meanLabel), size = 4, data = dd[dd$Group %in% subset, ]) +
+    scale_x_continuous("Effect size",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
+    scale_y_continuous("Standard Error",limits = c(0,1)) +
+    scale_alpha_manual(values = alpha) +
+    facet_grid(.~Group) +
+    theme(
+        panel.grid.minor = element_blank(),
+        panel.background= element_blank(),
+        panel.grid.major= element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = themeRA,
+        axis.text.x = theme,
+        legend.key= element_blank(),
+        strip.text.x = strip,
+        strip.text.y = strip,
+        strip.background = element_blank(),
+        legend.position = "none"
+    )
+
+ggsave(plot = plot, file.path(paperFolder, "Lit.png"), width = 10, height = 3.5, dpi = 500)
+
+ggsave(plot = plot, file.path(paperFolder, "Us.png"), width = 7, height = 3.5, dpi = 500)
 
 
+tempd <- d
+tempdd <- dd
+d <- d[d$Group == "B\nAll observational literature", ]
+dd <- dd[dd$Group == "B\nAll observational literature", ]
+ggsave(plot = plot, file.path(paperFolder, "Lit.png"), width = 8, height = 4.5, dpi = 500)
 
 # Treatment dendogram -----------------------------------------------------
 
@@ -462,7 +502,7 @@ psFile <- outcomeModelReference$sharedPsFile[outcomeModelReference$analysisId ==
 ps <- readRDS(psFile)
 fileName <- file.path(paperFolder, "PsExamplar.png")
 CohortMethod::plotPs(ps,
-                     scale = "preference",
+                     scale = "propensity",
                      treatmentLabel = "Duloxetine",
                      comparatorLabel = "Sertraline",
                      fileName = fileName)
@@ -554,9 +594,11 @@ ggsave(file.path(paperFolder, "leaveOneOutCv.png"), width = 9, height = 3.5, dpi
 
 # Supplementary table S1 --------------------------------------------------
 calibrated <- read.csv("r:/DepressionResults.csv")
-d <- calibrated[calibrated$analysisId == 3,]
-d <- d[, c("targetName", "comparatorName", "outcomeName", "outcomeType", "trueRr", "db", "treated", "comparator", "treatedDays", "comparatorDays", "eventsTreated", "eventsComparator", "rr", "ci95lb", "ci95ub", "p", "calRr", "calCi95lb", "calCi95ub", "calP")]
-names(d) <- c("Target", "Comparator", "Outcome", "Outcome type", "True hazard ratio", "Database", "Target persons", "Comparator persons", "Target days", "Comparator days", "Target events", "Comparator events", "Hazard ratio", "Lower bound 95% CI", "Upper bound 95% CI", "P-value", "Calibrated hazard ratio", "Calibrated lower bound 95% CI", "Calibrated upper bound 95% CI", "Calibrated P-value")
+d <- calibrated[calibrated$analysisId == 3 | calibrated$analysisId == 4,]
+d$analysis <- "Main"
+d$analysis[d$analysisId == 4] <- "Sensitivity"
+d <- d[, c("analysis", "targetName", "comparatorName", "outcomeName", "outcomeType", "trueRr", "db", "treated", "comparator", "treatedDays", "comparatorDays", "eventsTreated", "eventsComparator", "rr", "ci95lb", "ci95ub", "p", "calRr", "calCi95lb", "calCi95ub", "calP")]
+names(d) <- c("Analysis", "Target", "Comparator", "Outcome", "Outcome type", "True hazard ratio", "Database", "Target persons", "Comparator persons", "Target days", "Comparator days", "Target events", "Comparator events", "Hazard ratio", "Lower bound 95% CI", "Upper bound 95% CI", "P-value", "Calibrated hazard ratio", "Calibrated lower bound 95% CI", "Calibrated upper bound 95% CI", "Calibrated P-value")
 write.csv(d, file.path(paperFolder, "SupplementaryTableS1.csv"), row.names = FALSE)
 
 # Supplementary table S2 --------------------------------------------------
