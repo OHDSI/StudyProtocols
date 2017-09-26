@@ -31,6 +31,16 @@ getData <- function(folders) {
           }))
 }
 
+getAttrition <- function(folders) {
+  do.call(rbind,
+          lapply(folders, FUN = function(file) {
+            table <- read.csv(file.path(studyFolder,
+                                        file, "Attrition.csv"))
+            table$db <- file
+            table
+          }))
+}
+
 getStratifiedCounts <- function(strata, folders, isNumeric = TRUE) {
   zero <- data.frame(group = strata, countTreated = 0, countComparator = 0,
                      fractionTreated = 0, fractionComparator = 0)
@@ -528,6 +538,55 @@ printOverallIncidence(analysisId = 2, folders[-toRemove], labels[-toRemove], coh
 ```{r echo=FALSE, results="asis"}
 toRemove = match(c("PPlus","CCAE_UNM","MDCR_UNM"),folders)
 printOverallIncidence(analysisId = 2, folders[-toRemove], labels[-toRemove], cohortOrder3, prettyCohortNames3)
+```
+
+\clearpage
+
+## Attrition from PS Trimming
+```{r echo = FALSE, results = "asis"}
+printAttrition <- function(folders,
+                           labels) {
+  results <- getAttrition(folders)
+  #results$space1 <- ""
+
+  results$order1 <- getOrder(results$db, folders)
+  results <- results[order(results$order1,
+                           decreasing = FALSE),]
+  results <- results[results$description%in%c("No prior outcome", "Trimmed to equipoise"),]
+  results <- results[,c("description", "treatedPersons", "comparatorPersons")]
+  results$totalPersons = results$treatedPersons + results$comparatorPersons
+  
+  results1 <- results[results$description == "No prior outcome", -c(1)] - 
+    results[results$description == "Trimmed to equipoise", -c(1)]
+  
+  crude <- results1 / results[results$description == "No prior outcome", -c(1)]
+
+  for (column in c("treatedPersons", "comparatorPersons", "totalPersons")) {
+    crude[,column] <- paste0(formatC(100 * crude[,column], digits = 2), "\\%")
+  }
+  
+  crude$db <- c(labels) # paste0(label1, " ", label2)
+  crude$db <- sub("\\^(\\d)", "$^\\1$", crude$db)
+  
+  crude = crude[,c("db","treatedPersons","comparatorPersons","totalPersons")]
+  
+  addtorow <- list()
+  addtorow$pos <- c(list(0))
+
+  addtorow$command <- c("& Treated & Comparator & Total \\\\ \\hline \n")
+
+  tab <- xtable(crude)
+  
+  align(tab) <- "ccrrr"
+  print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
+               add.to.row = addtorow,
+               # hline.after = c(-1,nrow(tab)),
+               sanitize.text.function=function(x) { x }
+  )
+}
+  
+printAttrition(folders, labels)
+  
 ```
 
 \clearpage
