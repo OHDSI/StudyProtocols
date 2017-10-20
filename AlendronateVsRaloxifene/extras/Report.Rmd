@@ -1185,3 +1185,26 @@ Meta-analysis:
 ```{r, echo=FALSE}
   atyp2CI$meta
 ```
+
+```{r, echo = FALSE, warning = FALSE, fig.height=8, fig.width=7}
+blank <- grid::grid.rect(gp=grid::gpar(col="white"))
+
+cowplot::plot_grid(gridExtra::arrangeGrob(hip1$data_table, blank, hip1$p, ncol = 3, widths = c(1,0.1,1)),
+                   gridExtra::arrangeGrob(blank),
+                   gridExtra::arrangeGrob(vert1$data_table, blank, vert1$p, ncol = 3, widths = c(1,0.1,1)),
+                   gridExtra::arrangeGrob(blank),
+                   gridExtra::arrangeGrob(atyp1$data_table, blank, atyp1$p, ncol = 3, widths = c(1,0.1,1)), 
+                   nrow = 5, labels=c('A)',"",'B)',"",'C)'), label_fontface = "plain", vjust = 1,
+                   rel_heights = c(1,0.1,1,0.1,1))
+```
+
+## Top Covariate Balance
+```{r, echo = FALSE, warning = FALSE}
+#balance = read.csv("~/Dropbox/Hip_Fracture_Paper/prettyBalance/Balance.csv")
+#CohortMethod::plotCovariateBalanceOfTopVariables(balance,
+#                                                 n = 20,
+#                                                 maxNameWidth = 100,
+#                                                 fileName = "~/Dropbox/Hip_Fracture_Paper/prettyBalance/balance.png",
+#                                                 beforeLabel = "before matching",
+#                                                 afterLabel = "after matching")
+```
