@@ -146,6 +146,13 @@ label3 <- c("IMS PPlus",
             "Truven MDCR (1)", "Truven MDCR (2)", 
             "Truven MDCD", 
             "Cerner EHR", "Columbia EHR", "Stanford Stride")
+
+folders = folders[c(1,2,3,5,7,8,9,10)]
+label1 = label1[c(1,2,3,5,7,8,9,10)]
+label2 = label2[c(1,2,3,5,7,8,9,10)]
+label3 = label3[c(1,2,3,5,7,8,9,10)]
+label2[3:4] = c("CCAE", "MDCR")
+label3[3:4] = c("Truven CCAE", "Truven MDCR")
 ```
 
 
@@ -271,6 +278,9 @@ printOutcomeTable <- function(analysisId,
   results$space1 <- ""
   results$space2 <- ""
   
+  results$treatedYears = round(results$treatedDays/365.24)
+  results$comparatorYears = round(results$comparatorDays/365.24)
+  
   results$order1 <- getOrder(results$db, folders)
   results$order2 <- getOrder(as.character(results$outcomeName), cohortOrder)
   results <- results[order(results$order2, 
@@ -279,15 +289,15 @@ printOutcomeTable <- function(analysisId,
 
   crude <- results[,c(# "space1",
                       "outcomeName",
-                      "db","treated","treatedDays","eventsTreated",
+                      "db","treated","treatedYears","eventsTreated",
                       "space2",
-                      "comparator", "comparatorDays","eventsComparator",
+                      "comparator", "comparatorYears","eventsComparator",
                       "order1","order2")]
-  temp = aggregate(crude[,c("treated","treatedDays","eventsTreated",
-                            "comparator","comparatorDays","eventsComparator")],
+  temp = aggregate(crude[,c("treated","treatedYears","eventsTreated",
+                            "comparator","comparatorYears","eventsComparator")],
                    by = list(outcomeName = crude$outcomeName),
                    sum)
-  temp$db = "Sum"
+  temp$db = "Total"
   temp$space2 = ""
   temp$order1 = rep(max(getOrder(results$db, folders))+1, nrow(temp))
   temp$order2 = getOrder(as.character(temp$outcomeName), cohortOrder)
@@ -299,15 +309,15 @@ printOutcomeTable <- function(analysisId,
   crude$order1 <- NULL
   crude$order2 <- NULL
   
-  crude$db <- c(labels, "Sum") # paste0(label1, " ", label2)
-  crude$db <- sub("\\^(\\d)", "$^\\1$", crude$db)
+  crude$db <- c(labels, "Total") # paste0(label1, " ", label2)
+  # crude$db <- sub("\\^(\\d)", "$^\\1$", crude$db)
   
   for (column in c("treated","comparator")) {
   crude[,column] <- formatC(crude[,column],
                             format = "d", big.mark = ",")
   }
   
-  for (column in c("treatedDays", "comparatorDays")) {
+  for (column in c("treatedYears", "comparatorYears")) {
     crude[,column] <- formatC(round(crude[,column] / 1), # / 1000?
                               format = "d", big.mark = ",")
   }
@@ -325,7 +335,8 @@ printOutcomeTable <- function(analysisId,
   addtorow <- list()
   addtorow$pos <- c(list(0, 0, 0),
                     # as.list((length(folders)) * (0:(length(cohortOrder) - 1)) + 1),
-                    as.list((length(folders)+1) * (0:(length(cohortOrder) - 1)))
+                    as.list((length(folders)+1) * (0:(length(cohortOrder) - 1))),
+                    nrow(crude)
                     # as.list(length(folders) * (0:(length(cohortOrder) - 1)))
                     )
                        
@@ -344,19 +355,26 @@ printOutcomeTable <- function(analysisId,
            "} \\\\\n")
   }
   
+  topStrut = "\\rule{0pt}{2.6ex}"
+  botStrut = "\\rule[-1.2ex]{0pt}{0pt}"
+  crude[(length(folders)+1)*(1:length(cohortOrder)),"db"] = paste0("\\multicolumn{1}{c}{",topStrut,botStrut,"Total}")
+  
+  #"\\multicolumn{1}{c}{\\rule{0pt}{2.6ex}\\rule[-1.2ex]{0pt}{0pt}Total}"
+  
   addtorow$command <- c("& \\multicolumn{3}{c}{Alendronate} & & \\multicolumn{3}{c}{Raloxifene} \\\\\n",
-                        "\\cline{2-4} \\cline{6-8} \n",
-                        "Data source & Patients & Days & Events & & Patients & Days & Events \\\\\n \\hline \n",
+                        "\\cline{2-4} \\cline{6-8} \\\\[-1em]\n",
+                        "Data source & Patients & Years & Events & & Patients & Years & Events \\\\\n \\hline \n",
                         # getNameInBox(prettyCohortNames),
                         # rep("\\\\\n\\\\\n", length(cohortOrder))
-                        getNameAcross(prettyCohortNames)
+                        getNameAcross(prettyCohortNames),
+                        "\\\\ [-0.5em]\\hline"
                         )  
   tab <- xtable(crude)
   
   align(tab) <- "clrrrcrrr"
   print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
-               hline.after = c(-1,nrow(tab)),
+               hline.after = c(-1),
                sanitize.text.function=function(x) { x }
                )
 }
@@ -414,41 +432,49 @@ printOverallIncidence <- function(analysisId,
   results <- results[order(results$order2, 
                            results$order1,
                            decreasing = FALSE),]
+  
+  results$treatedYears = round(results$treatedDays/365.24)
+  results$comparatorYears = round(results$comparatorDays/365.24)
 
   crude <- results[,c(# "space1",
                       "outcomeName",
-                      "treated","eventsTreated",
-                      "comparator","eventsComparator")]
+                      "treated","treatedYears","eventsTreated",
+                      "comparator","comparatorYears","eventsComparator")]
   
   crude <- aggregate(crude[,-c(1)], by = list(outcomeName = crude$outcomeName), sum)
   crude <- crude[match(cohortOrder,crude$outcomeName),]
   crude$outcomeName <- prettyCohortNames
-  crude$treatedIncidence = crude$eventsTreated/crude$treated
-  crude$comparatorIncidence = crude$eventsComparator/crude$comparator
+  #crude$treatedIncidence = crude$eventsTreated/crude$treatedYears
+  #crude$comparatorIncidence = crude$eventsComparator/crude$comparatorYears
+  
+  crude$treatedRate = crude$eventsTreated/crude$treatedYears*1000
+  crude$comparatorRate = crude$eventsComparator/crude$comparatorYears*1000
+
+  
   crude$space = ""
 
-  crude = crude[,c("outcomeName","treated","eventsTreated","treatedIncidence","space",
-                   "comparator","eventsComparator","comparatorIncidence")]
+  crude = crude[,c("outcomeName","treated","treatedYears","eventsTreated","treatedRate","space",
+                   "comparator","comparatorYears","eventsComparator","comparatorRate")]
 
-  for (column in c("treatedIncidence", "comparatorIncidence")) {
-    crude[,column] <- paste0(formatC(100 * crude[,column], digits = 3), "\\%")
-  }
+  # for (column in c("treatedIncidence", "comparatorIncidence")) {
+  #   crude[,column] <- paste0(formatC(100 * crude[,column], digits = 3), "\\%")
+  # }
   
-  for (column in c("eventsTreated", "eventsComparator")) {
+  for (column in c("eventsTreated", "eventsComparator", "treatedYears", "comparatorYears")) {
     crude[,column] <- ifelse(crude[,column] < 6,
                              ifelse(crude[,column] == 0, 0, "<6"),
                              formatC(crude[,column],
                                      format = "d", big.mark = ","))
   }
   
-  for (row in 1:nrow(crude)) {
-    if (crude$eventsTreated[row] == "<6") {
-      crude$treatedIncidence[row] = paste0("<",formatC(100*6/crude$treated[row], digits = 3), "\\%")
-    }
-    if (crude$eventsComparator[row] == "<6") {
-      crude$comparatorIncidence[row] = paste0("<",formatC(100*6/crude$comparator[row], digits = 3), "\\%")
-    }
-  }
+  # for (row in 1:nrow(crude)) {
+  #   if (crude$eventsTreated[row] == "<6") {
+  #     crude$treatedIncidence[row] = paste0("<",formatC(100*6/crude$treated[row], digits = 3), "\\%")
+  #   }
+  #   if (crude$eventsComparator[row] == "<6") {
+  #     crude$comparatorIncidence[row] = paste0("<",formatC(100*6/crude$comparator[row], digits = 3), "\\%")
+  #   }
+  # }
   
   for (column in c("treated","comparator")) {
     crude[,column] <- formatC(crude[,column],
@@ -457,7 +483,8 @@ printOverallIncidence <- function(analysisId,
   
 
   addtorow <- list()
-  addtorow$pos <- c(list(0,0,0))
+  addtorow$pos <- c(list(0,0,0),
+                    nrow(crude))
 
 
   getNameInBox <- function(name) {
@@ -474,16 +501,17 @@ printOverallIncidence <- function(analysisId,
            "} \\\\\n")
   }
 
-  addtorow$command <- c("& \\multicolumn{3}{c}{Alendronate} & & \\multicolumn{3}{c}{Raloxifene} \\\\\n",
-                        "\\cline{2-4} \\cline{6-8} \n",
-                        "Outcome & Patients & Events & Incidence & & Patients & Events & Incidence \\\\\n                           \\hline \n")
+  addtorow$command <- c("& \\multicolumn{4}{c}{Alendronate} & & \\multicolumn{4}{c}{Raloxifene} \\\\\n",
+                        "\\cline{2-5} \\cline{7-10} \\\\[-1em]\n",
+                        "\\multicolumn{1}{c}{Outcome} & Patients & Years & Events & Rate & & Patients & Years & Events & Rate \\\\\n                             \\hline \\\\ [-0.5em] \n",
+                        "[0.5em] \\hline \\\\ [-0.5em] \\multicolumn{10}{l}{Rate: incidence per 1,000 person-years}")
   
   tab <- xtable(crude)
   
-  align(tab) <- "ccrrrcrrr"
+  align(tab) <- "clrrrrcrrrr"
   print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
-               # hline.after = c(-1,nrow(tab)),
+               hline.after = c(-1),
                sanitize.text.function=function(x) { x }
                )
 }
@@ -498,14 +526,7 @@ prettyCohortNames3 <- c("Hip fracture",
                         "Esophageal cancer", 
                         "Osteonecrosis of the jaw")
 
-labels = paste0(label1, " ", label2)
-printOverallIncidence(analysisId = 1, folders, labels, cohortOrder3, prettyCohortNames3)
-```
-
-## Incidence with 1 CCAE and MDCR
-```{r echo=FALSE, results="asis"}
-toRemove = match(c("CCAE_UNM","MDCR_UNM"),folders)
-printOverallIncidence(analysisId = 1, folders[-toRemove], lables[-toRemove], cohortOrder3, prettyCohortNames3)
+printOverallIncidence(analysisId = 1, folders, paste0(label1, " ", label2), cohortOrder3, prettyCohortNames3)
 ```
 
 
@@ -531,14 +552,9 @@ printOutcomeTable(analysisId = 2,
 ## Incidence Among All
 ```{r echo=FALSE, results="asis"}
 toRemove = match(c("PPlus"),folders)
-printOverallIncidence(analysisId = 2, folders[-toRemove], labels[-toRemove], cohortOrder3, prettyCohortNames3)
+printOverallIncidence(analysisId = 2, folders[-toRemove], paste0(label1, " ", label2)[-toRemove], cohortOrder3, prettyCohortNames3)
 ```
 
-## Incidence with 1 CCAE and MDCR
-```{r echo=FALSE, results="asis"}
-toRemove = match(c("PPlus","CCAE_UNM","MDCR_UNM"),folders)
-printOverallIncidence(analysisId = 2, folders[-toRemove], labels[-toRemove], cohortOrder3, prettyCohortNames3)
-```
 
 \clearpage
 
@@ -571,21 +587,22 @@ printAttrition <- function(folders,
   crude = crude[,c("db","treatedPersons","comparatorPersons","totalPersons")]
   
   addtorow <- list()
-  addtorow$pos <- c(list(0))
+  addtorow$pos <- c(list(0), nrow(crude))
 
-  addtorow$command <- c("& Treated & Comparator & Total \\\\ \\hline \n")
+  addtorow$command <- c("\\multicolumn{1}{c}{Data source}& Alendronate & Raloxifene & Total \\\\ \\hline \\\\[-0.5em]\n",
+                         "\\\\ [-0.5em]\\hline")
 
   tab <- xtable(crude)
   
-  align(tab) <- "ccrrr"
+  align(tab) <- "clrrr"
   print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
-               # hline.after = c(-1,nrow(tab)),
+               hline.after = c(-1),
                sanitize.text.function=function(x) { x }
   )
 }
   
-printAttrition(folders, labels)
+printAttrition(folders, paste0(label1, " ", label2))
   
 ```
 
@@ -614,14 +631,16 @@ table <-
   addtorow <- list()
   addtorow$pos <- list()
   addtorow$pos[[1]] <- 0
-  addtorow$command <- c("Data source & \\multicolumn{1}{c}{Before} & \\multicolumn{1}{c}{After}  \\\\\n \\hline ")  
+  addtorow$pos[[2]] <- nrow(table)
+  addtorow$command <- c("\\multicolumn{1}{c}{Data source} & \\multicolumn{1}{c}{Before} & \\multicolumn{1}{c}{After}  \\\\\n \\hline \\\\[-0.5em]",
+                        "\\\\ [-0.5em]\\hline")  
 
   output <- xtable(table)
   
   align(output) <- "clrr"
   print.xtable(output, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
-               hline.after = c(-1,nrow(output)),
+               hline.after = c(-1),
                sanitize.text.function=function(x) { x }
                )
 ```
@@ -908,6 +927,83 @@ Meta-analysis:
 ```
 
 \clearpage
+```{r, echo = FALSE, warning = FALSE}
+ciCalibrationModelsIIT <- lapply(1:length(folders), FUN = function(idx) {
+  file <- folders[idx]
+  #print(file)
+  emp <-  read.csv(file.path(studyFolder, 
+                             file, "tablesAndFigures",
+                             "EmpiricalCalibration.csv"))
+  
+  emp <- emp[emp$analysisId == 1 & emp$outcomeId %in% negControlCohortIds, ]
+  model = EmpiricalCalibration::fitSystematicErrorModel(emp$logRr, emp$seLogRr, rep(0,nrow(emp)),
+                                  estimateCovarianceMatrix = FALSE)
+})
+
+ciCalibrationModelsPP <- lapply(1:length(folders), FUN = function(idx) {
+  file <- folders[idx]
+  #print(file)
+  emp <-  read.csv(file.path(studyFolder, 
+                             file, "tablesAndFigures",
+                             "EmpiricalCalibration.csv"))
+  
+  emp <- emp[emp$analysisId == 2 & emp$outcomeId %in% negControlCohortIds, ]
+  model = EmpiricalCalibration::fitSystematicErrorModel(emp$logRr, emp$seLogRr, rep(0,nrow(emp)),
+                                  estimateCovarianceMatrix = FALSE)
+})
+
+buildCalibratedOutcomeResults <- function(folders, analysisId, cohort, ciCalibrationModels, summaryExclude = c()) {
+  allResults <- getData(folders)
+  results <- allResults
+  results <- results[results$analysisId == analysisId, ]
+  results <- results[results$outcomeName == cohort, ]
+  results <- results[results$db %in% folders, ]
+  results$labels <- label3
+
+  results$logRr <- ifelse(abs(results$logRr) > 10, NA, results$logRr)
+  
+  results$order1 <- getOrder(results$db, folders)
+  results <- results[order(results$order1,
+                           decreasing = FALSE),]
+  
+  #a = calibrateConfidenceInterval(logRr, seLogRr, model, ciWidth = 0.95)
+  a = mapply(function(logRr, seLogRr, model, ciWidth) {
+    return(EmpiricalCalibration::calibrateConfidenceInterval(logRr, seLogRr, model, ciWidth))
+    }, results$logRr, results$seLogRr, ciCalibrationModels, rep(0.95, nrow(results)))
+  
+  results$newlogRr = unlist(a[c("logRr"),])
+  results$newlogLb95Ci = unlist(a[c("logLb95Rr"),])
+  results$newlogUb95Ci = unlist(a[c("logUb95Rr"),])
+  
+  forest <- plotForest(logRr = results$newlogRr,
+              logLb95Ci = results$newlogLb95Ci,
+              logUb95Ci = results$newlogUb95Ci,
+              names = results$db,
+              labels = results$labels,
+              xLabel = "Hazard Ratio",
+              breaks = c(0.25, 0.5, 1, 2, 4),
+              summaryExclude = summaryExclude,
+              fileName = NULL)
+}
+```
+
+\clearpage
+
+## Hip fracture CI Calibrated (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+  
+ hip1CI <- buildCalibratedOutcomeResults(folders, analysisId = 1, cohort = "HipFracture",
+                                ciCalibrationModelsIIT)
+ gridExtra::grid.arrange(hip1CI$data_table, hip1CI$p, ncol = 2)
+
+```
+
+\clearpage
+```{r, echo=FALSE}
+  hip1CI$meta
+```
+
+\clearpage
 
 ## Hip fracture effect estimate (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
@@ -923,6 +1019,25 @@ Meta-analysis:
 
 ```{r, echo=FALSE}
   hip2$meta
+```
+
+\clearpage
+
+## Hip fracture CI Calibrated (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+hip2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "HipFracture",
+                                ciCalibrationModelsPP,
+                            c("PPlus"))
+ gridExtra::grid.arrange(hip2CI$data_table, hip2CI$p, ncol = 2)
+
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  hip2CI$meta
 ```
 
 \clearpage
@@ -945,6 +1060,24 @@ Meta-analysis:
 
 \clearpage
 
+## Vertebral fracture (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+vert1CI <- buildCalibratedOutcomeResults(folders, analysisId = 1, cohort = "VertebralFracture",
+                                ciCalibrationModelsIIT)
+ gridExtra::grid.arrange(vert1CI$data_table, vert1CI$p, ncol = 2)
+
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  vert1CI$meta
+```
+
+\clearpage
+
 ## Vertebral fracture effect estimate (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
 vert2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "VertebralFracture",
@@ -959,6 +1092,25 @@ Meta-analysis:
 
 ```{r, echo=FALSE, warning=FALSE}
   vert2$meta
+```
+
+\clearpage
+
+## Vertebral fracture CI Calibrated (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+vert2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "VertebralFracture",
+                                ciCalibrationModelsPP,
+                            c("PPlus"))
+ gridExtra::grid.arrange(vert2CI$data_table, vert2CI$p, ncol = 2)
+
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  vert2CI$meta
 ```
 
 \clearpage
@@ -978,10 +1130,28 @@ Meta-analysis:
   atyp1$meta
 ```
 
+\clearpage
+
+## Atypical femural fracture (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+atyp1CI <- buildCalibratedOutcomeResults(folders, analysisId = 1, cohort = "AtypicalFemuralFracture",
+                                ciCalibrationModelsIIT)
+ gridExtra::grid.arrange(atyp1CI$data_table, atyp1CI$p, ncol = 2)
+
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  atyp1CI$meta
+```
+
 
 \clearpage
 
-## Atypical femural  fracture effect estimate (per-protocol)
+## Atypical femural fracture effect estimate (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
 atyp2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "AtypicalFemuralFracture",
                                 c("CCAE_UNM", "MDCR_UNM"),
@@ -997,3 +1167,21 @@ Meta-analysis:
   atyp2$meta
 ```
 
+\clearpage
+
+## Atypical femural fracture CI Calibrated (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+atyp2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "AtypicalFemuralFracture",
+                                ciCalibrationModelsPP,
+                            c("PPlus"))
+ gridExtra::grid.arrange(atyp2CI$data_table, atyp2CI$p, ncol = 2)
+
+```
+
+\clearpage 
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  atyp2CI$meta
+```
