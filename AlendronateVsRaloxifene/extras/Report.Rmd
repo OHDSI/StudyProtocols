@@ -118,6 +118,30 @@ getOrder <- function(dbs, folders) {
                 }))
 }
 
+saveTable <- function(obj, caption = NULL, number = NULL, name) {
+  first <- name
+  name <- paste(name,".tex",sep="")
+  sink(file=name)
+  cat('
+      \\documentclass{report}
+      \\usepackage[paperwidth=5.5in,paperheight=7in,noheadfoot,margin=0in]{geometry}
+      \\begin{document}\\pagestyle{empty}
+      ')
+  if (!is.null(number)) cat(paste0("\\setcounter{table}{",number-1,"}"))
+  cat(paste0("\\begin{table}[ht]\\centering", obj))
+  if (!is.null(caption)) cat(paste0("\\caption{",caption,"}"))
+  cat("\\end{table}")
+  cat('
+      \\end{document}
+      ')
+  sink()
+  tools::texi2dvi(file=name)
+  cmd <- paste("dvipng -T tight -D 400", shQuote(paste(first,".dvi",sep="")))
+  invisible(system(cmd))
+  cleaner <- c(".aux",".log",".dvi")
+  invisible(file.remove(paste(first,cleaner,sep="")))
+}
+
 ```
 
 
@@ -131,17 +155,17 @@ folders <- c("PPlus",
              "Columbia", "Stride")
 
 label1 <- c("IMS", 
-            "Truven", "Truven", "Truven",
+            "Optum", "Truven", "Truven",
             "Truven", "Truven", "Truven", "Cerner", 
             "Columbia", "Stanford")
 
 label2 <-  c("PPlus", 
-             "Optum", expression(CCAE^1), expression(CCAE^2),
+             "CEDM", expression(CCAE^1), expression(CCAE^2),
              expression(MDCR^1), expression(MDCR^2), "MDCD" ,"EHR" , 
              "EHR" , "Stride")
 
 label3 <- c("IMS PPlus", 
-            "Truven Optum", 
+            "Optum CEDM", 
             "Truven CCAE (1)", "Truven CCAE (2)",
             "Truven MDCR (1)", "Truven MDCR (2)", 
             "Truven MDCD", 
@@ -167,6 +191,7 @@ yearStrata <- c(2001:2012)
 yearData <- getStratifiedCounts(yearStrata, folders)
 
 makeStratifiedPlot(yearData, yearStrata, folders, label1, label2)
+
 ```
 
 \clearpage
@@ -258,8 +283,8 @@ printOutcomeTable <- function(analysisId,
                               folders, 
                               labels, 
                               cohortOrder, 
-                              prettyCohortNames) {
-  
+                              prettyCohortNames,
+                              singleTable = FALSE) {
   
   allCohorts <- read.csv(system.file("settings", 
                                      "CohortsToCreate.csv", 
@@ -324,7 +349,7 @@ printOutcomeTable <- function(analysisId,
   
   for (column in c("eventsTreated", "eventsComparator")) {
     crude[,column] <- ifelse(crude[,column] < 6, 
-                             ifelse(crude[,column] == 0, 0, "<6"), 
+                             ifelse(crude[,column] == 0, 0, "\\textless6"), 
                              formatC(crude[,column],
                                      format = "d", big.mark = ","))
   }
@@ -332,14 +357,17 @@ printOutcomeTable <- function(analysisId,
   # colnames(crude) <- c("Data source", 
   #                      "Patients", "Exposed days", "Events",
   #                      "Patients", "Exposed days", "Events" )
-  addtorow <- list()
+  addtorow = list()
   addtorow$pos <- c(list(0, 0, 0),
                     # as.list((length(folders)) * (0:(length(cohortOrder) - 1)) + 1),
-                    as.list((length(folders)+1) * (0:(length(cohortOrder) - 1))),
                     nrow(crude)
                     # as.list(length(folders) * (0:(length(cohortOrder) - 1)))
-                    )
-                       
+  )
+  if (singleTable) {
+    addtorow$pos = c(addtorow$pos, nrow(crude) - 1)
+  } else {
+    addtorow$pos = c(addtorow$pos, as.list((length(folders)+1) * (0:(length(cohortOrder) - 1))))
+  }
   
   getNameInBox <- function(name) {
     paste0("\\parbox[t]{2mm}{\\multirow{",
@@ -366,9 +394,14 @@ printOutcomeTable <- function(analysisId,
                         "Data source & Patients & Years & Events & & Patients & Years & Events \\\\\n \\hline \n",
                         # getNameInBox(prettyCohortNames),
                         # rep("\\\\\n\\\\\n", length(cohortOrder))
-                        getNameAcross(prettyCohortNames),
-                        "\\\\ [-0.5em]\\hline"
-                        )  
+                        "[0.4em]\\hline"
+                        )
+  if (singleTable) {
+    addtorow$command = c(addtorow$command, "[0.5em]\\hline")
+  } else {
+    addtorow$command = c(addtorow$command, getNameAcross(prettyCohortNames))
+  }
+  
   tab <- xtable(crude)
   
   align(tab) <- "clrrrcrrr"
@@ -399,6 +432,10 @@ prettyCohortNames2 <- c("Esophageal cancer",
 
 printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), cohortOrder2, prettyCohortNames2)
 # }))
+```
+
+```{r echo=FALSE, results="asis"}
+printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), "HipFracture", "", singleTable = TRUE)
 ```
 
 ## Incidence Among All
@@ -804,10 +841,10 @@ plotForest <- function(logRr, logLb95Ci, logUb95Ci, names, labels,
 
     p <- ggplot2::ggplot(d,ggplot2::aes(x = exp(logRr), 
                                         y = name, xmin = exp(logLb95Ci), xmax = exp(logUb95Ci))) +
-        ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.2) +
+        ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1) +
         ggplot2::geom_vline(xintercept = 1, size = 0.5) +
-        ggplot2::geom_errorbarh(height = 0.15) +
-        ggplot2::geom_point(size=3, shape = 23, ggplot2::aes(fill=type)) +
+        ggplot2::geom_errorbarh(height = 0.15, alpha = exp(0.5*(d$logLb95Ci-d$logUb95Ci))) +
+        ggplot2::geom_point(size=3, shape = 23, ggplot2::aes(fill=type), alpha = exp(0.5*(d$logLb95Ci-d$logUb95Ci))) +
         ggplot2::scale_fill_manual(values = c("#000000", "#FFFFFF", "#FFFFFF")) +
         ggplot2::scale_x_continuous(xLabel, trans = "log10", breaks = breaks, labels = breaks) +
         ggplot2::coord_cartesian(xlim = c(min(breaks), max(breaks))) +
