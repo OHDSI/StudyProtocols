@@ -2,7 +2,10 @@
 title: "Study Results"
 author: "Marc A. Suchard, MD, PhD"
 date: "April 13, 2017"
-output: pdf_document
+output:
+  pdf_document: 
+    fig_caption: yes
+  html_document: default
 header-includes:
 - \usepackage{pdflscape}
 - \usepackage{rotating}
@@ -17,6 +20,7 @@ library(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 options(xtable.comment = FALSE)
+knitr::opts_chunk$set(fig.path = "figures/")
 
 # Functions
 
@@ -118,29 +122,57 @@ getOrder <- function(dbs, folders) {
                 }))
 }
 
-saveTable <- function(obj, caption = NULL, number = NULL, name) {
-  first <- name
-  name <- paste(name,".tex",sep="")
+saveTable <- function(obj, number = NULL, filename) {
+  first <- filename
+  name <- paste(filename,".tex",sep="")
   sink(file=name)
   cat('
-      \\documentclass{report}
-      \\usepackage[paperwidth=5.5in,paperheight=7in,noheadfoot,margin=0in]{geometry}
-      \\begin{document}\\pagestyle{empty}
+      \\documentclass[preview]{standalone}
+      \\usepackage{graphicx}
+      \\usepackage[font=small]{caption}
+      \\begin{document}
       ')
   if (!is.null(number)) cat(paste0("\\setcounter{table}{",number-1,"}"))
-  cat(paste0("\\begin{table}[ht]\\centering", obj))
-  if (!is.null(caption)) cat(paste0("\\caption{",caption,"}"))
-  cat("\\end{table}")
+  cat("\\captionsetup{width=\\textwidth}")
+  cat(obj)
   cat('
       \\end{document}
       ')
   sink()
   tools::texi2dvi(file=name)
-  cmd <- paste("dvipng -T tight -D 400", shQuote(paste(first,".dvi",sep="")))
+  cmd <- paste("dvipng -T tight -D 600", shQuote(paste(first,".dvi",sep="")))
   invisible(system(cmd))
-  cleaner <- c(".aux",".log",".dvi")
+  cleaner <- c(".tex",".aux",".log",".dvi")
   invisible(file.remove(paste(first,cleaner,sep="")))
 }
+
+saveFigure <- function(filename, newFile, caption = NULL, number = NULL, width, height) {
+  first <- newFile
+  name <- paste(newFile,".tex",sep="")
+  sink(file=name)
+  cat('
+      \\documentclass[preview]{standalone}
+      \\usepackage{graphicx}
+      \\usepackage{caption}
+      \\begin{document}
+      ')
+  if (!is.null(number)) cat(paste0("\\setcounter{figure}{",number-1,"}"))
+  cat("\\begin{figure}[hbt]\\centering")
+  cat("\\captionsetup{width=\\textwidth}")
+  cat(paste0("\\includegraphics[width=\\textwidth,natwidth=",width,",natheight=",height,"]{",filename,"}"))
+  if (!is.null(caption)) cat(paste0("\\caption{",caption,"}"))
+  cat("\\end{figure}")
+  cat('
+      \\end{document}
+      ')
+  sink()
+  tools::texi2dvi(file=name)
+  cmd <- paste("dvipng -T tight -D 600", shQuote(paste(first,".dvi",sep="")))
+  invisible(system(cmd))
+  cleaner <- c(".tex",".aux",".log",".dvi")
+  invisible(file.remove(paste(first,cleaner,sep="")))
+}
+
 
 ```
 
@@ -152,7 +184,7 @@ studyFolder <- "/Users/yuxitian/Dropbox/hip_fracture/"
 folders <- c("PPlus", 
              "Optum_JRD", "CCAE_JRD", "CCAE_UNM",
              "MDCR_JRD", "MDCR_UNM", "MDCD_JRD", "Cerner", 
-             "Columbia", "Stride")
+             "Columbia", "Stride", "NHIS")
 
 label1 <- c("IMS", 
             "Optum", "Truven", "Truven",
@@ -284,7 +316,9 @@ printOutcomeTable <- function(analysisId,
                               labels, 
                               cohortOrder, 
                               prettyCohortNames,
-                              singleTable = FALSE) {
+                              singleTable = FALSE,
+                              caption = NULL,
+                              floating = FALSE) {
   
   allCohorts <- read.csv(system.file("settings", 
                                      "CohortsToCreate.csv", 
@@ -402,14 +436,14 @@ printOutcomeTable <- function(analysisId,
     addtorow$command = c(addtorow$command, getNameAcross(prettyCohortNames))
   }
   
-  tab <- xtable(crude)
+  tab <- xtable(crude, caption = caption)
   
   align(tab) <- "clrrrcrrr"
   print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
                hline.after = c(-1),
-               sanitize.text.function=function(x) { x }
-               )
+               sanitize.text.function=function(x) { x },
+               floating = floating)
 }
 
 cohortOrder1 <- c("HipFracture", 
@@ -435,7 +469,7 @@ printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), cohortOr
 ```
 
 ```{r echo=FALSE, results="asis"}
-printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), "HipFracture", "", singleTable = TRUE)
+printOutcomeTable(analysisId = 1, folders, paste0(label1, " ", label2), "HipFracture", "", singleTable = TRUE, caption = "Number of patients, observation years, and number of hip fracture events in study cohort by database", floating = FALSE)
 ```
 
 ## Incidence Among All
@@ -499,7 +533,7 @@ printOverallIncidence <- function(analysisId,
   
   for (column in c("eventsTreated", "eventsComparator", "treatedYears", "comparatorYears")) {
     crude[,column] <- ifelse(crude[,column] < 6,
-                             ifelse(crude[,column] == 0, 0, "<6"),
+                             ifelse(crude[,column] == 0, 0, "\\textless6"),
                              formatC(crude[,column],
                                      format = "d", big.mark = ","))
   }
@@ -571,24 +605,23 @@ printOverallIncidence(analysisId = 1, folders, paste0(label1, " ", label2), coho
 
 
 ```{r echo=FALSE, results="asis"}
-
-notPPlus <- !(folders == "PPlus")
+toRemove = match(c("PPlus","Cerner"),folders)
+#notPPlus <- !(folders == "PPlus" | folders == "Cerner")
 
 printOutcomeTable(analysisId = 2,
-                  folders = folders[notPPlus], paste0(label1, " ", label2)[notPPlus],
+                  folders = folders[-toRemove], paste0(label1, " ", label2)[-toRemove],
                   cohortOrder1, prettyCohortNames1)
 ```
 
 ```{r echo=FALSE, results="asis"}
 printOutcomeTable(analysisId = 2,
-                  folders = folders[-1], paste0(label1, " ", label2)[-1],
+                  folders = folders[-toRemove], paste0(label1, " ", label2)[-toRemove],
                   cohortOrder2, prettyCohortNames2)
 
 ```
 
 ## Incidence Among All
 ```{r echo=FALSE, results="asis"}
-toRemove = match(c("PPlus"),folders)
 printOverallIncidence(analysisId = 2, folders[-toRemove], paste0(label1, " ", label2)[-toRemove], cohortOrder3, prettyCohortNames3)
 ```
 
@@ -1046,7 +1079,7 @@ buildCalibratedOutcomeResults <- function(folders, analysisId, cohort, ciCalibra
 ```{r, echo=FALSE, warning=FALSE}
 hip2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "HipFracture",
                                 c("CCAE_UNM", "MDCR_UNM"),
-                            c("PPlus"))
+                            c("PPlus","Cerner"))
  gridExtra::grid.arrange(hip2$data_table, hip2$p, ncol = 2)
 ```
 
@@ -1064,7 +1097,7 @@ Meta-analysis:
 ```{r, echo=FALSE, warning=FALSE}
 hip2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "HipFracture",
                                 ciCalibrationModelsPP,
-                            c("PPlus"))
+                            c("PPlus","Cerner"))
  gridExtra::grid.arrange(hip2CI$data_table, hip2CI$p, ncol = 2)
 
 ```
@@ -1119,7 +1152,7 @@ Meta-analysis:
 ```{r, echo=FALSE, warning=FALSE}
 vert2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "VertebralFracture",
                                 c("CCAE_UNM", "MDCR_UNM"),
-                             c("PPlus"))
+                             c("PPlus","Cerner"))
  gridExtra::grid.arrange(vert2$data_table, vert2$p, ncol = 2)
 ```
 
@@ -1137,7 +1170,7 @@ Meta-analysis:
 ```{r, echo=FALSE, warning=FALSE}
 vert2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "VertebralFracture",
                                 ciCalibrationModelsPP,
-                            c("PPlus"))
+                            c("PPlus","Cerner"))
  gridExtra::grid.arrange(vert2CI$data_table, vert2CI$p, ncol = 2)
 
 ```
@@ -1192,7 +1225,7 @@ Meta-analysis:
 ```{r, echo=FALSE, warning=FALSE}
 atyp2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "AtypicalFemuralFracture",
                                 c("CCAE_UNM", "MDCR_UNM"),
-                             c("PPlus"))
+                             c("PPlus","Cerner"))
  gridExtra::grid.arrange(atyp2$data_table, atyp2$p, ncol = 2)
 ```
 
@@ -1210,7 +1243,7 @@ Meta-analysis:
 ```{r, echo=FALSE, warning=FALSE}
 atyp2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "AtypicalFemuralFracture",
                                 ciCalibrationModelsPP,
-                            c("PPlus"))
+                            c("PPlus","Cerner"))
  gridExtra::grid.arrange(atyp2CI$data_table, atyp2CI$p, ncol = 2)
 
 ```
