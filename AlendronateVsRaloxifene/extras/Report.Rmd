@@ -127,9 +127,9 @@ saveTable <- function(obj, number = NULL, filename) {
   name <- paste(filename,".tex",sep="")
   sink(file=name)
   cat('
-      \\documentclass[preview]{standalone}
+      \\documentclass[preview, 11pt]{standalone}
       \\usepackage{graphicx}
-      \\usepackage[font=small]{caption}
+      \\usepackage[font = small]{caption}
       \\begin{document}
       ')
   if (!is.null(number)) cat(paste0("\\setcounter{table}{",number-1,"}"))
@@ -146,16 +146,18 @@ saveTable <- function(obj, number = NULL, filename) {
   invisible(file.remove(paste(first,cleaner,sep="")))
 }
 
-saveFigure <- function(filename, newFile, caption = NULL, number = NULL, width, height) {
+saveFigure <- function(filename, newFile, caption = NULL, number = NULL, width, height, newWidth = NULL) {
+  if (is.null(newWidth)) newWidth = width
   first <- newFile
   name <- paste(newFile,".tex",sep="")
   sink(file=name)
-  cat('
-      \\documentclass[preview]{standalone}
+  cat(paste0('
+      \\documentclass[preview, 11pt]{standalone}
       \\usepackage{graphicx}
-      \\usepackage{caption}
+      \\usepackage[font = small]{caption}
+      \\usepackage[textwidth=',newWidth,']{geometry}
       \\begin{document}
-      ')
+      '))
   if (!is.null(number)) cat(paste0("\\setcounter{figure}{",number-1,"}"))
   cat("\\begin{figure}[hbt]\\centering")
   cat("\\captionsetup{width=\\textwidth}")
@@ -172,7 +174,6 @@ saveFigure <- function(filename, newFile, caption = NULL, number = NULL, width, 
   cleaner <- c(".tex",".aux",".log",".dvi")
   invisible(file.remove(paste(first,cleaner,sep="")))
 }
-
 
 ```
 
