@@ -79,10 +79,6 @@ rect(-.1, 0.44, 0.05, 0.75, col = 'white', border = 'white')
 text(0.06, 0.6, "Survival Probability", cex = 5, col = "black", srt = 90)
 
 
-rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
-crop(base, extent(base, 0, 1000, 0, 1000))
-
-
 # kmtext <- lapply(1:length(folders), FUN = function(idx) {
 #   folder <- folders[idx]
 #   readPNG(file.path(paste0(exportFolder,"/KM/",folder,".png")))
@@ -108,6 +104,18 @@ lapply(1:length(folders), FUN = function(idx) {
   dev.copy(png,paste0(folder,".png"),width = 2800, height = 2000)
   dev.off()
 })
+
+base <- as.raster(readPNG("PsAfterStratificationPrefScale.png"))
+rasterGrob(base, interpolate = FALSE)
+par(mar = c(0,0,0,0))
+plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
+lim <- par()
+rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
+rect(0.865, 0.45, 1.05, 0.6, col = 'white', border = 'white')
+text(0.94, 0.582, "Alendronate", cex = 4, col = "black")
+text(0.9305, 0.508, "Raloxifene", cex = 4, col = "black")
+dev.copy(png,"PsAfter_Optum.png",width = 2000, height = 1400)
+dev.off()
 
 
 

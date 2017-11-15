@@ -632,7 +632,9 @@ printOverallIncidence(analysisId = 2, folders[-toRemove], paste0(label1, " ", la
 ## Attrition from PS Trimming
 ```{r echo = FALSE, results = "asis"}
 printAttrition <- function(folders,
-                           labels) {
+                           labels,
+                           caption = NULL,
+                           floating = FALSE) {
   results <- getAttrition(folders)
   #results$space1 <- ""
 
@@ -661,15 +663,16 @@ printAttrition <- function(folders,
   addtorow$pos <- c(list(0), nrow(crude))
 
   addtorow$command <- c("\\multicolumn{1}{c}{Data source}& Alendronate & Raloxifene & Total \\\\ \\hline \\\\[-0.5em]\n",
-                         "\\\\ [-0.5em]\\hline")
+                         "[0.4em]\\hline")
 
-  tab <- xtable(crude)
+  tab <- xtable(crude, caption = caption)
   
   align(tab) <- "clrrr"
   print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
                hline.after = c(-1),
-               sanitize.text.function=function(x) { x }
+               sanitize.text.function=function(x) { x },
+               floating = floating
   )
 }
   
@@ -682,38 +685,44 @@ printAttrition(folders, paste0(label1, " ", label2))
 ## Covariate balance statistics
 
 ```{r, echo=FALSE, results="asis"}
-table <-
-  do.call(rbind, 
-          lapply(folders, FUN = function(file) {
-            table <- read.csv(file.path(studyFolder, 
-                                        file, 
-                                        "Balance.csv"), as.is = TRUE)
-            idx <- which(folders == file)
-            name <- paste0(label1[idx], " ", label2[idx])
-            name <-  sub("\\^(\\d)", "$^\\1$", name)
-            table <- data.frame(db = name,
-                                before = max(abs(table$beforeMatchingStdDiff),
-                                             na.rm = TRUE),
-                                after = max(abs(table$afterMatchingStdDiff),
-                                            na.rm = TRUE))
-            table
-          }))
-
+printBalance <- function(folders,
+                         caption = NULL,
+                         floating = FALSE) {
+  table <-
+    do.call(rbind, 
+            lapply(folders, FUN = function(file) {
+              table <- read.csv(file.path(studyFolder, 
+                                          file, 
+                                          "Balance.csv"), as.is = TRUE)
+              idx <- which(folders == file)
+              name <- paste0(label1[idx], " ", label2[idx])
+              name <-  sub("\\^(\\d)", "$^\\1$", name)
+              table <- data.frame(db = name,
+                                  before = max(abs(table$beforeMatchingStdDiff),
+                                               na.rm = TRUE),
+                                  after = max(abs(table$afterMatchingStdDiff),
+                                              na.rm = TRUE))
+              table
+            }))
+  
   addtorow <- list()
   addtorow$pos <- list()
   addtorow$pos[[1]] <- 0
   addtorow$pos[[2]] <- nrow(table)
-  addtorow$command <- c("\\multicolumn{1}{c}{Data source} & \\multicolumn{1}{c}{Before} & \\multicolumn{1}{c}{After}  \\\\\n \\hline \\\\[-0.5em]",
-                        "\\\\ [-0.5em]\\hline")  
-
-  output <- xtable(table)
+  addtorow$command <- c("\\multicolumn{1}{c}{Data source} & \\multicolumn{1}{c}{Before PS} & \\multicolumn{1}{c}{After PS}  \\\\\n \\hline \\\\[-0.5em]",
+                        "[0.4em]\\hline")  
+  
+  output <- xtable(table, caption = caption)
   
   align(output) <- "clrr"
   print.xtable(output, include.rownames = FALSE, include.colnames = FALSE,
                add.to.row = addtorow,
                hline.after = c(-1),
-               sanitize.text.function=function(x) { x }
-               )
+               sanitize.text.function=function(x) { x },
+               floating = floating
+  )
+}
+printBalance(folders)
 ```
 
 ## Residual bias using negative controls
@@ -1058,23 +1067,15 @@ buildCalibratedOutcomeResults <- function(folders, analysisId, cohort, ciCalibra
 }
 ```
 
-\clearpage
-
+<!--
 ## Hip fracture CI Calibrated (intent-to-treat)
 ```{r, echo=FALSE, warning=FALSE}
-  
  hip1CI <- buildCalibratedOutcomeResults(folders, analysisId = 1, cohort = "HipFracture",
                                 ciCalibrationModelsIIT)
  gridExtra::grid.arrange(hip1CI$data_table, hip1CI$p, ncol = 2)
-
+ #hip1CI$meta
 ```
-
-\clearpage
-```{r, echo=FALSE}
-  hip1CI$meta
-```
-
-\clearpage
+-->
 
 ## Hip fracture effect estimate (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
@@ -1091,27 +1092,18 @@ Meta-analysis:
 ```{r, echo=FALSE}
   hip2$meta
 ```
-
 \clearpage
 
+<!--
 ## Hip fracture CI Calibrated (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
 hip2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "HipFracture",
                                 ciCalibrationModelsPP,
                             c("PPlus","Cerner"))
  gridExtra::grid.arrange(hip2CI$data_table, hip2CI$p, ncol = 2)
-
+ #hip2CI$meta
 ```
-
-\clearpage 
-
-Meta-analysis:
-
-```{r, echo=FALSE}
-  hip2CI$meta
-```
-
-\clearpage
+-->
 
 ## Vertebral fracture effect estimate (intent-to-treat)
 ```{r, echo=FALSE, warning=FALSE}
@@ -1128,26 +1120,16 @@ Meta-analysis:
   vert1$meta
 ```
 
-
 \clearpage
-
-## Vertebral fracture (intent-to-treat)
+<!--
+## Vertebral fracture CI Calibrated (intent-to-treat)
 ```{r, echo=FALSE, warning=FALSE}
 vert1CI <- buildCalibratedOutcomeResults(folders, analysisId = 1, cohort = "VertebralFracture",
                                 ciCalibrationModelsIIT)
  gridExtra::grid.arrange(vert1CI$data_table, vert1CI$p, ncol = 2)
-
+ #vert1CI$meta
 ```
-
-\clearpage 
-
-Meta-analysis:
-
-```{r, echo=FALSE}
-  vert1CI$meta
-```
-
-\clearpage
+-->
 
 ## Vertebral fracture effect estimate (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
@@ -1166,25 +1148,16 @@ Meta-analysis:
 ```
 
 \clearpage
-
+<!--
 ## Vertebral fracture CI Calibrated (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
 vert2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "VertebralFracture",
                                 ciCalibrationModelsPP,
                             c("PPlus","Cerner"))
  gridExtra::grid.arrange(vert2CI$data_table, vert2CI$p, ncol = 2)
-
+ #vert2CI$meta
 ```
-
-\clearpage 
-
-Meta-analysis:
-
-```{r, echo=FALSE}
-  vert2CI$meta
-```
-
-\clearpage
+-->
 
 ## Atypical femural fracture effect estimate (intent-to-treat)
 ```{r, echo=FALSE, warning=FALSE}
@@ -1202,25 +1175,15 @@ Meta-analysis:
 ```
 
 \clearpage
-
-## Atypical femural fracture (intent-to-treat)
+<!--
+## Atypical femural fracture CI Calibrated (intent-to-treat)
 ```{r, echo=FALSE, warning=FALSE}
 atyp1CI <- buildCalibratedOutcomeResults(folders, analysisId = 1, cohort = "AtypicalFemuralFracture",
                                 ciCalibrationModelsIIT)
  gridExtra::grid.arrange(atyp1CI$data_table, atyp1CI$p, ncol = 2)
-
+ #atyp1CI$meta
 ```
-
-\clearpage 
-
-Meta-analysis:
-
-```{r, echo=FALSE}
-  atyp1CI$meta
-```
-
-
-\clearpage
+-->
 
 ## Atypical femural fracture effect estimate (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
@@ -1237,25 +1200,82 @@ Meta-analysis:
 ```{r, echo=FALSE, warning=FALSE}
   atyp2$meta
 ```
-
 \clearpage
 
+<!--
 ## Atypical femural fracture CI Calibrated (per-protocol)
 ```{r, echo=FALSE, warning=FALSE}
 atyp2CI <- buildCalibratedOutcomeResults(folders, analysisId = 2, cohort = "AtypicalFemuralFracture",
                                 ciCalibrationModelsPP,
                             c("PPlus","Cerner"))
  gridExtra::grid.arrange(atyp2CI$data_table, atyp2CI$p, ncol = 2)
+ #atyp2CI$meta
+```
+-->
 
+## Esophageal Cancer effect estimate (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+ec1 <- buildOutcomeResults(folders, analysisId = 1, cohort = "EsophagealCancer",
+                                c("CCAE_UNM", "MDCR_UNM"))
+ gridExtra::grid.arrange(ec1$data_table, ec1$p, ncol = 2)
 ```
 
-\clearpage 
+\clearpage
 
 Meta-analysis:
 
 ```{r, echo=FALSE}
-  atyp2CI$meta
+  ec1$meta
 ```
+
+## Esophageal Cancer effect estimate (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+ec2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "EsophagealCancer",
+                                c("CCAE_UNM", "MDCR_UNM"),
+                             c("PPlus","Cerner"))
+ gridExtra::grid.arrange(ec2$data_table, ec2$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  ec2$meta
+```
+
+## Osteonecrosis of the Jaw effect estimate (intent-to-treat)
+```{r, echo=FALSE, warning=FALSE}
+onj1 <- buildOutcomeResults(folders, analysisId = 1, cohort = "OsteonecrosisOfJaw",
+                                c("CCAE_UNM", "MDCR_UNM"))
+ gridExtra::grid.arrange(onj1$data_table, onj1$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  onj1$meta
+```
+
+## Osteonecrosis of the Jaw effect estimate (per-protocol)
+```{r, echo=FALSE, warning=FALSE}
+onj2 <- buildOutcomeResults(folders, analysisId = 2, cohort = "OsteonecrosisOfJaw",
+                                c("CCAE_UNM", "MDCR_UNM"),
+                             c("PPlus","Cerner"))
+ gridExtra::grid.arrange(onj2$data_table, onj2$p, ncol = 2)
+```
+
+\clearpage
+
+Meta-analysis:
+
+```{r, echo=FALSE}
+  onj2$meta
+```
+
+\clearpage
 
 ```{r, echo = FALSE, warning = FALSE, fig.height=8, fig.width=7}
 blank <- grid::grid.rect(gp=grid::gpar(col="white"))
@@ -1263,19 +1283,172 @@ blank <- grid::grid.rect(gp=grid::gpar(col="white"))
 cowplot::plot_grid(gridExtra::arrangeGrob(hip1$data_table, blank, hip1$p, ncol = 3, widths = c(1,0.1,1)),
                    gridExtra::arrangeGrob(blank),
                    gridExtra::arrangeGrob(vert1$data_table, blank, vert1$p, ncol = 3, widths = c(1,0.1,1)),
+                   nrow = 3, labels=c('A) Hip Fracture',"",'B) Vert. Fracture'), label_fontface = "plain", 
+                   vjust = 1, hjust = 0,
+                   rel_heights = c(1,0.1,1))
+
+cowplot::plot_grid(gridExtra::arrangeGrob(atyp1$data_table, blank, atyp1$p, ncol = 3, widths = c(1,0.1,1)),
                    gridExtra::arrangeGrob(blank),
-                   gridExtra::arrangeGrob(atyp1$data_table, blank, atyp1$p, ncol = 3, widths = c(1,0.1,1)), 
-                   nrow = 5, labels=c('A)',"",'B)',"",'C)'), label_fontface = "plain", vjust = 1,
+                   gridExtra::arrangeGrob(ec1$data_table, blank, ec1$p, ncol = 3, widths = c(1,0.1,1)),
+                   gridExtra::arrangeGrob(blank),
+                   gridExtra::arrangeGrob(onj1$data_table, blank, onj1$p, ncol = 3, widths = c(1,0.1,1)),
+                   nrow = 5, labels=c('A) AFF',"",'B) Eso. Cancer',"",'C) ONJ'), label_fontface = "plain",
+                   vjust = 1, hjust = 0,
                    rel_heights = c(1,0.1,1,0.1,1))
+
+# cowplot::plot_grid(gridExtra::arrangeGrob(hip1$data_table, hip1$p, blank, vert1$data_table, vert1$p,
+#                                           ncol = 5, widths = c(1,1,.1,1,1)),
+#                    gridExtra::arrangeGrob(atyp1$data_table, atyp1$p, blank, ec1$data_table, ec1$p,
+#                                           ncol = 5, widths = c(1,1,.1,1,1)),
+#                    gridExtra::arrangeGrob(onj1$data_table, onj1$p, blank, blank, blank,
+#                                           ncol = 5, widths = c(1,1,.1,1,1)),
+#                    nrow = 3)
+
 ```
 
 ## Top Covariate Balance
 ```{r, echo = FALSE, warning = FALSE}
-#balance = read.csv("~/Dropbox/Hip_Fracture_Paper/prettyBalance/Balance.csv")
-#CohortMethod::plotCovariateBalanceOfTopVariables(balance,
-#                                                 n = 20,
-#                                                 maxNameWidth = 100,
-#                                                 fileName = "~/Dropbox/Hip_Fracture_Paper/prettyBalance/balance.png",
-#                                                 beforeLabel = "before matching",
-#                                                 afterLabel = "after matching")
+.truncRight <- function(x, n) {
+  nc <- nchar(x)
+  x[nc > (n - 3)] <- paste("...",
+                           substr(x[nc > (n - 3)], nc[nc > (n - 3)] - n + 1, nc[nc > (n - 3)]),
+                           sep = "")
+  x
+}
+plotCovariateBalanceOfTopVariables <- function(balance,
+                                               n = 20,
+                                               maxNameWidth = 100,
+                                               fileName = NULL,
+                                               beforeLabel = "before matching",
+                                               afterLabel = "after matching") {
+  topBefore <- balance[order(-abs(balance$beforeMatchingStdDiff)), ]
+  topBefore <- topBefore[1:n, ]
+  topBefore$facet <- paste("Top", n, beforeLabel)
+  topAfter <- balance[order(-abs(balance$afterMatchingStdDiff)), ]
+  topAfter <- topAfter[1:n, ]
+  topAfter$facet <- paste("Top", n, afterLabel)
+  filtered <- rbind(topBefore, topAfter)
+
+  data <- data.frame(covariateId = rep(filtered$covariateId, 2),
+                     covariate = rep(filtered$covariateName, 2),
+                     difference = c(filtered$beforeMatchingStdDiff, filtered$afterMatchingStdDiff),
+                     group = rep(c(beforeLabel, afterLabel), each = nrow(filtered)),
+                     facet = rep(filtered$facet, 2),
+                     rowId = rep(nrow(filtered):1, 2))
+  filtered$covariateName <- .truncRight(as.character(filtered$covariateName), maxNameWidth)
+  data$facet <- factor(data$facet, levels = rev(levels(data$facet)))
+  data$group <- factor(data$group, levels = rev(levels(data$group)))
+  plot <- ggplot2::ggplot(data, ggplot2::aes(x = difference,
+                                             y = rowId,
+                                             color = group,
+                                             group = group,
+                                             fill = group,
+                                             shape = group)) +
+    ggplot2::geom_point() +
+    ggplot2::geom_vline(xintercept = 0) +
+    ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                          rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                           rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_x_continuous("Standardized difference of mean") +
+    ggplot2::scale_y_continuous(breaks = nrow(filtered):1, labels = filtered$covariateName) +
+    ggplot2::facet_grid(facet ~ ., scales = "free", space = "free") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = 7),
+                   axis.title.y = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.direction = "horizontal",
+                   legend.title = ggplot2::element_blank())
+  if (!is.null(fileName))
+    ggplot2::ggsave(fileName, plot, width = 10, height = max(2 + n * 0.2, 5), dpi = 400)
+  return(plot)
+}
+
+plotCovariateBalanceOfTopVariables1 <- function(balance,
+                                               n = 20,
+                                               maxNameWidth = 100,
+                                               fileName = NULL,
+                                               beforeLabel = "before matching",
+                                               afterLabel = "after matching") {
+  topBefore <- balance[order(-abs(balance$beforeMatchingStdDiff)), ]
+  topBefore <- topBefore[1:n, ]
+  topBefore$facet <- paste("Top", n, beforeLabel)
+  # topAfter <- balance[order(-abs(balance$afterMatchingStdDiff)), ]
+  # topAfter <- topAfter[1:n, ]
+  # topAfter$facet <- paste("Top", n, afterLabel)
+  # filtered <- rbind(topBefore, topAfter)
+  filtered <- topBefore
+
+  data <- data.frame(covariateId = rep(filtered$covariateId, 2),
+                     covariate = rep(filtered$covariateName, 2),
+                     difference = c(filtered$beforeMatchingStdDiff, filtered$afterMatchingStdDiff),
+                     group = rep(c(beforeLabel, afterLabel), each = nrow(filtered)),
+                     #facet = rep(filtered$facet, 2),
+                     rowId = rep(nrow(filtered):1, 2))
+  filtered$covariateName <- .truncRight(as.character(filtered$covariateName), maxNameWidth)
+  #data$facet <- factor(data$facet, levels = rev(levels(data$facet)))
+  data$group <- factor(data$group, levels = rev(levels(data$group)))
+  plot <- ggplot2::ggplot(data, ggplot2::aes(x = difference,
+                                             y = rowId,
+                                             color = group,
+                                             group = group,
+                                             fill = group,
+                                             shape = group)) +
+    ggplot2::geom_point() +
+    ggplot2::geom_vline(xintercept = 0) +
+    ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                          rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                           rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_x_continuous("Standardized difference of mean") +
+    ggplot2::scale_y_continuous(breaks = nrow(filtered):1, labels = filtered$covariateName) +
+    #ggplot2::facet_grid(facet ~ ., scales = "free", space = "free") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = 7),
+                   axis.title.y = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.direction = "horizontal",
+                   legend.title = ggplot2::element_blank())
+  if (!is.null(fileName))
+    ggplot2::ggsave(fileName, plot, width = 10, height = max(2 + n * 0.2, 5), dpi = 400)
+  return(plot)
+}
+
+
+balance = read.csv("~/Dropbox/Hip_Fracture_Paper/prettyBalance/Balance.csv")
+plotCovariateBalanceOfTopVariables1(balance,
+                                    n = 20,
+                                    maxNameWidth = 100,
+                                    fileName = "~/Dropbox/Hip_Fracture_Paper/prettyBalance/balance.png",
+                                    beforeLabel = "before matching",
+                                    afterLabel = "after matching")
 ```
+
+## Negative Control Figure
+```{r, echo = FALSE, warning = FALSE}
+# select Optum
+idx = 2
+file <- folders[idx]
+emp <-  read.csv(file.path(studyFolder, 
+                           file, "tablesAndFigures",
+                           "EmpiricalCalibration.csv"))
+
+emp <- emp[emp$analysisId == 1 & emp$outcomeId %in% negControlCohortIds, ]
+plot1 <- EmpiricalCalibration::plotCalibrationEffect(emp$logRr, emp$seLogRr)
+plot2 <- EmpiricalCalibration::plotCalibration(emp$logRr, emp$seLogRr, legendPosition = c(0.675,0.20))
+#blank <- grid::grid.rect(gp=grid::gpar(col="white"))
+# ggplot2::ggsave("banana.png",
+#                 gridExtra::grid.arrange(cowplot::plot_grid(plot1,  plot2,
+#                                            nrow = 1, labels = c('A)','B)'),
+#                                            label_fontface = "plain", vjust = 1.05, hjust = 0,
+#                                            rel_widths = c(1,1))),
+#                 dpi = 600, width = 6, height = 3, units = "in")
+gridExtra::grid.arrange(cowplot::plot_grid(plot1,  plot2,
+                                           nrow = 1, labels = c('A)','B)'),
+                                           label_fontface = "plain", vjust = 1.05, hjust = 0,
+                                           rel_widths = c(1,1)))
+```
+
+
+
+
+
+
