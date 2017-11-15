@@ -1448,7 +1448,112 @@ gridExtra::grid.arrange(cowplot::plot_grid(plot1,  plot2,
 ```
 
 
+## Calibrated p-values
 
 
 
 
+
+
+
+```{r echo=FALSE, results="asis"}
+printPValueTable <- function(analysisId,
+                             folders, 
+                             labels, 
+                             cohortOrder, 
+                             prettyCohortNames,
+                             singleTable = FALSE,
+                             caption = NULL,
+                             floating = FALSE) {
+  
+  allCohorts <- read.csv(system.file("settings", 
+                                     "CohortsToCreate.csv", 
+                                     package = "AlendronateVsRaloxifene"))
+  allCohorts <- allCohorts[3:nrow(allCohorts),]  
+  
+  allCohorts <- allCohorts[allCohorts$name %in% cohortOrder, ]
+
+  allResults <- getData(folders)
+  
+  results <- allResults
+  results <- results[results$analysisId == analysisId, ]
+  results <- results[results$outcomeName %in% cohortOrder, ]
+  results <- results[results$db %in% folders, ]
+  
+  results$space1 <- ""
+  results$space2 <- ""
+  
+  results$order1 <- getOrder(results$db, folders)
+  results$order2 <- getOrder(as.character(results$outcomeName), cohortOrder)
+  results <- results[order(results$order2, 
+                           results$order1,
+                           decreasing = FALSE),]
+  
+  crude <- results[,c("db", "null_mean", "null_sd", "space1", "logRr", "seLogRr", "p", "space2",
+                      "calibratedP", "calibratedP_lb95ci", "calibratedP_ub95ci")]
+  
+  crude$logRr[which(is.na(crude$seLogRr))] = NA
+  
+  for (column in c("null_mean", "null_sd", "logRr", "seLogRr", "p",
+                      "calibratedP", "calibratedP_lb95ci", "calibratedP_ub95ci")) {
+    crude[,column] <- formatC(crude[,column], digits = 3)
+  }
+  
+  crude$db <- c(labels) 
+  
+  addtorow = list()
+  addtorow$pos <- c(list(0, 0, 0),
+                    nrow(crude)
+  )
+  
+  if (singleTable) {
+    addtorow$pos = c(addtorow$pos, nrow(crude) - 1)
+  } else {
+    addtorow$pos = c(addtorow$pos, as.list((length(folders)) * (0:(length(cohortOrder) - 1))))
+  }
+  
+  getNameInBox <- function(name) {
+    paste0("\\parbox[t]{2mm}{\\multirow{",
+           round(length(folders) / 2),
+           "}{*}{\\rotatebox[origin=c]{90}{",
+           name,
+           "}}}")    
+  }
+  
+  getNameAcross <- function(name) {
+    paste0("\\\\[-0.5em]\n \\multicolumn{8}{c}{",
+           name,
+           "} \\\\\n")
+  }
+  
+  addtorow$command <- c("& \\multicolumn{2}{c}{Empirical Null Dist.} & & \\multicolumn{3}{c}{Original Estimate} & & \\multicolumn{3}{c}{Calibrated P-value} \\\\\n",
+                        "\\cline{2-3} \\cline{5-7} \\cline{9-11} \\\\[-1em]\n",
+                        "Data source & Mean & SD & & Mean & SD & p-value & & p-value & 95\\% lb & 95\\% ub \\\\\n \\hline \n",
+                        "[0.4em]\\hline "
+                        )
+  if (singleTable) {
+    addtorow$command = c(addtorow$command, "")
+  } else {
+    addtorow$command = c(addtorow$command, getNameAcross(prettyCohortNames))
+  }
+  
+  tab <- xtable(crude, caption = caption)
+  
+  align(tab) <- "crrrrrrrrrrr"
+  print.xtable(tab, include.rownames = FALSE, include.colnames = FALSE,
+               add.to.row = addtorow,
+               hline.after = c(-1),
+               sanitize.text.function=function(x) { x },
+               floating = floating)
+}
+
+cohortOrder1 <- c("HipFracture", 
+                  "VertebralFracture", 
+                  "AtypicalFemuralFracture")
+
+prettyCohortNames1 <- c("Hip fracture", 
+                        "Vertebal fracture", 
+                        "Atypical femural fracture")
+
+printPValueTable(analysisId = 1, folders, paste0(label1, " ", label2), cohortOrder1, prettyCohortNames1, singleTable = FALSE)
+```

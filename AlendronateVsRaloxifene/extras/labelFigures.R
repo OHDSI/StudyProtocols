@@ -16,6 +16,12 @@ obj = printBalance(folders,
                    floating = TRUE)
 saveTable(obj, 3, filename = "balanceTable")
 
+# Table 4
+obj = printPValueTable(analysisId = 1, folders, paste0(label1, " ", label2), "HipFracture", "Hip Fracture", singleTable = TRUE,
+                       caption = "Empirical null distribution constructed from negative controls, and calibrated p-values for hip fracture outcome",
+                       floating = TRUE)
+saveTable(obj, 4, filename = "calibratedPValue")
+
 # Figure 1
 saveFigure("extras/figures/unnamed-chunk-2-1.pdf", "cohortYear",
            caption = "Year of study entry, stratified by drug exposure and data source. Note patient counts are on the log-scale",
@@ -27,9 +33,14 @@ saveFigure("extras/figures/unnamed-chunk-3-1.pdf", "cohortAge",
            2, "4.04in", "7.60in", newWidth = "3in")
 
 # Figure 3
-saveFigure("extras/figures/unnamed-chunk-34-2.pdf", "forestPlots",
-           caption = "Main analysis hazard ratios for A) hip fracture, B) vertebral fracture, and C) atypical femoral fracture. More precise estimates have greater opacity",
-           3, "6.90in", "7.99in", newWidth = "5in")
+saveFigure("extras/figures/unnamed-chunk-42-2.pdf", "forestPlots1",
+           caption = "Main analysis hazard ratios for A) hip fracture and B) vertebral fracture. More precise estimates have greater opacity. Missing HR from data sources with 0 raloxifene events",
+           3, "7.00in", "7.99in", newWidth = "5in")
+
+# Figure 9
+saveFigure("extras/figures/unnamed-chunk-42-3.pdf", "forestPlots2",
+           caption = "Main analysis hazard ratios for A) atypical femoral fracture, B) esophageal cancer, and C) osteonecrosis of the jaw. More precise estimates have greater opacity. Missing HR from data sources with 0 raloxifene events",
+           9, "7.00in", "7.99in", newWidth = "5in")
 
 # Figure 4
 saveFigure("KM_Optum.png", "KM_Optum_label",
