@@ -5,37 +5,55 @@ library(gridExtra)
 library(rasterVis)
 
 studyFolder <- "~/Dropbox/hip_fracture/"
-exportFolder <- "/Users/yang/Dropbox/hip_fracture1/MultiFigures"
+exportFolder <- "/Users/yuxitian/Dropbox/Hip_Fracture_Paper/FiguresWithLabels/"
+
+# folders <- c("PPlus",
+#              "Optum_JRD", "CCAE_JRD", "CCAE_UNM",
+#              "MDCR_JRD", "MDCR_UNM", "MDCD_JRD", "Cerner",
+#              "Columbia", "Stride")
+# label1 <- c("IMS",
+#             "Optum", "Truven", "Truven",
+#             "Truven", "Truven", "Truven", "Cerner",
+#             "Columbia", "Stanford")
+# label2 <-  c("P-Plus",
+#              "CEDM", expression(CCAE^1), expression(CCAE^2),
+#              expression(MDCR^1), expression(MDCR^2), "MDCD" ,"UT" ,
+#              "" , "")
+# label3 <- c("IMS PPlus",
+#             "Optum CEDM",
+#             "Truven CCAE (1)", "Truven CCAE (2)",
+#             "Truven MDCR (1)", "Truven MDCR (2)",
+#             "Truven MDCD",
+#             "Cerner UT", "Columbia", "Stanford")
+
 folders <- c("PPlus",
              "Optum_JRD", "CCAE_JRD", "CCAE_UNM",
              "MDCR_JRD", "MDCR_UNM", "MDCD_JRD", "Cerner",
-             "Columbia", "Stride")
+             "Columbia", "Stride", "NHIS")
+
 label1 <- c("IMS",
             "Optum", "Truven", "Truven",
             "Truven", "Truven", "Truven", "Cerner",
             "Columbia", "Stanford")
-label2 <-  c("PPlus",
+
+label2 <-  c("P-Plus",
              "CEDM", expression(CCAE^1), expression(CCAE^2),
-             expression(MDCR^1), expression(MDCR^2), "MDCD" ,"EHR" ,
-             "EHR" , "Stride")
-label3 <- c("IMS PPlus",
+             expression(MDCR^1), expression(MDCR^2), "MDCD" ,"UT" ,
+             "" , "")
+
+label3 <- c("IMS P-Plus",
             "Optum CEDM",
             "Truven CCAE (1)", "Truven CCAE (2)",
             "Truven MDCR (1)", "Truven MDCR (2)",
             "Truven MDCD",
-            "Cerner EHR", "Columbia EHR", "Stanford Stride")
+            "Cerner UT", "Columbia", "Stanford")
 
-# base <- as.raster(readPNG(file.path("/Users/yang/Dropbox/hip_fracture1","PPlus","KaplanMeier.png")))
-# rasterGrob(base, interpolate = FALSE)
-# par(mar = c(0,0,0,0))
-# plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
-# lim <- par()
-# rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.8, y = 1, paste("PPlus"),
-#                                                                        cex = 10, col = "black")
-# dev.copy(png,'PPlus.png',width = 2800, height = 2000)
-# dev.off()
-
-
+folders = folders[c(1,2,3,5,7,8,9,10)]
+label1 = label1[c(1,2,3,5,7,8,9,10)]
+label2 = label2[c(1,2,3,5,7,8,9,10)]
+label3 = label3[c(1,2,3,5,7,8,9,10)]
+label2[3:4] = c("CCAE", "MDCR")
+label3[3:4] = c("Truven CCAE", "Truven MDCR")
 
 ## add label to each plot
 
@@ -63,20 +81,17 @@ lapply(1:length(folders), FUN = function(idx) {
   par(mar = c(0,0,0,0))
   plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
   lim <- par()
-  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.50, y = .97, paste0(label1[idx], " ", label2[idx]),cex = 4, col = "black")
-  dev.copy(png,paste0(folder,".png"),width = 2800, height = 2000)
+  #rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.50, y = .97, paste0(label1[idx], " ", label2[idx]),cex = 4, col = "black")
+  rasterImage(base[1:1600,], lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
+  rect(.493, .94, .565, .985, col = 'white', border = 'white')
+  rect(.61, .94, .712, .985, col = 'white', border = 'white')
+  text(.405, .968, "Alendronate", cex = 4, col = "black")
+  text(.655, .968, "Raloxifene", cex = 4, col = "black")
+  rect(-.1, 0.3, 0.05, 0.7, col = 'white', border = 'white')
+  text(0.06, 0.5, "Survival Probability", cex = 5, col = "black", srt = 90)
+  dev.copy(png,paste0(folder,".png"),width = 2800, height = 1600)
   dev.off()
 })
-
-rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
-rect(.493, .96, .565, .99, col = 'white', border = 'white')
-rect(.61, .96, .712, .99, col = 'white', border = 'white')
-
-text(.405, .98, "Alendronate", cex = 4, col = "black")
-text(.655, .98, "Raloxifene", cex = 4, col = "black")
-
-rect(-.1, 0.44, 0.05, 0.75, col = 'white', border = 'white')
-text(0.06, 0.6, "Survival Probability", cex = 5, col = "black", srt = 90)
 
 
 # kmtext <- lapply(1:length(folders), FUN = function(idx) {
@@ -100,8 +115,12 @@ lapply(1:length(folders), FUN = function(idx) {
   par(mar = c(0,0,0,0))
   plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
   lim <- par()
-  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.9, y = 1, paste0(label1[idx], " ", label2[idx]),cex = 8, col = "black")
-  dev.copy(png,paste0(folder,".png"),width = 2800, height = 2000)
+  # rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.9, y = 1, paste0(label1[idx], " ", label2[idx]),cex = 8, col = "black")
+  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
+  rect(0.865, 0.45, 1.05, 0.6, col = 'white', border = 'white')
+  text(0.94, 0.582, "Alendronate", cex = 4, col = "black")
+  text(0.9305, 0.508, "Raloxifene", cex = 4, col = "black")
+  dev.copy(png,paste0(folder,".png"),width = 2000, height = 1400)
   dev.off()
 })
 
@@ -142,8 +161,12 @@ lapply(1:length(folders), FUN = function(idx) {
   par(mar = c(0,0,0,0))
   plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
   lim <- par()
-  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.9, y = 1, paste0(label1[idx], " ", label2[idx]),cex = 8, col = "black")
-  dev.copy(png,paste0(folder,".png"),width = 2800, height = 2000)
+  # rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.9, y = 1, paste0(label1[idx], " ", label2[idx]),cex = 8, col = "black")
+  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
+  rect(0.865, 0.45, 1.05, 0.6, col = 'white', border = 'white')
+  text(0.94, 0.582, "Alendronate", cex = 4, col = "black")
+  text(0.9305, 0.508, "Raloxifene", cex = 4, col = "black")
+  dev.copy(png,paste0(folder,".png"),width = 2000, height = 1400)
   dev.off()
 })
 
@@ -156,8 +179,12 @@ lapply(1:length(folders), FUN = function(idx) {
   par(mar = c(0,0,0,0))
   plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
   lim <- par()
-  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.9, y = 1, paste0(label1[idx], " ", label2[idx]),cex = 8, col = "black")
-  dev.copy(png,paste0(folder,".png"),width = 2800, height = 2000)
+  # rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])+text(x = 0.9, y = 1, paste0(label1[idx], " ", label2[idx]),cex = 8, col = "black")
+  rasterImage(base, lim$usr[1], lim$usr[3], lim$usr[2], lim$usr[4])
+  rect(0.865, 0.45, 1.05, 0.6, col = 'white', border = 'white')
+  text(0.94, 0.582, "Alendronate", cex = 4, col = "black")
+  text(0.9305, 0.508, "Raloxifene", cex = 4, col = "black")
+  dev.copy(png,paste0(folder,".png"),width = 2000, height = 1400)
   dev.off()
 })
 

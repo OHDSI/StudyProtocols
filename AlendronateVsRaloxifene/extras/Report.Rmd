@@ -192,17 +192,17 @@ label1 <- c("IMS",
             "Truven", "Truven", "Truven", "Cerner", 
             "Columbia", "Stanford")
 
-label2 <-  c("PPlus", 
+label2 <-  c("P-Plus", 
              "CEDM", expression(CCAE^1), expression(CCAE^2),
-             expression(MDCR^1), expression(MDCR^2), "MDCD" ,"EHR" , 
-             "EHR" , "Stride")
+             expression(MDCR^1), expression(MDCR^2), "MDCD" ,"UT" , 
+             "" , "")
 
-label3 <- c("IMS PPlus", 
+label3 <- c("IMS P-Plus", 
             "Optum CEDM", 
             "Truven CCAE (1)", "Truven CCAE (2)",
             "Truven MDCR (1)", "Truven MDCR (2)", 
             "Truven MDCD", 
-            "Cerner EHR", "Columbia EHR", "Stanford Stride")
+            "Cerner UT", "Columbia", "Stanford")
 
 folders = folders[c(1,2,3,5,7,8,9,10)]
 label1 = label1[c(1,2,3,5,7,8,9,10)]
