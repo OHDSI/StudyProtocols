@@ -1,7 +1,7 @@
 Treatment Pathways Study Protocol
 ===============
 
-This is a study of treatment pathways in hypertension, diabetes, and depression.  Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_hypertension).
+This is a study of treatment pathways in hypertension, diabetes, and depression.  Detailed information is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_hypertension) and the [full protocol](https://github.com/OHDSI/StudyProtocols/blob/master/Study%201%20-%20Treatment%20Pathways/OHDSI%20treatment%20patterns%2030nov2014.docx?raw=true).
 
 
 
