@@ -3,7 +3,7 @@ OHDSI Alendronate vs Raloxifene study
 
 This study aims to evaluate hip fracture risk in patients exposed to alendronate compared with those exposed to raloxifene.
 
-Detailed information is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:bisphosphonates_and_hip_fracture) and [Full Protocol](https://raw.githubusercontent.com/OHDSI/StudyProtocol/AlendronateVsRaloxifene/master/extras/alendronate_raloxifene_hip_fracture.docx).
+Detailed information is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:bisphosphonates_and_hip_fracture) and [full Protocol](https://github.com/OHDSI/StudyProtocols/blob/master/AlendronateVsRaloxifene/extras/alendronate_raloxifene_hip_fracture.docx?raw=true).
 
 Requirements
 ============
