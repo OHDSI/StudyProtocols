@@ -1,7 +1,7 @@
 Treatment Pathways Study Protocol 12 months
 ===============
 
-This is a study of treatment pathways in hypertension, diabetes, and depression during the first 12 mo after diagnosis.  Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_chronic_disease_12_mos).
+This is a study of treatment pathways in hypertension, diabetes, and depression during the first 12 mo after diagnosis.  Detailed information is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:treatment_pathways_in_chronic_disease_12_mos) and [full protocol](https://raw.githubusercontent.com/OHDSI/StudyProtocols/Study%202%20-%20Treatment%20Pathways%2012mo/master/extras/OHDSITreatmentPathwaysinChronicDisease12monthprotocol.docx).
 
 **R Version**
 

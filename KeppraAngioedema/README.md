@@ -3,7 +3,7 @@ OHDSI Keppra and the Risk of Angioedema study
 
 This study aims to evaluate angioedema risk in seizure disorder patients exposed to Keppra (levetiracetam) compared with those exposed to phenytoin sodium. A potential link between levetiracetam and angioedema has been recently raised by the Food and Drug Administration in their review of spontaneous reporting data. In this study, we will analyze data from a distributed network using the OHDSI CohortMethod package.
 
-Detailed information and protocol is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:angioedema).
+Detailed information is available on the [OHDSI Wiki](http://www.ohdsi.org/web/wiki/doku.php?id=research:angioedema) and [full protocol](https://raw.githubusercontent.com/OHDSI/StudyProtocols/KeppraAngioedema/master/extras/KeppraandAngioedemaRiskStudyProtocolv0.5.docx).
 
 Requirements
 ============
