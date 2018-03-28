@@ -1,0 +1,33 @@
+Package: AhasHfBkleAmputation
+Type: Package
+Title: Comparison of Canagliflozin vs. Alternative Antihyperglycemic Treatments on Risk of Heart Failure Hospitalization and Amputation for Patients with Type 2 Diabetes Mellitus and the Subpopulation with Established Cardiovascular Disease
+Version: 1.2.0
+Author: Frank J DeFalco (fdefalco@its.jnj.com),
+  Martijn J. Schuemie [aut]
+  Patrick B. Ryans [aut]
+Maintainer: Frank J DeFalco <fdefalco@its.jnj.com>
+Description: Execution of Study 501 Estimation Study Execution.
+Depends:
+    DatabaseConnector
+Imports:
+    SqlRender,
+    EmpiricalCalibration,
+    Cyclops,
+    FeatureExtraction (>= 2.1.0),
+    CohortMethod,
+    rmarkdown,
+    ggplot2,
+    ff,
+    ffbase,
+	  OhdsiRTools (>= 1.5.2),
+	  EvidenceSynthesis,
+	  meta,
+	  xlsx,
+	  XLConnect
+Suggests:
+    Shiny,
+    DT
+License: Apache 2.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

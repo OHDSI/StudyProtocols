@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+extras
+documents
+readme.md

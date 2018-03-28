@@ -1,0 +1,17 @@
+analysisId,analysisDescription,timeAtRisk,evenType,psStrategy
+1,Time to First Ever Event On Treatment,On Treatment,First Ever Event,Matching
+2,Time to First Post Index Event On Treatment,On Treatment,First Post Index Event,Matching
+3,Time to First Ever Event Intent to Treat,Intent to Treat,First Ever Event,Matching
+4,Time to First Post Index Event Intent to Treat,Intent to Treat,First Post Index Event,Matching
+5,Time to First Ever Event Lag,Lag,First Ever Event,Matching
+6,Time to First Post Index Event Lag,Lag,First Post Index Event,Matching
+7,Time to First Ever Event Modified ITT,Modified ITT,First Ever Event,Matching
+8,Time to First Post Index Event Modified ITT,Modified ITT,First Post Index Event,Matching
+9,Time to First Ever Event On Treatment,On Treatment,First Ever Event,Stratification
+10,Time to First Post Index Event On Treatment,On Treatment,First Post Index Event,Stratification
+11,Time to First Ever Event Intent to Treat,Intent to Treat,First Ever Event,Stratification
+12,Time to First Post Index Event Intent to Treat,Intent to Treat,First Post Index Event,Stratification
+13,Time to First Ever Event Lag,Lag,First Ever Event,Stratification
+14,Time to First Post Index Event Lag,Lag,First Post Index Event,Stratification
+15,Time to First Ever Event Modified ITT,Modified ITT,First Ever Event,Stratification
+16,Time to First Post Index Event Modified ITT,Modified ITT,First Post Index Event,Stratification

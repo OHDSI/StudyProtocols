@@ -1,0 +1,67 @@
+cohortId,atlasId,name,fullName
+5357,5357,Canagliflozin,new users of canagliflozin
+5361,5361,CanagliflozinCv,new users of canagliflozin with established cardiovascular disease
+5363,5363,Empagliflozin,new users of empagliflozin
+5364,5364,EmpagliflozinCv,new users of empagliflozin with established cardiovascular disease
+5365,5365,Dapagliflozin,new users of dapagliflozin
+5366,5366,DapagliflozinCv,new users of dapagliflozin with established cardiovascular disease
+5367,5367,EmpagliflozinOrDapagliflozin,new users of empagliflozin or dapagliflozin
+5368,5368,EmpagliflozinOrDapagliflozinCv,new users of empagliflozin or dapagliflozin with established cardiovascular disease
+5369,5369,Ahas,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5370,5370,AhasCv,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with established cardiovascular disease "
+5371,5371,AhasWithInsulin,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"
+5372,5372,AhasWithInsulinCv,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with established cardiovascular disease"
+5373,5373,CanagliflozinAtLeast1PriorNonMetforminAha,new users of canagliflozin with at least 1 prior non-metformin AHA exposure in 365 days prior to first canagliflozin exposure
+5374,5374,CanagliflozinNoPriorNonMetforminAha,new users of canagliflozin with no prior non-metformin AHA exposure in 365 days prior to first canagliflozin exposure
+5375,5375,CanagliflozinNoPriorEmpagliflozin,new users of canagliflozin with no prior exposure to empagliflozin
+5376,5376,CanagliflozinNoPriorDapagliflozin,new users of canagliflozin with no prior exposure to dapagliflozin
+5377,5377,CanagliflozinNoPriorEmpagliflozinOrDapagliflozin,new users of canagliflozin with no prior exposure to empagliflozin or dapagliflozin
+5378,5378,CanagliflozinNoPriorAhas,"new users of canagliflozin with no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5379,5379,CanagliflozinNoPriorAhasWithInsulin,"new users of canagliflozin with no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"
+5380,5380,CanagliflozinCvAtLeast1PriorNonMetforminAha,new users of canagliflozin with established cardiovascular disease and at least 1 prior non-metformin AHA exposure in 365 days prior to first canagliflozin exposure
+5381,5381,CanagliflozinCvNoPriorNonMetforminAha,new users of canagliflozin with established cardiovascular disease and no prior non-metformin AHA exposure in 365 days prior to first canagliflozin exposure
+5382,5382,CanagliflozinCvNoPriorEmpagliflozin,new users of canagliflozin with established cardiovascular disease and no prior exposure to empagliflozin
+5383,5383,CanagliflozinCvNoPriorDapagliflozin,new users of canagliflozin with established cardiovascular disease and no prior exposure to dapagliflozin
+5384,5384,CanagliflozinCvNoPriorEmpagliflozinOrDapagliflozin,new users of canagliflozin with established cardiovascular disease and no prior exposure to empagliflozin or dapagliflozin
+5385,5385,CanagliflozinCvNoPriorAhas,"new users of canagliflozin with established cardiovascular disease and no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5386,5386,CanagliflozinCvNoPriorAhasWithInsulin,"new users of canagliflozin with established cardiovascular disease and no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"
+5387,5387,EmpagliflozinAtLeast1PriorNonMetforminAha,new users of empagliflozin with at least 1 prior non-metformin AHA exposure in 365 days prior to first empagliflozin exposure
+5388,5388,EmpagliflozinNoPriorNonMetforminAha,new users of empagliflozin with no prior non-metformin AHA exposure in 365 days prior to first empagliflozin exposure
+5389,5389,EmpagliflozinNoPriorCanagliflozin,new users of empagliflozin with no prior exposure to canagliflozin
+5391,5391,EmpagliflozinCvAtLeast1PriorNonMetforminAha,new users of empagliflozin with established cardiovascular disease and at least 1 prior non-metformin AHA exposure in 365 days prior to first empagliflozin exposure
+5392,5392,EmpagliflozinCvNoPriorNonMetforminAha,new users of empagliflozin with established cardiovascular disease and no prior non-metformin AHA exposure in 365 days prior to first empagliflozin exposure
+5393,5393,EmpagliflozinCvNoPriorCanagliflozin,new users of empagliflozin with established cardiovascular disease and no prior exposure to canagliflozin
+5394,5394,DapagliflozinAtLeast1PriorNonMetforminAha,new users of dapagliflozin with at least 1 prior non-metformin AHA exposure in 365 days prior to first dapagliflozin exposure
+5395,5395,DapagliflozinNoPriorNonMetforminAha,new users of dapagliflozin with no prior non-metformin AHA exposure in 365 days prior to first dapagliflozin exposure
+5396,5396,DapagliflozinNoPriorCanagliflozin,new users of dapagliflozin with no prior exposure to canagliflozin
+5397,5397,DapagliflozinCvAtLeast1PriorNonMetforminAha,new users of dapagliflozin with established cardiovascular disease and at least 1 prior non-metformin AHA exposure in 365 days prior to first dapagliflozin exposure
+5398,5398,DapagliflozinCvNoPriorNonMetforminAha,new users of dapagliflozin with established cardiovascular disease and no prior non-metformin AHA exposure in 365 days prior to first dapagliflozin exposure
+5399,5399,DapagliflozinCvNoPriorCanagliflozin,new users of dapagliflozin with established cardiovascular disease and no prior exposure to canagliflozin
+5400,5400,EmpagliflozinOrDapagliflozinAtLeast1PriorNonMetforminAha,new users of empagliflozin or dapagliflozin with at least 1 prior non-metformin AHA exposure in 365 days prior to first empagliflozin or dapagliflozin exposure
+5401,5401,EmpagliflozinOrDapagliflozinNoPriorNonMetforminAha,new users of empagliflozin or dapagliflozin with no prior non-metformin AHA exposure in 365 days prior to first empagliflozin or dapagliflozin exposure
+5402,5402,EmpagliflozinOrDapagliflozinNoPriorCanagliflozin,new users of empagliflozin or dapagliflozin with no prior exposure to canagliflozin
+5403,5403,EmpagliflozinOrDapagliflozinNoPriorAhas,"new users of empagliflozin or dapagliflozin with no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5404,5404,EmpagliflozinOrDapagliflozinNoPriorAhasWithInsulin,"new users of empagliflozin or dapagliflozin with no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"
+5405,5405,EmpagliflozinOrDapagliflozinCvAtLeast1PriorNonMetforminAha,new users of empagliflozin or dapagliflozin with established cardiovascular disease and at least 1 prior non-metformin AHA exposure in 365 days prior to first empagliflozin or dapagliflozin exposure
+5406,5406,EmpagliflozinOrDapagliflozinCvNoPriorNonMetforminAha,new users of empagliflozin or dapagliflozin with established cardiovascular disease and no prior non-metformin AHA exposure in 365 days prior to first empagliflozin or dapagliflozin exposure
+5407,5407,EmpagliflozinOrDapagliflozinCvNoPriorCanagliflozin,new users of empagliflozin or dapagliflozin with established cardiovascular disease and no prior exposure to canagliflozin
+5408,5408,EmpagliflozinOrDapagliflozinCvNoPriorAhas,"new users of empagliflozin or dapagliflozin with established cardiovascular disease and no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5409,5409,EmpagliflozinOrDapagliflozinCvNoPriorAhasWithInsulin,"new users of empagliflozin or dapagliflozin with established cardiovascular disease and no prior exposure to any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"
+5410,5410,AhasAtLeast1PriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with at least 1 prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5411,5411,AhasNoPriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with no prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5412,5412,AhasNoPriorCanagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with no prior exposure to canagliflozin"
+5413,5413,AhasNoPriorEmpagliflozinOrDapagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with no prior exposure to empagliflozin or dapagliflozin"
+5414,5414,AhasCvAtLeast1PriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with established cardiovascular disease and at least 1 prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5415,5415,AhasCvNoPriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with established cardiovascular disease and no prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"
+5417,5417,AhasCvNoPriorEmpagliflozinOrDapagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with established cardiovascular disease and no prior exposure to empagliflozin or dapagliflozin"
+5418,5418,AhasWithInsulinAtLeast1PriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with at least 1 prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA "
+5419,5419,AhasWithInsulinNoPriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with no prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA "
+5420,5420,AhasWithInsulinNoPriorCanagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with no prior exposure to canagliflozin"
+5421,5421,AhasWithInsulinNoPriorEmpagliflozinOrDapagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with no prior exposure to empagliflozin or dapagliflozin"
+5422,5422,AhasWithInsulinCvAtLeast1PriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with established cardiovascular disease and at least 1 prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA "
+5426,5426,AhasWithInsulinCvNoPriorNonMetforminAha,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with established cardiovascular disease and no prior non-metformin AHA exposure in 365 days prior to first exposure of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA "
+5429,5429,AhasWithInsulinCvNoPriorCanagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with established cardiovascular disease and no prior exposure to canagliflozin"
+5430,5430,AhasWithInsulinCvNoPriorEmpagliflozinOrDapagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA with established cardiovascular disease and no prior exposure to empagliflozin or dapagliflozin"
+5431,5431,AhasCvNoPriorCanagliflozin,"new users of any DPP-4 inhibitor, GLP-1 agonist, or other select AHA with established cardiovascular disease and no prior exposure to canagliflozin"
+5432,5432,HeartFailure,hospitalizations for heart failure (primary inpatient diagnosis)
+5433,5433,BkleAmputation,Below Knee Lower Extremity Amputation events

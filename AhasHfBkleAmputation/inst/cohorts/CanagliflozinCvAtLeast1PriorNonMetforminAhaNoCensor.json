@@ -1,0 +1,2967 @@
+{
+ "ConceptSets": [
+ {
+ "id":      2,
+"name": "Secondary Diabetes",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 1.9577e+05,
+"CONCEPT_NAME": "Secondary diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "8801005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":      3,
+"name": "Type II Diabetes",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 2.0183e+05,
+"CONCEPT_NAME": "Type 2 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "44054006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4373e+05,
+"CONCEPT_NAME": "Ketoacidosis in type 2 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "421750000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4377e+05,
+"CONCEPT_NAME": "Diabetic oculopathy",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "25093002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9228e+05,
+"CONCEPT_NAME": "Diabetic renal disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "127013003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4374e+05,
+"CONCEPT_NAME": "Coma associated with diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "420662003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.7607e+05,
+"CONCEPT_NAME": "Neurologic disorder associated with type 2 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "421326000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4373e+05,
+"CONCEPT_NAME": "Peripheral circulatory disorder associated with type 2 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "422166005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4373e+05,
+"CONCEPT_NAME": "Disorder due to type 2 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "422014003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":      4,
+"name": "Type I Diabetes",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 2.0125e+05,
+"CONCEPT_NAME": "Type 1 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "46635009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3522e+05,
+"CONCEPT_NAME": "Disorder due to type 1 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "420868002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 2.0069e+05,
+"CONCEPT_NAME": "Renal disorder associated with type 1 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "421893009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.7782e+05,
+"CONCEPT_NAME": "Neurological disorder associated with type 1 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "421468001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1871e+05,
+"CONCEPT_NAME": "Peripheral circulatory disorder associated with type 1 diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "421365002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     20,
+"name": "procedures indicating established cardiovascular disease",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.1508e+06,
+"CONCEPT_NAME": "Operative procedure on coronary artery",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "31413008",
+"DOMAIN_ID": "Procedure",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Procedure",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3317e+06,
+"CONCEPT_NAME": "Operative procedure on artery of extremity",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "22701007",
+"DOMAIN_ID": "Procedure",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Procedure",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     24,
+"name": "any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA\n",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.3014e+07,
+"CONCEPT_NAME": "alogliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1368001",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0239e+07,
+"CONCEPT_NAME": "Linagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1100699",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0166e+07,
+"CONCEPT_NAME": "saxagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "857974",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5807e+06,
+"CONCEPT_NAME": "sitagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "593411",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9122e+07,
+"CONCEPT_NAME": "vildagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "596554",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4816e+07,
+"CONCEPT_NAME": "albiglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1534763",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.5774e+07,
+"CONCEPT_NAME": "dulaglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1551291",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5837e+06,
+"CONCEPT_NAME": "exenatide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "60548",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0171e+07,
+"CONCEPT_NAME": "liraglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "475968",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4507e+07,
+"CONCEPT_NAME": "Lixisenatide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1440051",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5293e+06,
+"CONCEPT_NAME": "Acarbose",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "16681",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine 0.8 MG [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859079",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug Comp",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine 0.8 MG Oral Tablet [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859081",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine Oral Tablet [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859080",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug Form",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5102e+06,
+"CONCEPT_NAME": "miglitol",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "30009",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5028e+06,
+"CONCEPT_NAME": "nateglinide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "274332",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5168e+06,
+"CONCEPT_NAME": "repaglinide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "73044",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5602e+06,
+"CONCEPT_NAME": "Glipizide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "4821",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5029e+06,
+"CONCEPT_NAME": "Insulin Glargine",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "274783",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5597e+06,
+"CONCEPT_NAME": "Glyburide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "4815",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5252e+06,
+"CONCEPT_NAME": "pioglitazone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "33738",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5978e+06,
+"CONCEPT_NAME": "glimepiride",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "25789",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.55e+06,
+"CONCEPT_NAME": "Insulin Lispro",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "86009",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5672e+06,
+"CONCEPT_NAME": "Insulin, Aspart, Human",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "51428",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.597e+06,
+"CONCEPT_NAME": "Regular Insulin, Human",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "253182",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5475e+06,
+"CONCEPT_NAME": "rosiglitazone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "84108",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.517e+06,
+"CONCEPT_NAME": "insulin detemir",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "139825",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5448e+06,
+"CONCEPT_NAME": "Insulin, Glulisine, Human",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "400008",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.595e+06,
+"CONCEPT_NAME": "Chlorpropamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "2404",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5028e+06,
+"CONCEPT_NAME": "Tolazamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "10633",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5029e+06,
+"CONCEPT_NAME": "Tolbutamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "10635",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.5603e+07,
+"CONCEPT_NAME": "insulin degludec",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1670007",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9098e+07,
+"CONCEPT_NAME": "gliquidone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "25793",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.906e+07,
+"CONCEPT_NAME": "Gliclazide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "4816",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9033e+07,
+"CONCEPT_NAME": "Carbutamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "2068",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9001e+07,
+"CONCEPT_NAME": "glymidine",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "102848",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9001e+07,
+"CONCEPT_NAME": "glibornuride",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "102846",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.53e+06,
+"CONCEPT_NAME": "Acetohexamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "173",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5152e+06,
+"CONCEPT_NAME": "troglitazone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "72610",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     25,
+"name": "conditions indicating established cardiovascular disease",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 3.1984e+05,
+"CONCEPT_NAME": "Acute ischemic heart disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "413439005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.2132e+05,
+"CONCEPT_NAME": "Angina pectoris",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "194828000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.1248e+06,
+"CONCEPT_NAME": "Aortic bifurcation syndrome",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "233972005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1234e+05,
+"CONCEPT_NAME": "Arterial embolus and thrombosis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "266262004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.2782e+06,
+"CONCEPT_NAME": "Arterial thrombosis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "65198009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0484e+07,
+"CONCEPT_NAME": "Arteriosclerosis of artery of extremity",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "443971004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1844e+05,
+"CONCEPT_NAME": "Arteriosclerotic vascular disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "72092001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1466e+05,
+"CONCEPT_NAME": "Arteritis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "52089001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+} 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.048e+07,
+"CONCEPT_NAME": "Atherosclerosis of artery",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "441574008",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0485e+07,
+"CONCEPT_NAME": "Atherosclerosis of autologous vein bypass graft of limb",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "442693003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.129e+05,
+"CONCEPT_NAME": "Benign intracranial hypertension",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "68267002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.2883e+06,
+"CONCEPT_NAME": "Carotid artery obstruction",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "69798007",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.7292e+05,
+"CONCEPT_NAME": "Cerebral artery occlusion",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "20059004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.7671e+05,
+"CONCEPT_NAME": "Cerebral hemorrhage",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "274100004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.8159e+05,
+"CONCEPT_NAME": "Cerebrovascular disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "62914000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1649e+05,
+"CONCEPT_NAME": "Cerebrovascular disorder in the puerperium",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "6594005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1529e+05,
+"CONCEPT_NAME": "Chronic ischemic heart disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "413838009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4783e+07,
+"CONCEPT_NAME": "Chronic occlusion of artery of extremity",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "698816006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3138e+06,
+"CONCEPT_NAME": "Chronic peripheral venous hypertension",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "423674003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.7272e+05,
+"CONCEPT_NAME": "Congenital anomaly of cerebrovascular system",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "65587001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.17e+05,
+"CONCEPT_NAME": "Coronary occlusion",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "63739005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.3406e+05,
+"CONCEPT_NAME": "Disorder of cardiovascular system",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "49601007",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+} 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.048e+07,
+"CONCEPT_NAME": "Disorder of vein of lower extremity",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "441739009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.6272e+07,
+"CONCEPT_NAME": "Dissection of artery",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "710864009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3247e+06,
+"CONCEPT_NAME": "Fracture of skull",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "71642004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4125e+05,
+"CONCEPT_NAME": "Hemangioma of intracranial structure",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "93468003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.8011e+05,
+"CONCEPT_NAME": "Hemorrhage in optic nerve sheaths",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "14460007",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9276e+05,
+"CONCEPT_NAME": "Injury of blood vessel",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "57662003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.2754e+06,
+"CONCEPT_NAME": "Injury of vein",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "64583005",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4277e+05,
+"CONCEPT_NAME": "Intermittent claudication",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "63491006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3985e+05,
+"CONCEPT_NAME": "Intracranial hemorrhage",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1386000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3406e+05,
+"CONCEPT_NAME": "Late effects of cerebrovascular disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "195239002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.1463e+06,
+"CONCEPT_NAME": "Leriche's syndrome",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "307816004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3298e+06,
+"CONCEPT_NAME": "Myocardial infarction",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "22298006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.296e+06,
+"CONCEPT_NAME": "Periarteritis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "76805007",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 2.6084e+05,
+"CONCEPT_NAME": "Perinatal subarachnoid hemorrhage",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "21202004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1731e+05,
+"CONCEPT_NAME": "Peripheral arterial occlusive disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "399957001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.2182e+05,
+"CONCEPT_NAME": "Peripheral circulatory disorder associated with diabetes mellitus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "421895002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1393e+05,
+"CONCEPT_NAME": "Peripheral vascular complication",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "10596002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.2105e+05,
+"CONCEPT_NAME": "Peripheral vascular disease",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "400047006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+} 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4783e+07,
+"CONCEPT_NAME": "Peripheral vascular disease associated with another disorder",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "34881000119105",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1814e+05,
+"CONCEPT_NAME": "Phlebitis and thrombophlebitis of intracranial sinuses",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "192753009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4104e+05,
+"CONCEPT_NAME": "Phlebitis of lower limb vein",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "312588002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0674e+06,
+"CONCEPT_NAME": "Polyarteritis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "20258000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.2075e+05,
+"CONCEPT_NAME": "Polyarteritis nodosa",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "155441006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4324e+05,
+"CONCEPT_NAME": "Precerebral arterial occlusion",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "266253001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4042e+05,
+"CONCEPT_NAME": "Pulmonary embolism",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "59282003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3188e+06,
+"CONCEPT_NAME": "Renal vasculitis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "95578000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.8094e+05,
+"CONCEPT_NAME": "Rupture of syphilitic cerebral aneurysm",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "186893003",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3292e+05,
+"CONCEPT_NAME": "Subarachnoid hemorrhage",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "21454007",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3904e+05,
+"CONCEPT_NAME": "Subdural hemorrhage",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "35486000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.2074e+05,
+"CONCEPT_NAME": "Thrombophlebitis",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "64156001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.1411e+06,
+"CONCEPT_NAME": "Thrombosis of arteries of the extremities",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "33591000",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.1325e+06,
+"CONCEPT_NAME": "Traumatic brain injury",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "127295002",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.1946e+06,
+"CONCEPT_NAME": "Trunk arterial embolus",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "312593004",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.1817e+05,
+"CONCEPT_NAME": "Varicose veins of lower extremity",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "72866009",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.1893e+06,
+"CONCEPT_NAME": "Vascular disorder of lower extremity",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "373408007",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4375e+05,
+"CONCEPT_NAME": "Ventricular hemorrhage",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "23276006",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3235e+05,
+"CONCEPT_NAME": "Vertebral artery dissection",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "230730001",
+"DOMAIN_ID": "Condition",
+"VOCABULARY_ID": "SNOMED",
+"CONCEPT_CLASS_ID": "Clinical Finding",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"isExcluded": true,
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     26,
+"name": "any DPP-4 inhibitor, GLP-1 agonist, or other select AHA",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.3014e+07,
+"CONCEPT_NAME": "alogliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1368001",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0239e+07,
+"CONCEPT_NAME": "Linagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1100699",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0166e+07,
+"CONCEPT_NAME": "saxagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "857974",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5807e+06,
+"CONCEPT_NAME": "sitagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "593411",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9122e+07,
+"CONCEPT_NAME": "vildagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "596554",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4816e+07,
+"CONCEPT_NAME": "albiglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1534763",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.5774e+07,
+"CONCEPT_NAME": "dulaglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1551291",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5837e+06,
+"CONCEPT_NAME": "exenatide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "60548",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0171e+07,
+"CONCEPT_NAME": "liraglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "475968",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4507e+07,
+"CONCEPT_NAME": "Lixisenatide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1440051",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5293e+06,
+"CONCEPT_NAME": "Acarbose",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "16681",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine 0.8 MG [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859079",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug Comp",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine 0.8 MG Oral Tablet [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859081",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine Oral Tablet [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859080",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug Form",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5102e+06,
+"CONCEPT_NAME": "miglitol",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "30009",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5028e+06,
+"CONCEPT_NAME": "nateglinide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "274332",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5168e+06,
+"CONCEPT_NAME": "repaglinide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "73044",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     27,
+"name": "canagliflozin",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.3526e+07,
+"CONCEPT_NAME": "canagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1373458",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     28,
+"name": "empagliflozin",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.5775e+07,
+"CONCEPT_NAME": "empagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1545653",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     29,
+"name": "dapagliflozin",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.4786e+07,
+"CONCEPT_NAME": "dapagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1488564",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     30,
+"name": "empagliflozin or dapagliflozin",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.4786e+07,
+"CONCEPT_NAME": "dapagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1488564",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.5775e+07,
+"CONCEPT_NAME": "empagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1545653",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+},
+{
+ "id":     31,
+"name": "non-metformin AHA",
+"expression": {
+ "items": [
+ {
+ "concept": {
+ "CONCEPT_ID": 4.3526e+07,
+"CONCEPT_NAME": "canagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1373458",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4786e+07,
+"CONCEPT_NAME": "dapagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1488564",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.5775e+07,
+"CONCEPT_NAME": "empagliflozin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1545653",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.3014e+07,
+"CONCEPT_NAME": "alogliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1368001",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0239e+07,
+"CONCEPT_NAME": "Linagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1100699",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0166e+07,
+"CONCEPT_NAME": "saxagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "857974",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5807e+06,
+"CONCEPT_NAME": "sitagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "593411",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9122e+07,
+"CONCEPT_NAME": "vildagliptin",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "596554",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4816e+07,
+"CONCEPT_NAME": "albiglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1534763",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.5774e+07,
+"CONCEPT_NAME": "dulaglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1551291",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5837e+06,
+"CONCEPT_NAME": "exenatide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "60548",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0171e+07,
+"CONCEPT_NAME": "liraglutide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "475968",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.4507e+07,
+"CONCEPT_NAME": "Lixisenatide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1440051",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5293e+06,
+"CONCEPT_NAME": "Acarbose",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "16681",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine 0.8 MG [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859079",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug Comp",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine 0.8 MG Oral Tablet [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859081",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 4.0164e+07,
+"CONCEPT_NAME": "Bromocriptine Oral Tablet [Cycloset]",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "859080",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Branded Drug Form",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5102e+06,
+"CONCEPT_NAME": "miglitol",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "30009",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5028e+06,
+"CONCEPT_NAME": "nateglinide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "274332",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5168e+06,
+"CONCEPT_NAME": "repaglinide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "73044",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5602e+06,
+"CONCEPT_NAME": "Glipizide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "4821",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5029e+06,
+"CONCEPT_NAME": "Insulin Glargine",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "274783",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5597e+06,
+"CONCEPT_NAME": "Glyburide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "4815",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5252e+06,
+"CONCEPT_NAME": "pioglitazone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "33738",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5978e+06,
+"CONCEPT_NAME": "glimepiride",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "25789",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.55e+06,
+"CONCEPT_NAME": "Insulin Lispro",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "86009",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5672e+06,
+"CONCEPT_NAME": "Insulin, Aspart, Human",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "51428",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.597e+06,
+"CONCEPT_NAME": "Regular Insulin, Human",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "253182",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5475e+06,
+"CONCEPT_NAME": "rosiglitazone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "84108",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.517e+06,
+"CONCEPT_NAME": "insulin detemir",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "139825",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5448e+06,
+"CONCEPT_NAME": "Insulin, Glulisine, Human",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "400008",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.595e+06,
+"CONCEPT_NAME": "Chlorpropamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "2404",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5028e+06,
+"CONCEPT_NAME": "Tolazamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "10633",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5029e+06,
+"CONCEPT_NAME": "Tolbutamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "10635",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 3.5603e+07,
+"CONCEPT_NAME": "insulin degludec",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "1670007",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9098e+07,
+"CONCEPT_NAME": "gliquidone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "25793",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.906e+07,
+"CONCEPT_NAME": "Gliclazide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "4816",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9033e+07,
+"CONCEPT_NAME": "Carbutamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "2068",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9001e+07,
+"CONCEPT_NAME": "glymidine",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "102848",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.9001e+07,
+"CONCEPT_NAME": "glibornuride",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "102846",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.53e+06,
+"CONCEPT_NAME": "Acetohexamide",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "173",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+},
+{
+ "concept": {
+ "CONCEPT_ID": 1.5152e+06,
+"CONCEPT_NAME": "troglitazone",
+"STANDARD_CONCEPT": "S",
+"INVALID_REASON": "V",
+"CONCEPT_CODE": "72610",
+"DOMAIN_ID": "Drug",
+"VOCABULARY_ID": "RxNorm",
+"CONCEPT_CLASS_ID": "Ingredient",
+"STANDARD_CONCEPT_CAPTION": "Standard",
+"INVALID_REASON_CAPTION": "Valid" 
+},
+"includeDescendants": true 
+} 
+] 
+} 
+} 
+],
+"PrimaryCriteria": {
+ "CriteriaList": [
+ {
+ "DrugExposure": {
+ "CodesetId":     27,
+"OccurrenceStartDate": {
+ "Value": "2013-4-1",
+"Extent": "2017-05-15",
+"Op": "bt" 
+},
+"First": true 
+} 
+} 
+],
+"ObservationWindow": {
+ "PriorDays":    365,
+"PostDays":      0 
+},
+"PrimaryCriteriaLimit": {
+ "Type": "First" 
+} 
+},
+"AdditionalCriteria": {
+ "Type": "ALL",
+"CriteriaList": [
+ {
+ "Criteria": {
+ "ConditionOccurrence": {
+ "CodesetId":      2 
+} 
+},
+"StartWindow": {
+ "Start": {
+ "Coeff":     -1 
+},
+"End": {
+ "Days":      0,
+"Coeff":      1 
+} 
+},
+"Occurrence": {
+ "Type":      0,
+"Count":      0 
+} 
+},
+{
+ "Criteria": {
+ "ConditionOccurrence": {
+ "CodesetId":      3 
+} 
+},
+"StartWindow": {
+ "Start": {
+ "Coeff":     -1 
+},
+"End": {
+ "Days":      0,
+"Coeff":      1 
+} 
+},
+"Occurrence": {
+ "Type":      2,
+"Count":      1 
+} 
+},
+{
+ "Criteria": {
+ "ConditionOccurrence": {
+ "CodesetId":      4 
+} 
+},
+"StartWindow": {
+ "Start": {
+ "Coeff":     -1 
+},
+"End": {
+ "Days":      0,
+"Coeff":      1 
+} 
+},
+"Occurrence": {
+ "Type":      0,
+"Count":      0 
+} 
+},
+{
+ "Criteria": {
+ "DrugExposure": {
+ "CodesetId":     31 
+} 
+},
+"StartWindow": {
+ "Start": {
+ "Days":    365,
+"Coeff":     -1 
+},
+"End": {
+ "Days":      1,
+"Coeff":     -1 
+} 
+},
+"Occurrence": {
+ "Type":      2,
+"Count":      1 
+} 
+} 
+],
+"DemographicCriteriaList": [],
+"Groups": [
+ {
+ "Type": "ANY",
+"CriteriaList": [
+ {
+ "Criteria": {
+ "ConditionOccurrence": {
+ "CodesetId":     25 
+} 
+},
+"StartWindow": {
+ "Start": {
+ "Coeff":     -1 
+},
+"End": {
+ "Days": "0",
+"Coeff":     -1 
+} 
+},
+"Occurrence": {
+ "Type":      2,
+"Count":      1 
+} 
+},
+{
+ "Criteria": {
+ "ProcedureOccurrence": {
+ "CodesetId":     20 
+} 
+},
+"StartWindow": {
+ "Start": {
+ "Coeff":     -1 
+},
+"End": {
+ "Days": "0",
+"Coeff":     -1 
+} 
+},
+"Occurrence": {
+ "Type":      2,
+"Count":      1 
+} 
+} 
+],
+"DemographicCriteriaList": [],
+"Groups": [] 
+} 
+] 
+},
+"QualifiedLimit": {
+ "Type": "First" 
+},
+"ExpressionLimit": {
+ "Type": "First" 
+},
+"InclusionRules": [],
+"EndStrategy": {
+ "CustomEra": {
+ "DrugCodesetId":     27,
+"GapDays": "30",
+"Offset":      0 
+} 
+},
+"CollapseSettings": {
+ "CollapseType": "ERA",
+"EraPad":      0 
+} 
+}
