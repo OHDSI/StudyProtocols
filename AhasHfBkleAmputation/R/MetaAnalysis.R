@@ -43,36 +43,60 @@ doMetaAnalysis <- function(outputFolders, maOutputFolder, maxCores) {
   allResults <- lapply(outputFolders, loadResults)
   allResults <- do.call(rbind, allResults)
   groups <- split(allResults, paste(allResults$targetId, allResults$comparatorId, allResults$analysisId))
+  # Meta-analysis 1: use Hartung-Knapp-Sidik-Jonkman
+  OhdsiRTools::logInfo("Meta-analysis using Hartung-Knapp-Sidik-Jonkman")
   cluster <- OhdsiRTools::makeCluster(min(maxCores, 15))
-  results <- OhdsiRTools::clusterApply(cluster, groups, computeGroupMetaAnalysis, shinyDataFolder = shinyDataFolder)
+  results <- OhdsiRTools::clusterApply(cluster, groups, computeGroupMetaAnalysis, shinyDataFolder = shinyDataFolder, hksj = TRUE)
   OhdsiRTools::stopCluster(cluster)
   results <- do.call(rbind, results)
   
-  fileName <-  file.path(resultsFolder, paste0("results_Meta-analysis.csv"))
+  fileName <-  file.path(resultsFolder, paste0("results_Meta-analysis_HKSJ.csv"))
   write.csv(results, fileName, row.names = FALSE)
   
   hois <- results[results$type == "Outcome of interest", ]
-  fileName <-  file.path(shinyDataFolder, paste0("resultsHois_Meta-analysis.rds"))
+  fileName <-  file.path(shinyDataFolder, paste0("resultsHois_Meta-analysis_HKSJ.rds"))
   saveRDS(hois, fileName)
   
   ncs <- results[results$type == "Negative control", c("targetId", "comparatorId", "outcomeId", "analysisId", "database", "logRr", "seLogRr")]
-  fileName <-  file.path(shinyDataFolder, paste0("resultsNcs_Meta-analysis.rds"))
+  fileName <-  file.path(shinyDataFolder, paste0("resultsNcs_Meta-analysis_HKSJ.rds"))
+  saveRDS(ncs, fileName)
+  
+  # Meta-analysis 1: use DerSimonian-Laird
+  OhdsiRTools::logInfo("Meta-analysis using DerSimonian-Laird")
+  cluster <- OhdsiRTools::makeCluster(min(maxCores, 15))
+  results <- OhdsiRTools::clusterApply(cluster, groups, computeGroupMetaAnalysis, shinyDataFolder = shinyDataFolder, hksj = FALSE)
+  OhdsiRTools::stopCluster(cluster)
+  results <- do.call(rbind, results)
+  
+  fileName <-  file.path(resultsFolder, paste0("results_Meta-analysis_DL.csv"))
+  write.csv(results, fileName, row.names = FALSE)
+  
+  hois <- results[results$type == "Outcome of interest", ]
+  fileName <-  file.path(shinyDataFolder, paste0("resultsHois_Meta-analysis_DL.rds"))
+  saveRDS(hois, fileName)
+  
+  ncs <- results[results$type == "Negative control", c("targetId", "comparatorId", "outcomeId", "analysisId", "database", "logRr", "seLogRr")]
+  fileName <-  file.path(shinyDataFolder, paste0("resultsNcs_Meta-analysis_DL.rds"))
   saveRDS(ncs, fileName)
 }
 
-computeGroupMetaAnalysis <- function(group, shinyDataFolder) {
+computeGroupMetaAnalysis <- function(group, shinyDataFolder, hksj) {
   # group <- groups[[2]]
   analysisId <- group$analysisId[1]
   targetId <- group$targetId[1]
   comparatorId <- group$comparatorId[1]
   OhdsiRTools::logTrace("Performing meta-analysis for target ", targetId, ", comparator ", comparatorId, ", analysis", analysisId)
   outcomeGroups <- split(group, group$outcomeId)
-  outcomeGroupResults <- lapply(outcomeGroups, computeSingleMetaAnalysis)
+  outcomeGroupResults <- lapply(outcomeGroups, computeSingleMetaAnalysis, hksj = hksj)
   groupResults <- do.call(rbind, outcomeGroupResults)
   negControlSubset <- groupResults[groupResults$type == "Negative control", ]
   validNcs <- sum(!is.na(negControlSubset$seLogRr))
   if (validNcs >= 5) {
-    fileName <-  file.path(shinyDataFolder, paste0("null_a",analysisId,"_t",targetId,"_c",comparatorId,"_Meta-analysis.rds"))
+    if (hksj) {
+      fileName <-  file.path(shinyDataFolder, paste0("null_a",analysisId,"_t",targetId,"_c",comparatorId,"_Meta-analysis_HKJS.rds"))
+    } else {
+      fileName <-  file.path(shinyDataFolder, paste0("null_a",analysisId,"_t",targetId,"_c",comparatorId,"_Meta-analysis_DL.rds"))
+    }
     null <- EmpiricalCalibration::fitMcmcNull(negControlSubset$logRr, negControlSubset$seLogRr)
     saveRDS(null, fileName)
     
@@ -90,7 +114,7 @@ computeGroupMetaAnalysis <- function(group, shinyDataFolder) {
   return(groupResults)
 }
 
-computeSingleMetaAnalysis <- function(outcomeGroup) {
+computeSingleMetaAnalysis <- function(outcomeGroup, hksj) {
   # outcomeGroup <- outcomeGroups[[1]]
   maRow <- outcomeGroup[1, ]
   outcomeGroup <- outcomeGroup[!is.na(outcomeGroup$seLogRr), ]
@@ -118,7 +142,7 @@ computeSingleMetaAnalysis <- function(outcomeGroup) {
     maRow$comparatorDays <- sum(outcomeGroup$comparatorDays)
     maRow$eventsTreated <- sum(outcomeGroup$eventsTreated)
     maRow$eventsComparator <- sum(outcomeGroup$eventsComparator)
-    meta <- meta::metagen(outcomeGroup$logRr, outcomeGroup$seLogRr, sm = "RR", hakn = TRUE)
+    meta <- meta::metagen(outcomeGroup$logRr, outcomeGroup$seLogRr, sm = "RR", hakn = hksj)
     s <- summary(meta)
     maRow$i2 <- s$I2$TE
     if (maRow$i2 < .40) {
@@ -150,6 +174,10 @@ computeSingleMetaAnalysis <- function(outcomeGroup) {
     totalEvents <- maRow$eventsTreated + maRow$eventsComparator
     maRow$mdrr <- exp(sqrt((zBeta + z1MinAlpha)^2/(totalEvents * pA * pB)))
   }
-  maRow$database <- "Meta-analysis"
+  if (hksj) {
+    maRow$database <- "Meta-analysis (HKSJ)"
+  } else {
+    maRow$database <- "Meta-analysis (DL)"
+  }
   return(maRow)
 }
