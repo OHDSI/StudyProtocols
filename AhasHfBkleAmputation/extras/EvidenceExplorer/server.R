@@ -10,6 +10,7 @@ mainColumns <- c("establishedCvd",
                  "evenType",
                  "psStrategy",
                  "database",
+                 "heterogeneous",
                  "rr", 
                  "ci95lb",
                  "ci95ub",
@@ -21,7 +22,8 @@ mainColumnNames <- c("<span title=\"Established cardiovascular disease\">Est. CV
                      "<span title=\"Time at risk\">Time at risk</span>", 
                      "<span title=\"Event type\">Event</span>", 
                      "<span title=\"Propensity score strategy\">PS strategy</span>",
-                     "<span title=\"Database\">DB</span>",
+                     "<span title=\"Data source\">Data source</span>",
+                     "<span title=\"Between database heterogeneity (i2 > 0.4)?\">Ht.</span>",
                      "<span title=\"Hazard ratio\">HR</span>", 
                      "<span title=\"Lower bound of the 95 confidence interval\">CI95LB</span>",
                      "<span title=\"Upper bound of the 95 confidence interval\">CI95UB</span>",
@@ -71,6 +73,45 @@ shinyServer(function(input, output) {
     }
   })
   
+  forestPlotSubset <- reactive({
+    row <- selectedRow()
+    if (is.null(row)) {
+      return(NULL)
+    } else {
+      subset <- resultsHois[resultsHois$comparison == row$comparison &
+                              resultsHois$outcomeId == row$outcomeId, ]
+      subset$dbOrder <- match(subset$database, c("CCAE", "MDCD","MDCR", "Optum", "Meta-analysis (HKSJ)", "Meta-analysis (DL)"))
+      subset$timeAtRiskOrder <- match(subset$timeAtRisk, c("On Treatment", 
+                                                           "On Treatment (no censor at switch)", 
+                                                           "Lag", 
+                                                           "Lag (no censor at switch)",
+                                                           "Intent to Treat", 
+                                                           "Modified ITT"))
+      
+      subset <- subset[order(subset$dbOrder,
+                             subset$timeAtRiskOrder,
+                             subset$establishedCvd,
+                             subset$evenType,
+                             subset$psStrategy,
+                             subset$priorExposure), ]
+      subset$rr[is.na(subset$seLogRr)] <- NA
+      formatTimeAtRisk  <- function(x) {
+        result <- x
+        result[x == "Intent to Treat"] <- "Intent-to-treat"
+        result[x == "On Treatment"] <- "On treatment"
+        result[x == "On Treatment (no censor at switch)"] <- "On treatment (no censor at switch)"
+        result[x == "Lag"] <- "On treatment lagged"
+        result[x == "Lag (no censor at switch)"] <- "On treatment lagged (no censor at switch)"
+        return(result)
+      }
+      subset$timeAtRisk <- formatTimeAtRisk(subset$timeAtRisk)
+      subset$database <- factor(subset$database, levels = c("CCAE", "MDCD","MDCR", "Optum", "Meta-analysis (HKSJ)", "Meta-analysis (DL)"))
+      subset$timeAtRisk <- factor(subset$timeAtRisk, levels = c("On treatment", "On treatment (no censor at switch)", "On treatment lagged", "On treatment lagged (no censor at switch)", "Intent-to-treat", "Modified ITT"))
+      subset$displayOrder <- nrow(subset):1
+      return(subset)
+    }
+  })
+  
   output$rowIsSelected <- reactive({
     return(!is.null(selectedRow()))
   })
@@ -78,7 +119,7 @@ shinyServer(function(input, output) {
   
   output$isMetaAnalysis <- reactive({
     row <- selectedRow()
-    isMetaAnalysis <- !is.null(row) && row$database == "Meta-analysis"
+    isMetaAnalysis <- !is.null(row) && (row$database == "Meta-analysis (HKSJ)" | row$database == "Meta-analysis (DL)")
     if (isMetaAnalysis) {
       hideTab("tabsetPanel", "Population characteristics")
       hideTab("tabsetPanel", "Propensity scores")
@@ -95,7 +136,7 @@ shinyServer(function(input, output) {
   
   balance <- reactive({
     row <- selectedRow()
-    if (is.null(row) || row$database == "Meta-analysis") {
+    if (is.null(row) || row$database == "Meta-analysis (HKSJ)" || row$database == "Meta-analysis (DL)") {
       return(NULL)
     } else {
       fileName <- paste0("bal_a",row$analysisId,"_t",row$targetId,"_c",row$comparatorId,"_o",row$outcomeId,"_",row$database,".rds")
@@ -109,6 +150,8 @@ shinyServer(function(input, output) {
   
   output$mainTable <- renderDataTable({
     table <- tableSubset()[, mainColumns]
+    if (nrow(table) == 0)
+      return(NULL)
     table$rr[table$rr > 100] <- NA
     table$rr <- formatC(table$rr, digits = 2, format = "f")
     table$ci95lb <- formatC(table$ci95lb, digits = 2, format = "f")
@@ -157,7 +200,7 @@ shinyServer(function(input, output) {
       table$eventsTreated <- formatC(table$eventsTreated, big.mark = ",", format = "d")
       table$eventsComparator <- formatC(table$eventsComparator, big.mark = ",", format = "d")
       table$mdrr <- formatC(table$mdrr, digits = 2, format = "f")
-      if (table$database == "Meta-analysis") {
+      if (table$database == "Meta-analysis (HKSJ)" || table$database == "Meta-analysis (DL)") {
         table <- table[, c(powerColumns, "i2")]
         colnames(table) <- c(powerColumnNames, "I2")
       } else {
@@ -268,7 +311,7 @@ shinyServer(function(input, output) {
   
   output$psPlot <- renderPlot({
     row <- selectedRow()
-    if (!is.null(row) && row$database != "Meta-analysis") {
+    if (!is.null(row) && row$database != "Meta-analysis (HKSJ)" && row$database != "Meta-analysis (DL)") {
       fileName <- paste0("ps_a",row$analysisId,"_t",row$targetId,"_c",row$comparatorId,"_",row$database,".rds")
       data <- readRDS(file.path("data", fileName))
       data$GROUP <- row$targetDrug
@@ -400,7 +443,7 @@ shinyServer(function(input, output) {
     bal <- balance()
     if (!is.null(bal)) {
       row <- selectedRow()
-      text <- "<strong>Table 4.</strong> Kaplan Meier plot, showing survival as a function of time. This plot
+      text <- "<strong>Table 5.</strong> Kaplan Meier plot, showing survival as a function of time. This plot
       is adjusted for the propensity score %s: The target curve (<em>%s</em>) shows the actual observed survival. The
       comparator curve (<em>%s</em>) applies reweighting to approximate the counterfactual of what the target survival
       would look like had the target cohort been exposed to the comparator instead. The shaded area denotes 
@@ -410,4 +453,138 @@ shinyServer(function(input, output) {
       return(NULL)
     }
   })
+  
+  output$forestPlot <- renderPlot({
+    row <- selectedRow()
+    if (!is.null(row)) {
+      subset <- forestPlotSubset()
+      return(plotForest(subset, row))
+    }
+    return(NULL)
+  }, height = 2000)
+  
+  output$hoverInfoForestPlot <- renderUI({
+    # Hover-over adapted from https://gitlab.com/snippets/16220
+    subset <- forestPlotSubset()
+    if (is.null(subset))
+      return(NULL)
+    hover <- input$plotHoverForestPlot
+    point <- nearPoints(subset, hover, threshold = 5, maxpoints = 1, addDist = TRUE)
+    if (nrow(point) == 0) return(NULL)
+    # calculate point position INSIDE the image as percent of total dimensions
+    # from left (horizontal) and from top (vertical)
+    left_pct <- (hover$x - hover$domain$left) / (hover$domain$right - hover$domain$left)
+    top_pct <- (hover$domain$top - hover$y) / (hover$domain$top - hover$domain$bottom)
+    
+    # calculate distance from left and bottom side of the picture in pixels
+    left_px <- hover$range$left + left_pct * (hover$range$right - hover$range$left)
+    top_px <- hover$range$top + top_pct * (hover$range$bottom - hover$range$top)
+    
+    # create style property fot tooltip
+    # background color is set so tooltip is a bit transparent
+    # z-index is set so we are sure are tooltip will be on top
+    style <- paste0("position:absolute; z-index:100; background-color: rgba(245, 245, 245, 0.85); ",
+                    "left:100px; top:", top_px - 200, "px; width:500px;")
+    
+    
+    # actual tooltip created as wellPanel
+    hr <- sprintf("%.2f (%.2f - %.2f)", point$rr, point$ci95lb, point$ci95ub)
+    div(
+      style="position: relative; width: 0; height: 0",
+      wellPanel(
+        style = style,
+        p(HTML(paste0("<b> Established Cvd.: </b>", point$establishedCvd, "<br/>",
+                      "<b> Prior exposure: </b>", point$priorExposure, "<br/>",
+                      "<b> Time at risk: </b>", point$timeAtRisk, "<br/>",
+                      "<b> Event type: </b>", point$evenType, "<br/>",
+                      "<b> Propensity score (PS) strategy: </b>", point$psStrategy, "<br/>",
+                      "<b> Database: </b>", point$database, "<br/>",
+                      "<b> Harard ratio (95% CI): </b>", hr, "<br/>")))
+      )
+    )
+  })
+  
+  observeEvent(input$dbInfo, {
+    showModal(modalDialog(
+      title = "Data sources",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(dbInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$comparisonsInfo, {
+    showModal(modalDialog(
+      title = "Comparisons",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(comparisonsInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$outcomesInfo, {
+    showModal(modalDialog(
+      title = "Outcomes",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(outcomesInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$cvdInfo, {
+    showModal(modalDialog(
+      title = "Established cardiovascular disease (CVD)",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(cvdInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$priorExposureInfo, {
+    showModal(modalDialog(
+      title = "Prior exposure",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(priorExposureInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$tarInfo, {
+    showModal(modalDialog(
+      title = "Time-at-risk",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(tarInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$eventInfo, {
+    showModal(modalDialog(
+      title = "Time-at-risk",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(eventInfoHtml)
+    ))
+  })
+  
+  observeEvent(input$psInfo, {
+    showModal(modalDialog(
+      title = "Time-at-risk",
+      easyClose = TRUE,
+      footer = NULL,
+      size = "l",
+      HTML(psInfoHtml)
+    ))
+  })
+  
+  
+  
+  
 })
