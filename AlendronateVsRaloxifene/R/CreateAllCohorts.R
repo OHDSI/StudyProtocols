@@ -1,4 +1,4 @@
-# Copyright 2017 Observational Health Data Sciences and Informatics
+# Copyright 2018 Observational Health Data Sciences and Informatics
 #
 # This file is part of AlendronateVsRaloxifene
 #
@@ -26,10 +26,10 @@
 #' @param cdmDatabaseSchema    Schema name where your patient-level data in OMOP CDM format resides.
 #'                             Note that for SQL Server, this should include both the database and
 #'                             schema name, for example 'cdm_data.dbo'.
-#' @param workDatabaseSchema   Schema name where intermediate data can be stored. You will need to have
+#' @param cohortDatabaseSchema Schema name where intermediate data can be stored. You will need to have
 #'                             write priviliges in this schema. Note that for SQL Server, this should
 #'                             include both the database and schema name, for example 'cdm_data.dbo'.
-#' @param studyCohortTable     The name of the table that will be created in the work database schema.
+#' @param cohortTable          The name of the table that will be created in the work database schema.
 #'                             This table will hold the exposure and outcome cohorts used in this
 #'                             study.
 #' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write
@@ -40,51 +40,70 @@
 #' @export
 createCohorts <- function(connectionDetails,
                           cdmDatabaseSchema,
-                          workDatabaseSchema,
-                          studyCohortTable = "ohdsi_alendronate_raloxifene",
+                          cohortDatabaseSchema,
+                          cohortTable,
                           oracleTempSchema,
                           outputFolder) {
+  if (!file.exists(outputFolder))
+    dir.create(outputFolder)
+  
   conn <- DatabaseConnector::connect(connectionDetails)
-
+  
   .createCohorts(connection = conn,
                  cdmDatabaseSchema = cdmDatabaseSchema,
-                 cohortDatabaseSchema = workDatabaseSchema,
-                 cohortTable = studyCohortTable,
+                 cohortDatabaseSchema = cohortDatabaseSchema,
+                 cohortTable = cohortTable,
                  oracleTempSchema = oracleTempSchema,
                  outputFolder = outputFolder)
-
+  
   pathToCsv <- system.file("settings", "NegativeControls.csv", package = "AlendronateVsRaloxifene")
   negativeControls <- read.csv(pathToCsv)
-  writeLines("- Creating negative control outcome cohorts")
-  sql <- SqlRender::loadRenderTranslateSql("NegativeControls.sql",
+  
+  OhdsiRTools::logInfo("Creating negative control outcome cohorts")
+  negativeControlOutcomes <- negativeControls[negativeControls$type == "Outcome", ]
+  sql <- SqlRender::loadRenderTranslateSql("NegativeControlOutcomes.sql",
                                            "AlendronateVsRaloxifene",
                                            dbms = connectionDetails$dbms,
                                            oracleTempSchema = oracleTempSchema,
                                            cdm_database_schema = cdmDatabaseSchema,
-                                           target_database_schema = workDatabaseSchema,
-                                           target_cohort_table = studyCohortTable,
-                                           outcome_ids = negativeControls$conceptId)
+                                           target_database_schema = cohortDatabaseSchema,
+                                           target_cohort_table = cohortTable,
+                                           outcome_ids = unique(negativeControlOutcomes$outcomeId))
   DatabaseConnector::executeSql(conn, sql)
-
+  
   # Check number of subjects per cohort:
-  writeLines("Counting cohorts")
-  countCohorts(connectionDetails = connectionDetails,
-               cdmDatabaseSchema = cdmDatabaseSchema,
-               workDatabaseSchema = workDatabaseSchema,
-               studyCohortTable = studyCohortTable,
-               oracleTempSchema = oracleTempSchema,
-               outputFolder = outputFolder)
-}
+  OhdsiRTools::logInfo("Counting cohorts")
+  sql <- SqlRender::loadRenderTranslateSql("GetCounts.sql",
+                                           "AlendronateVsRaloxifene",
+                                           dbms = connectionDetails$dbms,
+                                           oracleTempSchema = oracleTempSchema,
+                                           cdm_database_schema = cdmDatabaseSchema,
+                                           work_database_schema = cohortDatabaseSchema,
+                                           study_cohort_table = cohortTable)
+  counts <- DatabaseConnector::querySql(conn, sql)
+  colnames(counts) <- SqlRender::snakeCaseToCamelCase(colnames(counts))
+  counts <- addCohortNames(counts)
+  write.csv(counts, file.path(outputFolder, "CohortCounts.csv"), row.names = FALSE)
 
+  DatabaseConnector::disconnect(conn)
+}
 
 addCohortNames <- function(data, IdColumnName = "cohortDefinitionId", nameColumnName = "cohortName") {
   pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "AlendronateVsRaloxifene")
   cohortsToCreate <- read.csv(pathToCsv)
   pathToCsv <- system.file("settings", "NegativeControls.csv", package = "AlendronateVsRaloxifene")
   negativeControls <- read.csv(pathToCsv)
-
-  idToName <- data.frame(cohortId = c(cohortsToCreate$cohortId, negativeControls$conceptId),
-                         cohortName = c(as.character(cohortsToCreate$name), as.character(negativeControls$name)))
+  
+  idToName <- data.frame(cohortId = c(cohortsToCreate$cohortId, 
+                                      negativeControls$targetId,
+                                      negativeControls$comparatorId,
+                                      negativeControls$outcomeId),
+                         cohortName = c(as.character(cohortsToCreate$name), 
+                                        as.character(negativeControls$targetName),
+                                        as.character(negativeControls$comparatorName),
+                                        as.character(negativeControls$outcomeName)))
+  idToName <- idToName[order(idToName$cohortId), ]
+  idToName <- idToName[!duplicated(idToName$cohortId), ]
   names(idToName)[1] <- IdColumnName
   names(idToName)[2] <- nameColumnName
   data <- merge(data, idToName, all.x = TRUE)

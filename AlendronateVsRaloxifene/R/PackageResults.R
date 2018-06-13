@@ -1,4 +1,4 @@
-# Copyright 2017 Observational Health Data Sciences and Informatics
+# Copyright 2018 Observational Health Data Sciences and Informatics
 #
 # This file is part of AlendronateVsRaloxifene
 #
@@ -31,95 +31,123 @@
 #'
 #' @export
 packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder, minCellCount = 5) {
-    exportFolder <- file.path(outputFolder, "export")
-    if (!file.exists(exportFolder))
-        dir.create(exportFolder)
-
-    createMetaData(connectionDetails, cdmDatabaseSchema, exportFolder)
-    cmOutputFolder <- file.path(outputFolder, "cmOutput")
-    outcomeReference <- readRDS(file.path(cmOutputFolder, "outcomeModelReference.rds"))
-    analysisSummary <- CohortMethod::summarizeAnalyses(outcomeReference)
-    analysisSummary <- addCohortNames(analysisSummary, "outcomeId", "outcomeName")
-    analysisSummary <- addCohortNames(analysisSummary, "targetId", "targetName")
-    analysisSummary <- addCohortNames(analysisSummary, "comparatorId", "comparatorName")
-    analysisSummary <- addAnalysisDescriptions(analysisSummary)
-
-    cohortMethodDataFolder <- outcomeReference$cohortMethodDataFolder[outcomeReference$analysisId == 1 & outcomeReference$outcomeId == 99323]
-    cohortMethodData <- CohortMethod::loadCohortMethodData(cohortMethodDataFolder)
-
-    ### Write results table ###
-    write.csv(analysisSummary, file.path(exportFolder, "MainResults.csv"), row.names = FALSE)
-
-    ### Main attrition table ###
-    strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 1 & outcomeReference$outcomeId == 99323]
-    strata <- readRDS(strataFile)
-    attrition <- CohortMethod::getAttritionTable(strata)
-    write.csv(attrition, file.path(exportFolder, "Attrition.csv"), row.names = FALSE)
-
-    ### Main propensity score plots ###
-    psFileName <- outcomeReference$sharedPsFile[outcomeReference$sharedPsFile != ""][1]
-    ps <- readRDS(psFileName)
-    CohortMethod::plotPs(ps, fileName = file.path(exportFolder, "PsPrefScale.png"))
-    CohortMethod::plotPs(ps, scale = "propensity", fileName = file.path(exportFolder, "Ps.png"))
-    strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 1 & outcomeReference$outcomeId == 99323]
-    strata <- readRDS(strataFile)
-    CohortMethod::plotPs(strata,
-                         unfilteredData = ps,
-                         fileName = file.path(exportFolder, "PsAfterStratificationPrefScale.png"))
-    CohortMethod::plotPs(strata,
-                         unfilteredData = ps,
-                         scale = "propensity",
-                         fileName = file.path(exportFolder, "PsAfterStratification.png"))
-
-    ### Propensity model ###
-    psFileName <- outcomeReference$sharedPsFile[outcomeReference$sharedPsFile != ""][1]
-    ps <- readRDS(psFileName)
-    psModel <- CohortMethod::getPsModel(ps, cohortMethodData)
-    write.csv(psModel, file.path(exportFolder, "PsModel.csv"), row.names = FALSE)
-
-    ### Main balance tables ###
-    strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 1 & outcomeReference$outcomeId == 99323]
-    strata <- readRDS(strataFile)
-    balance <- CohortMethod::computeCovariateBalance(strata, cohortMethodData)
-    idx <- balance$beforeMatchingSumTreated < minCellCount
-    balance$beforeMatchingSumTreated[idx] <- NA
-    balance$beforeMatchingMeanTreated[idx] <- NA
-    idx <- balance$beforeMatchingSumComparator < minCellCount
-    balance$beforeMatchingSumComparator[idx] <- NA
-    balance$beforeMatchingMeanComparator[idx] <- NA
-    idx <- balance$afterMatchingSumTreated < minCellCount
-    balance$afterMatchingSumTreated[idx] <- NA
-    balance$afterMatchingMeanTreated[idx] <- NA
-    idx <- balance$afterMatchingSumComparator < minCellCount
-    balance$afterMatchingSumComparator[idx] <- NA
-    balance$afterMatchingMeanComparator[idx] <- NA
-    write.csv(balance, file.path(exportFolder, "Balance.csv"), row.names = FALSE)
-
-    ### Removed (redunant) covariates ###
-    if (!is.null(cohortMethodData$metaData$deletedCovariateIds)) {
-        idx <- is.na(ffbase::ffmatch(cohortMethodData$covariateRef$covariateId, ff::as.ff(cohortMethodData$metaData$deletedCovariateIds)))
-        removedCovars <- ff::as.ram(cohortMethodData$covariateRef[ffbase::ffwhich(idx, idx == FALSE), ])
-        write.csv(removedCovars, file.path(exportFolder, "RemovedCovars.csv"), row.names = FALSE)
+  exportFolder <- file.path(outputFolder, "export")
+  if (!file.exists(exportFolder))
+    dir.create(exportFolder)
+  diagnosticsFolder <- file.path(outputFolder, "diagnostics")
+  cmOutputFolder <- file.path(outputFolder, "cmOutput")
+  
+  createMetaData(connectionDetails, cdmDatabaseSchema, exportFolder)
+  
+  # Copy MDRR, enforcing minCellCount -----------------------------------------------------------------
+  fileName <-  file.path(diagnosticsFolder, "mdrrs.csv")
+  mdrrs <- read.csv(fileName)
+  mdrrs$totalOutcomes[mdrrs$totalOutcomes < minCellCount] <- paste0("<", minCellCount)
+  mdrrs$targetPersons[mdrrs$targetPersons < minCellCount] <- paste0("<", minCellCount)
+  mdrrs$comparatorPersons[mdrrs$comparatorPersons < minCellCount] <- paste0("<", minCellCount)
+  fileName <-  file.path(exportFolder, "mdrrs.csv")
+  write.csv(mdrrs, fileName, row.names = FALSE)
+  
+  # Copy balance files, dropping person counts --------------------------------------------------------
+  files <- list.files(path = diagnosticsFolder, pattern = "^balance.*csv$")
+  for (file in files) {
+    balance <- read.csv(file.path(diagnosticsFolder, file))
+    balance$beforeMatchingSumTreated <- NULL
+    balance$beforeMatchingSumComparator <- NULL
+    balance$afterMatchingSumTreated <- NULL
+    balance$afterMatchingSumComparator <- NULL
+    write.csv(balance, file.path(exportFolder, file), row.names = FALSE)
+  }
+  
+  # Copy prepared PS plots to export folder ----------------------------------------------------------
+  files <- list.files(path = diagnosticsFolder, pattern = "^preparedPsPlot.*csv$", full.names = TRUE)
+  file.copy(from = files, to = exportFolder)
+  
+  # Copy tables 1 to export folder -------------------------------------------------------------------
+  files <- list.files(path = diagnosticsFolder, pattern = "^table1.*csv$", full.names = TRUE)
+  file.copy(from = files, to = exportFolder)
+  
+  # All effect size estimates ------------------------------------------------------------------------
+  reference <- readRDS(file.path(cmOutputFolder, "outcomeModelReference.rds"))
+  analysisSummary <- CohortMethod::summarizeAnalyses(reference)
+  analysisSummary <- addCohortNames(analysisSummary, "outcomeId", "outcomeName")
+  analysisSummary <- addCohortNames(analysisSummary, "targetId", "targetName")
+  analysisSummary <- addCohortNames(analysisSummary, "comparatorId", "comparatorName")
+  allControlsFile <- file.path(outputFolder, "AllControls.csv")
+  allControls <- read.csv(allControlsFile)
+  allControls$temp <- allControls$outcomeName
+  analysisSummary <- merge(analysisSummary, allControls[, c("targetId", "comparatorId", "outcomeId", "oldOutcomeId", "temp", "targetEffectSize", "trueEffectSize")], all.x = TRUE)
+  analysisSummary$outcomeName <- as.character(analysisSummary$outcomeName)
+  analysisSummary$temp <- as.character(analysisSummary$temp)
+  analysisSummary$outcomeName[!is.na(analysisSummary$temp)] <- analysisSummary$temp[!is.na(analysisSummary$temp)]
+  cmAnalysisList <- CohortMethod::loadCmAnalysisList(system.file("settings", "cmAnalysisList.json", package = "AlendronateVsRaloxifene"))
+  for (i in 1:length(cmAnalysisList)) {
+    analysisSummary$description[analysisSummary$analysisId == cmAnalysisList[[i]]$analysisId] <-  cmAnalysisList[[i]]$description
+  }
+  analysisSummary$treated[analysisSummary$treated < minCellCount] <- paste0("<", minCellCount)
+  analysisSummary$comparator[analysisSummary$comparator < minCellCount] <- paste0("<", minCellCount)
+  analysisSummary$eventsTreated[analysisSummary$eventsTreated < minCellCount] <- paste0("<", minCellCount)
+  analysisSummary$eventsComparator[analysisSummary$eventsComparator < minCellCount] <- paste0("<", minCellCount)
+  write.csv(analysisSummary, file.path(exportFolder, "AllEstimates.csv"), row.names = FALSE)
+  
+  pathToCsv <- system.file("settings", "TcosOfInterest.csv", package = "AlendronateVsRaloxifene")
+  tcosOfInterest <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+  tcsOfInterest <- unique(tcosOfInterest[, c("targetId", "comparatorId")])
+  for (i in 1:nrow(tcsOfInterest)) {
+    targetId <- tcsOfInterest$targetId[i]
+    comparatorId <- tcsOfInterest$comparatorId[i]
+    targetLabel <- tcosOfInterest$targetName[tcosOfInterest$targetId == targetId & tcosOfInterest$comparatorId == comparatorId][1]
+    comparatorLabel <- tcosOfInterest$comparatorName[tcosOfInterest$targetId == targetId & tcosOfInterest$comparatorId == comparatorId][1]
+    outcomeIds <- as.character(tcosOfInterest$outcomeIds[tcosOfInterest$targetId == targetId & tcosOfInterest$comparatorId == comparatorId])
+    outcomeIds <- as.numeric(strsplit(outcomeIds, split = ";")[[1]])
+    for (analysisId in unique(reference$analysisId)) {
+      for (outcomeId in outcomeIds) {
+        strataFile <- reference$strataFile[reference$analysisId == analysisId &
+                                             reference$targetId == targetId &
+                                             reference$comparatorId == comparatorId &
+                                             reference$outcomeId == outcomeId]
+        if (strataFile == "") {
+          strataFile <- reference$studyPopFile[reference$analysisId == analysisId &
+                                                 reference$targetId == targetId &
+                                                 reference$comparatorId == comparatorId &
+                                                 reference$outcomeId == outcomeId]
+        }
+        population <- readRDS(strataFile)
+        fileName <-  file.path(exportFolder, paste0("km_a",analysisId,"_t",targetId,"_c",comparatorId, "_o", outcomeId, ".png"))
+        CohortMethod::plotKaplanMeier(population = population,
+                                      treatmentLabel = targetLabel,
+                                      comparatorLabel = comparatorLabel,
+                                      fileName = fileName)
+      }
     }
-
-    ### Main Kaplan Meier plots ###
-    strataFile <- outcomeReference$strataFile[outcomeReference$analysisId == 1 & outcomeReference$outcomeId == 99323]
-    strata <- readRDS(strataFile)
-    CohortMethod::plotKaplanMeier(strata,
-                                  fileName = file.path(exportFolder, "KaplanMeier.png"))
-
-    ### Copy cohort counts ###
-    counts <- read.csv(file.path(outputFolder, "CohortCounts.csv"))
-    write.csv(counts, file.path(exportFolder, "CohortCounts.csv"), row.names = FALSE)
-    counts <- read.csv(file.path(outputFolder, "cohortIncStats.csv"))
-    write.csv(counts, file.path(exportFolder, "cohortIncStats.csv"), row.names = FALSE)
-    counts <- read.csv(file.path(outputFolder, "cohortSummaryStats.csv"))
-    write.csv(counts, file.path(exportFolder, "cohortSummaryStats.csv"), row.names = FALSE)
-
-    ### Add all to zip file ###
-    zipName <- file.path(exportFolder, "StudyResults.zip")
-    OhdsiSharing::compressFolder(exportFolder, zipName)
-    writeLines(paste("\nStudy results are ready for sharing at:", zipName))
+  }
+  
+  # Attition tables -----------------------------------------------------------------------------------
+  files <- list.files(path = diagnosticsFolder, pattern = "^attritionTable.*csv$")
+  for (file in files) {
+    attritionTable<- read.csv(file.path(diagnosticsFolder, file))
+    attritionTable$treatedPersons[attritionTable$treatedPersons < minCellCount] <- paste0("<", minCellCount)
+    attritionTable$comparatorPersons[attritionTable$comparatorPersons < minCellCount] <- paste0("<", minCellCount)
+    attritionTable$treatedExposures[attritionTable$treatedExposures < minCellCount] <- paste0("<", minCellCount)
+    attritionTable$comparatorExposures[attritionTable$comparatorExposures < minCellCount] <- paste0("<", minCellCount)
+    write.csv(attritionTable, file.path(exportFolder, file), row.names = FALSE)
+  }
+  
+  # Cohort counts, enforcing minCellCount -------------------------------------------------------------
+  fileName <- file.path(outputFolder, "CohortCounts.csv")
+  cohortCounts <- read.csv(fileName)
+  cohortCounts$cohortCount[cohortCounts$cohortCount < minCellCount] <- paste0("<", minCellCount)
+  cohortCounts$personCount[cohortCounts$personCount < minCellCount] <- paste0("<", minCellCount)
+  fileName <-  file.path(exportFolder, "CohortCounts.csv")
+  write.csv(cohortCounts, fileName, row.names = FALSE)
+  
+  # Add all to zip file -------------------------------------------------------------------------------
+  zipName <- file.path(exportFolder, "StudyResults.zip")
+  files <- list.files(exportFolder)
+  oldWd <- setwd(exportFolder)
+  on.exit(setwd(oldWd))
+  zip::zip(zipfile = zipName, files = files, recurse = FALSE) 
+  writeLines(paste("\nStudy results are ready for sharing at:", zipName))
 }
 
 #' Create metadata file
@@ -138,39 +166,18 @@ packageResults <- function(connectionDetails, cdmDatabaseSchema, outputFolder, m
 #'
 #' @export
 createMetaData <- function(connectionDetails, cdmDatabaseSchema, exportFolder) {
-    conn <- DatabaseConnector::connect(connectionDetails)
-    sql <- "SELECT * FROM @cdm_database_schema.cdm_source"
-    sql <- SqlRender::renderSql(sql, cdm_database_schema = cdmDatabaseSchema)$sql
-    sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
-    cdmSource <- DatabaseConnector::querySql(conn, sql)
-    RJDBC::dbDisconnect(conn)
-    lines <- paste(names(cdmSource), cdmSource[1, ], sep = ": ")
-    lines <- c(lines, paste("OhdsiRTools version", packageVersion("OhdsiRTools"), sep = ": "))
-    lines <- c(lines, paste("SqlRender version", packageVersion("SqlRender"), sep = ": "))
-    lines <- c(lines,
-               paste("DatabaseConnector version", packageVersion("DatabaseConnector"), sep = ": "))
-    lines <- c(lines, paste("Cyclops version", packageVersion("Cyclops"), sep = ": "))
-    lines <- c(lines,
-               paste("FeatureExtraction version", packageVersion("FeatureExtraction"), sep = ": "))
-    lines <- c(lines, paste("CohortMethod version", packageVersion("CohortMethod"), sep = ": "))
-    lines <- c(lines, paste("OhdsiSharing version", packageVersion("OhdsiSharing"), sep = ": "))
-    lines <- c(lines,
-               paste("AlendronateVsRaloxifene version", packageVersion("AlendronateVsRaloxifene"), sep = ": "))
-    write(lines, file.path(exportFolder, "MetaData.txt"))
-    invisible(NULL)
-}
-
-addAnalysisDescriptions <- function(object) {
-    cmAnalysisListFile <- system.file("settings", "cmAnalysisList.txt", package = "AlendronateVsRaloxifene")
-    cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
-    # Add analysis description:
-    for (i in 1:length(cmAnalysisList)) {
-        object$analysisDescription[object$analysisId == cmAnalysisList[[i]]$analysisId] <- cmAnalysisList[[i]]$description
-    }
-    # Change order of columns:
-    aidCol <- which(colnames(object) == "analysisId")
-    if (aidCol < ncol(object) - 1) {
-        object <- object[, c(1:aidCol, ncol(object) , (aidCol+1):(ncol(object)-1))]
-    }
-    return(object)
+  conn <- DatabaseConnector::connect(connectionDetails)
+  sql <- "SELECT * FROM @cdm_database_schema.cdm_source"
+  sql <- SqlRender::renderSql(sql, cdm_database_schema = cdmDatabaseSchema)$sql
+  sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
+  cdmSource <- DatabaseConnector::querySql(conn, sql)
+  DatabaseConnector::disconnect(conn)
+  lines <- paste(names(cdmSource), cdmSource[1, ], sep = ": ")
+  
+  snapshot <- OhdsiRTools::takeEnvironmentSnapshot("AlendronateVsRaloxifene")
+  lines <- c(lines, "")
+  lines <- c(lines, "Package versions:")
+  lines <- c(lines, paste(snapshot$package, snapshot$version, sep = ": "))
+  write(lines, file.path(exportFolder, "MetaData.txt"))
+  invisible(NULL)
 }

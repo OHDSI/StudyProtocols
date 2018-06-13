@@ -1,30 +1,35 @@
 Package: AlendronateVsRaloxifene
 Type: Package
-Title: Alendronate versus Raloxifene and the risk of Hip Fracture
-Version: 0.3.0
+Title: A Package for Comparative Effectiveness Study of Alendronate versus Raloxifene
+Version: 2.0.0
 Author: Martijn Schuemie [aut, cre],
     Yeesuk Kim [aut],
     Patrick Ryan [aut],
     Marc Suchard [aut]
 Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
-Description: More about what it does (maybe more than one line).
+Description: updated from previous version (0.3.2)
 Depends:
-    DatabaseConnector (>= 1.10.0)
+    DatabaseConnector
 Imports:
-    SqlRender (>= 1.3.0),
-    RJDBC,
-    FeatureExtraction (>= 1.2.0),
-    CohortMethod (>= 2.2.2),
-    EmpiricalCalibration (>= 1.2.0),
-    OhdsiSharing (>= 0.1.1),
-    Cyclops (>= 1.2.2),
-    rmarkdown,
+    SqlRender,
+    EmpiricalCalibration,
+    Cyclops,
+    FeatureExtraction,
+    CohortMethod,
     ggplot2,
     ff,
     ffbase,
-    xtable
+    MethodEvaluation,
+    EvidenceSynthesis,
+    OhdsiSharing,
+    zip,
+	  OhdsiRTools (>= 1.5.0)
 Suggests:
-    OhdsiRTools (>= 1.3.0)
+    knitr,
+    rmarkdown,
+    DT,
+    shiny
 License: Apache License 2.0
+VignetteBuilder: knitr
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000

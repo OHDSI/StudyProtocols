@@ -1,148 +1,148 @@
-conceptId,name
-4305080,Abnormal breathing
-45765647,Acquired brain injury
-4217633,Acrodermatitis
-198809,Acute cholecystitis
-4133026,Acute skin disorder
-440083,Acute stress disorder
-376981,Amblyopia
-4207240,Anemia due to intrinsic red cell abnormality
-4312008,Anemia due to substance
-4080321,Animal-induced dermatosis
-4145825,Anorectal disorder
-4081007,Anterior chamber finding
-314054,Aortic valve disorder
-137829,Aplastic anemia
-440448,Appendicitis
-261880,Atelectasis
-4281109,Autoimmune thyroiditis
-4193166,Bacterial gastrointestinal infectious disease
-4224118,Bladder dysfunction
-378425,Blepharitis
-256722,Bronchopneumonia
-442013,Burn
-197028,Calculus of lower urinary tract
-314658,Cardiomegaly
-374384,Cerebral ischemia
-4189855,Chronic arthropathy
-4134586,Chronic heart disease
-140057,Chronic leukemia
-4304484,Chronic myeloproliferative disorder
-440704,Chronic pain syndrome
-4104204,Complete bilateral paralysis
-312723,Congenital heart disease
-4080664,Corneal endothelium finding
-193016,Cystic disease of kidney
-441267,Cystic fibrosis
-432590,Delusional disorder
-375801,Demyelinating disease of central nervous system
-443767,Diabetic oculopathy
-436641,Disease due to Arthropod
-4225726,Disease due to Gammaherpesvirinae
-4023319,Disease due to Paramyxoviridae
-433694,Disease due to Retroviridae
-22350,Edema of larynx
-4157036,Encephalomyelopathy
-4101350,Finding of bowel continence
-4029295,Folliculitis
-196456,Gallstone
-4007453,Gammopathy
-4295370,Gastrointestinal fistula
-4055361,Generalized epilepsy
-4263367,Glomerulonephritis
-4195003,Heart valve stenosis
-4163735,Hemochromatosis
-432868,Hemoglobinopathy
-195562,Hemorrhoids
-444429,Herpes simplex
-4038835,Hodgkin's disease
-4214376,Hyperglycemia
-438134,Hypersomnia
-4124693,Hypertrophic cardiomyopathy
-436375,Hypovolemia
-4120621,Immune thrombocytopenic purpura
-433752,Impulse control disorder
-4080305,Infection of nail
-192964,Infectious disorder of kidney
-4208784,Infective otitis media
-4074815,Inflammatory bowel disease
-139099,Ingrowing nail
-4092885,Inguinal canal finding
-200588,Injury of abdomen
-4152163,Injury of eye region
-437409,Intracranial injury
-436659,Iron deficiency anemia
-75576,Irritable bowel syndrome
-4004352,Irritant contact dermatitis
-380397,Keratoconjunctivitis
-4209145,Ketoacidosis
-197676,Large liver
-4199395,Lesion of bronchus
-4103995,Lesion of rectum
-4175297,Lower respiratory tract infection
-316084,Lymphadenitis
-4308125,Macrocytic anemia
-4177067,Mass of urinary bladder
-439045,Mediastinitis
-435785,Meningitis
-440389,Mental retardation
-4271024,Musculoskeletal fibromatosis
-440631,Mycobacteriosis
-4129886,Neoplasm of pancreas
-4130375,Neoplasm of tongue
-40304526,Nocturia
-4038838,Non-Hodgkin's lymphoma
-198802,Occlusion of ureter
-442274,Oligomenorrhea
-372914,Optic atrophy
-43531000,Paralytic syndrome of all four limbs
-43531638,Paralytic syndrome of both lower limbs
-43531639,Paralytic syndrome on one side of the body
-440087,Parasomnia
-313792,Paroxysmal tachycardia
-4106574,Partial seizure
-317309,Peripheral arterial occlusive disease
-441838,Personality disorder
-4304010,Phobic disorder
-134870,Pityriasis versicolor
-44783617,Precapillary pulmonary hypertension
-4324261,Pulmonary necrosis
-4114158,Pulmonary valve finding
-198199,Pyelonephritis
-133547,Pyoderma
-4256228,Respiratory failure
-73754,Restless legs
-80809,Rheumatoid arthritis
-4286201,Schizoaffective disorder
-435783,Schizophrenia
-319826,Secondary hypertension
-196236,Septic shock
-4021907,Seventh cranial nerve finding
-433967,Spirochetal infection
-4329707,Strabismus
-437779,Streptococcal infectious disease
-4279309,Substance abuse
-4077081,Superficial mycosis
-432436,Symbolic dysfunction
-4227653,T-cell AND/OR NK-cell neoplasm
-4344040,Tendon injury
-4280071,Thrombocytosis
-4207615,Thrombosis of vein of trunk
-138387,Thyrotoxicosis
-381839,Tic disorder
-4234533,Tonsillitis
-43021132,Toxic metabolic encephalopathy
-4119796,Toxic pneumonitis
-4002659,Traumatic hemorrhage
-379801,Trigeminal neuralgia
-201254,Type 1 diabetes mellitus
-4281232,Type B viral hepatitis
-4032424,Upper urinary tract dilatation and obstruction
-195862,Urethritis
-4082798,Urinary tract pain
-443605,Vascular dementia
-312935,Venous hypertension
-40457757,Ventricular septal abnormality
-197036,Vesicoureteric reflux
-4193875,Viral infection of the digestive tract
-439981,Wound dehiscence
+targetId,targetName,comparatorId,comparatorName,outcomeId,outcomeName,type
+99321,Alendronate,99322,Raloxifene,4305080,Abnormal breathing,Outcome
+99321,Alendronate,99322,Raloxifene,45765647,Acquired brain injury,Outcome
+99321,Alendronate,99322,Raloxifene,4217633,Acrodermatitis,Outcome
+99321,Alendronate,99322,Raloxifene,198809,Acute cholecystitis,Outcome
+99321,Alendronate,99322,Raloxifene,4133026,Acute skin disorder,Outcome
+99321,Alendronate,99322,Raloxifene,440083,Acute stress disorder,Outcome
+99321,Alendronate,99322,Raloxifene,376981,Amblyopia,Outcome
+99321,Alendronate,99322,Raloxifene,4207240,Anemia due to intrinsic red cell abnormality,Outcome
+99321,Alendronate,99322,Raloxifene,4312008,Anemia due to substance,Outcome
+99321,Alendronate,99322,Raloxifene,4080321,Animal-induced dermatosis,Outcome
+99321,Alendronate,99322,Raloxifene,4145825,Anorectal disorder,Outcome
+99321,Alendronate,99322,Raloxifene,4081007,Anterior chamber finding,Outcome
+99321,Alendronate,99322,Raloxifene,314054,Aortic valve disorder,Outcome
+99321,Alendronate,99322,Raloxifene,137829,Aplastic anemia,Outcome
+99321,Alendronate,99322,Raloxifene,440448,Appendicitis,Outcome
+99321,Alendronate,99322,Raloxifene,261880,Atelectasis,Outcome
+99321,Alendronate,99322,Raloxifene,4281109,Autoimmune thyroiditis,Outcome
+99321,Alendronate,99322,Raloxifene,4193166,Bacterial gastrointestinal infectious disease,Outcome
+99321,Alendronate,99322,Raloxifene,4224118,Bladder dysfunction,Outcome
+99321,Alendronate,99322,Raloxifene,378425,Blepharitis,Outcome
+99321,Alendronate,99322,Raloxifene,256722,Bronchopneumonia,Outcome
+99321,Alendronate,99322,Raloxifene,442013,Burn,Outcome
+99321,Alendronate,99322,Raloxifene,197028,Calculus of lower urinary tract,Outcome
+99321,Alendronate,99322,Raloxifene,314658,Cardiomegaly,Outcome
+99321,Alendronate,99322,Raloxifene,374384,Cerebral ischemia,Outcome
+99321,Alendronate,99322,Raloxifene,4189855,Chronic arthropathy,Outcome
+99321,Alendronate,99322,Raloxifene,4134586,Chronic heart disease,Outcome
+99321,Alendronate,99322,Raloxifene,140057,Chronic leukemia,Outcome
+99321,Alendronate,99322,Raloxifene,4304484,Chronic myeloproliferative disorder,Outcome
+99321,Alendronate,99322,Raloxifene,440704,Chronic pain syndrome,Outcome
+99321,Alendronate,99322,Raloxifene,4104204,Complete bilateral paralysis,Outcome
+99321,Alendronate,99322,Raloxifene,312723,Congenital heart disease,Outcome
+99321,Alendronate,99322,Raloxifene,4080664,Corneal endothelium finding,Outcome
+99321,Alendronate,99322,Raloxifene,193016,Cystic disease of kidney,Outcome
+99321,Alendronate,99322,Raloxifene,441267,Cystic fibrosis,Outcome
+99321,Alendronate,99322,Raloxifene,432590,Delusional disorder,Outcome
+99321,Alendronate,99322,Raloxifene,375801,Demyelinating disease of central nervous system,Outcome
+99321,Alendronate,99322,Raloxifene,443767,Diabetic oculopathy,Outcome
+99321,Alendronate,99322,Raloxifene,436641,Disease due to Arthropod,Outcome
+99321,Alendronate,99322,Raloxifene,4225726,Disease due to Gammaherpesvirinae,Outcome
+99321,Alendronate,99322,Raloxifene,4023319,Disease due to Paramyxoviridae,Outcome
+99321,Alendronate,99322,Raloxifene,433694,Disease due to Retroviridae,Outcome
+99321,Alendronate,99322,Raloxifene,22350,Edema of larynx,Outcome
+99321,Alendronate,99322,Raloxifene,4157036,Encephalomyelopathy,Outcome
+99321,Alendronate,99322,Raloxifene,4101350,Finding of bowel continence,Outcome
+99321,Alendronate,99322,Raloxifene,4029295,Folliculitis,Outcome
+99321,Alendronate,99322,Raloxifene,196456,Gallstone,Outcome
+99321,Alendronate,99322,Raloxifene,4007453,Gammopathy,Outcome
+99321,Alendronate,99322,Raloxifene,4295370,Gastrointestinal fistula,Outcome
+99321,Alendronate,99322,Raloxifene,4055361,Generalized epilepsy,Outcome
+99321,Alendronate,99322,Raloxifene,4263367,Glomerulonephritis,Outcome
+99321,Alendronate,99322,Raloxifene,4195003,Heart valve stenosis,Outcome
+99321,Alendronate,99322,Raloxifene,4163735,Hemochromatosis,Outcome
+99321,Alendronate,99322,Raloxifene,432868,Hemoglobinopathy,Outcome
+99321,Alendronate,99322,Raloxifene,195562,Hemorrhoids,Outcome
+99321,Alendronate,99322,Raloxifene,444429,Herpes simplex,Outcome
+99321,Alendronate,99322,Raloxifene,4038835,Hodgkin's disease,Outcome
+99321,Alendronate,99322,Raloxifene,4214376,Hyperglycemia,Outcome
+99321,Alendronate,99322,Raloxifene,438134,Hypersomnia,Outcome
+99321,Alendronate,99322,Raloxifene,4124693,Hypertrophic cardiomyopathy,Outcome
+99321,Alendronate,99322,Raloxifene,436375,Hypovolemia,Outcome
+99321,Alendronate,99322,Raloxifene,4120621,Immune thrombocytopenic purpura,Outcome
+99321,Alendronate,99322,Raloxifene,433752,Impulse control disorder,Outcome
+99321,Alendronate,99322,Raloxifene,4080305,Infection of nail,Outcome
+99321,Alendronate,99322,Raloxifene,192964,Infectious disorder of kidney,Outcome
+99321,Alendronate,99322,Raloxifene,4208784,Infective otitis media,Outcome
+99321,Alendronate,99322,Raloxifene,4074815,Inflammatory bowel disease,Outcome
+99321,Alendronate,99322,Raloxifene,139099,Ingrowing nail,Outcome
+99321,Alendronate,99322,Raloxifene,4092885,Inguinal canal finding,Outcome
+99321,Alendronate,99322,Raloxifene,200588,Injury of abdomen,Outcome
+99321,Alendronate,99322,Raloxifene,4152163,Injury of eye region,Outcome
+99321,Alendronate,99322,Raloxifene,437409,Intracranial injury,Outcome
+99321,Alendronate,99322,Raloxifene,436659,Iron deficiency anemia,Outcome
+99321,Alendronate,99322,Raloxifene,75576,Irritable bowel syndrome,Outcome
+99321,Alendronate,99322,Raloxifene,4004352,Irritant contact dermatitis,Outcome
+99321,Alendronate,99322,Raloxifene,380397,Keratoconjunctivitis,Outcome
+99321,Alendronate,99322,Raloxifene,4209145,Ketoacidosis,Outcome
+99321,Alendronate,99322,Raloxifene,197676,Large liver,Outcome
+99321,Alendronate,99322,Raloxifene,4199395,Lesion of bronchus,Outcome
+99321,Alendronate,99322,Raloxifene,4103995,Lesion of rectum,Outcome
+99321,Alendronate,99322,Raloxifene,4175297,Lower respiratory tract infection,Outcome
+99321,Alendronate,99322,Raloxifene,316084,Lymphadenitis,Outcome
+99321,Alendronate,99322,Raloxifene,4308125,Macrocytic anemia,Outcome
+99321,Alendronate,99322,Raloxifene,4177067,Mass of urinary bladder,Outcome
+99321,Alendronate,99322,Raloxifene,439045,Mediastinitis,Outcome
+99321,Alendronate,99322,Raloxifene,435785,Meningitis,Outcome
+99321,Alendronate,99322,Raloxifene,440389,Mental retardation,Outcome
+99321,Alendronate,99322,Raloxifene,4271024,Musculoskeletal fibromatosis,Outcome
+99321,Alendronate,99322,Raloxifene,440631,Mycobacteriosis,Outcome
+99321,Alendronate,99322,Raloxifene,4129886,Neoplasm of pancreas,Outcome
+99321,Alendronate,99322,Raloxifene,4130375,Neoplasm of tongue,Outcome
+99321,Alendronate,99322,Raloxifene,40304526,Nocturia,Outcome
+99321,Alendronate,99322,Raloxifene,4038838,Non-Hodgkin's lymphoma,Outcome
+99321,Alendronate,99322,Raloxifene,198802,Occlusion of ureter,Outcome
+99321,Alendronate,99322,Raloxifene,442274,Oligomenorrhea,Outcome
+99321,Alendronate,99322,Raloxifene,372914,Optic atrophy,Outcome
+99321,Alendronate,99322,Raloxifene,43531000,Paralytic syndrome of all four limbs,Outcome
+99321,Alendronate,99322,Raloxifene,43531638,Paralytic syndrome of both lower limbs,Outcome
+99321,Alendronate,99322,Raloxifene,43531639,Paralytic syndrome on one side of the body,Outcome
+99321,Alendronate,99322,Raloxifene,440087,Parasomnia,Outcome
+99321,Alendronate,99322,Raloxifene,313792,Paroxysmal tachycardia,Outcome
+99321,Alendronate,99322,Raloxifene,4106574,Partial seizure,Outcome
+99321,Alendronate,99322,Raloxifene,317309,Peripheral arterial occlusive disease,Outcome
+99321,Alendronate,99322,Raloxifene,441838,Personality disorder,Outcome
+99321,Alendronate,99322,Raloxifene,4304010,Phobic disorder,Outcome
+99321,Alendronate,99322,Raloxifene,134870,Pityriasis versicolor,Outcome
+99321,Alendronate,99322,Raloxifene,44783617,Precapillary pulmonary hypertension,Outcome
+99321,Alendronate,99322,Raloxifene,4324261,Pulmonary necrosis,Outcome
+99321,Alendronate,99322,Raloxifene,4114158,Pulmonary valve finding,Outcome
+99321,Alendronate,99322,Raloxifene,198199,Pyelonephritis,Outcome
+99321,Alendronate,99322,Raloxifene,133547,Pyoderma,Outcome
+99321,Alendronate,99322,Raloxifene,4256228,Respiratory failure,Outcome
+99321,Alendronate,99322,Raloxifene,73754,Restless legs,Outcome
+99321,Alendronate,99322,Raloxifene,80809,Rheumatoid arthritis,Outcome
+99321,Alendronate,99322,Raloxifene,4286201,Schizoaffective disorder,Outcome
+99321,Alendronate,99322,Raloxifene,435783,Schizophrenia,Outcome
+99321,Alendronate,99322,Raloxifene,319826,Secondary hypertension,Outcome
+99321,Alendronate,99322,Raloxifene,196236,Septic shock,Outcome
+99321,Alendronate,99322,Raloxifene,4021907,Seventh cranial nerve finding,Outcome
+99321,Alendronate,99322,Raloxifene,433967,Spirochetal infection,Outcome
+99321,Alendronate,99322,Raloxifene,4329707,Strabismus,Outcome
+99321,Alendronate,99322,Raloxifene,437779,Streptococcal infectious disease,Outcome
+99321,Alendronate,99322,Raloxifene,4279309,Substance abuse,Outcome
+99321,Alendronate,99322,Raloxifene,4077081,Superficial mycosis,Outcome
+99321,Alendronate,99322,Raloxifene,432436,Symbolic dysfunction,Outcome
+99321,Alendronate,99322,Raloxifene,4227653,T-cell AND/OR NK-cell neoplasm,Outcome
+99321,Alendronate,99322,Raloxifene,4344040,Tendon injury,Outcome
+99321,Alendronate,99322,Raloxifene,4280071,Thrombocytosis,Outcome
+99321,Alendronate,99322,Raloxifene,4207615,Thrombosis of vein of trunk,Outcome
+99321,Alendronate,99322,Raloxifene,138387,Thyrotoxicosis,Outcome
+99321,Alendronate,99322,Raloxifene,381839,Tic disorder,Outcome
+99321,Alendronate,99322,Raloxifene,4234533,Tonsillitis,Outcome
+99321,Alendronate,99322,Raloxifene,43021132,Toxic metabolic encephalopathy,Outcome
+99321,Alendronate,99322,Raloxifene,4119796,Toxic pneumonitis,Outcome
+99321,Alendronate,99322,Raloxifene,4002659,Traumatic hemorrhage,Outcome
+99321,Alendronate,99322,Raloxifene,379801,Trigeminal neuralgia,Outcome
+99321,Alendronate,99322,Raloxifene,201254,Type 1 diabetes mellitus,Outcome
+99321,Alendronate,99322,Raloxifene,4281232,Type B viral hepatitis,Outcome
+99321,Alendronate,99322,Raloxifene,4032424,Upper urinary tract dilatation and obstruction,Outcome
+99321,Alendronate,99322,Raloxifene,195862,Urethritis,Outcome
+99321,Alendronate,99322,Raloxifene,4082798,Urinary tract pain,Outcome
+99321,Alendronate,99322,Raloxifene,443605,Vascular dementia,Outcome
+99321,Alendronate,99322,Raloxifene,312935,Venous hypertension,Outcome
+99321,Alendronate,99322,Raloxifene,40457757,Ventricular septal abnormality,Outcome
+99321,Alendronate,99322,Raloxifene,197036,Vesicoureteric reflux,Outcome
+99321,Alendronate,99322,Raloxifene,4193875,Viral infection of the digestive tract,Outcome
+99321,Alendronate,99322,Raloxifene,439981,Wound dehiscence,Outcome

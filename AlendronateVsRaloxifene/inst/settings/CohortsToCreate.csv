@@ -2,8 +2,10 @@ cohortId,atlasId,name
 99321,99321,Alendronate
 99322,99322,Raloxifene
 99323,99323,HipFracture
+100792,100792,NoHipVertFx
 100791,100791,VertebralFracture
-100792,100792,NonHipNonVertebralFracture
 100793,100793,OsteonecrosisOfJaw
 100794,100794,EsophagealCancer
-100795,100795,AtypicalFemuralFracture
+100795,100795,AtypicalFF
+1769024,1769024,Thromboembolism
+1769043,1769043,AcuteStroke

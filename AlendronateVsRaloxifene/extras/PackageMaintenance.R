@@ -1,4 +1,4 @@
-# Copyright 2017 Observational Health Data Sciences and Informatics
+# Copyright 2018 Observational Health Data Sciences and Informatics
 #
 # This file is part of AlendronateVsRaloxifene
 #
@@ -19,29 +19,28 @@ OhdsiRTools::formatRFolder()
 OhdsiRTools::checkUsagePackage("AlendronateVsRaloxifene")
 OhdsiRTools::updateCopyrightYearFolder()
 
-
-# Create manual and vignettes ---------------------------------------------
+# Create manual -----------------------------------------------------------
 shell("rm extras/AlendronateVsRaloxifene.pdf")
 shell("R CMD Rd2pdf ./ --output=extras/AlendronateVsRaloxifene.pdf")
 
+# Create vignette ---------------------------------------------------------
+rmarkdown::render("vignettes/UsingSkeletonPackage.Rmd",
+                  output_file = "../inst/doc/UsingSkeletonPackage.pdf",
+                  rmarkdown::pdf_document(latex_engine = "pdflatex",
+                                          toc = TRUE,
+                                          number_sections = TRUE))
 
 # Insert cohort definitions from ATLAS into package -----------------------
 OhdsiRTools::insertCohortDefinitionSetInPackage(fileName = "CohortsToCreate.csv",
-                                                baseUrl = "http://api.ohdsi.org/WebAPI",
+                                                baseUrl = Sys.getenv("baseUrl"),
                                                 insertTableSql = TRUE,
                                                 insertCohortCreationR = TRUE,
-                                                generateStats = TRUE,
+                                                generateStats = FALSE,
                                                 packageName = "AlendronateVsRaloxifene")
 
 # Create analysis details -------------------------------------------------
-connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "pdw",
-                                                                server = "JRDUSAPSCTL01",
-                                                                user = NULL,
-                                                                password = NULL,
-                                                                port = 17001)
-cdmDatabaseSchema <- "CDM_Truven_MDCD_V521.dbo"
-createAnalysesDetails(connectionDetails, cdmDatabaseSchema, "inst/settings/")
-
+source("extras/CreateStudyAnalysisDetails.R")
+createAnalysesDetails("inst/settings/")
 
 # Store environment in which the study was executed -----------------------
 OhdsiRTools::insertEnvironmentSnapshotInPackage("AlendronateVsRaloxifene")

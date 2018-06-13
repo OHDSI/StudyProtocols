@@ -1,4 +1,4 @@
-# Copyright 2017 Observational Health Data Sciences and Informatics
+# Copyright 2018 Observational Health Data Sciences and Informatics
 #
 # This file is part of AlendronateVsRaloxifene
 #
@@ -14,10 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' Execute OHDSI Keppra and the Risk of Angioedema study
+#' Execute the Study
 #'
 #' @details
-#' This function executes the OHDSI Keppra and the Risk of Angioedema study.
+#' This function executes the Alendronate Vs Raloxifene study
+#' 
+#' The \code{createCohorts}, \code{synthesizePositiveControls}, \code{runAnalyses}, and \code{runDiagnostics} arguments
+#' are intended to be used to run parts of the full study at a time, but none of the parts are considerd to be optional.
 #'
 #' @param connectionDetails    An object of type \code{connectionDetails} as created using the
 #'                             \code{\link[DatabaseConnector]{createConnectionDetails}} function in the
@@ -25,10 +28,10 @@
 #' @param cdmDatabaseSchema    Schema name where your patient-level data in OMOP CDM format resides.
 #'                             Note that for SQL Server, this should include both the database and
 #'                             schema name, for example 'cdm_data.dbo'.
-#' @param workDatabaseSchema   Schema name where intermediate data can be stored. You will need to have
+#' @param cohortDatabaseSchema Schema name where intermediate data can be stored. You will need to have
 #'                             write priviliges in this schema. Note that for SQL Server, this should
 #'                             include both the database and schema name, for example 'cdm_data.dbo'.
-#' @param studyCohortTable     The name of the table that will be created in the work database schema.
+#' @param cohortTable          The name of the table that will be created in the work database schema.
 #'                             This table will hold the exposure and outcome cohorts used in this
 #'                             study.
 #' @param oracleTempSchema     Should be used in Oracle to specify a schema where the user has write
@@ -36,11 +39,15 @@
 #' @param outputFolder         Name of local folder to place results; make sure to use forward slashes
 #'                             (/). Do not use a folder on a network drive since this greatly impacts
 #'                             performance.
-#' @param createCohorts        Create the studyCohortTable table with the exposure and outcome cohorts?
+#' @param createCohorts        Create the cohortTable table with the exposure and outcome cohorts?
+#' @param synthesizePositiveControls  Should positive controls be synthesized?
 #' @param runAnalyses          Perform the cohort method analyses?
-#' @param packageResults       Package the results for sharing?
+#' @param runDiagnostics       Compute study diagnostics?
+#' @param packageResults       Should results be packaged for later sharing?     
 #' @param maxCores             How many parallel cores should be used? If more cores are made available
 #'                             this can speed up the analyses.
+#' @param minCellCount         The minimum number of subjects contributing to a count before it can be included 
+#'                             in packaged results.
 #'
 #' @examples
 #' \dontrun{
@@ -51,8 +58,8 @@
 #'
 #' execute(connectionDetails,
 #'         cdmDatabaseSchema = "cdm_data",
-#'         workDatabaseSchema = "results",
-#'         studyCohortTable = "ohdsi_alendronate_raloxifene",
+#'         cohortDatabaseSchema = "study_results",
+#'         cohortTable = "cohort",
 #'         oracleTempSchema = NULL,
 #'         outputFolder = "c:/temp/study_results",
 #'         maxCores = 4)
@@ -61,70 +68,85 @@
 #' @export
 execute <- function(connectionDetails,
                     cdmDatabaseSchema,
-                    workDatabaseSchema = cdmDatabaseSchema,
-                    studyCohortTable = "ohdsi_alendronate_raloxifene",
-                    oracleTempSchema = workDatabaseSchema,
-                    outputFolder,
+                    cohortDatabaseSchema = cdmDatabaseSchema,
+                    cohortTable = cohortTable,
+                    oracleTempSchema = cohortDatabaseSchema,
+                    outputFolder = outputFolder,
                     createCohorts = TRUE,
+                    synthesizePositiveControls = TRUE,
                     runAnalyses = TRUE,
+                    runDiagnostics = TRUE,
                     packageResults = TRUE,
-                    maxCores = 4) {
+                    maxCores = 4,
+                    minCellCount= 5) {
   if (!file.exists(outputFolder))
-    dir.create(outputFolder)
+    dir.create(outputFolder, recursive = TRUE)
 
-  cmOutputFolder <- file.path(outputFolder, "cmOutput")
-  if (!file.exists(cmOutputFolder))
-    dir.create(cmOutputFolder)
+  OhdsiRTools::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
 
   if (createCohorts) {
-    writeLines("Creating exposure and outcome cohorts")
+    OhdsiRTools::logInfo("Creating exposure and outcome cohorts")
     createCohorts(connectionDetails = connectionDetails,
                   cdmDatabaseSchema = cdmDatabaseSchema,
-                  workDatabaseSchema = workDatabaseSchema,
-                  studyCohortTable = studyCohortTable,
+                  cohortDatabaseSchema = cohortDatabaseSchema,
+                  cohortTable = cohortTable,
                   oracleTempSchema = oracleTempSchema,
                   outputFolder = outputFolder)
-    writeLines("")
   }
-
+  
+  if (synthesizePositiveControls) {
+    OhdsiRTools::logInfo("Synthesizing positive controls")
+    synthesizePositiveControls(connectionDetails = connectionDetails,
+                               cdmDatabaseSchema = cdmDatabaseSchema,
+                               cohortDatabaseSchema = cohortDatabaseSchema,
+                               cohortTable = cohortTable,
+                               oracleTempSchema = oracleTempSchema,
+                               outputFolder = outputFolder,
+                               maxCores = maxCores)
+  }
+  
   if (runAnalyses) {
-    writeLines("Running analyses")
+    OhdsiRTools::logInfo("Running analyses")
+    cmOutputFolder <- file.path(outputFolder, "cmOutput")
+    if (!file.exists(cmOutputFolder))
+      dir.create(cmOutputFolder)
     cmAnalysisListFile <- system.file("settings",
-                                      "cmAnalysisList.txt",
+                                      "cmAnalysisList.json",
                                       package = "AlendronateVsRaloxifene")
     cmAnalysisList <- CohortMethod::loadCmAnalysisList(cmAnalysisListFile)
-    drugComparatorOutcomesListFile <- system.file("settings",
-                                                  "drugComparatorOutcomesList.txt",
-                                                  package = "AlendronateVsRaloxifene")
-    drugComparatorOutcomesList <- CohortMethod::loadDrugComparatorOutcomesList(drugComparatorOutcomesListFile)
-    CohortMethod::runCmAnalyses(connectionDetails = connectionDetails,
-                                cdmDatabaseSchema = cdmDatabaseSchema,
-                                exposureDatabaseSchema = workDatabaseSchema,
-                                exposureTable = studyCohortTable,
-                                outcomeDatabaseSchema = workDatabaseSchema,
-                                outcomeTable = studyCohortTable,
-                                outputFolder = cmOutputFolder,
-                                oracleTempSchema = oracleTempSchema,
-                                cmAnalysisList = cmAnalysisList,
-                                cdmVersion = 5,
-                                drugComparatorOutcomesList = drugComparatorOutcomesList,
-                                getDbCohortMethodDataThreads = 1,
-                                createStudyPopThreads = min(3, maxCores),
-                                createPsThreads = 1,
-                                psCvThreads = min(16, maxCores),
-                                computeCovarBalThreads = min(3, maxCores),
-                                trimMatchStratifyThreads = min(10, maxCores),
-                                fitOutcomeModelThreads = max(1, round(maxCores/4)),
-                                outcomeCvThreads = min(4, maxCores),
-                                refitPsForEveryOutcome = FALSE)
-    writeLines("")
+    dcosList <- createTcos(outputFolder = outputFolder)
+    results <- CohortMethod::runCmAnalyses(connectionDetails = connectionDetails,
+                                           cdmDatabaseSchema = cdmDatabaseSchema,
+                                           exposureDatabaseSchema = cohortDatabaseSchema,
+                                           exposureTable = cohortTable,
+                                           outcomeDatabaseSchema = cohortDatabaseSchema,
+                                           outcomeTable = cohortTable,
+                                           outputFolder = cmOutputFolder,
+                                           oracleTempSchema = oracleTempSchema,
+                                           cmAnalysisList = cmAnalysisList,
+                                           drugComparatorOutcomesList = dcosList,
+                                           getDbCohortMethodDataThreads = min(3, maxCores),
+                                           createStudyPopThreads = min(3, maxCores),
+                                           createPsThreads = max(1, round(maxCores/10)),
+                                           psCvThreads = min(10, maxCores),
+                                           computeCovarBalThreads = min(3, maxCores),
+                                           trimMatchStratifyThreads = min(10, maxCores),
+                                           fitOutcomeModelThreads = max(1, round(maxCores/4)),
+                                           outcomeCvThreads = min(4, maxCores),
+                                           refitPsForEveryOutcome = FALSE)
+  }
+  if (runDiagnostics) {
+    OhdsiRTools::logInfo("Running diagnostics")
+    generateDiagnostics(outputFolder = outputFolder)
   }
   if (packageResults) {
-    writeLines("Packaging results in export folder for sharing")
+    OhdsiRTools::logInfo("Packaging results")
     packageResults(connectionDetails = connectionDetails,
                    cdmDatabaseSchema = cdmDatabaseSchema,
-                   outputFolder = outputFolder)
-    writeLines("")
+                   outputFolder = outputFolder,
+                   minCellCount = minCellCount)
   }
+  
+  
   invisible(NULL)
 }

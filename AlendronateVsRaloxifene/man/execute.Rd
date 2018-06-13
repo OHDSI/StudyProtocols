@@ -2,13 +2,14 @@
 % Please edit documentation in R/Main.R
 \name{execute}
 \alias{execute}
-\title{Execute OHDSI Keppra and the Risk of Angioedema study}
+\title{Execute the Study}
 \usage{
 execute(connectionDetails, cdmDatabaseSchema,
-  workDatabaseSchema = cdmDatabaseSchema,
-  studyCohortTable = "ohdsi_alendronate_raloxifene",
-  oracleTempSchema = workDatabaseSchema, outputFolder, createCohorts = TRUE,
-  runAnalyses = TRUE, packageResults = TRUE, maxCores = 4)
+  cohortDatabaseSchema = cdmDatabaseSchema, cohortTable = "cohort",
+  oracleTempSchema = cohortDatabaseSchema, outputFolder,
+  createCohorts = TRUE, synthesizePositiveControls = TRUE,
+  runAnalyses = TRUE, runDiagnostics = TRUE, packageResults = TRUE,
+  maxCores = 4, minCellCount = 5)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the
@@ -19,11 +20,11 @@ DatabaseConnector package.}
 Note that for SQL Server, this should include both the database and
 schema name, for example 'cdm_data.dbo'.}
 
-\item{workDatabaseSchema}{Schema name where intermediate data can be stored. You will need to have
+\item{cohortDatabaseSchema}{Schema name where intermediate data can be stored. You will need to have
 write priviliges in this schema. Note that for SQL Server, this should
 include both the database and schema name, for example 'cdm_data.dbo'.}
 
-\item{studyCohortTable}{The name of the table that will be created in the work database schema.
+\item{cohortTable}{The name of the table that will be created in the work database schema.
 This table will hold the exposure and outcome cohorts used in this
 study.}
 
@@ -34,20 +35,30 @@ priviliges for storing temporary tables.}
 (/). Do not use a folder on a network drive since this greatly impacts
 performance.}
 
-\item{createCohorts}{Create the studyCohortTable table with the exposure and outcome cohorts?}
+\item{createCohorts}{Create the cohortTable table with the exposure and outcome cohorts?}
+
+\item{synthesizePositiveControls}{Should positive controls be synthesized?}
 
 \item{runAnalyses}{Perform the cohort method analyses?}
 
-\item{packageResults}{Package the results for sharing?}
+\item{runDiagnostics}{Compute study diagnostics?}
+
+\item{packageResults}{Should results be packaged for later sharing?}
 
 \item{maxCores}{How many parallel cores should be used? If more cores are made available
 this can speed up the analyses.}
+
+\item{minCellCount}{The minimum number of subjects contributing to a count before it can be included 
+in packaged results.}
 }
 \description{
-Execute OHDSI Keppra and the Risk of Angioedema study
+Execute the Study
 }
 \details{
-This function executes the OHDSI Keppra and the Risk of Angioedema study.
+This function executes the SkeletonCompartiveEffectStudy Study.
+
+The \code{createCohorts}, \code{synthesizePositiveControls}, \code{runAnalyses}, and \code{runDiagnostics} arguments
+are intended to be used to run parts of the full study at a time, but none of the parts are considerd to be optional.
 }
 \examples{
 \dontrun{
@@ -58,8 +69,8 @@ connectionDetails <- createConnectionDetails(dbms = "postgresql",
 
 execute(connectionDetails,
         cdmDatabaseSchema = "cdm_data",
-        workDatabaseSchema = "results",
-        studyCohortTable = "ohdsi_alendronate_raloxifene",
+        cohortDatabaseSchema = "study_results",
+        cohortTable = "cohort",
         oracleTempSchema = NULL,
         outputFolder = "c:/temp/study_results",
         maxCores = 4)

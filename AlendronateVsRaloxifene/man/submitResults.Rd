@@ -4,10 +4,12 @@
 \alias{submitResults}
 \title{Submit the study results to the study coordinating center}
 \usage{
-submitResults(exportFolder, key, secret)
+submitResults(outputFolder, key, secret)
 }
 \arguments{
-\item{exportFolder}{The path to the folder containing the \code{StudyResults.zip} file.}
+\item{outputFolder}{Name of local folder where the results were generated; make sure to use forward slashes
+(/). Do not use a folder on a network drive since this greatly impacts
+performance.}
 
 \item{key}{The key string as provided by the study coordinator}
 
