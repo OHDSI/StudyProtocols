@@ -1,9 +1,2 @@
 targetId,targetName,comparatorId,comparatorName,outcomeIds,OutcomeNames,excludedCovariateConceptIds
-99321,Alendronate,99322,Raloxifene,99323,HipFracture,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,100791,VertebralFracture,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,100792,NoHipVertFx,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,100793,OsteonecrosisOfJaw,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,100794,EsophagealCancer,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,100795,AtypicalFF,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,1769024,Thromboembolism,1557272;44506794;21604148;1513103
-99321,Alendronate,99322,Raloxifene,1769043,AcuteStroke,1557272;44506794;21604148;1513103
+99321,Alendronate,99322,Raloxifene,99323;100791;100792;100793;100794;100795;1769024;1769023,HipFracture;VertebralFracture;NoHipVertFx;OsteonecrosisOfJaw;;EsophagealCancer;AtypicalFF;Thromboembolism;AcuteStroke,1557272;44506794;21604148;1513103
