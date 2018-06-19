@@ -21,7 +21,7 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "sql serv
                                                                 password = "secret")
 
 # The name of the database schema where the CDM data can be found:
-cdmDatabaseSchema <- "NHIS_CDM_Sample.dbo"
+cdmDatabaseSchema <- "cdm_db.dbo"
 
 # The name of the database schema and table where the study-specific cohorts will be instantiated:
 cohortDatabaseSchema <- "NHIS_CDM_RESULT_v2_2_0.dbo"

@@ -31,7 +31,7 @@ How to run
 	install_github("ohdsi/EmpiricalCalibration")
 	install_github("ohdsi/MethodEvaluation")
 	install_github("ohdsi/EvidenceSynthesis")
-	install_github("ohdsi/StudyProtocolSandbox/AlendronateVsRaloxifene")
+	install_github("ohdsi/StudyProtocols/AlendronateVsRaloxifene")
 ```
 
 	If you experience problems on Windows where rJava can't find Java, one solution may be to add `args = "--no-multiarch"` to each `install_github` call, for example:
@@ -52,7 +52,7 @@ How to run
 																						 password = "secret",
 																						 server = "myserver")
 	cdmDatabaseSchema <- "cdm_data"
-	cohortDatabaseschema <- "results"
+	cohortDatabaseSchema <- "results"
 	cohortTable <- "ohdsi_alendronate_raloxifene"
 	outputfolder <- "c:/temp/study_results"
 	
