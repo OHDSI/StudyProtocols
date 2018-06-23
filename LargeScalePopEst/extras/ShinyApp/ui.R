@@ -1,7 +1,7 @@
 library(shiny)
 
 shinyUI(fluidPage(style = 'width:1000px;',
-  titlePanel("Supplementary data for 'Honest learning for the healthcare system: large-scale evidence from real-world data'"),
+  titlePanel("Supplementary data for 'Improving reproducibility using high-throughput observational studies with empirical calibration'"),
   tabsetPanel(
     tabPanel("Systematically generated evidence",
              fluidRow(
@@ -70,8 +70,7 @@ shinyUI(fluidPage(style = 'width:1000px;',
                                  div(strong("Table S1.2."),"Counts of subjects, person-days and outcomes in the target and comparator population.")),
                           column(4, 
                                  plotOutput("sensitivityAnalysisPlot", height = "200px"),
-                                 div(strong("Figure S1.6."),"Hazard ratios and confidence intervals (CI) across the databases, both
-                                     calibrated (top) and uncalibrated (bottom). Blue indicates the CI includes one, orange indicates
+                                 div(strong("Figure S1.6."),"Hazard ratios and confidence intervals (CI) across the databases. Blue indicates the CI includes one, orange indicates
                                      the CI does not include one."))
                         )
                )
@@ -104,8 +103,8 @@ shinyUI(fluidPage(style = 'width:1000px;',
              br(),
              p("Supplementary data for:"),
              p("Schuemie MJ, Ryan PB, Hripcsak G, Madigan D, Suchard MA,", 
-               em("Honest learning for the healthcare system: large-scale evidence from real-world data"), 
-               ", ...")
+               em("Improving reproducibility using high-throughput observational studies with empirical calibration."), 
+               ", Phil. Trans. R. Soc. A, 2018")
     )
   )
 )

@@ -19,7 +19,7 @@ plotScatter <- function(d, selected, xLabel) {
   
   oneRow <- data.frame(
     nLabel = paste0(formatC(nrow(d), big.mark = ","), " estimates"),
-    meanLabel = paste0(formatC(100 * mean(!d$Significant, na.rm = TRUE), digits = 1, format = "f"), "% of CIs includes 1"))
+    meanLabel = paste0(formatC(100 * mean(!d$Significant, na.rm = TRUE), digits = 1, format = "f"), "% of CIs include 1"))
   
   breaks <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10)
   theme <- element_text(colour = "#000000", size = 12)
@@ -80,12 +80,13 @@ plotPs <- function(ps, target, comparator) {
   return(plot)
 }
 
-plotForest <- function(estimate) {
+plotForest <- function(estimate, showCalibrated = TRUE) {
   d1 <- data.frame(logRr = estimate$logRr,
                    logLb95Rr = log(estimate$ci95lb),
                    logUb95Rr = log(estimate$ci95ub),
                    database = estimate$db,
                    type = "Uncalibrated")
+  if (showCalibrated) {
   d2 <- data.frame(logRr = estimate$calLogRr,
                    logLb95Rr = log(estimate$calCi95lb),
                    logUb95Rr = log(estimate$calCi95ub),
@@ -93,6 +94,9 @@ plotForest <- function(estimate) {
                    type = "Calibrated")
   
   d <- rbind(d1, d2)
+  } else {
+    d <- d1
+  }
   d$significant <- d$logLb95Rr > 0 | d$logUb95Rr < 0
   
   breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)

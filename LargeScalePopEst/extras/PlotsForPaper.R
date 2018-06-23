@@ -1,6 +1,6 @@
 workFolder <- "R:/PopEstDepression_Ccae"
 
-paperFolder <- file.path(workFolder, "paper")
+paperFolder <- "R:/SomeBySomePaper"
 if (!file.exists(paperFolder)) {
     dir.create(paperFolder)
 }
@@ -152,20 +152,22 @@ ggsave(plot = plot, file.path(paperFolder, "LitVsUs.png"), width = 15, height = 
 # Two plots
 subset <-  c("A\nAll observational literature", "B\nObservational literature on depression treatments")
 alpha <- c(0.1, 0.8)
-strip <- theme
+size <- 0.5
+labelY <- 0.85
 
 subset <-  c("C\nOur large-scale study on depression treatments")
 alpha <- c(0.2)
-strip <- element_blank()
+size <- 1
+labelY <- 0.92
 
 plot <- ggplot(d[d$Group %in% subset, ], aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
     geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
     geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
     geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
-    geom_point(size=0.5, color = rgb(0,0,0), shape = 16) +
+    geom_point(size=size, color = rgb(0,0,0), shape = 16) +
     geom_hline(yintercept=0) +
     geom_label(x = log(0.11), y = 0.99, alpha = 1, hjust = "left", aes(label = nLabel), size = 4, data = dd[dd$Group %in% subset, ]) +
-    geom_label(x = log(0.11), y = 0.88, alpha = 1, hjust = "left", aes(label = meanLabel), size = 4, data = dd[dd$Group %in% subset, ]) +
+    geom_label(x = log(0.11), y = labelY, alpha = 1, hjust = "left", aes(label = meanLabel), size = 4, data = dd[dd$Group %in% subset, ]) +
     scale_x_continuous("Effect size",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
     scale_y_continuous("Standard Error",limits = c(0,1)) +
     scale_alpha_manual(values = alpha) +
@@ -178,15 +180,15 @@ plot <- ggplot(d[d$Group %in% subset, ], aes(x=logRr, y=seLogRr, alpha = Group),
         axis.text.y = themeRA,
         axis.text.x = theme,
         legend.key= element_blank(),
-        strip.text.x = strip,
-        strip.text.y = strip,
+        strip.text.x = theme,
+        strip.text.y = theme,
         strip.background = element_blank(),
         legend.position = "none"
     )
 
-ggsave(plot = plot, file.path(paperFolder, "Lit.png"), width = 10, height = 3.5, dpi = 500)
+ggsave(plot = plot, file.path(paperFolder, "Lit.png"), width = 10, height = 3.2, dpi = 400)
 
-ggsave(plot = plot, file.path(paperFolder, "Us.png"), width = 7, height = 3.5, dpi = 500)
+ggsave(plot = plot, file.path(paperFolder, "Us.png"), width = 10, height =5.2, dpi = 400)
 
 
 tempd <- d
@@ -464,16 +466,16 @@ ddd <- data.frame(i2 = c(i2, i2Cal),
 
 ggplot(ddd, aes(x=i2, group = group, color = group, fill = group)) +
     geom_histogram(binwidth = 0.05, boundary = 0, position = "identity") +
-    scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5), rgb(0, 0, 0.8, alpha = 0.5))) +
-    scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5), rgb(0, 0, 0.8, alpha = 0.5))) +
+    scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5), rgb(0, 0, 0.8, alpha = 0.4))) +
+    scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5), rgb(0, 0, 0.8, alpha = 0.4))) +
     scale_x_continuous(expression(i^2)) +
-    scale_y_continuous("Target - comparator - outcome triplets") +
+    scale_y_continuous("TCO triplets") +
     theme(legend.title = ggplot2::element_blank(),
           panel.background = element_blank(),
           panel.grid.major.y = element_line(color = rgb(0.25,0.25,0.25, alpha = 0.2)),
           panel.grid.major.x = element_line(color = rgb(0.25,0.25,0.25, alpha = 0.2)))
 
-ggsave(file.path(paperFolder, "I2.png"), width = 6, height = 3, dpi=300)
+ggsave(file.path(paperFolder, "I2.png"), width = 4.5, height = 2, dpi=300)
 length(i2Cal)
 mean(i2Cal < 0.25)
 mean(i2 <0.25)
@@ -501,11 +503,12 @@ psFile <- outcomeModelReference$sharedPsFile[outcomeModelReference$analysisId ==
                                                  treatmentId & outcomeModelReference$comparatorId == comparatorId][1]
 ps <- readRDS(psFile)
 fileName <- file.path(paperFolder, "PsExamplar.png")
-CohortMethod::plotPs(ps,
-                     scale = "propensity",
-                     treatmentLabel = "Duloxetine",
-                     comparatorLabel = "Sertraline",
-                     fileName = fileName)
+plotPs(ps,
+       scale = "propensity",
+       treatmentLabel = "Duloxetine",
+       comparatorLabel = "Sertraline",
+       legenPosition = "top",
+       fileName = fileName)
 
 ########################################################################### Create covariate balance plot #
 cohortMethodDataFolder <- outcomeModelReference$cohortMethodDataFolder[outcomeModelReference$targetId ==
@@ -530,17 +533,17 @@ limits <- c(min(c(balance$beforeMatchingStdDiff, balance$afterMatchingStdDiff), 
             max(c(balance$beforeMatchingStdDiff, balance$afterMatchingStdDiff), na.rm = TRUE))
 plot <- ggplot2::ggplot(balance,
                         ggplot2::aes(x = beforeMatchingStdDiff, y = afterMatchingStdDiff)) +
-    ggplot2::geom_point(color = rgb(0, 0, 0.8, alpha = 0.3)) +
+    ggplot2::geom_point(color = rgb(0, 0, 0.8, alpha = 0.3), shape = 16) +
     ggplot2::geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
     ggplot2::geom_hline(yintercept = 0) +
     ggplot2::geom_vline(xintercept = 0) +
     #ggplot2::ggtitle("Standardized difference of mean") +
-    ggplot2::scale_x_continuous("Standardized diff. of mean before stratification", limits = limits) +
-    ggplot2::scale_y_continuous("Standardized diff. of mean after stratification", limits = limits)
+    ggplot2::scale_x_continuous("SDM before stratification", limits = limits) +
+    ggplot2::scale_y_continuous("SDM after stratification", limits = c(limits[1], limits[2]/2))
 
 plot <- plot + ggplot2::geom_hline(yintercept = 0.1, alpha = 0.5, linetype = "dotted")
 
-ggplot2::ggsave(plotFileName, plot, width = 4, height = 4, dpi = 400)
+ggplot2::ggsave(plotFileName, plot, width = 5, height = 2.5, dpi = 400)
 
 
 ###################################################################### Get signal injection and calibration plots #
@@ -574,8 +577,8 @@ d2$yGroup <- "Calibrated"
 d <- rbind(d1[, c("logRr", "seLogRr", "ci95lb", "ci95ub", "yGroup", "trueRr")],
            d2[, c("logRr", "seLogRr", "ci95lb", "ci95ub", "yGroup", "trueRr")])
 d$yGroup <- factor(d$yGroup, levels = c("Uncalibrated", "Calibrated"))
-plotScatter(d, yPanelGroup = TRUE)
-ggsave(file.path(paperFolder, "exemplarEvalCali.png"), width = 14.5, height = 4.5, dpi = 500)
+plotScatter(d, yPanelGroup = TRUE, labelY = 0.65, size = 2)
+ggsave(file.path(paperFolder, "exemplarEvalCali.png"), width = 12.5, height = 3.5, dpi = 500)
 
 calibrated <- read.csv(file.path(workFolder, "calibratedEstimates.csv"))
 
@@ -814,3 +817,198 @@ fitMixFix1 <- function(logRr, seLogRr) {
 }
 
 fitMixFix1(d$logRr, d$seLogRr)
+
+# Comparison against RCTs -------------------------------------------------------------
+library(ggplot2)
+calibrated <- read.csv("r:/DepressionResults.csv")
+subset <- calibrated[calibrated$targetName == "Sertraline" & calibrated$outcomeName == "Diarrhea" & calibrated$analysisId == 3, ]
+subset$comparatorName <- as.character(subset$comparatorName)
+subset$comparatorName <- paste0(toupper(substr(subset$comparatorName, 1, 1)), substr(subset$comparatorName, 2, nchar(subset$comparatorName)))
+rcts <- read.csv("extras/SertralineRcts.csv", stringsAsFactors = FALSE)
+subset <- subset[subset$comparatorName %in% rcts$Comparator, ]
+obsData <- data.frame(Source = subset$db,
+                      Comparator = subset$comparatorName,
+                      nTarget = formatC(subset$treated, big.mark = ",", format = "d"),
+                      nComparator = formatC(subset$comparator, big.mark = ",", format = "d"),
+                      rr = subset$calRr,
+                      ci95lb = subset$calCi95lb,
+                      ci95ub = subset$calCi95ub,
+                      type = "Observational",
+                      sortValue = paste(subset$comparatorName, "Z", subset$db),
+                      stringsAsFactors = FALSE)
+rctData <- data.frame(Source = rcts$Reference,
+                      Comparator = rcts$Comparator,
+                      nTarget = formatC(rcts$nTargetr, big.mark = ",", format = "d"),
+                      nComparator = formatC(rcts$nComparator, big.mark = ",", format = "d"),
+                      rr = rcts$rr,
+                      ci95lb = rcts$ci95lb,
+                      ci95ub = rcts$ci95ub,
+                      type = "RCT",
+                      sortValue = paste(rcts$Comparator, "B", rcts$Reference),
+                      stringsAsFactors = FALSE)
+emptyRows <- data.frame(Source = "AAA",
+                        Comparator = rep("", length(unique(rcts$Comparator))),
+                        nTarget = "",
+                        nComparator = "",
+                        rr = NA,
+                        ci95lb = NA,
+                        ci95ub = NA,
+                        type = "RCT",
+                        sortValue = paste(unique(rcts$Comparator), "A"),
+                        stringsAsFactors = FALSE)
+vizData <- rbind(obsData, rctData, emptyRows)
+vizData <- vizData[order(vizData$sortValue, decreasing = TRUE), ]
+vizData$sortValue <- 1:nrow(vizData)
+
+breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+myText <- element_text()
+p <- ggplot(vizData,aes(x = rr, y = sortValue, xmin = ci95lb, xmax = ci95ub, color = type, fill = type)) +
+    geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.2) +
+    geom_vline(xintercept = 1, size = 0.5) +
+    geom_errorbarh(height = 0.15, alpha = 0.7) +
+    geom_point(size=3, shape = 23, alpha = 0.7) +
+    scale_color_manual(values = c(rgb(0, 0, 0.8), rgb(0.8, 0, 0))) +
+    scale_fill_manual(values = c(rgb(0, 0, 0.8), rgb(0.8, 0, 0))) +
+    scale_x_continuous("Effect size", trans = "log10", breaks = breaks, labels = breaks) +
+    coord_cartesian(xlim = c(0.25, 10)) +
+    theme(
+        axis.text.x = myText,
+        axis.title.x = myText,
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        legend.position = "right",
+        legend.title = element_blank(),
+        panel.border = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank(),
+        plot.margin = grid::unit(c(0,0,0.1,0), "lines"))
+
+labels <- paste0(formatC(vizData$rr,  digits = 2, format = "f"),
+                 " (",
+                 formatC(vizData$ci95lb, digits = 2, format = "f"),
+                 "-",
+                 formatC(vizData$ci95ub, digits = 2, format = "f"),
+                 ")")
+
+labels <- data.frame(y = rep(vizData$sortValue, 3),
+                     x = rep(1:3, each = nrow(vizData)),
+                     label = c(as.character(vizData$Source), vizData$Comparator, labels),
+                     stringsAsFactors = FALSE)
+
+labels$label[nrow(vizData)] <-  "Source"
+labels$label[nrow(vizData)*2] <-  "Comparator"
+labels$label[nrow(vizData)*3] <-  "Effect size (95% CI)"
+labels$label[labels$label == "AAA"] <- ""
+labels$label[labels$label == " NA ( NA- NA)"] <- ""
+
+
+data_table <- ggplot(labels, aes(x = x, y = y, label = label)) +
+    geom_text(size = 3, hjust=0, vjust=0.5) +
+    geom_hline(aes(yintercept=nrow(vizData) - 0.5)) +
+    theme(panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   legend.position = "none",
+                   panel.border = element_blank(),
+                   panel.background = element_blank(),
+                   axis.text.x = element_text(colour="white"),#element_blank(),
+                   axis.text.y = element_blank(),
+                   axis.ticks = element_line(colour="white"),#element_blank(),
+                   plot.margin = grid::unit(c(0,0,0.1,0), "lines")) +
+    labs(x="",y="") +
+    coord_cartesian(xlim=c(1,4))
+
+plot <- gridExtra::grid.arrange(data_table, p, ncol=2)
+ggsave( file.path(paperFolder, "Sertraline.png"), plot, width = 9, height = 7, dpi = 400)
+
+
+# SSRIs vs TCAs for suicide --------------------------------------------------------------------------------------
+library(ggplot2)
+calibrated <- read.csv("r:/DepressionResults.csv")
+targets <- c("Sertraline", "Fluoxetine", "Citalopram", "Escitalopram", "venlafaxine")
+comparators <- c("Amitriptyline", "Bupropion")
+subset <- calibrated[calibrated$targetName %in% targets & calibrated$comparatorName %in% comparators & calibrated$outcomeName == "Suicide and suicidal ideation" & calibrated$analysisId == 3, ]
+subset$targetName <- as.character(subset$targetName)
+subset$targetName <- paste0(toupper(substr(subset$targetName, 1, 1)), substr(subset$targetName, 2, nchar(subset$targetName)))
+
+obsData <- data.frame(Source = subset$db,
+                      Target = subset$targetName,
+                      Comparator = subset$comparatorName,
+                      nTarget = formatC(subset$treated, big.mark = ",", format = "d"),
+                      nComparator = formatC(subset$comparator, big.mark = ",", format = "d"),
+                      rr = subset$calRr,
+                      ci95lb = subset$calCi95lb,
+                      ci95ub = subset$calCi95ub,
+                      sortValue = paste(subset$targetName, subset$comparatorName, subset$db),
+                      stringsAsFactors = FALSE)
+emptyRow <- data.frame(Source = "",
+                       Target = "",
+                       Comparator = "",
+                       nTarget = "",
+                       nComparator = "",
+                       rr = NA,
+                       ci95lb = NA,
+                       ci95ub = NA,
+                       sortValue = "AAA",
+                       stringsAsFactors = FALSE)
+vizData <- rbind(obsData, emptyRow)
+vizData <- vizData[order(vizData$sortValue, decreasing = TRUE), ]
+vizData$sortValue <- 1:nrow(vizData)
+breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+myText <- element_text()
+p <- ggplot(vizData,aes(x = rr, y = sortValue, xmin = ci95lb, xmax = ci95ub)) +
+    geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.2) +
+    geom_vline(xintercept = 1, size = 0.5) +
+    geom_errorbarh(height = 0.15, alpha = 0.7, color = rgb(0, 0, 0.8)) +
+    geom_point(size=3, shape = 23, alpha = 0.7, color = rgb(0, 0, 0.8), fill = rgb(0, 0, 0.8)) +
+    scale_x_continuous("Effect size", trans = "log10", breaks = breaks, labels = breaks) +
+    coord_cartesian(xlim = c(0.25, 10)) +
+    theme(
+        axis.text.x = myText,
+        axis.title.x = myText,
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        legend.position = "right",
+        legend.title = element_blank(),
+        panel.border = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank(),
+        plot.margin = grid::unit(c(0,0,0.1,0), "lines"))
+
+labels <- paste0(formatC(vizData$rr,  digits = 2, format = "f"),
+                 " (",
+                 formatC(vizData$ci95lb, digits = 2, format = "f"),
+                 "-",
+                 formatC(vizData$ci95ub, digits = 2, format = "f"),
+                 ")")
+
+labels <- data.frame(y = rep(vizData$sortValue, 4),
+                     x = rep(1:4, each = nrow(vizData)),
+                     label = c(as.character(vizData$Source), as.character(vizData$Target), as.character(vizData$Comparator), labels),
+                     stringsAsFactors = FALSE)
+
+labels$label[nrow(vizData)] <-  "Database"
+labels$label[nrow(vizData)*2] <-  "Target"
+labels$label[nrow(vizData)*3] <-  "Comparator"
+labels$label[nrow(vizData)*4] <-  "HR (95% CI)"
+
+data_table <- ggplot(labels, aes(x = x, y = y, label = label)) +
+    geom_text(size = 3.5, hjust=0, vjust=0.5) +
+    geom_hline(aes(yintercept=nrow(vizData) - 0.5)) +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.position = "none",
+          panel.border = element_blank(),
+          panel.background = element_blank(),
+          axis.text.x = element_text(colour="white"),#element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_line(colour="white"),#element_blank(),
+          plot.margin = grid::unit(c(0,0,0.1,0), "lines")) +
+    labs(x="",y="") +
+    coord_cartesian(xlim=c(1,5))
+
+plot <- gridExtra::grid.arrange(data_table, p, ncol=2)
+ggsave( file.path(paperFolder, "Suicide.png"), plot, width = 9, height = 7, dpi = 400)

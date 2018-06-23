@@ -241,7 +241,7 @@ shinyServer(function(input, output) {
   output$sensitivityAnalysisPlot <- renderPlot({
     sensitivityAnalysis <- sensitivityAnalysis()
     if (is.null(sensitivityAnalysis)) return(NULL)
-    plotForest(sensitivityAnalysis)
+    plotForest(sensitivityAnalysis, showCalibrated = FALSE)
   })
   
   output$sensitivityAnalysisTable <-  renderTable({
@@ -267,18 +267,18 @@ shinyServer(function(input, output) {
                  ", p = ",
                  formatC(estimate$p, digits = 2, format = "f"),
                  ")")
-    calHr <- paste0(formatC(estimate$calRr, digits = 2, format = "f"), 
-                    " (95% CI: ",
-                    formatC(estimate$calCi95lb, digits = 2, format = "f"), 
-                    "-",
-                    formatC(estimate$calCi95ub, digits = 2, format = "f"), 
-                    ", p = ",
-                    formatC(estimate$calP, digits = 2, format = "f"),
-                    ")")
+    # calHr <- paste0(formatC(estimate$calRr, digits = 2, format = "f"), 
+    #                 " (95% CI: ",
+    #                 formatC(estimate$calCi95lb, digits = 2, format = "f"), 
+    #                 "-",
+    #                 formatC(estimate$calCi95ub, digits = 2, format = "f"), 
+    #                 ", p = ",
+    #                 formatC(estimate$calP, digits = 2, format = "f"),
+    #                 ")")
     p(HTML(paste0("Using an intent-to-treat  instead of a per-protocol analysis, when comparing the risk of ", point$outcomeName, " between new users of ", point$targetName, 
                   " and ", point$comparatorName, " in the ", point$db, 
                   " database, the estimated <b>uncalibrated hazard ratio</b> was <b>",hr,
-                  "</b>, the estimated <b>calibrated hazard ratio</b> was <b>", calHr, "</b>.")))
+                  "</b>.")))
   })
   
   # Literature --------------------------------------------------------------

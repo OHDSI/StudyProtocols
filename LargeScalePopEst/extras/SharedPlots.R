@@ -1,6 +1,6 @@
 require(ggplot2)
 
-plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
+plotScatter <- function(d, size = 1, yPanelGroup = FALSE, labelY = 0.8) {
     d <- d[!is.na(d$logRr), ]
     d <- d[!is.na(d$ci95lb), ]
     d <- d[!is.na(d$ci95ub), ]
@@ -22,7 +22,7 @@ plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
     temp1$Significant <- NULL
 
     temp2$meanLabel <- paste0(formatC(100 * (1 - temp2$Significant), digits = 1, format = "f"),
-                              "% of CIs includes ",
+                              "% of CIs include ",
                               temp2$Group)
     temp2$Significant <- NULL
     dd <- merge(temp1, temp2)
@@ -44,9 +44,9 @@ plotScatter <- function(d, size = 1, yPanelGroup = FALSE) {
         geom_point(size = size, color = rgb(0, 0, 0, alpha = 0.05), alpha = alpha, shape = 16) +
         geom_hline(yintercept = 0) +
         #geom_label(x = log(0.3), y = 0.95, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
-        geom_label(x = log(0.15), y = 0.95, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
+        geom_label(x = log(0.15), y = 0.90, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
         #geom_label(x = log(0.3), y = 0.8, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
-        geom_label(x = log(0.15), y = 0.8, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
+        geom_label(x = log(0.15), y = labelY, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
         #scale_x_continuous("Hazard ratio", limits = log(c(0.25, 10)), breaks = log(breaks), labels = breaks) +
         scale_x_continuous("Hazard ratio", limits = log(c(0.1, 10)), breaks = log(breaks), labels = breaks) +
         scale_y_continuous("Standard Error", limits = c(0, 1)) +
@@ -209,5 +209,88 @@ plotCiCalibration <- function(d) {
                            legend.position = "top")
     })
 
+    return(plot)
+}
+
+plotPs <- function(data,
+         unfilteredData = NULL,
+         scale = "preference",
+         type = "density",
+         binWidth = 0.05,
+         treatmentLabel = "Treated",
+         comparatorLabel = "Comparator",
+         legenPosition = "top",
+         fileName = NULL) {
+    if (!("treatment" %in% colnames(data)))
+        stop("Missing column treatment in data")
+    if (!("propensityScore" %in% colnames(data)))
+        stop("Missing column propensityScore in data")
+    if (!is.null(unfilteredData)) {
+        if (!("treatment" %in% colnames(unfilteredData)))
+            stop("Missing column treatment in unfilteredData")
+        if (!("propensityScore" %in% colnames(unfilteredData)))
+            stop("Missing column propensityScore in unfilteredData")
+    }
+    if (type != "density" && type != "histogram")
+        stop(paste("Unknown type '", type, "', please choose either 'density' or 'histogram'"),
+             sep = "")
+    if (scale != "propensity" && scale != "preference")
+        stop(paste("Unknown scale '", scale, "', please choose either 'propensity' or 'preference'"),
+             sep = "")
+
+    if (scale == "preference") {
+        data <- computePreferenceScore(data, unfilteredData)
+        data$SCORE <- data$preferenceScore
+        label <- "Preference score"
+    } else {
+        data$SCORE <- data$propensityScore
+        label <- "Propensity score"
+    }
+    data$GROUP <- treatmentLabel
+    data$GROUP[data$treatment == 0] <- comparatorLabel
+    data$GROUP <- factor(data$GROUP, levels = c(treatmentLabel, comparatorLabel))
+    if (type == "density") {
+        plot <- ggplot2::ggplot(data,
+                                ggplot2::aes(x = SCORE, color = GROUP, group = GROUP, fill = GROUP)) +
+            ggplot2::geom_density() +
+            ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                                  rgb(0, 0, 0.8, alpha = 0.5))) +
+            ggplot2::scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                                   rgb(0, 0, 0.8, alpha = 0.5))) +
+            ggplot2::scale_x_continuous(label, limits = c(0, 1)) +
+            ggplot2::scale_y_continuous("Density") +
+            ggplot2::theme(legend.title = ggplot2::element_blank(),
+                           legend.position = legenPosition)
+        if (!is.null(attr(data, "strata"))) {
+            strata <- data.frame(propensityScore = attr(data, "strata"))
+            if (scale == "preference") {
+                if (is.null(unfilteredData)) {
+                    strata <- computePreferenceScore(strata, data)
+                } else {
+                    strata <- computePreferenceScore(strata, unfilteredData)
+                }
+                strata$SCORE <- strata$preferenceScore
+            } else {
+                strata$SCORE <- strata$propensityScore
+            }
+            plot <- plot +
+                ggplot2::geom_vline(xintercept = strata$SCORE, color = rgb(0, 0, 0, alpha = 0.5))
+        }
+    } else {
+        plot <- ggplot2::ggplot(data,
+                                ggplot2::aes(x = SCORE, color = GROUP, group = GROUP, fill = GROUP)) +
+            ggplot2::geom_histogram(binwidth = binWidth, position = "identity") +
+            ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                                  rgb(0, 0, 0.8, alpha = 0.5))) +
+            ggplot2::scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5),
+                                                   rgb(0, 0, 0.8, alpha = 0.5))) +
+            ggplot2::scale_x_continuous(label, limits = c(0, 1)) +
+            ggplot2::scale_y_continuous("Number of subjects") +
+            ggplot2::theme(legend.title = ggplot2::element_blank(),
+                           legend.position = legenPosition)
+    }
+
+    if (!is.null(fileName))
+        ggplot2::ggsave(fileName, plot, width = 3.5, height = 2.5, dpi = 400)
     return(plot)
 }
