@@ -39,6 +39,7 @@ createTableAndFiguresForReport <- function(outputFolders, databaseNames, maOutpu
   createIrTable(outputFolders, databaseNames, reportFolder)
   selectKaplanMeierPlots(outputFolders, databaseNames, reportFolder)
   createTimeAtRiskTable(outputFolders, databaseNames, reportFolder)
+  outputAllEstimatesToSingleTable(outputFolders, databaseNames, reportFolder)
 }
 
 createIrTable <- function(outputFolders, databaseNames, reportFolder) {
@@ -160,7 +161,8 @@ createSensAnalysesFigure <- function(outputFolders, databaseNames, maOutputFolde
   loadResultsHois <- function(outputFolder, fileName) {
     shinyDataFolder <- file.path(outputFolder, "results", "shinyData")
     file <- list.files(shinyDataFolder, pattern = "resultsHois_.*.rds", full.names = TRUE)
-    x <- readRDS(file)
+    x <- lapply(file, readRDS)
+    x <- do.call(rbind, x)
     if (is.null(x$i2))
       x$i2 <- NA
     return(x)
@@ -176,7 +178,7 @@ createSensAnalysesFigure <- function(outputFolders, databaseNames, maOutputFolde
   for (outcomeName in outcomeNames) {
     # outcomeName <- outcomeNames[1]
     
-    results$dbOrder <- match(results$database, c("CCAE", "MDCD","MDCR", "Optum", "Meta-analysis"))
+    results$dbOrder <- match(results$database, c("CCAE", "MDCD","MDCR", "Optum", "Meta-analysis (HKSJ)", "Meta-analysis (DL)"))
     results$comparisonOrder <- match(results$comparison, comparisonsOfInterest)
     results$timeAtRiskOrder <- match(results$timeAtRisk, c("On Treatment", 
                                                            "On Treatment (no censor at switch)", 
@@ -218,7 +220,7 @@ createSensAnalysesFigure <- function(outputFolders, databaseNames, maOutputFolde
     breaks <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10)
     col <- c(rgb(0, 0, 0.8, alpha = 1), rgb(0.8, 0.4, 0, alpha = 1))
     colFill <- c(rgb(0, 0, 1, alpha = 0.5), rgb(1, 0.4, 0, alpha = 0.5))
-    subset$database <- factor(subset$database, levels = c("CCAE", "MDCD","MDCR", "Optum", "Meta-analysis"))
+    subset$database <- factor(subset$database, levels = c("CCAE", "MDCD","MDCR", "Optum", "Meta-analysis (HKSJ)", "Meta-analysis (DL)"))
     subset$comparison <- factor(subset$comparison, levels = c("canagliflozin vs. all non-SGLT2i", 
                                                               "canagliflozin vs. select non-SGLT2i", 
                                                               "canagliflozin vs. other SGLT2i",
@@ -250,7 +252,7 @@ createSensAnalysesFigure <- function(outputFolders, databaseNames, maOutputFolde
                      legend.position = "top")    
     
     fileName <- file.path(reportFolder, paste0("SensAnalyses ", outcomeName, ".png"))
-    ggplot2::ggsave(fileName, plot, width = 10, height = 12, dpi = 400)
+    ggplot2::ggsave(fileName, plot, width = 10, height = 14, dpi = 400)
   }
 }
 
@@ -947,3 +949,312 @@ createTimeAtRiskTable <- function(outputFolders, databaseNames, reportFolder) {
     }
   }
 }
+
+outputAllEstimatesToSingleTable <- function(outputFolders, databaseNames, maOutputFolder, reportFolder) {
+  loadResultsHois <- function(outputFolder, fileName) {
+    shinyDataFolder <- file.path(outputFolder, "results", "shinyData")
+    files <- list.files(shinyDataFolder, pattern = "resultsHois_.*.rds", full.names = TRUE)
+    result <- data.frame()
+    for (file in files) {
+      x <- readRDS(file)
+      if (is.null(x$i2))
+        x$i2 <- NA
+      result <- rbind(result, x)
+    }
+    return(result)
+  }
+  results <- lapply(c(outputFolders, maOutputFolder), loadResultsHois)
+  results <- do.call(rbind, results)
+  results$rr[is.na(results$seLogRr)] <- NA
+  
+  formatDrug  <- function(x) {
+    result <- x
+    result[x == "empagliflozin or dapagliflozin"] <- "other SGLT2i"
+    result[x == "any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"] <- "select non-SGLT2i"
+    result[x == "any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"] <- "all non-SGLT2i"
+    return(result)
+  }
+  results$targetDrug <- formatDrug(results$targetDrug)
+  results$comparatorDrug <- formatDrug(results$comparatorDrug)
+  table <- results[, c("targetDrug",
+                       "comparatorDrug",
+                       "outcomeName",
+                       "establishedCvd", 
+                       "priorExposure", 
+                       "timeAtRisk", 
+                       "evenType",
+                       "psStrategy",
+                       "database",
+                       "rr", 
+                       "ci95lb",
+                       "ci95ub",
+                       "p",
+                       "calP")]
+  
+  colnames(table) <- c("Target", "Comparator", "Outcome",
+                       "Established cardiovascular disease", 
+                       "Prior exposure", 
+                       "Time at risk", 
+                       "Event type", 
+                       "Propensity score strategy",
+                       "Database",
+                       "Hazard ratio", 
+                       "Lower bound of the 95 confidence interval",
+                       "Upper bound of the 95 confidence interval",
+                       "P-value (uncalibrated)",
+                       "Calibrated p-value")
+  fileName <- file.path(reportFolder, "AllEffectSizeEstimates.xlsx")
+  unlink(fileName)
+  wb <- XLConnect::loadWorkbook(fileName, create = TRUE)
+  XLConnect::createSheet(wb, name = "Effect size estimates")
+  XLConnect::writeWorksheet(wb,
+                            data = table,
+                            sheet = "Effect size estimates",
+                            startRow = 1,
+                            startCol = 1,
+                            header = TRUE,
+                            rownames = FALSE)
+  style <- XLConnect::createCellStyle(wb)
+  XLConnect::setDataFormat(style, format = "#,##0.00")
+  XLConnect::setCellStyle(wb, sheet = "Effect size estimates", row = 1+1:nrow(results), col = 10, cellstyle = style)
+  XLConnect::setCellStyle(wb, sheet = "Effect size estimates", row = 1+1:nrow(results), col = 11, cellstyle = style)
+  XLConnect::setCellStyle(wb, sheet = "Effect size estimates", row = 1+1:nrow(results), col = 12, cellstyle = style)
+  XLConnect::setCellStyle(wb, sheet = "Effect size estimates", row = 1+1:nrow(results), col = 13, cellstyle = style)
+  XLConnect::setCellStyle(wb, sheet = "Effect size estimates", row = 1+1:nrow(results), col = 14, cellstyle = style)
+  XLConnect::saveWorkbook(wb)              
+}
+
+
+createEstimateScatterPlots <- function(outputFolders, databaseNames, maOutputFolder, reportFolder) {
+  loadResultsHois <- function(outputFolder, fileName) {
+    shinyDataFolder <- file.path(outputFolder, "results", "shinyData")
+    file <- list.files(shinyDataFolder, pattern = "resultsHois_.*.rds", full.names = TRUE)
+    x <- lapply(file, readRDS)
+    x <- do.call(rbind, x)
+    if (is.null(x$i2))
+      x$i2 <- NA
+    return(x)
+  }
+  results <- lapply(c(outputFolders, maOutputFolder), loadResultsHois)
+  results <- do.call(rbind, results)
+  results$comparison <- paste(results$targetDrug, results$comparatorDrug, sep = " - ")
+  
+  loadResultsNcs <- function(outputFolder, fileName) {
+    shinyDataFolder <- file.path(outputFolder, "results", "shinyData")
+    file <- list.files(shinyDataFolder, pattern = "resultsNcs_.*.rds", full.names = TRUE)
+    x <- lapply(file, readRDS)
+    x <- do.call(rbind, x)
+    if (is.null(x$i2))
+      x$i2 <- NA
+    return(x)
+  }
+  resultsNcs <- lapply(c(outputFolders, maOutputFolder), loadResultsNcs)
+  resultsNcs <- do.call(rbind, resultsNcs)
+  resultsNcs <- merge(resultsNcs, unique(results[, c("targetId", "comparatorId", "comparison")]))
+  resultsNcs$outcomeName <- "Negative control"
+  
+  
+  allResults <- rbind(results[, c("comparison", "outcomeName", "logRr", "seLogRr", "database")],
+                      resultsNcs[, c("comparison", "outcomeName", "logRr", "seLogRr", "database")])
+  
+  comparisonsOfInterest <- c("canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA",
+                             "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, or other select AHA",
+                             "canagliflozin - empagliflozin or dapagliflozin",
+                             "empagliflozin or dapagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA")
+  subset <- allResults[allResults$comparison %in% comparisonsOfInterest, ]
+  formatQuestion  <- function(x) {
+    result <- rep("canagliflozin vs.\n other SGLT2i", length(x))
+    result[x == "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"] <- "canagliflozin vs.\n select non-SGLT2i"
+    result[x == "empagliflozin or dapagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"] <- "other SGLT2i vs\n. all non-SGLT2"
+    result[x == "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"] <- "canagliflozin vs.\n all non-SGLT2i"
+    return(result)
+  }
+  subset$comparison <- formatQuestion(subset$comparison)
+  
+  subset$dummy <- 1
+  temp1 <- aggregate(dummy ~ comparison + outcomeName, data = subset, sum)
+  temp1$nLabel <- paste0(formatC(temp1$dummy, big.mark = ",", format = "d"), " estimates")
+  temp1$dummy <- NULL
+  subset$Significant <- abs(subset$logRr) > qnorm(0.975)*subset$seLogRr
+  temp2 <- aggregate(Significant~ comparison + outcomeName, data = subset, mean)
+  temp2$meanLabel <- paste0(formatC(100 * (1-temp2$Significant), digits = 1, format = "f"), "% of CIs include 1")
+  temp2$Significant <- NULL
+  dd <- merge(temp1, temp2)
+  
+  
+  library(ggplot2)
+  breaks <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10)
+  theme <- element_text(colour = "#000000", size = 12)
+  themeRA <- element_text(colour = "#000000", size = 12, hjust = 1)
+  themeLA <- element_text(colour = "#000000", size = 12, hjust = 0)
+  plot <- ggplot(subset, aes(x=logRr, y=seLogRr), environment=environment())+
+    geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
+    geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_point(size=1, color = rgb(0,0,0), shape = 16, aes(alpha = outcomeName)) +
+    geom_hline(yintercept=0) +
+    geom_label(x = log(0.11), y = 0.99, alpha = 1, hjust = "left", aes(label = nLabel), size = 5, data = dd) +
+    geom_label(x = log(0.11), y = 0.88, alpha = 1, hjust = "left", aes(label = meanLabel), size = 5, data = dd) +
+    scale_x_continuous("Hazard ratio",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
+    scale_y_continuous("Standard Error",limits = c(0,1)) +
+    facet_grid(comparison~outcomeName) +
+    scale_alpha_manual(values = c(0.4, 0.4, 0.1)) +
+    theme(
+      panel.grid.minor = element_blank(),
+      panel.background= element_blank(),
+      panel.grid.major= element_blank(),
+      axis.ticks = element_blank(),
+      axis.text.y = themeRA,
+      axis.text.x = theme,
+      legend.key= element_blank(),
+      strip.text.x = theme,
+      strip.text.y = theme,
+      strip.background = element_blank(),
+      legend.position = "none"
+    )
+  fileName <- file.path(reportFolder, "EstimateScatterPlot.png")
+  ggsave(plot = plot, fileName, width = 14, height = 10, dpi = 500)
+  
+  # Primary analysis only ----------------------------
+  createPlot <- function(data, fileName) {
+    plot <- ggplot(data, aes(x=logRr, y=seLogRr), environment=environment())+
+      geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
+      geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+      geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+      geom_point(size=2, color = rgb(0,0,0), shape = 16) +
+      geom_hline(yintercept=0) +
+      scale_x_continuous("Hazard ratio",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
+      scale_y_continuous("Standard Error",limits = c(0,1)) +
+      facet_grid(.~outcomeName) +
+      theme(
+        panel.grid.minor = element_blank(),
+        panel.background= element_blank(),
+        panel.grid.major= element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = themeRA,
+        axis.text.x = theme,
+        legend.key= element_blank(),
+        strip.text.x = theme,
+        strip.text.y = theme,
+        strip.background = element_blank(),
+        legend.position = "none"
+      )
+    ggsave(plot = plot, fileName, width = 7, height = 4, dpi = 500)
+  }
+  primary <- results[results$comparison == "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA" & 
+                       results$establishedCvd == "not required" &
+                       results$priorExposure == "no restrictions" &
+                       !grepl("no censor at switch", results$timeAtRisk) &
+                       !grepl("Meta-analysis", results$database) &
+                       results$analysisId == 2, ]
+  
+  createPlot(primary[primary$outcomeId == 5432, ], file.path(reportFolder, "EstimateScatterPlot_CanaVsNonSglt2_HeartFailure.png"))
+  createPlot(primary[primary$outcomeId == 5433, ], file.path(reportFolder, "EstimateScatterPlot_CanaVsNonSglt2_BkleAmpuation.png"))
+  
+  primary <- results[results$comparison == "canagliflozin - empagliflozin or dapagliflozin" & 
+                       results$establishedCvd == "not required" &
+                       results$priorExposure == "no restrictions" &
+                       !grepl("no censor at switch", results$timeAtRisk) &
+                       !grepl("Meta-analysis", results$database) &
+                       results$analysisId == 2, ]
+  
+  createPlot(primary[primary$outcomeId == 5432, ], file.path(reportFolder, "EstimateScatterPlot_CanaVsOtherSglt2_HeartFailure.png"))
+  createPlot(primary[primary$outcomeId == 5433, ], file.path(reportFolder, "EstimateScatterPlot_CanaVsOtherSglt2_BkleAmpuation.png"))
+  
+  
+  
+  
+  plot <- ggplot(primary[primary$outcomeId == 5433, ], aes(x=logRr, y=seLogRr), environment=environment())+
+    geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
+    geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_point(size=2, color = rgb(0,0,0), shape = 16) +
+    geom_hline(yintercept=0) +
+    scale_x_continuous("Hazard ratio",limits = log(c(0.1,10)), breaks=log(breaks),labels=breaks) +
+    scale_y_continuous("Standard Error",limits = c(0,1)) +
+    facet_grid(.~outcomeName) +
+    theme(
+      panel.grid.minor = element_blank(),
+      panel.background= element_blank(),
+      panel.grid.major= element_blank(),
+      axis.ticks = element_blank(),
+      axis.text.y = themeRA,
+      axis.text.x = theme,
+      legend.key= element_blank(),
+      strip.text.x = theme,
+      strip.text.y = theme,
+      strip.background = element_blank(),
+      legend.position = "none"
+    )
+  fileName <- file.path(reportFolder, "EstimateScatterPlot_BKLEAmputation.png")
+  ggsave(plot = plot, fileName, width = 7, height = 4, dpi = 500)
+}
+
+pot3DScatter <- function() {
+  loadResultsHois <- function(outputFolder, fileName) {
+    shinyDataFolder <- file.path(outputFolder, "results", "shinyData")
+    file <- list.files(shinyDataFolder, pattern = "resultsHois_.*.rds", full.names = TRUE)
+    x <- lapply(file, readRDS)
+    x <- do.call(rbind, x)
+    if (is.null(x$i2))
+      x$i2 <- NA
+    return(x)
+  }
+  results <- lapply(c(outputFolders, maOutputFolder), loadResultsHois)
+  results <- do.call(rbind, results)
+  results$comparison <- paste(results$targetDrug, results$comparatorDrug, sep = " - ")
+  comparisonsOfInterest <- c("canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA",
+                             "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, or other select AHA",
+                             "canagliflozin - empagliflozin or dapagliflozin",
+                             "empagliflozin or dapagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA")
+  subset <- results[results$comparison %in% comparisonsOfInterest, ]
+  
+  formatQuestion  <- function(x) {
+    result <- rep("canagliflozin vs. other SGLT2i", length(x))
+    result[x == "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, or other select AHA"] <- "canagliflozin vs. select non-SGLT2i"
+    result[x == "empagliflozin or dapagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"] <- "other SGLT2i vs. all non-SGLT2"
+    result[x == "canagliflozin - any DPP-4 inhibitor, GLP-1 agonist, TZD, SU, insulin, or other select AHA"] <- "canagliflozin vs. all non-SGLT2i"
+    return(result)
+  }
+  subset$comparison <- formatQuestion(subset$comparison)
+  subset <- subset[!is.na(subset$seLogRr), ]
+  subset <- subset[subset$seLogRr < 1, ]
+  subset <- subset[abs(subset$logRr) < 3, ]
+  idx <- subset$comparison == "canagliflozin vs. all non-SGLT2i"
+
+  d1 <- data.frame(logRr1 = subset$logRr[idx],
+                   seLogRr1 = subset$seLogRr[idx],
+                   outcomeName = subset$outcomeName[idx],
+                   targetId = subset$targetId[idx],
+                   analysisId = subset$analysisId[idx],
+                   database = subset$database[idx])
+  idx <- subset$comparison == "canagliflozin vs. other SGLT2i"
+  d2 <- data.frame(logRr2 = subset$logRr[idx],
+                   seLogRr2 = subset$seLogRr[idx],
+                   outcomeName = subset$outcomeName[idx],
+                   targetId = subset$targetId[idx],
+                   analysisId = subset$analysisId[idx],
+                   database = subset$database[idx])
+  d <- merge(d1, d2)
+  d <- d[!is.na(d$seLogRr1) & !is.na(d$seLogRr2), ]
+  
+  library(scatterplot3d)
+  
+  
+  plot(d$seLogRr1, d$seLogRr2)
+  cor(d$seLogRr1, d$seLogRr2)
+  plot(d$logRr1, d$logRr2)
+  cor(d$logRr1, d$logRr2)
+  idx <- d$outcomeName == "Heart failure"
+  s3d <- scatterplot3d(d$logRr1[idx], d$logRr2[idx], d$seLogRr1[idx], col.axis = "blue",
+                col.grid = "lightblue", main = "Helix", pch = 16, color = "#66000066", size = 2)
+  idx <- d$outcomeName == "BKLE amputation"
+  s3d$points3d(d$logRr1[idx], d$logRr2[idx], d$seLogRr1[idx], pch = 16, col = "#00006666", size = 2)
+  
+  d$o <- as.numeric(d$outcomeName == "Heart failure")
+  d$z <- (max(d$logRr2) - d$logRr2) / (max(d$logRr2) - min(d$logRr2))
+  d$color <- hsv(0 + d$o*0.667, d$z^2, 0.5, alpha = 0.5)
+  scatterplot3d(d$logRr1, d$logRr2, d$seLogRr1, col.axis = "blue",
+                col.grid = "lightblue", main = "Helix", pch = 16, color = d$color, cex.symbols = 2)
+}
+
