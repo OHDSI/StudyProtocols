@@ -1,0 +1,27 @@
+Package: EvaluatingCaseControl
+Type: Package
+Title: OHDSI Evaluating the Case-Control Design Study
+Version: 0.2.0
+Author: Martijn J. Schuemie [aut, cre]
+Maintainer: Martijn J. Schuemie <schuemie@ohdsi.org>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+Depends:
+    R (>= 3.2.2),
+    DatabaseConnector
+Imports:
+    SqlRender,
+    FeatureExtraction,
+    CaseControl,
+    EmpiricalCalibration,
+    OhdsiRTools,
+    ggplot2,
+    Cyclops,
+    ff,
+    ffbase,
+    MethodEvaluation
+Suggests:
+    testthat
+License: Apache License 2.0
+LazyData: true
+RoxygenNote: 6.0.1.9000

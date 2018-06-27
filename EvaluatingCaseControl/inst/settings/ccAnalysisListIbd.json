@@ -1,0 +1,77 @@
+[
+  {
+    "analysisId": 2,
+    "description": "Crockett replication for IBD",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 365,
+      "controlsPerCase": 3,
+      "matchOnAge": true,
+      "ageCaliper": 2,
+      "matchOnGender": true,
+      "matchOnProvider": false,
+      "matchOnCareSite": false,
+      "matchOnVisitDate": false,
+      "visitDateCaliper": 30,
+      "matchOnTimeInCohort": true,
+      "daysInCohortCaliper": 90,
+      "removedUnmatchedCases": true,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -365,
+      "riskWindowEnd": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": false,
+      "prior": {
+        "priorType": "laplace",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": true,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  }
+]

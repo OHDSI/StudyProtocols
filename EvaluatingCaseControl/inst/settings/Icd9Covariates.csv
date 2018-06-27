@@ -1,0 +1,23 @@
+covariateId,covariateName,icd9
+1,gallstone disease,560.31
+1,gallstone disease,574.%
+2,alcohol-related disease,291.%
+2,alcohol-related disease,303.%
+2,alcohol-related disease,305.0
+2,alcohol-related disease,571.0
+2,alcohol-related disease,571.1
+2,alcohol-related disease,571.2
+2,alcohol-related disease,571.3
+3,hypertriglyceridemia,272.1%
+4,cystic fibrosis,277.0%
+5,neoplasms,14_.%
+5,neoplasms,15_.%
+5,neoplasms,16_.%
+5,neoplasms,17_.%
+5,neoplasms,18_.%
+5,neoplasms,19_.%
+5,neoplasms,20_.%
+6,obesity,278.0%
+7,tobacco use,305.1
+7,tobacco use,649.0
+7,tobacco use,989.84

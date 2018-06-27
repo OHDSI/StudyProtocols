@@ -1,0 +1,76 @@
+targetId,targetName,nestingId,nestingName,outcomeId,outcomeName
+1105775,Aminophylline,37203741,Bronchospasm and obstruction,2,Acute pancreatitis
+924939,Bisacodyl,35702117,Gastrointestinal motility and defaecation conditions,2,Acute pancreatitis
+938044,brinzolamide,35606985,Glaucoma,2,Acute pancreatitis
+732893,Bupivacaine,438112,Neoplastic disease,2,Acute pancreatitis
+954819,cevimeline,35606954,Sjogren's syndrome,2,Acute pancreatitis
+795113,Chlorzoxazone,36516951,Back pain,2,Acute pancreatitis
+1563600,Chorionic Gonadotropin,37119655,Infertility female,2,Acute pancreatitis
+1350310,cilostazol,37622411,Phlebosclerosis,2,Acute pancreatitis
+1517070,desmopressin,36718449,Urinary incontinence,2,Acute pancreatitis
+989482,Dutasteride,37119607,Benign prostatic hyperplasia,2,Acute pancreatitis
+1140088,Dyphylline,37203741,Bronchospasm and obstruction,2,Acute pancreatitis
+943634,epinastine,36009773,Rhinitis allergic,2,Acute pancreatitis
+757352,Eszopiclone,436962,Insomnia,2,Acute pancreatitis
+19027958,fesoterodine,36718449,Urinary incontinence,2,Acute pancreatitis
+1588712,Follicle Stimulating Hormone,37119655,Infertility female,2,Acute pancreatitis
+1315865,fondaparinux,37622411,Phlebosclerosis,2,Acute pancreatitis
+1536743,ganirelix,37119655,Infertility female,2,Acute pancreatitis
+1784444,Ivermectin,36110310,Arthropod infestation,2,Acute pancreatitis
+932815,Levobunolol,35606985,Glaucoma,2,Acute pancreatitis
+1136422,levocetirizine,36009773,Rhinitis allergic,2,Acute pancreatitis
+987366,lubiprostone,35702117,Gastrointestinal motility and defaecation conditions,2,Acute pancreatitis
+1589795,Luteinizing Hormone,37119655,Infertility female,2,Acute pancreatitis
+704943,Methocarbamol,36516951,Back pain,2,Acute pancreatitis
+915855,olopatadine,35607032,Conjunctivitis allergic,2,Acute pancreatitis
+1110942,omalizumab,37203741,Bronchospasm and obstruction,2,Acute pancreatitis
+918906,oxybutynin,36718449,Urinary incontinence,2,Acute pancreatitis
+922868,Permethrin,36110310,Arthropod infestation,2,Acute pancreatitis
+19025115,picosulfate sodium,35702117,Gastrointestinal motility and defaecation conditions,2,Acute pancreatitis
+945286,Pilocarpine,35606985,Glaucoma,2,Acute pancreatitis
+40163718,prasugrel,37622411,Phlebosclerosis,2,Acute pancreatitis
+951279,Prilocaine,438112,Neoplastic disease,2,Acute pancreatitis
+781182,ramelteon,436962,Insomnia,2,Acute pancreatitis
+1136487,ropivacaine,37522270,Surgery,2,Acute pancreatitis
+965748,Scopolamine,436962,Insomnia,2,Acute pancreatitis
+19012925,silodosin,37119607,Benign prostatic hyperplasia,2,Acute pancreatitis
+1336926,tadalafil,37119607,Benign prostatic hyperplasia,2,Acute pancreatitis
+1341238,Terazosin,37119607,Benign prostatic hyperplasia,2,Acute pancreatitis
+704599,Triazolam,436962,Insomnia,2,Acute pancreatitis
+1311276,vardenafil,36919202,Sexual dysfunction,2,Acute pancreatitis
+742185,atomoxetine,,,3,Ulcerative colitis
+1338005,Bisoprolol,,,3,Ulcerative colitis
+915542,brimonidine,,,3,Ulcerative colitis
+732893,Bupivacaine,,,3,Ulcerative colitis
+1563600,Chorionic Gonadotropin,,,3,Ulcerative colitis
+1598819,Clomiphene,,,3,Ulcerative colitis
+981709,dorzolamide,,,3,Ulcerative colitis
+1363053,Doxazosin,,,3,Ulcerative colitis
+989482,Dutasteride,,,3,Ulcerative colitis
+996416,Finasteride,,,3,Ulcerative colitis
+1512480,Ibandronate,,,3,Ulcerative colitis
+1502905,Insulin Glargine,,,3,Ulcerative colitis
+1550023,Insulin Lispro,,,3,Ulcerative colitis
+1347384,irbesartan,,,3,Ulcerative colitis
+1386957,Labetalol,,,3,Ulcerative colitis
+989878,Lidocaine,,,3,Ulcerative colitis
+1102527,Meperidine,,,3,Ulcerative colitis
+1103640,Methadone,,,3,Ulcerative colitis
+705944,Methylphenidate,,,3,Ulcerative colitis
+708298,Midazolam,,,3,Ulcerative colitis
+1313200,Nadolol,,,3,Ulcerative colitis
+1114122,Nalbuphine,,,3,Ulcerative colitis
+717136,Neostigmine,,,3,Ulcerative colitis
+753626,Propofol,,,3,Ulcerative colitis
+1513103,Raloxifene,,,3,Ulcerative colitis
+781182,ramelteon,,,3,Ulcerative colitis
+1334456,Ramipril,,,3,Ulcerative colitis
+965748,Scopolamine,,,3,Ulcerative colitis
+916005,Solifenacin,,,3,Ulcerative colitis
+924566,tamsulosin,,,3,Ulcerative colitis
+1341238,Terazosin,,,3,Ulcerative colitis
+902427,Timolol,,,3,Ulcerative colitis
+913782,tolterodine,,,3,Ulcerative colitis
+704599,Triazolam,,,3,Ulcerative colitis
+780442,varenicline,,,3,Ulcerative colitis
+1524674,zoledronic acid,,,3,Ulcerative colitis

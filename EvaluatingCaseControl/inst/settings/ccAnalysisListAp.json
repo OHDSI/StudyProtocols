@@ -1,0 +1,299 @@
+[
+  {
+    "analysisId": 1,
+    "description": "Chou replication for AP",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": true,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 365,
+      "controlsPerCase": 4,
+      "matchOnAge": true,
+      "ageCaliper": 1,
+      "matchOnGender": true,
+      "matchOnProvider": false,
+      "matchOnCareSite": false,
+      "matchOnVisitDate": false,
+      "visitDateCaliper": 30,
+      "matchOnTimeInCohort": true,
+      "daysInCohortCaliper": 365,
+      "removedUnmatchedCases": true,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": [
+        {
+          "covariateDefs": [
+            {
+              "covariateId": 1,
+              "covariateName": "gallstone disease",
+              "icd9": "560.31",
+              "attr_row.names": 1,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 1,
+              "covariateName": "gallstone disease",
+              "icd9": "574.%",
+              "attr_row.names": 2,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "291.%",
+              "attr_row.names": 3,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "303.%",
+              "attr_row.names": 4,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "305.0",
+              "attr_row.names": 5,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "571.0",
+              "attr_row.names": 6,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "571.1",
+              "attr_row.names": 7,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "571.2",
+              "attr_row.names": 8,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 2,
+              "covariateName": "alcohol-related disease",
+              "icd9": "571.3",
+              "attr_row.names": 9,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 3,
+              "covariateName": "hypertriglyceridemia",
+              "icd9": "272.1%",
+              "attr_row.names": 10,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 4,
+              "covariateName": "cystic fibrosis",
+              "icd9": "277.0%",
+              "attr_row.names": 11,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "14_.%",
+              "attr_row.names": 12,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "15_.%",
+              "attr_row.names": 13,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "16_.%",
+              "attr_row.names": 14,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "17_.%",
+              "attr_row.names": 15,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "18_.%",
+              "attr_row.names": 16,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "19_.%",
+              "attr_row.names": 17,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 5,
+              "covariateName": "neoplasms",
+              "icd9": "20_.%",
+              "attr_row.names": 18,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 6,
+              "covariateName": "obesity",
+              "icd9": "278.0%",
+              "attr_row.names": 19,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 7,
+              "covariateName": "tobacco use",
+              "icd9": "305.1",
+              "attr_row.names": 20,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 7,
+              "covariateName": "tobacco use",
+              "icd9": "649.0",
+              "attr_row.names": 21,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 7,
+              "covariateName": "tobacco use",
+              "icd9": "989.84",
+              "attr_row.names": 22,
+              "attr_class": "data.frame"
+            }
+          ],
+          "windowStart": -365,
+          "windowEnd": -1,
+          "attr_fun": "getDbIcd9CovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "covariateDefs": [
+            {
+              "covariateId": 10,
+              "covariateName": "furosemide",
+              "atc": "C03CA01",
+              "attr_row.names": 1,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 11,
+              "covariateName": "NSAIDs",
+              "atc": "M01A",
+              "attr_row.names": 2,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 12,
+              "covariateName": "corticosteroids",
+              "atc": "H02",
+              "attr_row.names": 3,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 13,
+              "covariateName": "antibiotics",
+              "atc": "J01",
+              "attr_row.names": 4,
+              "attr_class": "data.frame"
+            },
+            {
+              "covariateId": 14,
+              "covariateName": "cancer drugs",
+              "atc": "L01",
+              "attr_row.names": 5,
+              "attr_class": "data.frame"
+            }
+          ],
+          "windowStart": -365,
+          "windowEnd": -1,
+          "attr_fun": "getDbAtcCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "temporal": false,
+          "Dcsi": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": -1,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": [],
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -30,
+      "riskWindowEnd": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "prior": {
+        "priorType": "normal",
+        "variance": 10000,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  }
+]
