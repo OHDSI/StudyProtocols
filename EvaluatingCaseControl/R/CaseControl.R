@@ -21,14 +21,14 @@ runCaseControlDesigns <- function(connectionDetails,
                                   cohortTable,
                                   outputFolder,
                                   maxCores) {
-  OhdsiRTools::logInfo("Running Chou replication")
+  ParallelLogger::logInfo("Running Chou replication")
   ccApFolder <- file.path(outputFolder, "ccAp")
   if (!file.exists(ccApFolder))
     dir.create(ccApFolder)
 
   analysisListFile <- system.file("settings", "ccAnalysisListAp.json", package = "EvaluatingCaseControl")
   analysisList <- CaseControl::loadCcAnalysisList(analysisListFile)
-  eonList <- createEons(allControlsFile = file.path(outputFolder, "AllControlsAp.csv"),
+  eonList <- createEons(outputFolder = outputFolder,
                         exposureId = 4,
                         outcomeId = 2,
                         nestingCohortId = 1)
@@ -55,7 +55,7 @@ runCaseControlDesigns <- function(connectionDetails,
   ccSummaryFile <- file.path(outputFolder, "ccSummaryAp.rds")
   saveRDS(ccSummary, ccSummaryFile)
 
-  OhdsiRTools::logInfo("Running Crockett replication")
+  ParallelLogger::logInfo("Running Crockett replication")
   ccIbdFolder <- file.path(outputFolder, "ccIbd")
   if (!file.exists(ccIbdFolder))
     dir.create(ccIbdFolder)
@@ -86,7 +86,7 @@ runCaseControlDesigns <- function(connectionDetails,
 
   # Crockett used option not supported by package: controls have index date 1 year from observation start
   # Achieve this by resetting index date and rerunning analysis.
-  OhdsiRTools::logInfo("Resetting conrol index date")
+  ParallelLogger::logInfo("Resetting conrol index date")
   #ccResult <- readRDS(file.path(ccIbdFolder, "outcomeModelReference.rds"))
   caseData <- CaseControl::loadCaseData(ccResult$caseDataFolder[1])
   caseControlsFiles <- ccResult$caseControlsFile
@@ -254,8 +254,15 @@ createCaseControlAnalysesDetails <- function(outputFolder) {
   # CaseControl::saveExposureOutcomeNestingCohortList(eonsIbd, file.path(outputFolder, "ccExposureOutcomeNestingIbd.json"))
 }
 
-createEons <- function(allControlsFile, exposureId, outcomeId, nestingCohortId = NULL) {
-  allControls <- read.csv(allControlsFile)
+createEons <- function(outputFolder, exposureId, outcomeId, nestingCohortId = NULL) {
+  allControlsFile = file.path(outputFolder, "AllControlsAp.csv")
+  if (file.exists(allControlsFile)) {
+    allControls <- read.csv(allControlsFile)
+  } else {
+    pathToCsv <- system.file("settings", "NegativeControls.csv", package = "EvaluatingCaseControl")
+    allControls <- read.csv(pathToCsv)
+    allControls <- allControls[allControls$outcomeId == outcomeId, ]
+  }
   eonList <- list(CaseControl::createExposureOutcomeNestingCohort(exposureId = exposureId,
                                                                   outcomeId = outcomeId,
                                                                   nestingCohortId = nestingCohortId))

@@ -69,7 +69,7 @@
 "DBI","0.7"
 "FeatureExtraction","2.1.1"
 "ggplot2","2.2.1"
-"OhdsiRTools","1.5.2"
+"ParallelLogger","1.5.2"
 "CaseControl","1.4.2"
 "gridExtra","2.3"
 "pROC","1.10.0"

@@ -40,13 +40,6 @@ cohortDatabaseSchema <- "scratch.dbo"
 cohortTable <- "mschuemie_case_control_ap_ccae"
 outputFolder <- "r:/EvaluatingCaseControl_ccae"
 
-# Optum settings --------------------------------------------------
-cdmDatabaseSchema <- "cdm_optum_extended_ses_v694.dbo"
-oracleTempSchema <- NULL
-cohortDatabaseSchema <- "scratch.dbo"
-cohortTable <- "mschuemie_case_control_ap_optum"
-outputFolder <- "r:/EvaluatingCaseControl_optum"
-
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,
         oracleTempSchema = oracleTempSchema,
