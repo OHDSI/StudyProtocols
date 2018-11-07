@@ -1,0 +1,9 @@
+modelId,modelCovariateId,coefficientValue,Name
+1,1,5,Age 15-24
+1,2,12,Substance Abuse
+1,3,4,Anxiety Disorder
+1,4,6,Mood Disorder
+1,5,5,Low Back Pain
+1,6,6,Renal Impairment
+1,7,2,Recent ER
+1,8,3,Painful Neuropathy

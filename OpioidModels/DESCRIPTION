@@ -1,0 +1,26 @@
+Package: OpioidModels
+Type: Package
+Title: Package containing the opioid use disorder prediction models
+Version: 0.0.1
+Date: 2018-07-01
+Author: Jenna Reps [aut]
+Maintainer: Jenna Reps <reps@ohdsi.org>
+Description: A package for runnign the opioid prediction models using the PatientLevelPrediction framework
+License: Apache License 2.0
+Depends:
+    R (>= 3.3.0), 
+    DatabaseConnector (>= 1.11.4),
+    FeatureExtraction (>= 2.0.0),
+    Cyclops (>= 1.2.2),
+    PatientLevelPrediction (>= 2.0.0),
+    PredictionComparison
+Imports:
+    ggplot2,
+    gridExtra,
+    ff,
+    ffbase (>= 0.12.1)
+Suggests:
+  testthat,
+LinkingTo: Rcpp
+NeedsCompilation: No
+RoxygenNote: 6.0.1
