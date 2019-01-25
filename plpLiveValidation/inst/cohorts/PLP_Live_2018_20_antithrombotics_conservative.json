@@ -1,0 +1,2913 @@
+{
+  "ExpressionLimit": {"Type": "First"},
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 0
+  },
+  "CensorWindow": {
+    "StartDate": null,
+    "EndDate": null
+  },
+  "ConceptSets": [
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4138327,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "426107000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Acute lacunar infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045735,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230693009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Anterior cerebral circulation infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 761110,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "151161000119102",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Bilateral cerebral infarction due to precererbral arterial occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4211509,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "413758000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cardioembolic stroke",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4111711,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195213000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebellar stroke syndrome",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4110189,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195185009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarct due to thrombosis of precerebral arteries",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 443454,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "432504007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 762951,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "434151000124101",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to anterior cerebral artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 765515,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "434991000124105",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to basilar artery stenosis",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43530683,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "149821000119103",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to carotid artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 762933,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "433891000124100",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to cerebral artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 762937,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "433961000124100",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to cerebral venous thrombosis",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4111714,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195230003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to cerebral venous thrombosis, non-pyogenic",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4108356,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195190007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to embolism of cerebral arteries",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45772786,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "705128004",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to embolism of middle cerebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4110190,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195186005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to embolism of precerebral arteries",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 762935,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "433931000124109",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to internal carotid artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 763015,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "434961000124102",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to middle cerebral artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46273649,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "34181000119102",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to occlusion of basilar artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 35610084,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1089411000000104",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to occlusion of cerebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46270031,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "125081000119106",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to occlusion of precerebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 762934,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "433911000124103",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to posterior cerebral artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43531607,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "99451000119105",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to stenosis of carotid artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 35610085,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1089421000000105",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to stenosis of cerebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46270381,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "293831000119105",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to stenosis of precerebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4110192,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195189003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to thrombosis of cerebral arteries",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45767658,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "705130002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to thrombosis of middle cerebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 44782773,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "34191000119104",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to vertebral artery occlusion",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46270380,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "293811000119100",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral infarction due to vertebral artery stenosis",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 37110678,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "724993002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral ischaemic stroke due to occlusion of extracranial large artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 37110679,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "724994008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral ischaemic stroke due to stenosis of extracranial large artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4153352,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "371041009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Embolic stroke",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4043731,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230692004",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Infarction - precerebral",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4131383,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "413102000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Infarction of basal ganglia",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4046237,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230523009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Infarction of optic radiation",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4119140,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "302904002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Infarction of visual cortex",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4046360,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230698000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Lacunar infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4141405,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "307766002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Left sided cerebral infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4145897,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "307363008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Multiple lacunar infarcts",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4077086,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "276219001",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Occipital cerebral infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4046359,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230695002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Partial anterior cerebral circulation infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4319146,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "95830009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Pituitary infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045737,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230699008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Pure motor lacunar infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4046361,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230701008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Pure sensorimotor lacunar infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045738,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230700009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Pure sensory lacunar infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4146185,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "307767006",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Right sided cerebral infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 36717605,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "723082006",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Silent cerebral infarct",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4142739,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "427296003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Thalamic infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4159140,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "371040005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Thrombotic stroke",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4046358,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230694003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Total anterior cerebral circulation infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        }
+      ]},
+      "name": "Qiong-Condition(Ischemic Stroke)",
+      "id": 4
+    },
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4048784,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230707007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Anterior cerebral circulation hemorrhagic infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4112018,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195165005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Basal ganglia hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4319328,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "95454007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Brain stem hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4201094,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "301765007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebellar hematoma",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4326561,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "75038005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebellar hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4218781,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "73020009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral hemisphere hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 376713,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "274100004",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebral hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4173481,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "42429001",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cerebromeningeal hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43530851,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "609382000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Chronic non-traumatic intracranial subdural hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45766120,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "703217005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Convexal subarachnoid hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4176892,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "49422009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Cortical hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45766068,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "703156006",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Deep hemispheric cerebral hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4199890,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "301764006",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hematoma of brain",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873045,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "451038000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage in caudate nucleus",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873044,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "451037005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage in globus pallidus",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873046,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "451039008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage in putamen",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873124,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "450377000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage into meningeal space of neuraxis",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873109,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "450362008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage into subarachnoid space of neuraxis",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42709921,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "449793009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage into subdural space of neuraxis",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873123,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "450376009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhage of intracranial meningeal space",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4046362,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230706003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Hemorrhagic cerebral infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4080892,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "276722003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intracerebellar and posterior fossa hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4110185,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195168007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intracerebral hemorrhage, intraventricular",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4110186,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195169004",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intracerebral hemorrhage, multiple localized",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42872434,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "450425005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intracranial hematoma",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 439847,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1386000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intracranial hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 40492969,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "449020009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intraparenchymal hemorrhage of brain",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4299377,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "7713009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Intrapontine hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045746,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230712008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Lacunar hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045744,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230710000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Lobar cerebral hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045743,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230709005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Massive supratentorial cerebral hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45766830,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "704079000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Non-aneurysmal perimesencephalic subarachnoid hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45766118,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "703215002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Non-aneurysmal subarachnoid intracranial hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4144154,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "425957003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Non-traumatic intracerebral ventricular hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 44782730,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "143521000119103",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Nontraumatic intraparenchymal cerebral hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46270111,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "141091000119105",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Nontraumatic subarachnoid hemorrhage with brain compression",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4151359,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "28318001",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Pars basalis hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45766119,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "703216001",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Perimesencephalic subarachnoid hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4129535,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "237702003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Pituitary hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4043732,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230708002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Posterior cerebral circulation hemorrhagic infarction",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 37109909,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "723857007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Silent micro-haemorrhage of brain",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43530674,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "142851000119103",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Spontaneous cerebellar hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43530727,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "291571000119106",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Spontaneous cerebral hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46273491,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "140881000119109",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Spontaneous cerebral hemorrhage with compression of brain",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42535425,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "291531000119108",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Nontraumatic haemorrhage of cerebral hemisphere",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42535424,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "291521000119105",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Spontaneous haemorrhage of cortical intracerebral hemisphere",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42535423,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "291511000119103",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Nontraumatic haemorrhage of deep cerebral hemisphere",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42538062,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "738779002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Nontraumatic intracranial haemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4148906,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "270907008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Spontaneous subarachnoid hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 432923,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "21454007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Subarachnoid hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4108952,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195155004",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Subarachnoid hemorrhage from carotid siphon and bifurcation",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4111708,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "195160000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Subarachnoid hemorrhage from vertebral artery",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4049659,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "20908003",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Subcortical hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 439040,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "35486000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Subdural hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42873042,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "451035002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Subpial intracranial hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4045745,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "230711001",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Thalamic hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 443752,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "23276006",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Ventricular hemorrhage",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        }
+      ]},
+      "name": "Qiong-Conditon(Cerebral Hemorrhage)",
+      "id": 5
+    },
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19024063,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "154",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Acenocoumarol",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19024544,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "772",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Ancrod",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19044890,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "40028",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Anistreplase",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1436169,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1009",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Antithrombin III",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1112807,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1191",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Aspirin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1301065,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "67109",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Dalteparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1325124,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1598",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Dicumarol",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1331270,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "3521",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Dipyridamole",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1301025,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "67108",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Enoxaparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1354118,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "8814",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Epoprostenol",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19077421,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "5556",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Hymecromone",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1344992,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "40138",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Iloprost",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19001014,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "67031",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Nadroparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19033934,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "8130",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Phenindione",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19035344,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "8150",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Phenprocoumon",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 954696,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "4388",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Plasmin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42801108,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "8834",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Protein C",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19024191,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "76895",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Reteplase",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19136187,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "10106",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Streptokinase",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19098548,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "259280",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Tenecteplase",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 40241186,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1116632",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Ticagrelor",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1302398,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "10594",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Ticlopidine",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1327256,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "343048",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Treprostinil",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1307515,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "11055",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Urokinase",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1310149,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "11289",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Warfarin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19047423,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "83929",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "abciximab",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43013024,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1364430",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "apixaban",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1322207,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "15202",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "argatroban",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19069137,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "280611",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "bemiparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19084670,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "60819",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "bivalirudin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46275677,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1656052",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "cangrelor",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1350310,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "21107",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "cilostazol",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1322184,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "32968",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "clopidogrel",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 40228152,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1037042",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "dabigatran etexilate",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19026343,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "78484",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "danaparoid",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42898933,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1311089",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "defibrotide",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19011712,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "114934",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "desirudin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1731597,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "352374",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "drotrecogin alfa",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45892847,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1599538",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "edoxaban",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1322199,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "75635",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "eptifibatide",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19113013,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "50097",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "fluindione",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1315865,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "321208",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "fondaparinux",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1367571,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "5224",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "heparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19069107,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "27518",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "indobufen",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19092139,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "237057",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "lepirudin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19008276,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "69528",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "parnaparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 40163718,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "613391",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "prasugrel",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19129274,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "75960",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "reviparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 40241331,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1114195",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "rivaroxaban",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 35604848,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1729002",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "selexipag",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1308473,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "69646",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "tinzaparin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19018364,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "163426",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "tioclomarol",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19017067,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "73137",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "tirofiban",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19042778,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "38655",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "triflusal",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 44818499,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "1537034",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "vorapaxar",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        }
+      ]},
+      "name": "All antithrombotics",
+      "id": 9
+    }
+  ],
+  "EndStrategy": {"DateOffset": {
+    "DateField": "StartDate",
+    "Offset": 0
+  }},
+  "CensoringCriteria": [],
+  "Title": null,
+  "AdditionalCriteria": null,
+  "QualifiedLimit": {"Type": "First"},
+  "InclusionRules": [{
+    "expression": {
+      "CriteriaList": [{
+        "RestrictVisit": false,
+        "StartWindow": {
+          "UseEventEnd": false,
+          "Start": {
+            "Days": 7,
+            "Coeff": -1
+          },
+          "End": {
+            "Days": 0,
+            "Coeff": 1
+          },
+          "UseIndexEnd": null
+        },
+        "EndWindow": null,
+        "Criteria": {"ConditionOccurrence": {
+          "OccurrenceEndDate": null,
+          "CorrelatedCriteria": {
+            "CriteriaList": [{
+              "RestrictVisit": false,
+              "StartWindow": {
+                "UseEventEnd": false,
+                "Start": {
+                  "Days": 30,
+                  "Coeff": -1
+                },
+                "End": {
+                  "Days": 0,
+                  "Coeff": 1
+                },
+                "UseIndexEnd": null
+              },
+              "EndWindow": null,
+              "Criteria": {"ConditionOccurrence": {
+                "OccurrenceEndDate": null,
+                "CorrelatedCriteria": null,
+                "ConditionTypeExclude": false,
+                "CodesetId": 5,
+                "ProviderSpecialty": null,
+                "Gender": null,
+                "VisitType": null,
+                "First": null,
+                "OccurrenceStartDate": null,
+                "ConditionType": null,
+                "ConditionSourceConcept": null,
+                "StopReason": null,
+                "Age": null
+              }},
+              "Occurrence": {
+                "Type": 1,
+                "IsDistinct": false,
+                "Count": 0
+              }
+            }],
+            "Type": "ALL",
+            "DemographicCriteriaList": [],
+            "Groups": [],
+            "Count": null
+          },
+          "ConditionTypeExclude": false,
+          "CodesetId": 4,
+          "ProviderSpecialty": null,
+          "Gender": null,
+          "VisitType": null,
+          "First": true,
+          "OccurrenceStartDate": null,
+          "ConditionType": null,
+          "ConditionSourceConcept": null,
+          "StopReason": null,
+          "Age": null
+        }},
+        "Occurrence": {
+          "Type": 2,
+          "IsDistinct": false,
+          "Count": 1
+        }
+      }],
+      "Type": "ALL",
+      "DemographicCriteriaList": [],
+      "Groups": [],
+      "Count": null
+    },
+    "name": "Ischemic stroke",
+    "description": "First ischemic stroke in 7 days before anticoagulation. No hemorrhage code on the same day (could extend to all hemorrhage codes - not just Qiong)"
+  }],
+  "PrimaryCriteria": {
+    "CriteriaList": [{"DrugExposure": {
+      "OccurrenceEndDate": null,
+      "CorrelatedCriteria": null,
+      "DrugSourceConcept": null,
+      "CodesetId": 9,
+      "DrugTypeExclude": false,
+      "Quantity": null,
+      "DrugType": null,
+      "ProviderSpecialty": null,
+      "EffectiveDrugDose": null,
+      "Gender": null,
+      "DaysSupply": null,
+      "DoseUnit": null,
+      "VisitType": null,
+      "Refills": null,
+      "First": null,
+      "OccurrenceStartDate": null,
+      "RouteConcept": null,
+      "StopReason": null,
+      "LotNumber": null,
+      "Age": {
+        "Op": "gte",
+        "Extent": null,
+        "Value": 45
+      }
+    }}],
+    "PrimaryCriteriaLimit": {"Type": "All"},
+    "ObservationWindow": {
+      "PostDays": 30,
+      "PriorDays": 365
+    }
+  }
+}
