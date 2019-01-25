@@ -37,8 +37,9 @@
 #' @param outputFolder         Name of local folder to place results; make sure to use forward slashes
 #'                             (/)
 #' @param createCohorts        Instantiate the necessary cohorts in the cohortTable?
-#' @param synthesizePositiveControls  Synthesize positive controls based on the negative controls?
-#' @param runAnalyses          Execute the case-control analaysis?
+# #' @param synthesizePositiveControls  Synthesize positive controls based on the negative controls?
+#' @param runCaseControl       Execute the case-control analysis?
+#' @param runSccs              Execute the SCCS analysis?
 #' @param createFiguresAndTables Create the figures and tables for the paper?
 #' @param maxCores             How many parallel cores should be used? If more cores are made available
 #'                             this can speed up the analyses.
@@ -66,17 +67,18 @@ execute <- function(connectionDetails,
                     oracleTempSchema,
                     outputFolder,
                     createCohorts = TRUE,
-                    synthesizePositiveControls = TRUE,
-                    runAnalyses = TRUE,
+                    # synthesizePositiveControls = TRUE,
+                    runCaseControl = TRUE,
+                    runSccs = TRUE,
                     createFiguresAndTables  = TRUE,
                     maxCores = 4) {
   if (!file.exists(outputFolder))
     dir.create(outputFolder)
 
-  OhdsiRTools::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
+  ParallelLogger::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
 
   if (createCohorts) {
-    OhdsiRTools::logInfo("Creating exposure and outcome cohorts")
+    ParallelLogger::logInfo("Creating exposure and outcome cohorts")
     createCohorts(connectionDetails = connectionDetails,
                   cdmDatabaseSchema = cdmDatabaseSchema,
                   oracleTempSchema = oracleTempSchema,
@@ -84,20 +86,20 @@ execute <- function(connectionDetails,
                   cohortTable = cohortTable,
                   outputFolder = outputFolder)
   }
-  if (synthesizePositiveControls) {
-    OhdsiRTools::logInfo("Synthesizing positive controls")
-    synthesizePositiveControls(connectionDetails = connectionDetails,
-                               cdmDatabaseSchema = cdmDatabaseSchema,
-                               cohortDatabaseSchema = cohortDatabaseSchema,
-                               cohortTable = cohortTable,
-                               oracleTempSchema = oracleTempSchema,
-                               outputFolder = outputFolder,
-                               maxCores = maxCores)
-    OhdsiRTools::logInfo("")
-  }
+  # if (synthesizePositiveControls) {
+  #   ParallelLogger::logInfo("Synthesizing positive controls")
+  #   synthesizePositiveControls(connectionDetails = connectionDetails,
+  #                              cdmDatabaseSchema = cdmDatabaseSchema,
+  #                              cohortDatabaseSchema = cohortDatabaseSchema,
+  #                              cohortTable = cohortTable,
+  #                              oracleTempSchema = oracleTempSchema,
+  #                              outputFolder = outputFolder,
+  #                              maxCores = maxCores)
+  #   ParallelLogger::logInfo("")
+  # }
 
-  if (runAnalyses) {
-    OhdsiRTools::logInfo("Running analyses")
+  if (runCaseControl) {
+    ParallelLogger::logInfo("Running case control")
     runCaseControlDesigns(connectionDetails = connectionDetails,
                           cdmDatabaseSchema = cdmDatabaseSchema,
                           oracleTempSchema = oracleTempSchema,
@@ -107,7 +109,7 @@ execute <- function(connectionDetails,
                           maxCores = maxCores)
   }
   if (createFiguresAndTables) {
-    OhdsiRTools::logInfo("Creating figures and tables")
+    ParallelLogger::logInfo("Creating figures and tables")
     createFiguresAndTables(connectionDetails = connectionDetails,
                            cdmDatabaseSchema = cdmDatabaseSchema,
                            oracleTempSchema = oracleTempSchema,

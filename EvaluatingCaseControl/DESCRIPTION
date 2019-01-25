@@ -13,8 +13,9 @@ Imports:
     SqlRender,
     FeatureExtraction,
     CaseControl,
+    SelfControlledCaseSeries,
     EmpiricalCalibration,
-    OhdsiRTools,
+    ParallelLogger,
     ggplot2,
     Cyclops,
     ff,
@@ -24,4 +25,4 @@ Suggests:
     testthat
 License: Apache License 2.0
 LazyData: true
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0

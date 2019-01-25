@@ -159,11 +159,11 @@ subset <-  c("C\nOur large-scale study on depression treatments")
 alpha <- c(0.2)
 size <- 1
 labelY <- 0.92
-
+n <- nrow(d[d$Group %in% subset, ])
 plot <- ggplot(d[d$Group %in% subset, ], aes(x=logRr, y=seLogRr, alpha = Group), environment=environment())+
     geom_vline(xintercept=log(breaks), colour ="#AAAAAA", lty=1, size=0.5) +
-    geom_abline(slope = 1/qnorm(0.025), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
-    geom_abline(slope = 1/qnorm(0.975), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_abline(slope = 1/qnorm(0.025/n), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
+    geom_abline(slope = 1/qnorm(1-0.025/n), colour=rgb(0.8,0,0), linetype="dashed", size=1,alpha=0.5) +
     geom_point(size=size, color = rgb(0,0,0), shape = 16) +
     geom_hline(yintercept=0) +
     geom_label(x = log(0.11), y = 0.99, alpha = 1, hjust = "left", aes(label = nLabel), size = 4, data = dd[dd$Group %in% subset, ]) +
@@ -188,7 +188,7 @@ plot <- ggplot(d[d$Group %in% subset, ], aes(x=logRr, y=seLogRr, alpha = Group),
 
 ggsave(plot = plot, file.path(paperFolder, "Lit.png"), width = 10, height = 3.2, dpi = 400)
 
-ggsave(plot = plot, file.path(paperFolder, "Us.png"), width = 10, height =5.2, dpi = 400)
+ggsave(plot = plot, file.path(paperFolder, "UsBonf.png"), width = 10, height =5.2, dpi = 400)
 
 
 tempd <- d

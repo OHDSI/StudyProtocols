@@ -15,7 +15,7 @@
 # limitations under the License.
 
 computeSampleSize <- function(outputFolder) {
-  OhdsiRTools::logInfo("Computing sample size and power")
+  ParallelLogger::logInfo("Computing sample size and power")
   ccdFile = file.path(outputFolder, "ccIbd", "ccd_cd1_cc1_o3_ed1_e5_ccd1.rds")
   ccd <- readRDS(ccdFile)
   row1 <- CaseControl::computeMdrr(ccd)

@@ -58,7 +58,7 @@ createCohorts <- function(connectionDetails,
 
   pathToCsv <- system.file("settings", "NegativeControls.csv", package = "EvaluatingCaseControl")
   negativeControls <- read.csv(pathToCsv)
-  OhdsiRTools::logInfo("- Creating exposure cohorts for negative controls")
+  ParallelLogger::logInfo("- Creating exposure cohorts for negative controls")
   sql <- SqlRender::loadRenderTranslateSql("ExposureCohorts.sql",
                                            "EvaluatingCaseControl",
                                            dbms = connectionDetails$dbms,
@@ -68,7 +68,7 @@ createCohorts <- function(connectionDetails,
                                            target_cohort_table = cohortTable,
                                            exposure_ids = unique(c(negativeControls$targetId, negativeControls$comparatorId)))
   DatabaseConnector::executeSql(conn, sql)
-  OhdsiRTools::logInfo("- Creating nesting cohorts for negative controls")
+  ParallelLogger::logInfo("- Creating nesting cohorts for negative controls")
   nestingIds <- unique(negativeControls$nestingId)
   nestingIds <- nestingIds[!is.na(nestingIds)]
   sql <- SqlRender::loadRenderTranslateSql("NestingCohorts.sql",
@@ -81,6 +81,30 @@ createCohorts <- function(connectionDetails,
                                            nesting_ids = nestingIds)
   DatabaseConnector::executeSql(conn, sql)
 
+  ParallelLogger::logInfo("- Creating nested exposure cohorts for negative controls (for CohortMethod)")
+  pathToCsv <- system.file("settings", "NegativeControlsForCm.csv", package = "EvaluatingCaseControl")
+  negativeControls <- read.csv(pathToCsv)
+  nestedExposures <- data.frame(exposureId = c(negativeControls$targetId, negativeControls$comparatorId),
+                                nestingId = c(negativeControls$nestingId, negativeControls$nestingId))
+  nestedExposures <- unique(nestedExposures)
+  nestedExposures$nestedExposureId <- 100 + (1:nrow(nestedExposures))
+  write.csv(nestedExposures, file.path(outputFolder, "NestedExposures.csv"))
+  colnames(nestedExposures) <- SqlRender::camelCaseToSnakeCase(colnames(nestedExposures))
+  DatabaseConnector::insertTable(conn, "#nested_exposures", nestedExposures, dropTableIfExists = TRUE, createTable = TRUE, tempTable = TRUE, oracleTempSchema = oracleTempSchema)
+  sql <- SqlRender::loadRenderTranslateSql("NestedExposureCohorts.sql",
+                                           "EvaluatingCaseControl",
+                                           dbms = connectionDetails$dbms,
+                                           oracleTempSchema = oracleTempSchema,
+                                           target_database_schema = cohortDatabaseSchema,
+                                           target_cohort_table = cohortTable)
+  DatabaseConnector::executeSql(conn, sql)
+
+
+  sql <- "TRUNCATE TABLE #nested_exposures; DROP TABLE #nested_exposures;"
+  sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms, oracleTempSchema = oracleTempSchema)$sql
+  DatabaseConnector::executeSql(conn, sql, progressBar = FALSE, reportOverallTime = FALSE)
+
+  # Count cohorts:
   sql <- "SELECT cohort_definition_id, COUNT(*) AS cohort_count FROM @target_database_schema.@target_cohort_table GROUP BY cohort_definition_id"
   sql <- SqlRender::renderSql(sql,
                               target_database_schema = cohortDatabaseSchema,

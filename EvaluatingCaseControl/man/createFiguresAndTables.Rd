@@ -4,8 +4,8 @@
 \alias{createFiguresAndTables}
 \title{Create figures and tables}
 \usage{
-createFiguresAndTables(connectionDetails, cdmDatabaseSchema, oracleTempSchema,
-  outputFolder)
+createFiguresAndTables(connectionDetails, cdmDatabaseSchema,
+  oracleTempSchema, outputFolder)
 }
 \arguments{
 \item{connectionDetails}{An object of type \code{connectionDetails} as created using the

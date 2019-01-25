@@ -34,13 +34,23 @@ OhdsiRTools::insertCohortDefinitionSetInPackage(fileName = "CohortsToCreate.csv"
 # Create analysis details ----
 source("R/CaseControl.R")
 createCaseControlAnalysesDetails("inst/settings/")
-# source("R/CohortMethod.R")
-# createCohortMethodAnalysesDetails("inst/settings/")
-# source("R/CaseTimeControl.R")
-# createCaseTimeControlAnalysesDetails("inst/settings/")
+source("R/CohortMethod.R")
+createCohortMethodAnalysesDetails("inst/settings/")
+source("R/Sccs.R")
+createSccsAnalysesDetails("inst/settings/")
 
 # Store environment in which the study was executed ----
 OhdsiRTools::insertEnvironmentSnapshotInPackage("EvaluatingCaseControl")
 
 
 
+# Get CohortMethod negative controls from MethodEvaluation package
+# x <- readRDS(system.file("ohdsiNegativeControls.rds", package = "MethodEvaluation"))
+# x <- x[x$outcomeName %in% c("Inflammatory Bowel Disease", "Acute pancreatitis"), ]
+# x$outcomeId[x$outcomeName == "Inflammatory Bowel Disease"] <- 3
+# x$outcomeId[x$outcomeName == "Acute pancreatitis"] <- 2
+# pathToCsv <- system.file("settings", "NegativeControls.csv", package = "EvaluatingCaseControl")
+# allControls <- read.csv(pathToCsv)
+# min(x$targetId %in% allControls$targetId)
+# min(x$comparatorId %in% allControls$targetId)
+# write.csv(x, "inst/settings/NegativeControlsForCm.csv", row.names = FALSE)

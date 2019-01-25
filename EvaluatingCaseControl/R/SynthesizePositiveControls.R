@@ -124,7 +124,7 @@ synthesizePositiveControls <- function(connectionDetails,
                                                 covariateSettings = covariateSettings)
       write.csv(result, synthesisSummaryFile, row.names = FALSE)
     }
-    OhdsiRTools::logTrace("Merging positive with negative controls ")
+    ParallelLogger::logTrace("Merging positive with negative controls ")
     pathToCsv <- system.file("settings", "NegativeControls.csv", package = "EvaluatingCaseControl")
     negativeControls <- read.csv(pathToCsv)
     negativeControls <- negativeControls[negativeControls$outcomeId == outcomeId, ]
@@ -144,7 +144,7 @@ synthesizePositiveControls <- function(connectionDetails,
     # allControls <- negativeControls
     write.csv(allControls, allControlsFile, row.names = FALSE)
   }
-  OhdsiRTools::logInfo("Synhtesizing positive controls for Chou replication")
+  ParallelLogger::logInfo("Synhtesizing positive controls for Chou replication")
   synthesize(synthesisFolder = file.path(outputFolder, "positiveControlSynthesisAp"),
              synthesisSummaryFile = file.path(outputFolder, "SynthesisSummaryAp.csv"),
              outcomeId = 2,
@@ -152,7 +152,7 @@ synthesizePositiveControls <- function(connectionDetails,
              outputIdOffset = 10000,
              allControlsFile = file.path(outputFolder, "AllControlsAp.csv"))
 
-  OhdsiRTools::logInfo("Synhtesizing positive controls for Crockett replication")
+  ParallelLogger::logInfo("Synhtesizing positive controls for Crockett replication")
   synthesize(synthesisFolder = file.path(outputFolder, "positiveControlSynthesisIbd"),
              synthesisSummaryFile = file.path(outputFolder, "SynthesisSummaryIbd.csv"),
              outcomeId = 3,

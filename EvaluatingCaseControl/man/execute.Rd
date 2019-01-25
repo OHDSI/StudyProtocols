@@ -4,9 +4,9 @@
 \alias{execute}
 \title{Execute OHDSI Evaluating the Case-Control Design Study}
 \usage{
-execute(connectionDetails, cdmDatabaseSchema, cohortDatabaseSchema, cohortTable,
-  oracleTempSchema, outputFolder, createCohorts = TRUE,
-  synthesizePositiveControls = TRUE, runAnalyses = TRUE,
+execute(connectionDetails, cdmDatabaseSchema, cohortDatabaseSchema,
+  cohortTable, oracleTempSchema, outputFolder, createCohorts = TRUE,
+  runCaseControl = TRUE, runSccs = TRUE,
   createFiguresAndTables = TRUE, maxCores = 4)
 }
 \arguments{
@@ -34,9 +34,9 @@ priviliges for storing temporary tables.}
 
 \item{createCohorts}{Instantiate the necessary cohorts in the cohortTable?}
 
-\item{synthesizePositiveControls}{Synthesize positive controls based on the negative controls?}
+\item{runCaseControl}{Execute the case-control analysis?}
 
-\item{runAnalyses}{Execute the case-control analaysis?}
+\item{runSccs}{Execute the SCCS analysis?}
 
 \item{createFiguresAndTables}{Create the figures and tables for the paper?}
 

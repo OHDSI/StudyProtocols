@@ -36,14 +36,14 @@ createFiguresAndTables <- function(connectionDetails,
                                    outputFolder) {
   connection <- DatabaseConnector::connect(connectionDetails)
 
-  OhdsiRTools::logInfo("Fetching population characteristics for Crockett study")
+  ParallelLogger::logInfo("Fetching population characteristics for Crockett study")
   getCharacteristics(ccFile = file.path(outputFolder, "ccIbd", "caseControls_cd1_cc1_o3.rds"),
                      connection = connection,
                      cdmDatabaseSchema = cdmDatabaseSchema,
                      oracleTempSchema = oracleTempSchema,
                      resultsFolder = file.path(outputFolder, "resultsIbd"))
 
-  OhdsiRTools::logInfo("Fetching population characteristics for Chou study")
+  ParallelLogger::logInfo("Fetching population characteristics for Chou study")
   getCharacteristics(ccFile = file.path(outputFolder, "ccAp", "caseControls_cd1_n1_cc1_o2.rds"),
                      connection = connection,
                      cdmDatabaseSchema = cdmDatabaseSchema,
@@ -173,13 +173,92 @@ plotOddsRatios <- function(ccSummaryFile, exposureId, exposureName, resultsFolde
 
   fileName <- file.path(resultsFolder, "estimates.png")
   ggplot2::ggsave(fileName, plot, width = 6.1, height = 4.5, dpi = 400)
+
+  estimates$seLogRr[estimates$label == "Negative control (our replication)"] <- 3
+  plot <- ggplot2::ggplot(data.frame(x, y, seTheoretical), ggplot2::aes(x = x, y = y), environment = environment()) +
+    ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.5) +
+    ggplot2::geom_vline(xintercept = 1, size = 0.7) +
+    # ggplot2::geom_area(fill = rgb(1, 0.5, 0, alpha = 0.5), color = rgb(1, 0.5, 0), size = 1, alpha = 0.5) +
+    ggplot2::geom_area(ggplot2::aes(y = seTheoretical),
+                       fill = rgb(0, 0, 0),
+                       colour = rgb(0, 0, 0, alpha = 0.1),
+                       alpha = 0.1) +
+    ggplot2::geom_line(ggplot2::aes(y = seTheoretical),
+                       colour = rgb(0, 0, 0),
+                       linetype = "dashed",
+                       size = 1,
+                       alpha = 0.5) +
+    ggplot2::geom_point(ggplot2::aes(x, y, shape = label, color = label, fill = label, size = label),
+                        data = data.frame(x = exp(estimates$logRr), y = estimates$seLogRr, label = estimates$label),
+                        alpha = 0.7) +
+    ggplot2::scale_color_manual(values = c(rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0.8))) +
+    ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0.8, alpha = 0.8), rgb(1, 1, 0, alpha = 0.8), rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_shape_manual(values = c(24, 23, 21)) +
+    ggplot2::scale_size_manual(values = c(3, 3, 2)) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::scale_x_continuous("Odds ratio", trans = "log10", limits = c(0.25, 10), breaks = breaks, labels = breaks) +
+    ggplot2::scale_y_continuous("Standard Error", limits = c(0, 1.5)) +
+    ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(fill = "#FAFAFA", colour = NA),
+                   panel.grid.major = ggplot2::element_blank(),
+                   axis.ticks = ggplot2::element_blank(), axis.text.y = themeRA,
+                   axis.text.x = theme, legend.key = ggplot2::element_blank(),
+                   strip.text.x = theme, strip.background = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.title = ggplot2::element_blank())
+
+  fileName <- file.path(resultsFolder, "estimatesOriginalOur.png")
+  ggplot2::ggsave(fileName, plot, width = 6.1, height = 4.5, dpi = 400)
+
+  estimates$seLogRr[estimates$label != paste(exposureName, "(original study)")] <- 3
+  plot <- ggplot2::ggplot(data.frame(x, y, seTheoretical), ggplot2::aes(x = x, y = y), environment = environment()) +
+    ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.5) +
+    ggplot2::geom_vline(xintercept = 1, size = 0.7) +
+    # ggplot2::geom_area(fill = rgb(1, 0.5, 0, alpha = 0.5), color = rgb(1, 0.5, 0), size = 1, alpha = 0.5) +
+    ggplot2::geom_area(ggplot2::aes(y = seTheoretical),
+                       fill = rgb(0, 0, 0),
+                       colour = rgb(0, 0, 0, alpha = 0.1),
+                       alpha = 0.1) +
+    ggplot2::geom_line(ggplot2::aes(y = seTheoretical),
+                       colour = rgb(0, 0, 0),
+                       linetype = "dashed",
+                       size = 1,
+                       alpha = 0.5) +
+    ggplot2::geom_point(ggplot2::aes(x, y, shape = label, color = label, fill = label, size = label),
+                        data = data.frame(x = exp(estimates$logRr), y = estimates$seLogRr, label = estimates$label),
+                        alpha = 0.7) +
+    ggplot2::scale_color_manual(values = c(rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0.8))) +
+    ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0.8, alpha = 0.8), rgb(1, 1, 0, alpha = 0.8), rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_shape_manual(values = c(24, 23, 21)) +
+    ggplot2::scale_size_manual(values = c(3, 3, 2)) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::scale_x_continuous("Odds ratio", trans = "log10", limits = c(0.25, 10), breaks = breaks, labels = breaks) +
+    ggplot2::scale_y_continuous("Standard Error", limits = c(0, 1.5)) +
+    ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(fill = "#FAFAFA", colour = NA),
+                   panel.grid.major = ggplot2::element_blank(),
+                   axis.ticks = ggplot2::element_blank(), axis.text.y = themeRA,
+                   axis.text.x = theme, legend.key = ggplot2::element_blank(),
+                   strip.text.x = theme, strip.background = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.title = ggplot2::element_blank())
+
+  fileName <- file.path(resultsFolder, "estimatesOriginal.png")
+  ggplot2::ggsave(fileName, plot, width = 6.1, height = 4.5, dpi = 400)
 }
 
 createCharacteristicsTable <- function(resultsFolder) {
   covariateData1 <- FeatureExtraction::loadCovariateData(file.path(resultsFolder, "covsCases"))
   covariateData2 <- FeatureExtraction::loadCovariateData(file.path(resultsFolder, "covsControls"))
-  table1 <- FeatureExtraction::createTable1(covariateData1 = covariateData1,                                            covariateData2 = covariateData2)
+  table1 <- FeatureExtraction::createTable1(covariateData1 = covariateData1, covariateData2 = covariateData2)
   write.csv(table1, file.path(resultsFolder, "characteristics.csv"), row.names = FALSE)
+}
+
+createCharacteristicsByExposureTable <- function(resultsFolder) {
+  covariateData1 <- FeatureExtraction::loadCovariateData(file.path(resultsFolder, "covsExposed"))
+  covariateData2 <- FeatureExtraction::loadCovariateData(file.path(resultsFolder, "covsUnexposed"))
+  table1 <- FeatureExtraction::createTable1(covariateData1 = covariateData1, covariateData2 = covariateData2)
+  write.csv(table1, file.path(resultsFolder, "characteristicsByExposure.csv"), row.names = FALSE)
 }
 
 createVisitPlot <- function(resultsFolder) {
@@ -283,6 +362,105 @@ getCharacteristics <- function(ccFile, connection, cdmDatabaseSchema, oracleTemp
                                 progressBar = FALSE,
                                 reportOverallTime = FALSE)
 }
+
+getCharacteristicsByExposure <- function(ccFile, connection, cdmDatabaseSchema, oracleTempSchema, resultsFolder) {
+  ccdFile <- file.path(outputFolder, "ccAp", "ccd_cd1_n1_cc1_o2_ed1_e4_ccd1.rds")
+  ccFile <- file.path(outputFolder, "ccAp", "caseControls_cd1_n1_cc1_o2.rds")
+  resultsFolder = file.path(outputFolder, "resultsAp")
+
+  ccdFile <- file.path(outputFolder, "ccIbd", "ccd_cd1_cc1_o3_ed1_e5_ccd1.rds")
+  ccFile <- file.path(outputFolder, "ccIbd", "caseControls_cd1_cc1_o3.rds")
+  resultsFolder = file.path(outputFolder, "resultsIbd")
+
+  ccd <- readRDS(ccdFile)
+  cc <- readRDS(ccFile)
+
+  # ccd <- ccd[!ccd$isCase, ]
+  # cc <- cc[!cc$isCase, ]
+  tableToUpload <- data.frame(subjectId = cc$personId,
+                              cohortStartDate = cc$indexDate,
+                              cohortDefinitionId = as.integer(ccd$exposed))
+
+  colnames(tableToUpload) <- SqlRender::camelCaseToSnakeCase(colnames(tableToUpload))
+
+  # connection <- DatabaseConnector::connect(connectionDetails)
+  DatabaseConnector::insertTable(connection = connection,
+                                 tableName = "scratch.dbo.mschuemi_temp",
+                                 data = tableToUpload,
+                                 dropTableIfExists = TRUE,
+                                 createTable = TRUE,
+                                 tempTable = FALSE,
+                                 oracleTempSchema = oracleTempSchema,
+                                 useMppBulkLoad = TRUE)
+  # disconnect(connection)
+  # executeSql(connection, "DROP TABLE scratch.dbo.mschuemi_temp")
+  # querySql(connection, "SELECT COUNT(*) FROM scratch.dbo.mschuemi_temp")
+
+  covariateSettings <- FeatureExtraction::createCovariateSettings(useConditionGroupEraLongTerm = TRUE,
+                                                                  useDrugGroupEraLongTerm = TRUE,
+                                                                  useProcedureOccurrenceLongTerm = TRUE,
+                                                                  useMeasurementLongTerm = TRUE,
+                                                                  useMeasurementRangeGroupLongTerm = TRUE,
+                                                                  useObservationLongTerm = TRUE,
+                                                                  endDays = -30,
+                                                                  longTermStartDays = -365)
+  covsExposed <- FeatureExtraction::getDbCovariateData(connection = connection,
+                                                       oracleTempSchema = oracleTempSchema,
+                                                       cdmDatabaseSchema = cdmDatabaseSchema,
+                                                       cohortDatabaseSchema = "scratch.dbo",
+                                                       cohortTable = "mschuemi_temp",
+                                                       cohortTableIsTemp = FALSE,
+                                                       cohortId = 1,
+                                                       covariateSettings = covariateSettings,
+                                                       aggregated = TRUE)
+  FeatureExtraction::saveCovariateData(covsExposed, file.path(resultsFolder, "covsExposed"))
+  covsUnexposed <- FeatureExtraction::getDbCovariateData(connection = connection,
+                                                        oracleTempSchema = oracleTempSchema,
+                                                        cdmDatabaseSchema = cdmDatabaseSchema,
+                                                        cohortDatabaseSchema = "scratch.dbo",
+                                                        cohortTable = "mschuemi_temp",
+                                                        cohortTableIsTemp = FALSE,
+                                                        cohortId = 0,
+                                                        covariateSettings = covariateSettings,
+                                                        aggregated = TRUE)
+  FeatureExtraction::saveCovariateData(covsUnexposed, file.path(resultsFolder, "covsUnexposed"))
+
+  sql <- "SELECT DATEDIFF(DAY, cohort_start_date, visit_start_date) AS day,
+  cohort_definition_id AS is_case,
+  COUNT(*) AS visit_count
+  FROM #temp
+  INNER JOIN @cdm_database_schema.visit_occurrence
+  ON subject_id = person_id
+  WHERE cohort_start_date > visit_start_date
+  AND DATEDIFF(DAY, cohort_start_date, visit_start_date) > -365
+  GROUP BY DATEDIFF(DAY, cohort_start_date, visit_start_date),
+  cohort_definition_id;"
+  sql <- SqlRender::renderSql(sql = sql,
+                              cdm_database_schema = cdmDatabaseSchema)$sql
+  sql <- SqlRender::translateSql(sql = sql,
+                                 targetDialect = attr(connection, "dbms"),
+                                 oracleTempSchema = oracleTempSchema)$sql
+  visitCounts <- querySql(connection = connection, sql = sql)
+  colnames(visitCounts) <- SqlRender::snakeCaseToCamelCase(colnames(visitCounts))
+  cc$personCount <- 1
+  personCounts <- aggregate(personCount ~ isCase, cc, sum)
+  visitCounts <- merge(visitCounts, personCounts)
+  visitCounts$rate <- visitCounts$visitCount / visitCounts$personCount
+  saveRDS(visitCounts, file.path(resultsFolder, "visitCounts.rds"))
+
+  sql <- "TRUNCATE TABLE #temp; DROP TABLE #temp;"
+  sql <- SqlRender::translateSql(sql = sql,
+                                 targetDialect = attr(connection, "dbms"),
+                                 oracleTempSchema = oracleTempSchema)$sql
+  DatabaseConnector::executeSql(connection = connection,
+                                sql = sql,
+                                progressBar = FALSE,
+                                reportOverallTime = FALSE)
+
+  executeSql(connection, "DROP TABLE scratch.dbo.mschuemi_temp")
+  # disconnect(connection)
+}
+
 
 createPsPlot <- function(ccFile, ccdFile, connection, cdmDatabaseSchema, oracleTempSchema, resultsFolder) {
   resultsFolder <- file.path(outputFolder, "resultsIbd")
@@ -524,7 +702,88 @@ plotOddsRatiosCombined <- function(outputFolder) {
                    legend.text = theme,
                    legend.direction = "horizontal")
 
-  fileName <- file.path(outputFolder, "estimates.png")
+  fileName <- file.path(outputFolder, "estimatesCaseControl.png")
+  ggplot2::ggsave(fileName, plot, width = 8, height = 3.5, dpi = 400)
+}
+
+plotIrrsCombined <- function(outputFolder) {
+  sccsSummary <- readRDS(file.path(outputFolder, "sccsSummaryAp.rds"))
+  estimatesAp <- data.frame(logRr = sccsSummary$`logRr(Exposure of interest)`,
+                            seLogRr = sccsSummary$`seLogRr(Exposure of interest)`,
+                            type = "Negative control",
+                            study = "Chou",
+                            stringsAsFactors = FALSE)
+  estimatesAp$type[sccsSummary$exposureId == 4] <- "Exposure of interest"
+
+  sccsSummary <- readRDS(file.path(outputFolder, "sccsSummaryIbd.rds"))
+  estimatesIbd <- data.frame(logRr = sccsSummary$`logRr(Exposure of interest)`,
+                             seLogRr = sccsSummary$`seLogRr(Exposure of interest)`,
+                             type = "Negative control",
+                             study = "Crockett",
+                             stringsAsFactors = FALSE)
+  estimatesIbd$type[sccsSummary$exposureId == 5] <- "Exposure of interest"
+  estimates <- rbind(estimatesAp, estimatesIbd)
+
+  estimates$x <- exp(estimates$logRr)
+  estimates$y <- estimates$seLogRr
+  estimates$study <- factor(estimates$study, levels = c("Crockett", "Chou"))
+
+  getArea <- function(study, alpha = 0.05) {
+    idx <- estimates$type == "Negative control" & estimates$study == study
+    null <- EmpiricalCalibration::fitNull(estimates$logRr[idx], estimates$seLogRr[idx])
+    x <- exp(seq(log(0.25), log(10), by = 0.01))
+    y <- EmpiricalCalibration:::logRrtoSE(log(x), alpha, null[1], null[2])
+    seTheoretical <- sapply(x, FUN = function(x) {
+      abs(log(x))/qnorm(1 - 0.05/2)
+    })
+    return(data.frame(study = study, x = x, y = y, seTheoretical = seTheoretical))
+  }
+  area <- rbind(getArea("Crockett"), getArea("Chou"))
+
+  breaks <- c(0.25, 0.5, 1, 2, 4, 6, 8, 10)
+  theme <- ggplot2::element_text(colour = "#000000", size = 10)
+  themeRA <- ggplot2::element_text(colour = "#000000", size = 10, hjust = 1)
+  plot <- ggplot2::ggplot(estimates, ggplot2::aes(x = x, y = y), environment = environment()) +
+    ggplot2::geom_vline(xintercept = breaks, colour = "#AAAAAA", lty = 1, size = 0.5) +
+    ggplot2::geom_vline(xintercept = 1, size = 0.7) +
+    ggplot2::geom_area(fill = rgb(1, 0.5, 0, alpha = 0.5), color = rgb(1, 0.5, 0), size = 0.5, alpha = 0.5, data = area) +
+    ggplot2::geom_area(ggplot2::aes(y = seTheoretical),
+                       fill = rgb(0, 0, 0),
+                       colour = rgb(0, 0, 0, alpha = 0.1),
+                       alpha = 0.1,
+                       data = area) +
+    ggplot2::geom_line(ggplot2::aes(y = seTheoretical),
+                       colour = rgb(0, 0, 0),
+                       linetype = "dashed",
+                       size = 1,
+                       alpha = 0.5,
+                       data = area) +
+    ggplot2::geom_point(ggplot2::aes(shape = type, color = type, fill = type, size = type), alpha = 0.6) +
+    ggplot2::geom_point(ggplot2::aes(shape = type, color = type, fill = type, size = type), alpha = 0.6, data = estimates[estimates$type != "Negative control", ]) +
+    ggplot2::scale_color_manual(values = c(rgb(0, 0, 0), rgb(0, 0, 0.8))) +
+    ggplot2::scale_fill_manual(values = c(rgb(1, 1, 0, alpha = 0.8), rgb(0, 0, 0.8, alpha = 0.5))) +
+    ggplot2::scale_shape_manual(values = c(23, 21)) +
+    ggplot2::scale_size_manual(values = c(3, 2)) +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::scale_x_continuous("Odds ratio", trans = "log10", limits = c(0.25, 10), breaks = breaks, labels = breaks) +
+    ggplot2::scale_y_continuous("Standard Error", limits = c(0, 1.5)) +
+    ggplot2::facet_grid(.~study) +
+    ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(fill = "#FAFAFA", colour = NA),
+                   panel.grid.major = ggplot2::element_blank(),
+                   axis.ticks = ggplot2::element_blank(),
+                   axis.text.y = themeRA,
+                   axis.text.x = theme,
+                   axis.title = theme,
+                   legend.key = ggplot2::element_blank(),
+                   strip.text.x = theme,
+                   strip.background = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.title = ggplot2::element_blank(),
+                   legend.text = theme,
+                   legend.direction = "horizontal")
+
+  fileName <- file.path(outputFolder, "estimatesSccs.png")
   ggplot2::ggsave(fileName, plot, width = 8, height = 3.5, dpi = 400)
 }
 
@@ -556,5 +815,5 @@ createVisitPlotCombined <- function(outputFolder) {
                    legend.title = ggplot2::element_blank(),
                    legend.text = theme,
                    legend.direction = "horizontal")
-  ggplot2::ggsave(file.path(outputFolder, "priorVisitRates.png"), plot, width = 8, height = 4, dpi = 400)
+  ggplot2::ggsave(file.path(outputFolder, "priorVisitRates.jpg"), plot, width = 8, height = 4, dpi = 1000)
 }

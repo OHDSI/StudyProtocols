@@ -2,8 +2,10 @@
 
 export(createAtcCovariateSettings)
 export(createCaseControlAnalysesDetails)
+export(createCohortMethodAnalysesDetails)
 export(createCohorts)
 export(createIcd9CovariateSettings)
+export(createSccsAnalysesDetails)
 export(execute)
 export(synthesizePositiveControls)
 import(DatabaseConnector)
