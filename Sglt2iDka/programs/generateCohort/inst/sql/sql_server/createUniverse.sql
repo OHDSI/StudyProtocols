@@ -1,0 +1,157 @@
+IF OBJECT_ID('@target_database_schema.@target_table') IS NOT NULL
+  DROP TABLE @target_database_schema.@target_table;
+
+IF OBJECT_ID('@target_database_schema.@target_table_dose') IS NOT NULL
+  DROP TABLE @target_database_schema.@target_table_dose;
+
+WITH CTE_COHORT_OF_INTEREST AS (
+	/*TARGET & COMPARATORS*/
+	SELECT 10 AS COHORT_ID, 'SGLT2i' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 20 AS COHORT_ID, 'DPP-4i' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 30 AS COHORT_ID, 'GLP-1a' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 40 AS COHORT_ID, 'SU' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 50 AS COHORT_ID, 'TZDs' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 60 AS COHORT_ID, 'Insulin' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 70 AS COHORT_ID, 'Metformin' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 80 AS COHORT_ID, 'Insulinotropic AHAs' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 90 AS COHORT_ID, 'Other AHAs' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 100 AS COHORT_ID, 'Canagliflozin' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 110 AS COHORT_ID, 'Dapagliflozin' AS COHORT_OF_INTEREST UNION ALL
+	SELECT 120 AS COHORT_ID, 'Empagliflozin' AS COHORT_OF_INTEREST
+),
+CTE_T2DM AS (
+	/*TARGET & COMPARATORS*/
+	SELECT 'BROAD' AS T2DM UNION ALL
+	SELECT 'NARROW' AS T2DM
+),
+CTE_CENSOR AS (
+	/*TARGET & COMPARATORS*/
+	SELECT 60 AS CENSOR, 0 AS FU_STRAT_ITT_PP0DAY UNION ALL
+	SELECT 90 AS CENSOR, 1 AS FU_STRAT_ITT_PP0DAY UNION ALL
+	SELECT 120 AS CENSOR, 0 AS FU_STRAT_ITT_PP0DAY
+),
+CTE_UNIVERSE AS (
+	/*TARGET & COMPARATORS*/
+	SELECT (COHORT_ID + ROW_NUMBER() OVER(PARTITION BY COHORT_ID ORDER BY COHORT_ID, COHORT_OF_INTEREST, T2DM, CENSOR) - 1) AS COHORT_DEFINITION_ID,
+		COHORT_OF_INTEREST,
+		T2DM,
+		CENSOR,
+		FU_STRAT_ITT_PP0DAY,
+		CASE WHEN COHORT_OF_INTEREST IN ('SGLT2i','Canagliflozin','Dapagliflozin','Empagliflozin') THEN 1 ELSE 0 END AS TARGET_COHORT,
+		CASE WHEN COHORT_OF_INTEREST IN ('DPP-4i','GLP-1a','SU','TZDs','Insulin','Metformin','Insulinotropic AHAs','Other AHAs') THEN 1 ELSE 0 END AS COMPARATOR_COHORT,
+		0 AS OUTCOME_COHORT,
+		0 AS NEGATIVE_CONTROL
+	FROM CTE_COHORT_OF_INTEREST, CTE_T2DM, CTE_CENSOR
+	UNION ALL
+	/*OUTCOME*/
+	SELECT 200 AS COHORT_DEFINITION_ID, 'DKA (IP & ER)' AS COHORT_OF_INTEREST,
+		NULL AS T2DM,
+		NULL AS CENSOR,
+		NULL AS FU_STRAT_ITT_PP0DAY,
+		0 AS TARGET_COHORT,
+		0 AS COMPARATOR_COHORT,
+		1 AS OUTCOME_COHORT,
+		0 AS NEGATIVE_CONTROL
+	UNION ALL
+	/*OUTCOME*/
+	SELECT 201 AS COHORT_DEFINITION_ID, 'DKA (IP)' AS COHORT_OF_INTEREST,
+		NULL AS T2DM,
+		NULL AS CENSOR,
+		NULL AS FU_STRAT_ITT_PP0DAY,
+		0 AS TARGET_COHORT,
+		0 AS COMPARATOR_COHORT,
+		1 AS OUTCOME_COHORT,
+		0 AS NEGATIVE_CONTROL
+	UNION ALL
+	/*NEGATIVE CONTROLS*/
+	SELECT CONCEPT_ID AS COHORT_DEFINITION_ID,
+		CONCEPT_NAME AS COHORT_OF_INTEREST,
+		NULL AS T2DM,
+		NULL AS CENSOR,
+		NULL AS FU_STRAT_ITT_PP0DAY,
+		0 AS TARGET_COHORT,
+		0 AS COMPARATOR_COHORT,
+		0 AS OUTCOME_COHORT,
+		1 AS NEGATIVE_CONTROL
+	FROM @target_database_schema.@codeList
+	WHERE CODE_LIST_NAME = 'Negative Control'
+)
+SELECT COHORT_DEFINITION_ID, COHORT_OF_INTEREST, T2DM, CENSOR,
+	COHORT_OF_INTEREST + '-' + T2DM + '-' + CAST(CENSOR AS VARCHAR(5)) AS FULL_NAME,
+	TARGET_COHORT, COMPARATOR_COHORT, OUTCOME_COHORT, NEGATIVE_CONTROL,
+	CASE WHEN TARGET_COHORT = 1 OR COMPARATOR_COHORT = 1 THEN 1 ELSE 0 END AS EXPOSURE_COHORT,
+	FU_STRAT_ITT_PP0DAY,
+	CASE
+		WHEN TARGET_COHORT = 1 OR COMPARATOR_COHORT = 1 THEN
+			'COHORT ' + CAST(COHORT_DEFINITION_ID AS VARCHAR(50)) +
+			':  This cohort is selected by looking for patient''s first exposure to ' + COHORT_OF_INTEREST +
+			' drugs.  If that exposure occurs after April 1, 2013, the patient has 365 days of observable time prior ' +
+			'to the first exposure, and there is a diagnosis of Type II Diabetes (T2DM) prior to index the ' +
+			'patient is kept. This cohort uses the ' + T2DM + ' T2DM definition (' +
+				CASE
+					WHEN T2DM = 'BROAD' THEN 'patients are excluded if they are already known to have Type I Diabetes (T1DM) and/or secondary diabetes mellitus (SDM) prior to or on the index'
+					WHEN T2DM = 'NARROW' THEN 'patients are excluded if they are already known to have Type I Diabetes (T1DM) and/or secondary diabetes mellitus (SDM) prior to or any time after index, they are excluded if they took insulin monotherapy prior to exposure, and kept only if they were >= 40 years of age at first exposure'
+					ELSE 'ERROR'
+				END +
+			') The cohort censors at the first occurrence of either (a) a persistence window of ' +
+			CAST(CENSOR AS VARCHAR(50)) + ' or (b) the individual switched to another drug (SGLT2i, SU, DPP-4i, ' +
+			'TZDs, Insulin, Repaglinide, Nateglinide, GLP-1a, Metformin excluding concepts from the exposure drug of interest ' + COHORT_OF_INTEREST +
+			').'
+		WHEN OUTCOME_COHORT = 1 THEN
+			CASE
+				WHEN COHORT_DEFINITION_ID = 200 THEN 'COHORT ' + CAST(COHORT_DEFINITION_ID AS VARCHAR(50)) +':  This cohort will look for all occurrences of diabetic ketoacidosis events.  We will look for those DKA events during an emergency room visit and/or an inpatient visit.  To limit the events brought back we will only pull events that are outside 30 days of each other.'
+				WHEN COHORT_DEFINITION_ID = 201 THEN 'COHORT ' + CAST(COHORT_DEFINITION_ID AS VARCHAR(50)) +':  This cohort will look for all occurrences of diabetic ketoacidosis events.  We will look for the DKA occurrence during an inpatient visit.  To limit the events brought back we will only pull events that are outside 30 days of each other.'
+				ELSE 'ERROR'
+			END
+	END AS COHORT_DESCRIPTION
+INTO @target_database_schema.@target_table
+FROM CTE_UNIVERSE;
+
+CREATE INDEX IDX_EPI535_UNIVERSE ON @target_database_schema.@target_table (COHORT_DEFINITION_ID);
+
+/*FOR DOSE ANALYSIS*/
+WITH CTE_DOSAGE AS (
+	SELECT 300 AS COHORT_DEFINITION_ID, 'Canagliflozin' AS COHORT_OF_INTEREST, '100 mg' AS DOSAGE
+	UNION ALL
+	SELECT 302 AS COHORT_DEFINITION_ID, 'Canagliflozin' AS COHORT_OF_INTEREST, '300 mg' AS DOSAGE
+	UNION ALL
+	SELECT 304 AS COHORT_DEFINITION_ID, 'Canagliflozin' AS COHORT_OF_INTEREST, 'Other' AS DOSAGE
+	UNION ALL
+	SELECT 310 AS COHORT_DEFINITION_ID, 'Dapagliflozin' AS COHORT_OF_INTEREST, '5 mg' AS DOSAGE
+	UNION ALL
+	SELECT 312 AS COHORT_DEFINITION_ID, 'Dapagliflozin' AS COHORT_OF_INTEREST, '10 mg' AS DOSAGE
+	UNION ALL
+	SELECT 314 AS COHORT_DEFINITION_ID, 'Dapagliflozin' AS COHORT_OF_INTEREST, 'Other' AS DOSAGE
+	UNION ALL
+	SELECT 320 AS COHORT_DEFINITION_ID, 'Empagliflozin' AS COHORT_OF_INTEREST, '10 mg' AS DOSAGE
+	UNION ALL
+	SELECT 322 AS COHORT_DEFINITION_ID, 'Empagliflozin' AS COHORT_OF_INTEREST, '25 mg' AS DOSAGE
+	UNION ALL
+	SELECT 324 AS COHORT_DEFINITION_ID, 'Empagliflozin' AS COHORT_OF_INTEREST, 'Other' AS DOSAGE
+),
+CTE_COHORT_UNIVERSE AS (
+	SELECT
+		CASE
+			WHEN u.T2DM = 'NARROW' THEN d.COHORT_DEFINITION_ID+1
+			ELSE d.COHORT_DEFINITION_ID
+		END AS COHORT_DEFINITION_ID,
+		u.COHORT_OF_INTEREST,
+		d.DOSAGE,
+		u.T2DM,
+		u.CENSOR,
+		CONCAT(u.COHORT_OF_INTEREST,'-',d.DOSAGE,'-',u.T2DM,'-',u.CENSOR) AS FULL_NAME,
+		u.COHORT_DEFINITION_ID AS SEED_COHORT_DEFINITION_ID
+	FROM @target_database_schema.@target_table u
+		JOIN CTE_DOSAGE d
+			ON u.COHORT_OF_INTEREST = d.COHORT_OF_INTEREST
+	WHERE FU_STRAT_ITT_PP0DAY = 1
+	AND u.COHORT_OF_INTEREST IN (
+		'Canagliflozin','Dapagliflozin','Empagliflozin'
+	)
+)
+SELECT COHORT_DEFINITION_ID, COHORT_OF_INTEREST, T2DM, CENSOR, FULL_NAME,
+	0 AS TARGET_COHORT, 0 AS COMPARATOR_COHORT, 0 AS OUTCOME_COHORT, 0 AS NEGATIVE_CONTROL,
+	1 AS EXPOSURE_COHORT, 1 AS FU_STRAT_ITT_PP0DAY, NULL AS COHORT_DESCRIPTION,
+	DOSAGE, SEED_COHORT_DEFINITION_ID
+INTO @target_database_schema.@target_table_dose
+FROM CTE_COHORT_UNIVERSE;

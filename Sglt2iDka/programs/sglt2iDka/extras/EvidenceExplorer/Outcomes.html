@@ -1,0 +1,39 @@
+Two outcomes cohorts will be constructed to allow for population-level effect estimation.  
+
+<h4>1.	Diabetic ketoacidosis, inpatient diagnosis [DKA (IP)]</h4>
+
+Non-technical summary: All diabetic ketoacidosis diagnoses made during an inpatient visit that are not recorded within 30 days of a previous diagnosis.
+<h5>Complete specification</h5>
+<h6>Initial Event Cohort</h6>
+People having any of the following: 
+<ul>
+<li>a condition occurrence of diabetic ketoacidosis</li>
+<li>visit occurrence is any of: Inpatient Visit</li>
+</ul>
+<p>with continuous observation of at least 0 days prior and 0 days after event index date, and limit initial events to: all events per person.</p>
+
+<p>Limit qualifying cohort to: all events per person.</p>
+<h6>Date Offset Exit Criteria</h6>
+This cohort definition end date will be the index event's end date plus 1 days
+<h6>Cohort Collapse Strategy</h6>
+Collapse cohort by era with a gap size of 30 days.
+<br/>
+<br/>
+
+<h4>2.	Diabetic ketoacidosis, inpatient or emergency room diagnosis [DKA (IP or ER)]</h4>
+
+Non-technical summary: All diabetic ketoacidosis diagnoses made during an inpatient or emergency room visit that are not recorded within 30 days of a previous diagnosis.
+<h5>Complete specification</h5>
+<h6>Initial Event Cohort</h6>
+People having any of the following: 
+<ul>
+<li>a condition occurrence of diabetic ketoacidosis</li>
+<li>visit occurrence is any of: Inpatient Visit, Emergency Room Visit, Emergency Room and Inpatient Visit</li>
+</ul>
+<p>with continuous observation of at least 0 days prior and 0 days after event index date, and limit initial events to: all events per person.</p>
+
+<p>Limit qualifying cohort to: all events per person.</p>
+<h6>Date Offset Exit Criteria</h6>
+This cohort definition end date will be the index event's end date plus 1 days
+<h6>Cohort Collapse Strategy</h6>
+Collapse cohort by era with a gap size of 30 days.

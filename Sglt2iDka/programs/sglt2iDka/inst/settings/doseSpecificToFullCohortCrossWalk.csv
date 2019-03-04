@@ -1,0 +1,19 @@
+COHORT_DEFINITION_ID,COHORT_OF_INTEREST,T2DM,CENSOR,FULL_NAME,ALL_DOSE_COHORT_DEFINITION_ID
+300,Canagliflozin,BROAD,90,Canagliflozin-100 mg-BROAD-90,101
+302,Canagliflozin,BROAD,90,Canagliflozin-300 mg-BROAD-90,101
+304,Canagliflozin,BROAD,90,Canagliflozin-Other-BROAD-90,101
+301,Canagliflozin,NARROW,90,Canagliflozin-100 mg-NARROW-90,104
+303,Canagliflozin,NARROW,90,Canagliflozin-300 mg-NARROW-90,104
+305,Canagliflozin,NARROW,90,Canagliflozin-Other-NARROW-90,104
+310,Dapagliflozin,BROAD,90,Dapagliflozin-5 mg-BROAD-90,111
+312,Dapagliflozin,BROAD,90,Dapagliflozin-10 mg-BROAD-90,111
+314,Dapagliflozin,BROAD,90,Dapagliflozin-Other-BROAD-90,111
+311,Dapagliflozin,NARROW,90,Dapagliflozin-5 mg-NARROW-90,114
+313,Dapagliflozin,NARROW,90,Dapagliflozin-10 mg-NARROW-90,114
+315,Dapagliflozin,NARROW,90,Dapagliflozin-Other-NARROW-90,114
+320,Empagliflozin,BROAD,90,Empagliflozin-10 mg-BROAD-90,121
+322,Empagliflozin,BROAD,90,Empagliflozin-25 mg-BROAD-90,121
+324,Empagliflozin,BROAD,90,Empagliflozin-Other-BROAD-90,121
+321,Empagliflozin,NARROW,90,Empagliflozin-10 mg-NARROW-90,124
+323,Empagliflozin,NARROW,90,Empagliflozin-25 mg-NARROW-90,124
+325,Empagliflozin,NARROW,90,Empagliflozin-Other-NARROW-90,124

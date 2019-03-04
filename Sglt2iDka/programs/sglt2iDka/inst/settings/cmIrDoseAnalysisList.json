@@ -1,0 +1,91 @@
+[
+  {
+    "analysisId": 1,
+    "description": "Time to First Post Index Event IR dose ITT",
+    "getDbCohortMethodDataArgs": {
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "excludeDrugsFromCovariates": false,
+      "firstExposureOnly": false,
+      "removeDuplicateSubjects": "keep all",
+      "restrictToCommonPeriod": false,
+      "washoutPeriod": 0,
+      "maxCohortSize": 0,
+      "covariateSettings": [
+        {
+          "temporal": false,
+          "DemographicsGender": true,
+          "DemographicsAgeGroup": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": 0,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": [],
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "outcomeDatabaseSchema": "unknown",
+          "outcomeTable": "unknown",
+          "outcomeIds": [200, 201],
+          "outcomeNames": ["DKA IP ER", "DKA IP"],
+          "analysisId": 999,
+          "windowStart": -99999,
+          "windowEnd": -1,
+          "attr_fun": "sglt2iDka::getDbPriorOutcomesCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "exposureDatabaseSchema": "unknown",
+          "covariateIdPrefix": 1000,
+          "codeListSchema": "unknown",
+          "codeListTable": "unknown",
+          "vocabularyDatabaseSchema": "unknown",
+          "drug": "Insulin",
+          "attr_fun": "sglt2iDka::getDbPriorExposureCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "exposureDatabaseSchema": "unknown",
+          "covariateIdPrefix": 2000,
+          "codeListSchema": "unknown",
+          "codeListTable": "unknown",
+          "vocabularyDatabaseSchema": "unknown",
+          "drug": "AHAs",
+          "attr_fun": "sglt2iDka::getDbPriorExposureCovariateData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "attr_class": "args"
+    },
+    "createStudyPopArgs": {
+      "firstExposureOnly": false,
+      "restrictToCommonPeriod": false,
+      "washoutPeriod": 0,
+      "removeDuplicateSubjects": false,
+      "removeSubjectsWithPriorOutcome": false,
+      "priorOutcomeLookback": 99999,
+      "minDaysAtRisk": 0,
+      "riskWindowStart": 1,
+      "addExposureDaysToStart": false,
+      "riskWindowEnd": 9999,
+      "addExposureDaysToEnd": false,
+      "censorAtNewRiskWindow": false,
+      "attr_class": "args"
+    },
+    "createPs": false,
+    "trimByPs": false,
+    "trimByPsToEquipoise": false,
+    "matchOnPs": false,
+    "matchOnPsAndCovariates": false,
+    "stratifyByPs": false,
+    "stratifyByPsAndCovariates": false,
+    "computeCovariateBalance": false,
+    "fitOutcomeModel": false,
+    "attr_class": "cmAnalysis"
+  }
+]
