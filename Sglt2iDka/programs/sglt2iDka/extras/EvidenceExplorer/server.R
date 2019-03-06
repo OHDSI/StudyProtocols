@@ -18,8 +18,8 @@ mainColumnNames <- c("<span title=\"Data source\">Data source</span>",
                      "<span title=\"Time at risk\">Time at risk</span>", 
                      "<span title=\"Between database heterogeneity (i2 > 0.4)?\">Ht.</span>",
                      "<span title=\"Hazard ratio\">HR</span>", 
-                     "<span title=\"Lower bound of the 95 confidence interval\">CI95LB</span>",
-                     "<span title=\"Upper bound of the 95 confidence interval\">CI95UB</span>",
+                     "<span title=\"Lower bound of the 95% confidence interval\">CI95LB</span>",
+                     "<span title=\"Upper bound of the 95% confidence interval\">CI95UB</span>",
                      "<span title=\"P-value (uncalibrated)\">P</span>",
                      "<span title=\"Calibrated p-value\">Cal. P</span>")
 
