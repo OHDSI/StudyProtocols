@@ -1,0 +1,626 @@
+{
+  "ExpressionLimit": {"Type": "All"},
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 60
+  },
+  "CensorWindow": {
+    "StartDate": null,
+    "EndDate": null
+  },
+  "ConceptSets": [{
+    "expression": {"items": [
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4102125,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "300927001",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Episiotomy infection",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4173778,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "423843003",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infected percutaneous endoscopic gastrostomy site",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4084292,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "281453008",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infected wire",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 440276,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "31871009",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection AND/OR inflammatory reaction due to internal prosthetic device, implant AND/OR graft",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4224925,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "405246007",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection and fibrosis of spermatic cord remnant",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4020602,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "213038007",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection and inflammatory reaction due to cardiac valve prosthesis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 46270495,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "328711000119103",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection due to bariatric procedure",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 46270494,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "328691000119101",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection due to gastric band procedure",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 43020453,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "285781000119100",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of cardiac graft",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4084287,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "281433009",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of cartilage graft",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4085585,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "24342007",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of cesarean section AND/OR perineal wound",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4340124,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "235646000",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of esophageal antireflux device",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4150539,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "310608002",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of internal Kirschner wire fixator",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4084286,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "281432004",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of muscle graft",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4062133,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "200125006",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of obstetric surgical wound",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 40480129,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "443137009",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of pierced pinna",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4343460,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "239190004",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of skin donor site",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4105101,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "281429002",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of tendon graft",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4083355,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "281428005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of tendon repair",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4334028,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "432617000",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of total ankle joint prosthesis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 40483734,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "443910006",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of total hip joint prosthesis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 40479196,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "441485008",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of total shoulder joint prosthesis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4334027,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "432616009",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Infection of ventriculoperitoneal shunt",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4223206,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "404192008",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Penile prosthesis infection",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 44783580,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "699684005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Peri-implant mucositis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4259505,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "410495002",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Postoperative endophthalmitis due to Propionibacterium acnes",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 437474,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "33910007",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Postoperative infection",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 44784295,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "698365009",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Postoperative infection of thyroidectomy wound",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4253622,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "410497005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Postoperative infectious endophthalmitis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4059737,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "197926005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Postoperative urinary tract infection",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4173660,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "275274007",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Prosthetic infection",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4121469,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "233853009",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Prosthetic valve endocarditis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4127721,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "236729003",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Testicular prosthesis infection",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      },
+      {
+        "isExcluded": true,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4094909,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "25042006",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Tracheostomy sepsis",
+          "DOMAIN_ID": "Condition",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Clinical Finding",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": false
+      }
+    ]},
+    "name": "[Oxford studyathon] Post operative infection new (Danielle)",
+    "id": 0
+  }],
+  "EndStrategy": {"DateOffset": {
+    "DateField": "StartDate",
+    "Offset": 1
+  }},
+  "CensoringCriteria": [],
+  "Title": null,
+  "AdditionalCriteria": null,
+  "QualifiedLimit": {"Type": "All"},
+  "InclusionRules": [],
+  "PrimaryCriteria": {
+    "CriteriaList": [{"ConditionOccurrence": {
+      "OccurrenceEndDate": null,
+      "CorrelatedCriteria": null,
+      "ConditionTypeExclude": false,
+      "CodesetId": 0,
+      "ProviderSpecialty": null,
+      "Gender": null,
+      "VisitType": null,
+      "First": null,
+      "OccurrenceStartDate": null,
+      "ConditionType": null,
+      "ConditionSourceConcept": null,
+      "StopReason": null,
+      "Age": null
+    }}],
+    "PrimaryCriteriaLimit": {"Type": "All"},
+    "ObservationWindow": {
+      "PostDays": 0,
+      "PriorDays": 0
+    }
+  }
+}

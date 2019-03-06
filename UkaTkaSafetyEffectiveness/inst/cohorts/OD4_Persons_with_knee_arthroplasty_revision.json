@@ -1,0 +1,436 @@
+{
+  "ExpressionLimit": {"Type": "All"},
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 1
+  },
+  "CensorWindow": {
+    "StartDate": null,
+    "EndDate": null
+  },
+  "ConceptSets": [{
+    "expression": {"items": [
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 42538472,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "762051003",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Attention to hybrid total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 42538473,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "762052005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Attention to total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4138871,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "265171008",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Conversion from cemented total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4076600,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179406003",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Conversion from cemented unicompartmental knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4138873,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "265173006",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Conversion from uncemented total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4079527,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179345007",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Conversion to cemented total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 45495901,
+          "STANDARD_CONCEPT": "N",
+          "CONCEPT_CODE": "7K32112",
+          "VOCABULARY_ID": "Read",
+          "CONCEPT_NAME": "Conversion to hybrid total knee replacement NEC",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Non-Standard",
+          "CONCEPT_CLASS_ID": "Read",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4079528,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179346008",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision cemented total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4076190,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179405004",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision cemented unicompartmental knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4076874,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179415005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision hybrid unicompartmental knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 42872821,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "450814005",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision of hybrid total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4090451,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "280462001",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision of knee arthroplasty",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4076750,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179548008",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision of resurfacing arthroplasty",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 45890559,
+          "STANDARD_CONCEPT": "C",
+          "CONCEPT_CODE": "1005095",
+          "VOCABULARY_ID": "CPT4",
+          "CONCEPT_NAME": "Revision of total knee arthroplasty, with or without allograft",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Classification",
+          "CONCEPT_CLASS_ID": "CPT4 Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4076590,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179353004",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision uncemented total knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4076872,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "179410000",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "Revision uncemented unicompartmental knee replacement",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Procedure",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 2005905,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "81.55",
+          "VOCABULARY_ID": "ICD9Proc",
+          "CONCEPT_NAME": "Revision of knee replacement, not otherwise specified",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "4-dig billing code",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 43018821,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "0SWU",
+          "VOCABULARY_ID": "ICD10PCS",
+          "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Revision @ Knee Joint, Femoral Surface, Left",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 43019580,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "0SWT",
+          "VOCABULARY_ID": "ICD10PCS",
+          "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Revision @ Knee Joint, Femoral Surface, Right",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 2884349,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "0SWD",
+          "VOCABULARY_ID": "ICD10PCS",
+          "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Revision @ Knee Joint, Left",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 2886872,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "0SWC",
+          "VOCABULARY_ID": "ICD10PCS",
+          "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Revision @ Knee Joint, Right",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 43019648,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "0SWW",
+          "VOCABULARY_ID": "ICD10PCS",
+          "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Revision @ Knee Joint, Tibial Surface, Left",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      },
+      {
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 43020030,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "0SWV",
+          "VOCABULARY_ID": "ICD10PCS",
+          "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Revision @ Knee Joint, Tibial Surface, Right",
+          "DOMAIN_ID": "Procedure",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      }
+    ]},
+    "name": "[outcome team] knee revision ",
+    "id": 0
+  }],
+  "EndStrategy": null,
+  "CensoringCriteria": [],
+  "Title": null,
+  "AdditionalCriteria": null,
+  "QualifiedLimit": {"Type": "First"},
+  "InclusionRules": [],
+  "PrimaryCriteria": {
+    "CriteriaList": [{"ProcedureOccurrence": {
+      "ProcedureType": null,
+      "CorrelatedCriteria": null,
+      "CodesetId": 0,
+      "ProcedureSourceConcept": null,
+      "Quantity": null,
+      "ProviderSpecialty": null,
+      "Gender": null,
+      "ProcedureTypeExclude": false,
+      "VisitType": null,
+      "First": null,
+      "OccurrenceStartDate": null,
+      "Modifier": null,
+      "Age": null
+    }}],
+    "PrimaryCriteriaLimit": {"Type": "All"},
+    "ObservationWindow": {
+      "PostDays": 0,
+      "PriorDays": 0
+    }
+  }
+}

@@ -1,0 +1,79 @@
+targetId,comparatorId,outcomeId,outcomeName,type
+8260,8259,432417,Acquired hallux malleus,outcome
+8260,8259,75911,Acquired hallux valgus,outcome
+8260,8259,77965,Acquired trigger finger,outcome
+8260,8259,257007,Allergic rhinitis,outcome
+8260,8259,378424,Astigmatism,outcome
+8260,8259,77234,Benign neoplasm of colon,outcome
+8260,8259,80767,Breast lump,outcome
+8260,8259,380094,Carpal tunnel syndrome,outcome
+8260,8259,375545,Cataract,outcome
+8260,8259,255573,Chronic obstructive lung disease,outcome
+8260,8259,201061,Diaphragmatic hernia,outcome
+8260,8259,372887,Disorder of brain,outcome
+8260,8259,77030,Disorder of breast,outcome
+8260,8259,257907,Disorder of lung,outcome
+8260,8259,81611,Diverticular disease of colon,outcome
+8260,8259,320128,Essential hypertension,outcome
+8260,8259,30437,Gastro-esophageal reflux disease with esophagitis,outcome
+8260,8259,318800,Gastroesophageal reflux disease,outcome
+8260,8259,437541,Glaucoma,outcome
+8260,8259,4204199,Hand pain,outcome
+8260,8259,432867,Hyperlipidemia,outcome
+8260,8259,376415,Hypermetropia,outcome
+8260,8259,140673,Hypothyroidism,outcome
+8260,8259,374375,Impacted cerumen,outcome
+8260,8259,201620,Kidney stone,outcome
+8260,8259,439082,Menopausal syndrome,outcome
+8260,8259,4209423,Nicotine dependence,outcome
+8260,8259,372328,Otitis media,outcome
+8260,8259,373478,Presbyopia,outcome
+8260,8259,136773,Rosacea,outcome
+8260,8259,313459,Sleep apnea,outcome
+8260,8259,378427,Tear film insufficiency,outcome
+8260,8259,377575,Tinnitus,outcome
+8260,8259,201826,Type 2 diabetes mellitus,outcome
+8260,8259,45768910,Uncomplicated asthma,outcome
+8260,8259,197672,Urinary incontinence,outcome
+8260,8259,437246,Vitamin B deficiency,outcome
+8260,8259,436070,Vitamin D deficiency,outcome
+8260,8259,4115367,Wrist joint pain,outcome
+8257,8256,432417,Acquired hallux malleus,outcome
+8257,8256,75911,Acquired hallux valgus,outcome
+8257,8256,77965,Acquired trigger finger,outcome
+8257,8256,257007,Allergic rhinitis,outcome
+8257,8256,378424,Astigmatism,outcome
+8257,8256,77234,Benign neoplasm of colon,outcome
+8257,8256,80767,Breast lump,outcome
+8257,8256,380094,Carpal tunnel syndrome,outcome
+8257,8256,375545,Cataract,outcome
+8257,8256,255573,Chronic obstructive lung disease,outcome
+8257,8256,201061,Diaphragmatic hernia,outcome
+8257,8256,372887,Disorder of brain,outcome
+8257,8256,77030,Disorder of breast,outcome
+8257,8256,257907,Disorder of lung,outcome
+8257,8256,81611,Diverticular disease of colon,outcome
+8257,8256,320128,Essential hypertension,outcome
+8257,8256,30437,Gastro-esophageal reflux disease with esophagitis,outcome
+8257,8256,318800,Gastroesophageal reflux disease,outcome
+8257,8256,437541,Glaucoma,outcome
+8257,8256,4204199,Hand pain,outcome
+8257,8256,432867,Hyperlipidemia,outcome
+8257,8256,376415,Hypermetropia,outcome
+8257,8256,140673,Hypothyroidism,outcome
+8257,8256,374375,Impacted cerumen,outcome
+8257,8256,201620,Kidney stone,outcome
+8257,8256,439082,Menopausal syndrome,outcome
+8257,8256,4209423,Nicotine dependence,outcome
+8257,8256,372328,Otitis media,outcome
+8257,8256,373478,Presbyopia,outcome
+8257,8256,136773,Rosacea,outcome
+8257,8256,313459,Sleep apnea,outcome
+8257,8256,378427,Tear film insufficiency,outcome
+8257,8256,377575,Tinnitus,outcome
+8257,8256,201826,Type 2 diabetes mellitus,outcome
+8257,8256,45768910,Uncomplicated asthma,outcome
+8257,8256,197672,Urinary incontinence,outcome
+8257,8256,437246,Vitamin B deficiency,outcome
+8257,8256,436070,Vitamin D deficiency,outcome
+8257,8256,4115367,Wrist joint pain,outcome
