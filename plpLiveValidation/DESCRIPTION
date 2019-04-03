@@ -17,7 +17,8 @@ Imports:
   ggplot2,
   gridExtra,
   ff,
-  ffbase (>= 0.12.1)
+  ffbase (>= 0.12.1),
+  ParallelLogger
 Suggests:
   testthat
 LinkingTo: Rcpp
