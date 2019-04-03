@@ -1,0 +1,190 @@
+---
+title: Appendix %number%
+geometry: "left=1cm,right=1cm,top=1cm,bottom=2cm"
+output: pdf_document
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage[table]{xcolor}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(knitr) 
+library(kableExtra) 
+options(knitr.kable.NA = '')
+tempFolder <- "%tempFolder%"
+isMetaAnalysis <- %isMetaAnalysis%
+  ```
+
+# Analysis details
+
+- Comparison: %comparison%
+- Outcome: %outcome% 
+- Time at risk: %timeAtRisk%
+- Data source: %database%
+
+
+# Power
+
+**Table 1a**. Number of subjects, follow-up time (in days), number of outcome events, and event incidence rate (IR) per 1,000 patient years (PY) in the target (%target%) and comparator (%comparator%) group after matching, as well as the minimum detectable relative risk (MDRR).
+```{r, echo = FALSE}
+table <- readRDS(file.path(tempFolder, "tempPower.rds"))
+kable(table, 
+      row.names = FALSE, 
+      format = "latex", 
+      booktabs = TRUE
+) %>%
+  add_header_above(c("Subjects" = 2, "Days" = 2, "Events" = 2, "IR" = 2, ""))  %>%
+  kable_styling(font_size = 10)
+```
+
+
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("**Table 1b**. Time (days) at risk distribution expressed as mean, standard deviation (SD), minimum (min), median, and maximum (max) in the target (%target%) and comparator (%comparator%) cohort after matching")
+}
+```
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  table <- readRDS(file.path(tempFolder, "tempTar.rds"))
+  kable(table, 
+        row.names = FALSE, 
+        format = "latex", 
+        booktabs = TRUE
+  ) %>%
+    kable_styling(font_size = 10)
+}
+```
+
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("# Population characteristics
+
+**Table 2**. Select characteristics before and after matching, showing the percentage of subjects with the characteristics in the target (%target%) and comparator (%comparator%) group, as well as the standardized difference of the means.")
+}
+```
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  table <- readRDS(file.path(tempFolder, "tempPopChar.rds"))
+  indent <- which(grepl("^ ", table[, 1]))
+  kable(table, 
+        row.names = FALSE, 
+        format = "latex", 
+        longtable = TRUE, 
+        booktabs = TRUE,
+        linesep = c("")
+  ) %>%
+    add_indent(indent) %>%
+    add_header_above(c("", "Target", "Comparator", "", "Target", "Comparator", ""))  %>%
+    add_header_above(c("", "Before matching" = 3, "After matching" = 3))  %>%
+    kable_styling(font_size = 8, latex_options = c("striped", "repeat_header"))
+}
+```
+
+
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("# Propensity scores")
+}
+```
+```{r, echo = FALSE, fig.width=6, fig.height=4, fig.align='center'}
+if(!isMetaAnalysis){
+  data <- readRDS(file.path(tempFolder, "tempPs.rds"))
+  ggplot2::ggplot(data, ggplot2::aes(x = preferenceScore, y = y, color = GROUP, group = GROUP, fill = GROUP)) + 
+    ggplot2::geom_area(position = "identity") + 
+    ggplot2::scale_fill_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5), rgb(0, 0, 0.8, alpha = 0.5))) + 
+    ggplot2::scale_color_manual(values = c(rgb(0.8, 0, 0, alpha = 0.5), rgb(0, 0, 0.8, alpha = 0.5))) + 
+    ggplot2::scale_x_continuous("Preference score", limits = c(0, 1)) + 
+    ggplot2::scale_y_continuous("Density") + 
+    ggplot2::theme(legend.title = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.direction = "horizontal")
+}
+```
+
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("**Figure 1**. Preference score distribution. The preference score is a transformation of the propensity score that adjusts for differences in the sizes of the two treatment groups. A higher overlap indicates subjects in the two groups were more similar in terms of their predicted probability of receiving one treatment over the other.")
+}
+```
+
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("# Covariate balance")
+}
+```
+```{r, echo = FALSE, warning=FALSE, fig.width=5, fig.height=5, fig.align='center'}
+if(!isMetaAnalysis){
+  balance <- readRDS(file.path(tempFolder, "tempBalance.rds"))
+  limits <- c(min(c(balance$absBeforeMatchingStdDiff, balance$absAfterMatchingStdDiff), na.rm = TRUE),
+              max(c(balance$absBeforeMatchingStdDiff, balance$absAfterMatchingStdDiff), na.rm = TRUE))
+  ggplot2::ggplot(balance,
+                  ggplot2::aes(x = absBeforeMatchingStdDiff, y = absAfterMatchingStdDiff)) +
+    ggplot2::geom_point(color = rgb(0, 0, 0.8, alpha = 0.3), shape = 16, size = 2) +
+    ggplot2::geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+    ggplot2::geom_hline(yintercept = 0) +
+    ggplot2::geom_vline(xintercept = 0) +
+    ggplot2::scale_x_continuous("Std. diff. before matching", limits = limits) +
+    ggplot2::scale_y_continuous("Std. diff. after matching", limits = limits)
+}
+```
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("**Figure 2**. Covariate balance before and after matching. Each dot represents the standardized difference of means for a single covariate before and after matching on the propensity score.")
+}
+```
+
+# Systematic error
+
+```{r, echo = FALSE, results='asis'}
+ncs <- readRDS(file.path(tempFolder, "tempNcs.rds"))
+if (sum(!is.na(ncs$seLogRr)) < 5) {
+  cat("Unfortunately, there were not enough data to compute a systematic error distribution.") 
+}
+```
+
+```{r, echo = FALSE, warning=FALSE, fig.width=6, fig.height=4, fig.align='center'}
+if (sum(!is.na(ncs$seLogRr)) >= 5) {
+  EmpiricalCalibration::plotCalibrationEffect(logRrNegatives = ncs$logRr,
+                                              seLogRrNegatives = ncs$seLogRr,
+                                              logRrPositives = %logRr%,
+                                              seLogRrPositives = %seLogRr%,
+                                              xLabel = "Hazard ratio",
+                                              showCis = TRUE)
+}
+```
+```{r, echo = FALSE, results='asis'}
+if (sum(!is.na(ncs$seLogRr)) >= 5) {
+  cat("**Figure 3**. Negative control estimates. Each blue dot represents the estimated hazard ratio and standard error (related to the width of the confidence interval) of each of the negative control outcomes. The yellow diamond indicated the outcome of interest. Estimates below the dashed line have nominal p < .05. Estimates in the orange area have calibrated p < .05. The red band indicated the 95% credible interval around the boundary of the orange area.")
+}
+```
+
+
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("# Kaplan-Meier")
+}
+```
+```{r, echo = FALSE, warning=FALSE, fig.width=7, fig.height=6, fig.align='center'}
+if(!isMetaAnalysis){
+  plot <- readRDS(file.path(tempFolder, "tempKm.rds"))
+  grid::grid.draw(plot)
+}
+```
+```{r, echo = FALSE, results='asis'}
+if(!isMetaAnalysis){
+  cat("**Figure 4**. Kaplan Meier plot, showing survival as a function of time. This plot is adjusted for the propensity score matching: The target curve (%target%) shows the actual observed survival. The comparator curve (%comparator%) applies reweighting to approximate the counterfactual of what the target survival would look like had the target cohort been exposed to the comparator instead. The shaded area denotes the 95 percent confidence interval.")
+}
+```

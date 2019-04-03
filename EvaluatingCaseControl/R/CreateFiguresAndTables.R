@@ -290,7 +290,6 @@ getCharacteristics <- function(ccFile, connection, cdmDatabaseSchema, oracleTemp
   colnames(tableToUpload) <- SqlRender::camelCaseToSnakeCase(colnames(tableToUpload))
 
   connection <- DatabaseConnector::connect(connectionDetails)
-  # debug(DatabaseConnector:::.bulkLoadPdw)
   DatabaseConnector::insertTable(connection = connection,
                                  tableName = "scratch.dbo.mschuemi_temp",
                                  data = tableToUpload,
@@ -379,7 +378,9 @@ getCharacteristicsByExposure <- function(ccFile, connection, cdmDatabaseSchema, 
   # cc <- cc[!cc$isCase, ]
   tableToUpload <- data.frame(subjectId = cc$personId,
                               cohortStartDate = cc$indexDate,
-                              cohortDefinitionId = as.integer(ccd$exposed))
+                              cohortDefinitionId = as.integer(ccd$exposed),
+                              exposed = as.integer(ccd$exposed),
+                              isCase = as.integer(cc$isCase))
 
   colnames(tableToUpload) <- SqlRender::camelCaseToSnakeCase(colnames(tableToUpload))
 
@@ -426,15 +427,17 @@ getCharacteristicsByExposure <- function(ccFile, connection, cdmDatabaseSchema, 
   FeatureExtraction::saveCovariateData(covsUnexposed, file.path(resultsFolder, "covsUnexposed"))
 
   sql <- "SELECT DATEDIFF(DAY, cohort_start_date, visit_start_date) AS day,
-  cohort_definition_id AS is_case,
+  exposed,
+  is_case,
   COUNT(*) AS visit_count
-  FROM #temp
+  FROM scratch.dbo.mschuemi_temp
   INNER JOIN @cdm_database_schema.visit_occurrence
   ON subject_id = person_id
   WHERE cohort_start_date > visit_start_date
   AND DATEDIFF(DAY, cohort_start_date, visit_start_date) > -365
   GROUP BY DATEDIFF(DAY, cohort_start_date, visit_start_date),
-  cohort_definition_id;"
+  exposed,
+  is_case;"
   sql <- SqlRender::renderSql(sql = sql,
                               cdm_database_schema = cdmDatabaseSchema)$sql
   sql <- SqlRender::translateSql(sql = sql,
@@ -442,20 +445,11 @@ getCharacteristicsByExposure <- function(ccFile, connection, cdmDatabaseSchema, 
                                  oracleTempSchema = oracleTempSchema)$sql
   visitCounts <- querySql(connection = connection, sql = sql)
   colnames(visitCounts) <- SqlRender::snakeCaseToCamelCase(colnames(visitCounts))
-  cc$personCount <- 1
-  personCounts <- aggregate(personCount ~ isCase, cc, sum)
+  ccd$personCount <- 1
+  personCounts <- aggregate(personCount ~ exposed + isCase, ccd, sum)
   visitCounts <- merge(visitCounts, personCounts)
   visitCounts$rate <- visitCounts$visitCount / visitCounts$personCount
-  saveRDS(visitCounts, file.path(resultsFolder, "visitCounts.rds"))
-
-  sql <- "TRUNCATE TABLE #temp; DROP TABLE #temp;"
-  sql <- SqlRender::translateSql(sql = sql,
-                                 targetDialect = attr(connection, "dbms"),
-                                 oracleTempSchema = oracleTempSchema)$sql
-  DatabaseConnector::executeSql(connection = connection,
-                                sql = sql,
-                                progressBar = FALSE,
-                                reportOverallTime = FALSE)
+  saveRDS(visitCounts, file.path(resultsFolder, "visitCountsByExposure.rds"))
 
   executeSql(connection, "DROP TABLE scratch.dbo.mschuemi_temp")
   # disconnect(connection)
@@ -627,6 +621,7 @@ createEstimatesAppendix <- function(outputFolder) {
 }
 
 
+
 plotOddsRatiosCombined <- function(outputFolder) {
   estimates <- read.csv(file.path(outputFolder, "AllEstimates.csv"), stringsAsFactors = FALSE)
   estimates <- estimates[, c("type", "outcomeName", "logRr", "seLogRr")]
@@ -710,6 +705,13 @@ plotIrrsCombined <- function(outputFolder) {
   sccsSummary <- readRDS(file.path(outputFolder, "sccsSummaryAp.rds"))
   estimatesAp <- data.frame(logRr = sccsSummary$`logRr(Exposure of interest)`,
                             seLogRr = sccsSummary$`seLogRr(Exposure of interest)`,
+                            irr = sccsSummary$`rr(Exposure of interest)`,
+                            CI95LB = sccsSummary$`ci95lb(Exposure of interest)`,
+                            CI95UB = sccsSummary$`ci95ub(Exposure of interest)`,
+                            exposureId = sccsSummary$exposureId,
+                            outcomeId = sccsSummary$outcomeId,
+                            caseCount = sccsSummary$caseCount,
+                            eventCount = sccsSummary$eventCount,
                             type = "Negative control",
                             study = "Chou",
                             stringsAsFactors = FALSE)
@@ -718,6 +720,13 @@ plotIrrsCombined <- function(outputFolder) {
   sccsSummary <- readRDS(file.path(outputFolder, "sccsSummaryIbd.rds"))
   estimatesIbd <- data.frame(logRr = sccsSummary$`logRr(Exposure of interest)`,
                              seLogRr = sccsSummary$`seLogRr(Exposure of interest)`,
+                             irr = sccsSummary$`rr(Exposure of interest)`,
+                             CI95LB = sccsSummary$`ci95lb(Exposure of interest)`,
+                             CI95UB = sccsSummary$`ci95ub(Exposure of interest)`,
+                             exposureId = sccsSummary$exposureId,
+                             outcomeId = sccsSummary$outcomeId,
+                             caseCount = sccsSummary$caseCount,
+                             eventCount = sccsSummary$eventCount,
                              type = "Negative control",
                              study = "Crockett",
                              stringsAsFactors = FALSE)
@@ -765,7 +774,7 @@ plotIrrsCombined <- function(outputFolder) {
     ggplot2::scale_shape_manual(values = c(23, 21)) +
     ggplot2::scale_size_manual(values = c(3, 2)) +
     ggplot2::geom_hline(yintercept = 0) +
-    ggplot2::scale_x_continuous("Odds ratio", trans = "log10", limits = c(0.25, 10), breaks = breaks, labels = breaks) +
+    ggplot2::scale_x_continuous("Incidence rate ratio", trans = "log10", limits = c(0.25, 10), breaks = breaks, labels = breaks) +
     ggplot2::scale_y_continuous("Standard Error", limits = c(0, 1.5)) +
     ggplot2::facet_grid(.~study) +
     ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
@@ -785,7 +794,19 @@ plotIrrsCombined <- function(outputFolder) {
 
   fileName <- file.path(outputFolder, "estimatesSccs.png")
   ggplot2::ggsave(fileName, plot, width = 8, height = 3.5, dpi = 400)
+  write.csv(estimates, file.path(outputFolder, "AllSccsEstimates.csv"), row.names = FALSE)
 }
+
+createSccsEstimatesAppendix <- function(outputFolder) {
+  estimates <- read.csv(file.path(outputFolder, "AllSccsEstimates.csv"))
+  estimatesCc <- read.csv(file.path(outputFolder, "AllEstimates.csv"))
+  estimates <- merge(estimates, estimatesCc[, c("exposureId", "exposureName", "nestingCohortId", "nestingName", "outcomeId", "outcomeName", "type")], all.x = TRUE)
+  estimates$p <- EmpiricalCalibration::computeTraditionalP(estimates$logRr, estimates$seLogRr)
+  estimates <- estimates[, c("outcomeName", "exposureName", "nestingName", "type", "caseCount", "eventCount", "irr", "CI95LB", "CI95UB", "p")]
+  colnames(estimates) <- c("Outcome", "Exposure", "Nesting cohort", "Type", "Cases", "Events", "Incidence rate ratio", "CI95LB", "CI95UB", "P")
+  write.csv(estimates, file.path(outputFolder, "SupplementaryTableS2.csv"), row.names = FALSE)
+}
+
 
 createVisitPlotCombined <- function(outputFolder) {
   visitCounts1 <- readRDS(file.path(outputFolder, "resultsIbd", "visitCounts.rds"))
@@ -816,4 +837,37 @@ createVisitPlotCombined <- function(outputFolder) {
                    legend.text = theme,
                    legend.direction = "horizontal")
   ggplot2::ggsave(file.path(outputFolder, "priorVisitRates.jpg"), plot, width = 8, height = 4, dpi = 1000)
+}
+
+createVisitPlotByExposureCombined <- function(outputFolder) {
+  visitCounts1 <- readRDS(file.path(outputFolder, "resultsIbd", "visitCountsByExposure.rds"))
+  visitCounts1$study <- "Crockett"
+  visitCounts2 <- readRDS(file.path(outputFolder, "resultsAp", "visitCountsByExposure.rds"))
+  visitCounts2$study <- "Chou"
+  visitCounts <- rbind(visitCounts1, visitCounts2)
+  visitCounts$exposure <- "Unexposed"
+  visitCounts$exposure[visitCounts$exposed == 1] <- "Exposed"
+  visitCounts$case <- "Control"
+  visitCounts$case[visitCounts$isCase == 1] <- "Case"
+  visitCounts$study <- factor(visitCounts$study, levels = c("Crockett", "Chou"))
+  theme <- ggplot2::element_text(colour = "#000000", size = 10)
+  themeRA <- ggplot2::element_text(colour = "#000000", size = 10, hjust = 1)
+  plot <- ggplot2::ggplot(visitCounts, ggplot2::aes(x = day, y = rate, group = exposure, color = exposure)) +
+    ggplot2::geom_vline(xintercept = 0, color = rgb(0, 0, 0), size = 0.5) +
+    ggplot2::geom_line(alpha = 0.7, size = 1) +
+    ggplot2::scale_color_manual(values = c(rgb(0.8, 0, 0), rgb(0, 0, 0.8))) +
+    ggplot2::labs(x = "Days relative to index date", y = "Visits / persons") +
+    ggplot2::facet_grid(study~case) +
+    ggplot2::theme(axis.ticks = ggplot2::element_blank(),
+                   axis.text.y = themeRA,
+                   axis.text.x = theme,
+                   axis.title = theme,
+                   legend.key = ggplot2::element_blank(),
+                   strip.text.x = theme,
+                   strip.background = ggplot2::element_blank(),
+                   legend.position = "top",
+                   legend.title = ggplot2::element_blank(),
+                   legend.text = theme,
+                   legend.direction = "horizontal")
+  ggplot2::ggsave(file.path(outputFolder, "priorVisitRatesByExposure.jpg"), plot, width = 8, height = 4, dpi = 1000)
 }

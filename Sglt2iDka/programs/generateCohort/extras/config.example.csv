@@ -1,0 +1,2 @@
+dbms,user,pw,server,port,writeTo,vocabulary
+"DBMS","USER NAME","PASSWORD","SERVER NAME",1234,"SCRATCH.dbo","VOCABULARY.DBO"

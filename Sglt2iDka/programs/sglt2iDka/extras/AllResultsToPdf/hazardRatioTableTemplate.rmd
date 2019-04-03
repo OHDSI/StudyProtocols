@@ -1,0 +1,45 @@
+---
+title: Appendix %number%
+geometry: "left=1cm,right=1cm,top=1cm,bottom=2cm"
+output: pdf_document
+classoption: landscape
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage[table]{xcolor}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(knitr) 
+library(kableExtra) 
+options(knitr.kable.NA = '')
+tempFolder <- "S:/temp"
+```
+
+# Estimates for the comparison of %comparison% for the outcome of %outcome%
+
+**Table**. Hazard ratios, 95% confidence intervals, nominal and empirically calibrated p-values using two time-at-risk follow-up strategies. DKA: diabetic ketoacidosis, event identified by diagnosis record in inpatient (IP)/emergency room (ER) claim (DKA IP/ER) or IP claim only (DKA IP), HR: Hazard Ratio, CI: Confidence Interval, p: Nominal p-value from conditional Cox proportional hazards model, Cal. P: Calibrated p-value based on the empirical p-value distribution of negative control outcomes. App.: The appendix where more supportive information about this analysis can be found, including population characteristics, propensity score distribution, study diagnostics and the Kaplan-Meier plot. Intent-to-Treat follow-up strategy: Analysis with all post-index observable time as time-at-risk where switching, augmentation, or discontinuation of the index drug is ignored. Per-Protocol: Analysis with on-treatment time-at-risk that ends at outcome event (DKA IP/ER or DKA IP), switching or augmentation, discontinuation of the index drug defined by the first refill gap of 90 days or greater, or end of observable time. Database-specific results are reported as NA where the outcome model did not converge. Meta-analysis results are reported as NA where between-study heterogeneity is I2 >= 40%.
+
+```{r, echo = FALSE}
+table <- readRDS(file.path(tempFolder, "temp.rds"))
+kable(table, 
+      row.names = FALSE, 
+      format = "latex", 
+      longtable = TRUE, 
+      booktabs = TRUE, 
+      linesep = c("", "", "", "", "", "\\addlinespace")) %>%
+  kable_styling(font_size = 7, 
+                latex_options = c("striped", "repeat_header"))
+```

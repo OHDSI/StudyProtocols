@@ -1,0 +1,10 @@
+Package: generateCohort
+Type: Package
+Title: generateCohort
+Version: 0.1.0
+Author: Erica A. Voss [aut, cre]
+Maintainer: Erica A. Voss <evoss3@its.jnj.com>
+Description: R package for executing cohort construction
+License: Apache License 2.0
+Encoding: UTF-8
+LazyData: true

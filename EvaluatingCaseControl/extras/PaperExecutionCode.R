@@ -17,7 +17,7 @@
 # limitations under the License.
 
 library(EvaluatingCaseControl)
-options(fftempdir = "r:/fftemp")
+options(fftempdir = "s:/fftemp")
 
 pw <- NULL
 dbms <- "pdw"
@@ -38,7 +38,7 @@ cdmDatabaseSchema <- "cdm_truven_ccae_v697.dbo"
 oracleTempSchema <- NULL
 cohortDatabaseSchema <- "scratch.dbo"
 cohortTable <- "mschuemie_case_control_ap_ccae"
-outputFolder <- "r:/EvaluatingCaseControl_ccae"
+outputFolder <- "s:/EvaluatingCaseControl_ccae"
 
 execute(connectionDetails = connectionDetails,
         cdmDatabaseSchema = cdmDatabaseSchema,

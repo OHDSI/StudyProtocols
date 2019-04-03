@@ -1,0 +1,19 @@
+"COHORT_DEFINITION_ID","COHORT_OF_INTEREST","T2DM","CENSOR","FULL_NAME","TARGET_COHORT","COMPARATOR_COHORT","OUTCOME_COHORT","NEGATIVE_CONTROL","EXPOSURE_COHORT","FU_STRAT_ITT_PP0DAY","COHORT_DESCRIPTION","DOSAGE","SEED_COHORT_DEFINITION_ID"
+300,"Canagliflozin","BROAD",90,"Canagliflozin-100 mg-BROAD-90",0,0,0,0,1,1,0,"100 mg",101
+301,"Canagliflozin","NARROW",90,"Canagliflozin-100 mg-NARROW-90",0,0,0,0,1,1,0,"100 mg",104
+302,"Canagliflozin","BROAD",90,"Canagliflozin-300 mg-BROAD-90",0,0,0,0,1,1,0,"300 mg",101
+303,"Canagliflozin","NARROW",90,"Canagliflozin-300 mg-NARROW-90",0,0,0,0,1,1,0,"300 mg",104
+304,"Canagliflozin","BROAD",90,"Canagliflozin-Other-BROAD-90",0,0,0,0,1,1,0,"Other",101
+305,"Canagliflozin","NARROW",90,"Canagliflozin-Other-NARROW-90",0,0,0,0,1,1,0,"Other",104
+310,"Dapagliflozin","BROAD",90,"Dapagliflozin-5 mg-BROAD-90",0,0,0,0,1,1,0,"5 mg",111
+311,"Dapagliflozin","NARROW",90,"Dapagliflozin-5 mg-NARROW-90",0,0,0,0,1,1,0,"5 mg",114
+312,"Dapagliflozin","BROAD",90,"Dapagliflozin-10 mg-BROAD-90",0,0,0,0,1,1,0,"10 mg",111
+313,"Dapagliflozin","NARROW",90,"Dapagliflozin-10 mg-NARROW-90",0,0,0,0,1,1,0,"10 mg",114
+314,"Dapagliflozin","BROAD",90,"Dapagliflozin-Other-BROAD-90",0,0,0,0,1,1,0,"Other",111
+315,"Dapagliflozin","NARROW",90,"Dapagliflozin-Other-NARROW-90",0,0,0,0,1,1,0,"Other",114
+320,"Empagliflozin","BROAD",90,"Empagliflozin-10 mg-BROAD-90",0,0,0,0,1,1,0,"10 mg",121
+321,"Empagliflozin","NARROW",90,"Empagliflozin-10 mg-NARROW-90",0,0,0,0,1,1,0,"10 mg",124
+322,"Empagliflozin","BROAD",90,"Empagliflozin-25 mg-BROAD-90",0,0,0,0,1,1,0,"25 mg",121
+323,"Empagliflozin","NARROW",90,"Empagliflozin-25 mg-NARROW-90",0,0,0,0,1,1,0,"25 mg",124
+324,"Empagliflozin","BROAD",90,"Empagliflozin-Other-BROAD-90",0,0,0,0,1,1,0,"Other",121
+325,"Empagliflozin","NARROW",90,"Empagliflozin-Other-NARROW-90",0,0,0,0,1,1,0,"Other",124

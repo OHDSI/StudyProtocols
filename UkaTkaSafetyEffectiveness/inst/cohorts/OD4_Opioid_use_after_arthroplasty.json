@@ -1,0 +1,529 @@
+{
+  "ExpressionLimit": {"Type": "All"},
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 0
+  },
+  "CensorWindow": {
+    "StartDate": null,
+    "EndDate": null
+  },
+  "ConceptSets": [
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 19022417,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "3304",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Heroin",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 1174888,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "5489",
+            "VOCABULARY_ID": "RxNorm",
+            "CONCEPT_NAME": "Hydrocodone",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Ingredient",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 21604254,
+            "STANDARD_CONCEPT": "C",
+            "CONCEPT_CODE": "N02A",
+            "VOCABULARY_ID": "ATC",
+            "CONCEPT_NAME": "OPIOIDS",
+            "DOMAIN_ID": "Drug",
+            "STANDARD_CONCEPT_CAPTION": "Classification",
+            "CONCEPT_CLASS_ID": "ATC 3rd",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        }
+      ]},
+      "name": "[Oxford Day 2] opioids",
+      "id": 1
+    },
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4274954,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "65023008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Arthroplasty of patella",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 2105103,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "27447",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Arthroplasty, knee, condyle and plateau; medial AND lateral compartments with or without patella resurfacing (total knee arthroplasty)",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 2105102,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "27446",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Arthroplasty, knee, condyle and plateau; medial OR lateral compartment",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 45889826,
+            "STANDARD_CONCEPT": "C",
+            "CONCEPT_CODE": "1005065",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Arthroplasty, patella",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Classification",
+            "CONCEPT_CLASS_ID": "CPT4 Hierarchy",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4079527,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "179345007",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Conversion to cemented total knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4079652,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "179404000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Conversion to cemented unicompartmental knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4079395,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "179414009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Conversion to hybrid unicompartmental knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 44514804,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "W41.2",
+            "VOCABULARY_ID": "OPCS4",
+            "CONCEPT_NAME": "Conversion to total prosthetic replacement of knee joint not using cement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 44514797,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "W40.2",
+            "VOCABULARY_ID": "OPCS4",
+            "CONCEPT_NAME": "Conversion to total prosthetic replacement of knee joint using cement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4079268,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "179352009",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Conversion to uncemented total knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4079654,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "179409005",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Conversion to uncemented unicompartmental knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43019637,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRD0L",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Replacement @ Knee Joint, Left @ Open @ Synthetic Substitute, Unicondylar",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43018700,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRC0L",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Medical and Surgical @ Lower Joints @ Replacement @ Knee Joint, Right @ Open @ Synthetic Substitute, Unicondylar",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS Hierarchy",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4034299,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "239501000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Prosthetic unicompartmental arthroplasty of the knee",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42897909,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRD0L9",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Replacement of Left Knee Joint with Unicondylar Synthetic Substitute, Cemented, Open Approach",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42897911,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRD0LZ",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Replacement of Left Knee Joint with Unicondylar Synthetic Substitute, Open Approach",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42897910,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRD0LA",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Replacement of Left Knee Joint with Unicondylar Synthetic Substitute, Uncemented, Open Approach",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42897906,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRC0L9",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Replacement of Right Knee Joint with Unicondylar Synthetic Substitute, Cemented, Open Approach",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42897908,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRC0LZ",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Replacement of Right Knee Joint with Unicondylar Synthetic Substitute, Open Approach",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42897907,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "0SRC0LA",
+            "VOCABULARY_ID": "ICD10PCS",
+            "CONCEPT_NAME": "Replacement of Right Knee Joint with Unicondylar Synthetic Substitute, Uncemented, Open Approach",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "ICD10PCS",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": false
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43531648,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "609588000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Total knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 2005904,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "81.54",
+            "VOCABULARY_ID": "ICD9Proc",
+            "CONCEPT_NAME": "Total knee replacement",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "4-dig billing code",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        }
+      ]},
+      "name": "[Oxford day 2] all knee arthroplasty",
+      "id": 2
+    }
+  ],
+  "EndStrategy": {"DateOffset": {
+    "DateField": "StartDate",
+    "Offset": 1
+  }},
+  "CensoringCriteria": [],
+  "Title": null,
+  "AdditionalCriteria": {
+    "CriteriaList": [{
+      "RestrictVisit": false,
+      "StartWindow": {
+        "UseEventEnd": false,
+        "Start": {
+          "Days": null,
+          "Coeff": -1
+        },
+        "End": {
+          "Days": 90,
+          "Coeff": -1
+        },
+        "UseIndexEnd": null
+      },
+      "EndWindow": null,
+      "Criteria": {"ProcedureOccurrence": {
+        "ProcedureType": null,
+        "CorrelatedCriteria": null,
+        "CodesetId": 2,
+        "ProcedureSourceConcept": null,
+        "Quantity": null,
+        "ProviderSpecialty": null,
+        "Gender": null,
+        "ProcedureTypeExclude": false,
+        "VisitType": null,
+        "First": null,
+        "OccurrenceStartDate": null,
+        "Modifier": null,
+        "Age": null
+      }},
+      "Occurrence": {
+        "Type": 2,
+        "IsDistinct": false,
+        "Count": 1
+      }
+    }],
+    "Type": "ALL",
+    "DemographicCriteriaList": [],
+    "Groups": [],
+    "Count": null
+  },
+  "QualifiedLimit": {"Type": "All"},
+  "InclusionRules": [],
+  "PrimaryCriteria": {
+    "CriteriaList": [{"DrugExposure": {
+      "OccurrenceEndDate": null,
+      "CorrelatedCriteria": null,
+      "DrugSourceConcept": null,
+      "CodesetId": 1,
+      "DrugTypeExclude": false,
+      "Quantity": null,
+      "DrugType": null,
+      "ProviderSpecialty": null,
+      "EffectiveDrugDose": null,
+      "Gender": null,
+      "DaysSupply": null,
+      "DoseUnit": null,
+      "VisitType": null,
+      "Refills": null,
+      "First": null,
+      "OccurrenceStartDate": null,
+      "RouteConcept": null,
+      "StopReason": null,
+      "LotNumber": null,
+      "Age": null
+    }}],
+    "PrimaryCriteriaLimit": {"Type": "All"},
+    "ObservationWindow": {
+      "PostDays": 0,
+      "PriorDays": 0
+    }
+  }
+}
