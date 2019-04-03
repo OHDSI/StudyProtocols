@@ -15,10 +15,10 @@ execute <- function(connectionDetails,
   if (!file.exists(outputFolder))
     dir.create(outputFolder, recursive = TRUE)
 
-  OhdsiRTools::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
+  ParallelLogger::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
 
   if(createCohorts){
-    OhdsiRTools::logInfo("Creating Cohorts")
+    ParallelLogger::logInfo("Creating Cohorts")
     createCohorts(connectionDetails,
                   cdmDatabaseSchema=cdmDatabaseSchema,
                   cohortDatabaseSchema=cohortDatabaseSchema,
@@ -27,7 +27,7 @@ execute <- function(connectionDetails,
   }
 
   if(runValidation){
-    OhdsiRTools::logInfo("Validating Models")
+    ParallelLogger::logInfo("Validating Models")
     # for each model externally validate
     analysesLocation <- system.file("plp_models",
                                     package = "plpLiveValidation")
@@ -49,7 +49,7 @@ execute <- function(connectionDetails,
 
   # results saved to outputFolder/databaseName
   if (packageResults) {
-    OhdsiRTools::logInfo("Packaging results")
+    ParallelLogger::logInfo("Packaging results")
     packageResults(outputFolder = file.path(outputFolder,databaseName),
                    minCellCount = minCellCount)
   }
