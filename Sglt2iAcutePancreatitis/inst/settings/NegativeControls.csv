@@ -1,0 +1,45 @@
+outcomeId,outcomeName,type
+376707,Acute conjunctivitis,Outcome
+433753,Alcohol abuse,Outcome
+257007,Allergic rhinitis,Outcome
+442077,Anxiety disorder,Outcome
+436665,Bipolar disorder,Outcome
+380094,Carpal tunnel syndrome,Outcome
+255573,Chronic obstructive lung disease,Outcome
+257012,Chronic sinusitis,Outcome
+443617,Conduct disorder,Outcome
+134438,Contact dermatitis,Outcome
+78619,Contusion of knee,Outcome
+378752,Corneal opacity,Outcome
+137063,Corns and callus,Outcome
+133228,Dental caries,Outcome
+134681,Diffuse spasm of esophagus,Outcome
+432251,Disease caused by parasite,Outcome
+378161,Disorder of ear,Outcome
+139057,Disorder of oral soft tissues,Outcome
+31057,Disorder of pharynx,Outcome
+138225,Disorder of sebaceous gland,Outcome
+440329,Herpes zoster without complication,Outcome
+441788,Human papilloma virus infection,Outcome
+140673,Hypothyroidism,Outcome
+374375,Impacted cerumen,Outcome
+139099,Ingrowing nail,Outcome
+436962,Insomnia,Outcome
+201322,Internal hemorrhoids without complication,Outcome
+132466,Lumbar sprain,Outcome
+255891,Lupus erythematosus,Outcome
+444100,Mood disorder,Outcome
+440374,Obsessive-compulsive disorder,Outcome
+380733,Otalgia,Outcome
+372328,Otitis media,Outcome
+4002650,Plantar fasciitis,Outcome
+373478,Presbyopia,Outcome
+436073,Psychotic disorder,Outcome
+438688,Sarcoidosis,Outcome
+432597,Schizoaffective schizophrenia,Outcome
+435783,Schizophrenia,Outcome
+372409,Sciatica,Outcome
+73562,Solitary sacroiliitis,Outcome
+133141,Tinea pedis,Outcome
+436070,Vitamin D deficiency,Outcome
+434008,White blood cell disorder,Outcome

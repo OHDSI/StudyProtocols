@@ -1,0 +1,15 @@
+analysisId,analysisDescription,timeAtRisk,eventType,psStrategy
+1,Time to First Ever Event On Treatment,On Treatment,First Ever Event,Matching
+2,Time to First Post Index Event On Treatment,On Treatment,First Post Index Event,Matching
+3,Time to First Ever Event Intent to Treat,Intent to Treat,First Ever Event,Matching
+4,Time to First Post Index Event Intent to Treat,Intent to Treat,First Post Index Event,Matching
+5,Time to First Ever Event On Treatment,On Treatment,First Ever Event,Stratification
+6,Time to First Post Index Event On Treatment,On Treatment,First Post Index Event,Stratification
+7,Time to First Ever Event Intent to Treat,Intent to Treat,First Ever Event,Stratification
+8,Time to First Post Index Event Intent to Treat,Intent to Treat,First Post Index Event,Stratification
+9,Time to First Ever Event Per Protocol,Per Protocol Zero Day,First Ever Event,Matching
+10,Time to First Ever Event Per Protocol,Per Protocol Sixty Day,First EVer Event,Matching
+11,Time to First Post Index Event Per Protocol,Per Protocol Zero Day,First Post Index Event,Matching
+12,Time to First Post Index Event Per Protocol,Per Protocol Sixty Day,First Post Index Event,Matching
+13,Time to First Post Index Event Per Protocol,On Treatment,First Post Index Event,Matching 0.1 Caliper
+14,Time to First Post Index Event Per Protocol,Intent to Treat,First Post Index Event,Matching 0.1 Caliper

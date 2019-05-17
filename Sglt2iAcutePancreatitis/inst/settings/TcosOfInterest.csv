@@ -1,0 +1,121 @@
+comparatorId,comparatorName,targetId,targetName,outcomeIds,outcomeNames,excludedCovariateConceptIds,targetDrug,comparatorDrug,censorAtSwitch,canaRestricted
+6493, GLP-1 inhibitors new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;44816332;45774435;1583722;40170911;44506754,canagliflozin, GLP-1 inhibitors,TRUE,FALSE
+6494, DPP-4 inhibitors new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;43013884;40239216;40166035;1580747;19122137,canagliflozin, DPP-4 inhibitors,TRUE,FALSE
+6495,Sulfonylurea new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1560171;1559684;1597756;1594973;1502809;1502855;1530014,canagliflozin,Sulfonylurea,TRUE,FALSE
+6500,Insulin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;21600713,canagliflozin,Insulin new users,TRUE,FALSE
+6706,TZD new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465; 1515249;  1547504;  1525215,canagliflozin,TZD,TRUE,FALSE
+6521,Other AHA new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1502826;1516766;40164159;1510206;1510207;1510208;19040969;19047612;19021787,canagliflozin,Other AHA,TRUE,FALSE
+1106493, GLP-1 inhibitors new users with prior metformin,1006492, Canagliflozin new users with prior metformin,6479, Acute Pancreatitis,43526465;44816332;45774435;1583722;40170911;44506754,canagliflozin, GLP-1 inhibitors,TRUE,TRUE
+1106494, DPP-4 inhibitors new users  with prior metformin,1006492, Canagliflozin new users with prior metformin,6479, Acute Pancreatitis,43526465;43013884;40239216;40166035;1580747;19122137,canagliflozin, DPP-4 inhibitors,TRUE,TRUE
+1106495, DPP-4 inhibitors new users  with prior metformin,1006492, Canagliflozin new users with prior metformin,6479, Acute Pancreatitis,43526465;1560171;1559684;1597756;1594973;1502809;1502855;1530014,canagliflozin,Sulfonylurea,TRUE,TRUE
+1106500,Insulin new users  with prior metformin,1006492, Canagliflozin new users with prior metformin,6479, Acute Pancreatitis,43526465;21600713,canagliflozin,Insulin new users,TRUE,TRUE
+1106706,TZD new users  with prior metformin,1006492, Canagliflozin new users with prior metformin,6479, Acute Pancreatitis,43526465; 1515249;  1547504;  1525215,canagliflozin,TZD,TRUE,TRUE
+1106521,Other AHA new users with prior metformin,1006492, Canagliflozin new users with prior metformin,6479, Acute Pancreatitis,43526465;1502826;1516766;40164159;1510206;1510207;1510208;19040969;19047612;19021787,canagliflozin,Other AHA,TRUE,TRUE
+2106493, GLP-1 inhibitors new users with prior AP,2006492, Canagliflozin new users with prior AP,6479, Acute Pancreatitis,43526465;44816332;45774435;1583722;40170911;44506754,canagliflozin, GLP-1 inhibitors,TRUE,TRUE
+2106494, DPP-4 inhibitors new users  with prior AP,2006492, Canagliflozin new users with prior AP,6479, Acute Pancreatitis,43526465;43013884;40239216;40166035;1580747;19122137,canagliflozin, DPP-4 inhibitors,TRUE,TRUE
+2106495,Sulfonylurea new users  with prior AP,2006492, Canagliflozin new users with prior AP,6479, Acute Pancreatitis,43526465;1560171;1559684;1597756;1594973;1502809;1502855;1530014,canagliflozin,Sulfonylurea,TRUE,TRUE
+2106500,Insulin new users  with prior AP,2006492, Canagliflozin new users with prior AP,6479, Acute Pancreatitis,43526465;21600713,canagliflozin,Insulin new users,TRUE,TRUE
+2106706,TZD new users  with prior AP,2006492, Canagliflozin new users with prior AP,6479, Acute Pancreatitis,43526465; 1515249;  1547504;  1525215,canagliflozin,TZD,TRUE,TRUE
+2106521,Other AHA new users with prior AP,2006492, Canagliflozin new users with prior AP,6479, Acute Pancreatitis,43526465;1502826;1516766;40164159;1510206;1510207;1510208;19040969;19047612;19021787,canagliflozin,Other AHA,TRUE,TRUE
+6502,Alogliptin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;43013884,canagliflozin,Alogliptin,TRUE,FALSE
+6503,Linagliptin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;40239216,canagliflozin,Linagliptin,TRUE,FALSE
+6504,Saxagliptin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;40166035,canagliflozin,Saxagliptin,TRUE,FALSE
+6505,Sitagliptin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1580747,canagliflozin,Sitagliptin,TRUE,FALSE
+6507,Albiglutide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;44816332,canagliflozin,Albiglutide,TRUE,FALSE
+6508,Dulaglutide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;45774435,canagliflozin,Dulaglutide,TRUE,FALSE
+6509,Exenatide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1583722,canagliflozin,Exenatide,TRUE,FALSE
+6510,Liraglutide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;40170911,canagliflozin,Liraglutide,TRUE,FALSE
+6511,Lixisenatide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;44506754,canagliflozin,Lixisenatide,TRUE,FALSE
+6512,Pioglitazone new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1525215,canagliflozin,Pioglitazone,TRUE,FALSE
+6513,Rosiglitazone new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1547504,canagliflozin,Rosiglitazone,TRUE,FALSE
+6515,Glyburide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1559684,canagliflozin,Glyburide,TRUE,FALSE
+6516,Glimepiride new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1597756,canagliflozin,Glimepiride,TRUE,FALSE
+6520,Glipizide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1560171,canagliflozin,Glipizide,TRUE,FALSE
+6523,Acarbose new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1529331,canagliflozin,Acarbose,TRUE,FALSE
+6524,Bromocriptine new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;40164161,canagliflozin,Bromocriptine,TRUE,FALSE
+6525,Miglitol new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1510202,canagliflozin,Miglitol,TRUE,FALSE
+6526,Nateglinide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1502826,canagliflozin,Nateglinide,TRUE,FALSE
+6527,Repaglinide new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;1516766,canagliflozin,Repaglinide,TRUE,FALSE
+6528,Empagliflozin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;45774751,canagliflozin,Empagliflozin,TRUE,FALSE
+6529,Dapagliflozin new users,6492, Canagliflozin new users,6479, Acute Pancreatitis,43526465;44785829,canagliflozin,Dapagliflozin,TRUE,FALSE
+16493," GLP-1 inhibitors new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44816332;45774435;1583722;40170911;44506754,canagliflozin, GLP-1 inhibitors,FALSE,FALSE
+16494," DPP-4 inhibitors new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;43013884;40239216;40166035;1580747;19122137,canagliflozin, DPP-4 inhibitors,FALSE,FALSE
+16495,"Sulfonylurea new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1560171;1559684;1597756;1594973;1502809;1502855;1530014,canagliflozin,Sulfonylurea,FALSE,FALSE
+16500,"Insulin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;21600713,canagliflozin,Insulin new users,FALSE,FALSE
+16502,"Alogliptin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;43013884,canagliflozin,Alogliptin,FALSE,FALSE
+16503,"Linagliptin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40239216,canagliflozin,Linagliptin,FALSE,FALSE
+16504,"Saxagliptin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40166035,canagliflozin,Saxagliptin,FALSE,FALSE
+16505,"Sitagliptin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1580747,canagliflozin,Sitagliptin,FALSE,FALSE
+16507,"Albiglutide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44816332,canagliflozin,Albiglutide,FALSE,FALSE
+16508,"Dulaglutide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;45774435,canagliflozin,Dulaglutide,FALSE,FALSE
+16509,"Exenatide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1583722,canagliflozin,Exenatide,FALSE,FALSE
+16510,"Liraglutide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40170911,canagliflozin,Liraglutide,FALSE,FALSE
+16511,"Lixisenatide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44506754,canagliflozin,Lixisenatide,FALSE,FALSE
+16512,"Pioglitazone new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1525215,canagliflozin,Pioglitazone,FALSE,FALSE
+16513,"Rosiglitazone new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1547504,canagliflozin,Rosiglitazone,FALSE,FALSE
+16515,"Glyburide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1559684,canagliflozin,Glyburide,FALSE,FALSE
+16516,"Glimepiride new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1597756,canagliflozin,Glimepiride,FALSE,FALSE
+16520,"Glipizide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1560171,canagliflozin,Glipizide,FALSE,FALSE
+16521,"Other AHA new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1502826;1516766;40164159;1510206;1510207;1510208;19040969;19047612;19021787,canagliflozin,Other AHA,FALSE,FALSE
+16523,"Acarbose new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1529331,canagliflozin,Acarbose,FALSE,FALSE
+16524,"Bromocriptine new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40164161,canagliflozin,Bromocriptine,FALSE,FALSE
+16525,"Miglitol new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1510202,canagliflozin,Miglitol,FALSE,FALSE
+16526,"Nateglinide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1502826,canagliflozin,Nateglinide,FALSE,FALSE
+16527,"Repaglinide new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1516766,canagliflozin,Repaglinide,FALSE,FALSE
+16528,"Empagliflozin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;45774751,canagliflozin,Empagliflozin,FALSE,FALSE
+16529,"Dapagliflozin new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44785829,canagliflozin,Dapagliflozin,FALSE,FALSE
+16706,"TZD new users, no censoring",16492," Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465; 1515249;  1547504;  1525215,canagliflozin,TZD,FALSE,FALSE
+106493," GLP-1 inhibitors new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;44816332;45774435;1583722;40170911;44506754,canagliflozin, GLP-1 inhibitors,TRUE,TRUE
+106494," DPP-4 inhibitors new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;43013884;40239216;40166035;1580747;19122137,canagliflozin, DPP-4 inhibitors,TRUE,TRUE
+106495,"Sulfonylurea new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1560171;1559684;1597756;1594973;1502809;1502855;1530014,canagliflozin,Sulfonylurea,TRUE,TRUE
+106500,"Insulin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;21600713,canagliflozin,Insulin new users,TRUE,TRUE
+106502,"Alogliptin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;43013884,canagliflozin,Alogliptin,TRUE,TRUE
+106503,"Linagliptin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;40239216,canagliflozin,Linagliptin,TRUE,TRUE
+106504,"Saxagliptin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;40166035,canagliflozin,Saxagliptin,TRUE,TRUE
+106505,"Sitagliptin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1580747,canagliflozin,Sitagliptin,TRUE,TRUE
+106507,"Albiglutide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;44816332,canagliflozin,Albiglutide,TRUE,TRUE
+106508,"Dulaglutide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;45774435,canagliflozin,Dulaglutide,TRUE,TRUE
+106509,"Exenatide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1583722,canagliflozin,Exenatide,TRUE,TRUE
+106510,"Liraglutide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;40170911,canagliflozin,Liraglutide,TRUE,TRUE
+106511,"Lixisenatide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;44506754,canagliflozin,Lixisenatide,TRUE,TRUE
+106512,"Pioglitazone new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1525215,canagliflozin,Pioglitazone,TRUE,TRUE
+106513,"Rosiglitazone new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1547504,canagliflozin,Rosiglitazone,TRUE,TRUE
+106515,"Glyburide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1559684,canagliflozin,Glyburide,TRUE,TRUE
+106516,"Glimepiride new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1597756,canagliflozin,Glimepiride,TRUE,TRUE
+106520,"Glipizide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1560171,canagliflozin,Glipizide,TRUE,TRUE
+106521,"Other AHA new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1502826;1516766;40164159;1510206;1510207;1510208;19040969;19047612;19021787,canagliflozin,Other AHA,TRUE,TRUE
+106523,"Acarbose new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1529331,canagliflozin,Acarbose,TRUE,TRUE
+106524,"Bromocriptine new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;40164161,canagliflozin,Bromocriptine,TRUE,TRUE
+106525,"Miglitol new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1510202,canagliflozin,Miglitol,TRUE,TRUE
+106526,"Nateglinide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1502826,canagliflozin,Nateglinide,TRUE,TRUE
+106527,"Repaglinide new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;1516766,canagliflozin,Repaglinide,TRUE,TRUE
+106528,"Empagliflozin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;45774751,canagliflozin,Empagliflozin,TRUE,TRUE
+106529,"Dapagliflozin new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465;44785829,canagliflozin,Dapagliflozin,TRUE,TRUE
+106706,"TZD new users, no cana",6492,Canagliflozin new users,6479, Acute Pancreatitis,43526465; 1515249;  1547504;  1525215,canagliflozin,TZD,TRUE,TRUE
+116493," GLP-1 inhibitors new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44816332;45774435;1583722;40170911;44506754,canagliflozin, GLP-1 inhibitors,FALSE,TRUE
+116494," DPP-4 inhibitors new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;43013884;40239216;40166035;1580747;19122137,canagliflozin, DPP-4 inhibitors,FALSE,TRUE
+116495,"Sulfonylurea new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1560171;1559684;1597756;1594973;1502809;1502855;1530014,canagliflozin,Sulfonylurea,FALSE,TRUE
+116500,"Insulin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;21600713,canagliflozin,Insulin new users,FALSE,TRUE
+116502,"Alogliptin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;43013884,canagliflozin,Alogliptin,FALSE,TRUE
+116503,"Linagliptin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40239216,canagliflozin,Linagliptin,FALSE,TRUE
+116504,"Saxagliptin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40166035,canagliflozin,Saxagliptin,FALSE,TRUE
+116505,"Sitagliptin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1580747,canagliflozin,Sitagliptin,FALSE,TRUE
+116507,"Albiglutide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44816332,canagliflozin,Albiglutide,FALSE,TRUE
+116508,"Dulaglutide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;45774435,canagliflozin,Dulaglutide,FALSE,TRUE
+116509,"Exenatide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1583722,canagliflozin,Exenatide,FALSE,TRUE
+116510,"Liraglutide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40170911,canagliflozin,Liraglutide,FALSE,TRUE
+116511,"Lixisenatide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44506754,canagliflozin,Lixisenatide,FALSE,TRUE
+116512,"Pioglitazone new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1525215,canagliflozin,Pioglitazone,FALSE,TRUE
+116513,"Rosiglitazone new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1547504,canagliflozin,Rosiglitazone,FALSE,TRUE
+116515,"Glyburide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1559684,canagliflozin,Glyburide,FALSE,TRUE
+116516,"Glimepiride new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1597756,canagliflozin,Glimepiride,FALSE,TRUE
+116520,"Glipizide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1560171,canagliflozin,Glipizide,FALSE,TRUE
+116521,"Other AHA new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1502826;1516766;40164159;1510206;1510207;1510208;19040969;19047612;19021787,canagliflozin,Other AHA,FALSE,TRUE
+116523,"Acarbose new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1529331,canagliflozin,Acarbose,FALSE,TRUE
+116524,"Bromocriptine new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;40164161,canagliflozin,Bromocriptine,FALSE,TRUE
+116525,"Miglitol new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1510202,canagliflozin,Miglitol,FALSE,TRUE
+116526,"Nateglinide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1502826,canagliflozin,Nateglinide,FALSE,TRUE
+116527,"Repaglinide new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;1516766,canagliflozin,Repaglinide,FALSE,TRUE
+116528,"Empagliflozin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;45774751,canagliflozin,Empagliflozin,FALSE,TRUE
+116529,"Dapagliflozin new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465;44785829,canagliflozin,Dapagliflozin,FALSE,TRUE
+116706,"TZD new users, no censoring, no cana",16492,"Canagliflozin new users, no censoring",6479, Acute Pancreatitis,43526465; 1515249;  1547504;  1525215,canagliflozin,TZD,FALSE,TRUE

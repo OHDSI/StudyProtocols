@@ -1,0 +1,34 @@
+Package: AHAsAcutePancreatitis
+Type: Package
+Title: Acute Pancreatitis in Patients with Type 2 Diabetes Who are New Users of Canagliflozin as Compared with New Users of Other Antihyperglycemic Agents: A Retrospective Cohort Study Using Large Claims Databases in the United States
+Version: 1.2.0
+Author: Frank J DeFalco (fdefalco@its.jnj.com),
+  Martijn J. Schuemie [aut]
+  Patrick B. Ryans [aut]
+  James Weaver [aut]
+Maintainer: Frank J DeFalco <fdefalco@its.jnj.com>
+Description: Execution of Study 534 Estimation Study Execution.
+Depends:
+    DatabaseConnector
+Imports:
+    SqlRender,
+    EmpiricalCalibration,
+    Cyclops,
+    FeatureExtraction (>= 2.1.0),
+    CohortMethod,
+    rmarkdown,
+    ggplot2,
+    ff,
+    ffbase,
+	  OhdsiRTools (>= 1.5.2),
+	  EvidenceSynthesis,
+	  meta,
+	  xlsx,
+	  XLConnect
+Suggests:
+    Shiny,
+    DT
+License: Apache 2.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

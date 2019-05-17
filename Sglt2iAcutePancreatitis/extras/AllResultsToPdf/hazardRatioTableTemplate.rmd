@@ -1,0 +1,71 @@
+---
+title: Appendix %number%
+geometry: "left=1cm,right=1cm,top=1cm,bottom=2cm"
+output: pdf_document
+classoption: landscape
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage[table]{xcolor}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(knitr) 
+library(kableExtra) 
+options(knitr.kable.NA = '')
+tempFolder <- "%tempFolder%"
+```
+
+# Estimates for the comparison of %comparison% for the outcome of %outcome%
+
+**Table**. Hazard ratios, 95% confidence intervals, nominal and empirically calibrated p-values for various analyses. 
+
+Remove Cana  
+TRUE: patients in the comparator arm who were exposed to cana before or after the index therapy were excluded from the analysis  
+FALSE: patients in the comparator arm who were exposed to cana before or after the index therapy were not excluded from the analysis, sensitivity analysis  
+  
+Metformin add on  
+TRUE: Included only a subset of eligible patients who received metformin therapy prior to or on the date of the index therapy, sensitivity analysis  
+FALSE: Included all eligible patients regardless of prior exposure to metformin therapy  
+
+Time at risk  
+On Treatment (30 day) (plus 30 day biological window after the last dose of the index therapy)  
+On Treatment (0 day) (plus 0 day biological window after the last dose of the index therapy, sensitivity analysis)  
+On Treatment (60 day) (plus 60 day biological window after the last dose of the index therapy, sensitivity analysis)  
+
+Event type  
+1st ever event (patients with a prior AP event was excluded from the analysis)  
+1st post-index event (patients with a prior AP event was not excluded from the analysis)  
+
+PS: Propensity Score  
+HR: Hazard Ratio  
+CI: Confidence Interval  
+p: nominal p-value from conditional Cox proportional hazards model  
+Cal. P: Empirically calibrated p-value based on the empirical p-value distribution of negative control outcomes     
+ITT: Intent-To-Treat.   
+App.: The appendix where more supportive information about this analysis can be found, including population characteristics, propensity score distribution, study diagnostics and the Kaplan-Meier plot.  
+
+```{r, echo = FALSE}
+table <- readRDS(file.path(tempFolder, "temp.rds"))
+kable(table, 
+      row.names = FALSE, 
+      format = "latex", 
+      longtable = TRUE, 
+      booktabs = TRUE, 
+      linesep = "") %>%
+  kable_styling(font_size = 7, 
+                latex_options = c("striped", "repeat_header"))
+```
+
