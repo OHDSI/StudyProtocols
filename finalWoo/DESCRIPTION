@@ -1,0 +1,41 @@
+Package: finalWoo
+Type: Package
+Title: A Package For Developing Breast Cancer Risk Models
+Version: 0.0.1
+Author: Jenna Reps [aut, cre]
+Maintainer: Jenna M Reps <reps@ohdsi.org>
+Description: This package creates two lasso logistic regression models to predict 3 year risk of breast cancer after a mammography in patients with no prior cancer or no prior breast cancer.
+Depends:
+    DatabaseConnector
+Imports:
+    SqlRender,
+    Cyclops,
+    FeatureExtraction,
+    PatientLevelPrediction,
+    ggplot2,
+    ff,
+    ffbase,
+    OhdsiSharing,
+    zip,
+	ParallelLogger,
+	magrittr,
+	dplyr,
+	officer,
+	gridExtra,
+	rvg,
+	jsonlite,
+	shiny,
+	shinycssloaders,
+    shinydashboard
+Suggests:
+    knitr,
+    rmarkdown,
+    DT,
+    reshape2,
+    tools,
+    plotly,
+    Hydra
+License: Apache License 2.0
+VignetteBuilder: knitr
+LazyData: TRUE
+RoxygenNote: 6.0.1.9000

@@ -1,0 +1,37 @@
+{
+  "skeletonType": "PatientLevelPredictionStudy",
+  "skeletonVersion": "v0.0.1",
+  "requiredHydraVersion": "v0.0.3",
+  "actions":[{
+    "type": "fileNameFindAndReplace",
+    "input": "packageName",
+    "find": "finalWoo"
+  },{
+    "type": "stringFindAndReplace",
+    "input": "packageName",
+    "find": "finalWoo"
+  },{
+    "type": "jsonArrayToCsv",
+    "input": "cohortDefinitions",
+    "mapping": [{"source": "id", "target": "cohortId"},
+                {"source": "id", "target": "atlasId"},
+                {"source": "name", "target": "name", "modifiers": ["convertToFileName"]}],
+    "output": "inst/settings/CohortsToCreate.csv"
+  },{
+    "type": "jsonArrayToJson",
+    "input": "cohortDefinitions",
+    "fileName": "name",
+    "payload": "expression",
+    "output": "inst/cohorts"
+  },{
+    "type": "jsonArrayToSql",
+    "input": "cohortDefinitions",
+    "fileName": "name",
+    "payload": "expression",
+    "output": "inst/sql/sql_server"
+  },{
+		"type": "jsonToJson",
+		"input": "",
+		"output": "inst/settings/predictionAnalysisList.json"
+	} ]
+}

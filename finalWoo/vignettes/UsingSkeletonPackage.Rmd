@@ -1,0 +1,87 @@
+---
+title: "Using the package skeleton for patient-level prediction studies"
+author: "Jenna M. Reps"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Using the package skeleton for patient-level prediction studies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(PatientLevelPrediction)
+knitr::opts_chunk$set(
+  cache=FALSE,
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+# Introduction
+
+This vignette describes how one can use the package skeleton for patient-level prediction studies to create one's own study package. This skeleton is aimed at patient-level prediction studies using the `PatientLevelPrediction` package. The resulting package can be used to execute the study at any site that has access to an observational database in the Common Data Model. It will perform the following steps:
+
+1. Instantiate all cohorts needed for the study in a study-specific cohort table. 
+2. The main analysis will be executed using the `PatientLevelPrediction` package, which involves development and internal validation of prediction models.
+3. The prediction models can be exported into a network study package ready to share for external validation.
+
+The package skeleton currently implements an examplar study, predicting various outcomes in multiple target populations. If desired (as a test), one can run the package as is. To run the study, simply run the `execute` function in the package. See the R help system for details:
+
+```{r eval=FALSE}
+library(SkeletonpredictionStudy)
+?execute
+```
+
+## extras/CodeToRun.R
+Note that for debugging purposes the package developer (you) could story the code for running the study package in your environment in the file called `CodeToRun.R` in the `extras` folder.
+
+## extras/PackageMaintenance.R
+This file contains other useful code to be used only by the package developer (you), such as code to generate the package manual, and code to insert cohort definitions into the package. All statements in this file assume the current working directory is set to the root of the package.
+
+Below is the list of steps needed to adapt the package skeleton to implement another study:
+
+# Copy and rename the package
+
+Please copy the `finalWoo` folder. Choose a name for your study package, and change all references from 'finalWoo' to your name of choice in the package code. 
+
+Next, we can run the following code. The baseUrl needs to point to the WebAPI where the cohort definitions are located. The package name needs to be changed to the name you selected:
+
+```{r eval=FALSE}
+# Insert cohort definitions from ATLAS into package -----------------------
+createStudyFiles(baseUrl=Sys.getenv("baseUrl"),   
+                 packageName='finalWoo')
+```
+
+This code will fetch the cohort definitions from the WebAPI instance, and will insert them as json files in the `inst/cohorts` folder. It will also create corresponding sql files in the `inst/sql` folder.
+
+You are then ready to execute the study designed in atlas by running:
+```{r eval=FALSE}
+connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = 'my dbms e.g., sql server',
+                                                                server = 'my server',
+                                                                user = 'my username',
+                                                                password = 'not telling',
+                                                                port = 'port number')
+execute(connectionDetails = connectionDetails,
+                    cdmDatabaseSchema = 'your cdm schema',
+                    cohortDatabaseSchema = 'your cohort schema',
+                    cohortTable = "cohort",
+                    outcomeDatabaseSchema = 'your cohort schema',
+                    outcomeTable = "cohort",
+                    oracleTempSchema = cohortDatabaseSchema,
+                    outputFolder = 'my study results',
+                    createCohorts = TRUE,
+                    packageResults = TRUE,
+                    minCellCount= 5,
+                    packageName="finalWoo")
+```
+
+
+
+
+

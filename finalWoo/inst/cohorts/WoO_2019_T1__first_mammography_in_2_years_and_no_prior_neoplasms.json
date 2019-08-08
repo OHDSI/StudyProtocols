@@ -1,0 +1,591 @@
+{
+  "ExpressionLimit": {"Type": "All"},
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 0
+  },
+  "CensorWindow": {
+    "StartDate": null,
+    "EndDate": null
+  },
+  "ConceptSets": [
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4077697,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "24623002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Screening mammography",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 42627987,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "77067",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (CAD) when performed",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Invalid",
+            "CONCEPT_ID": 2617289,
+            "STANDARD_CONCEPT": "N",
+            "CONCEPT_CODE": "G0202",
+            "VOCABULARY_ID": "HCPCS",
+            "CONCEPT_NAME": "Screening mammography, bilateral (2-view study of each breast), including computer-aided detection (cad) when performed",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Non-Standard",
+            "CONCEPT_CLASS_ID": "HCPCS",
+            "INVALID_REASON": "D"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 4147961,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "268547008",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Screening for malignant neoplasm of breast",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46257421,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "77063",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Screening digital breast tomosynthesis, bilateral (List separately in addition to code for primary procedure)",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 2211809,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "77052",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Computer-aided detection (computer algorithm analysis of digital image data for lesion detection) with further review for interpretation, with or without digitization of film radiographic images; screening mammography (List separately in addition to code ",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 2211814,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "77057",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Screening mammography, bilateral (2-view study of each breast)",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 2106158,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "3014F",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Screening mammography results documented and reviewed (PV)",
+            "DOMAIN_ID": "Observation",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46257521,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "77062",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Digital breast tomosynthesis; bilateral",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 46257687,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "77061",
+            "VOCABULARY_ID": "CPT4",
+            "CONCEPT_NAME": "Digital breast tomosynthesis; unilateral",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "CPT4",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": true,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 43531505,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "609223006",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "MRI of breast for screening for malignant neoplasm",
+            "DOMAIN_ID": "Procedure",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Procedure",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        }
+      ]},
+      "name": "Screening mammography ",
+      "id": 0
+    },
+    {
+      "expression": {"items": [
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 433435,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "109355002",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Carcinoma in situ",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 443392,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "363346000",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Malignant neoplastic disease",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        },
+        {
+          "isExcluded": false,
+          "concept": {
+            "INVALID_REASON_CAPTION": "Valid",
+            "CONCEPT_ID": 438112,
+            "STANDARD_CONCEPT": "S",
+            "CONCEPT_CODE": "55342001",
+            "VOCABULARY_ID": "SNOMED",
+            "CONCEPT_NAME": "Neoplastic disease",
+            "DOMAIN_ID": "Condition",
+            "STANDARD_CONCEPT_CAPTION": "Standard",
+            "CONCEPT_CLASS_ID": "Clinical Finding",
+            "INVALID_REASON": "V"
+          },
+          "includeMapped": false,
+          "includeDescendants": true
+        }
+      ]},
+      "name": "Broad Malignancy",
+      "id": 1
+    },
+    {
+      "expression": {"items": [{
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 4324190,
+          "STANDARD_CONCEPT": "S",
+          "CONCEPT_CODE": "429087003",
+          "VOCABULARY_ID": "SNOMED",
+          "CONCEPT_NAME": "History of malignant neoplasm of breast",
+          "DOMAIN_ID": "Observation",
+          "STANDARD_CONCEPT_CAPTION": "Standard",
+          "CONCEPT_CLASS_ID": "Context-dependent",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      }]},
+      "name": "History of malignant neoplasm of breast",
+      "id": 2
+    },
+    {
+      "expression": {"items": [{
+        "isExcluded": false,
+        "concept": {
+          "INVALID_REASON_CAPTION": "Valid",
+          "CONCEPT_ID": 21603829,
+          "STANDARD_CONCEPT": "C",
+          "CONCEPT_CODE": "L02B",
+          "VOCABULARY_ID": "ATC",
+          "CONCEPT_NAME": "HORMONE ANTAGONISTS AND RELATED AGENTS",
+          "DOMAIN_ID": "Drug",
+          "STANDARD_CONCEPT_CAPTION": "Classification",
+          "CONCEPT_CLASS_ID": "ATC 3rd",
+          "INVALID_REASON": "V"
+        },
+        "includeMapped": false,
+        "includeDescendants": true
+      }]},
+      "name": "hormone antagonists",
+      "id": 3
+    }
+  ],
+  "EndStrategy": {"DateOffset": {
+    "DateField": "StartDate",
+    "Offset": 0
+  }},
+  "cdmVersionRange": ">=5.0.0",
+  "CensoringCriteria": [],
+  "QualifiedLimit": {"Type": "First"},
+  "InclusionRules": [
+    {
+      "expression": {
+        "CriteriaList": [
+          {
+            "RestrictVisit": false,
+            "StartWindow": {
+              "UseEventEnd": false,
+              "Start": {
+                "Days": 700,
+                "Coeff": -1
+              },
+              "End": {
+                "Days": 1,
+                "Coeff": -1
+              },
+              "UseIndexEnd": false
+            },
+            "IgnoreObservationPeriod": false,
+            "EndWindow": null,
+            "Criteria": {"ProcedureOccurrence": {
+              "ProcedureType": null,
+              "CorrelatedCriteria": null,
+              "CodesetId": 0,
+              "ProcedureSourceConcept": null,
+              "Quantity": null,
+              "ProviderSpecialty": null,
+              "Gender": null,
+              "ProcedureTypeExclude": false,
+              "VisitType": null,
+              "First": null,
+              "OccurrenceStartDate": null,
+              "Modifier": null,
+              "Age": null
+            }},
+            "Occurrence": {
+              "Type": 0,
+              "IsDistinct": false,
+              "Count": 0
+            }
+          },
+          {
+            "RestrictVisit": false,
+            "StartWindow": {
+              "UseEventEnd": false,
+              "Start": {
+                "Days": 700,
+                "Coeff": -1
+              },
+              "End": {
+                "Days": 1,
+                "Coeff": -1
+              },
+              "UseIndexEnd": false
+            },
+            "IgnoreObservationPeriod": false,
+            "EndWindow": null,
+            "Criteria": {"Observation": {
+              "ValueAsConcept": null,
+              "ObservationType": null,
+              "CorrelatedCriteria": null,
+              "ObservationTypeExclude": false,
+              "ValueAsString": null,
+              "CodesetId": 0,
+              "ProviderSpecialty": null,
+              "Gender": null,
+              "Unit": null,
+              "ObservationSourceConcept": null,
+              "VisitType": null,
+              "ValueAsNumber": null,
+              "Qualifier": null,
+              "First": null,
+              "OccurrenceStartDate": null,
+              "Age": null
+            }},
+            "Occurrence": {
+              "Type": 0,
+              "IsDistinct": false,
+              "Count": 0
+            }
+          }
+        ],
+        "Type": "ALL",
+        "DemographicCriteriaList": [],
+        "Groups": [],
+        "Count": null
+      },
+      "name": "No mammography in prior 700 days",
+      "description": null
+    },
+    {
+      "expression": {
+        "CriteriaList": [{
+          "RestrictVisit": false,
+          "StartWindow": {
+            "UseEventEnd": false,
+            "Start": {
+              "Days": null,
+              "Coeff": -1
+            },
+            "End": {
+              "Days": 90,
+              "Coeff": 1
+            },
+            "UseIndexEnd": false
+          },
+          "IgnoreObservationPeriod": false,
+          "EndWindow": null,
+          "Criteria": {"ConditionOccurrence": {
+            "OccurrenceEndDate": null,
+            "CorrelatedCriteria": null,
+            "ConditionTypeExclude": false,
+            "CodesetId": 1,
+            "ProviderSpecialty": null,
+            "Gender": null,
+            "VisitType": null,
+            "First": null,
+            "OccurrenceStartDate": null,
+            "ConditionType": null,
+            "ConditionSourceConcept": null,
+            "StopReason": null,
+            "Age": null
+          }},
+          "Occurrence": {
+            "Type": 0,
+            "IsDistinct": false,
+            "Count": 0
+          }
+        }],
+        "Type": "ALL",
+        "DemographicCriteriaList": [],
+        "Groups": [],
+        "Count": null
+      },
+      "name": "No neoplasm disease prior or up to 90 days following",
+      "description": null
+    },
+    {
+      "expression": {
+        "CriteriaList": [{
+          "RestrictVisit": false,
+          "StartWindow": {
+            "UseEventEnd": false,
+            "Start": {
+              "Days": null,
+              "Coeff": -1
+            },
+            "End": {
+              "Days": 90,
+              "Coeff": 1
+            },
+            "UseIndexEnd": false
+          },
+          "IgnoreObservationPeriod": false,
+          "EndWindow": null,
+          "Criteria": {"Observation": {
+            "ValueAsConcept": null,
+            "ObservationType": null,
+            "CorrelatedCriteria": null,
+            "ObservationTypeExclude": false,
+            "ValueAsString": null,
+            "CodesetId": 2,
+            "ProviderSpecialty": null,
+            "Gender": null,
+            "Unit": null,
+            "ObservationSourceConcept": null,
+            "VisitType": null,
+            "ValueAsNumber": null,
+            "Qualifier": null,
+            "First": null,
+            "OccurrenceStartDate": null,
+            "Age": null
+          }},
+          "Occurrence": {
+            "Type": 0,
+            "IsDistinct": false,
+            "Count": 0
+          }
+        }],
+        "Type": "ALL",
+        "DemographicCriteriaList": [],
+        "Groups": [],
+        "Count": null
+      },
+      "name": "No history of breast cancer all days prior and 90 days after",
+      "description": null
+    },
+    {
+      "expression": {
+        "CriteriaList": [{
+          "RestrictVisit": false,
+          "StartWindow": {
+            "UseEventEnd": false,
+            "Start": {
+              "Days": null,
+              "Coeff": -1
+            },
+            "End": {
+              "Days": 0,
+              "Coeff": 1
+            },
+            "UseIndexEnd": false
+          },
+          "IgnoreObservationPeriod": false,
+          "EndWindow": null,
+          "Criteria": {"DrugExposure": {
+            "OccurrenceEndDate": null,
+            "CorrelatedCriteria": null,
+            "DrugSourceConcept": null,
+            "CodesetId": 3,
+            "DrugTypeExclude": false,
+            "Quantity": null,
+            "DrugType": null,
+            "ProviderSpecialty": null,
+            "EffectiveDrugDose": null,
+            "Gender": null,
+            "DaysSupply": null,
+            "DoseUnit": null,
+            "VisitType": null,
+            "Refills": null,
+            "First": null,
+            "OccurrenceStartDate": null,
+            "RouteConcept": null,
+            "StopReason": null,
+            "LotNumber": null,
+            "Age": null
+          }},
+          "Occurrence": {
+            "Type": 0,
+            "IsDistinct": false,
+            "Count": 0
+          }
+        }],
+        "Type": "ALL",
+        "DemographicCriteriaList": [],
+        "Groups": [],
+        "Count": null
+      },
+      "name": "No prior hormone antagonists 21603829",
+      "description": null
+    }
+  ],
+  "PrimaryCriteria": {
+    "CriteriaList": [{"ProcedureOccurrence": {
+      "ProcedureType": null,
+      "CorrelatedCriteria": null,
+      "CodesetId": 0,
+      "ProcedureSourceConcept": null,
+      "Quantity": null,
+      "ProviderSpecialty": null,
+      "Gender": [{
+        "INVALID_REASON_CAPTION": "Unknown",
+        "CONCEPT_ID": 8532,
+        "STANDARD_CONCEPT": null,
+        "CONCEPT_CODE": "F",
+        "VOCABULARY_ID": "Gender",
+        "CONCEPT_NAME": "FEMALE",
+        "DOMAIN_ID": "Gender",
+        "STANDARD_CONCEPT_CAPTION": "Unknown",
+        "CONCEPT_CLASS_ID": null,
+        "INVALID_REASON": null
+      }],
+      "ProcedureTypeExclude": false,
+      "VisitType": null,
+      "First": null,
+      "OccurrenceStartDate": null,
+      "Modifier": null,
+      "Age": {
+        "Op": "bt",
+        "Extent": 74,
+        "Value": 40
+      }
+    }}],
+    "PrimaryCriteriaLimit": {"Type": "All"},
+    "ObservationWindow": {
+      "PostDays": 0,
+      "PriorDays": 1095
+    }
+  }
+}
