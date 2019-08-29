@@ -14,6 +14,12 @@ The objective of this study is to develop and validate patient-level prediction 
 
 The prediction will be implemented using one algorithm (a Lasso Logistic Regression).
 
+Study Milestones
+========================================================
+August 09, 2019: Study Protocol Published
+August 09 - Sep 05, 2019: Call for Sites to Run & Send Results
+Sep 16, 2019: Results Presentation at 2019 US OHDSI Symposium
+September onward: Manuscript preparations
 
 Instructions To Build Package
 ===================
