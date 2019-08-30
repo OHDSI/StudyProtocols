@@ -1,19 +1,25 @@
-A Package Skeleton for Patientl-Level Prediction Studies
+The Women of OHDSI Overview
 ========================================================
 
-A skeleton package, to be used as a starting point when implementing patient-level prediction studies.
+OHDSI's mission is to improve health by empowering a community to collaboratively generate the evidence that promotes better health decisions and better care. As a community, we strive promote openness and inclusivity by creating an environment where all voices are heard.
 
-Vignette: [Using the package skeleton for patient-level prediction studies](https://raw.githubusercontent.com/OHDSI/StudyProtocolSandbox/master/finalWoo/inst/doc/UsingSkeletonPackage.pdf)
+The Women of OHDSI group aims to provide a forum for women within the OHDSI community to come together and discuss challenges they face as women working in science, technology, engineering and mathematics (STEM). We aim to facilitate discussions where women can share their perspectives, raise concerns, propose ideas on how the OHDSI community can support women in STEM, and ultimately inspire women to become leaders within the community and their respective fields. This research investigation is intended to foster collaboration across the OHDSI community about an important clinical question. 
 
-Instructions To Prepare Package Outside Atlas
-===================
+Executive Summary of Study
+========================================================
 
-- Step 1: Change package name, readme and description (replace (finalWoo with the package name)
-- Step 2: Change all references of package name [in Main.R lines 101 and 126, CreateCohorts.R lines 27,37 and 42, CreateAllCohorts.R lines 62 and 77, readme.md and in PackageMaintenance.R]
-- Step 3: Add inst/settings/CohortToCreate.csv - a csv containing three columns, cohortId, atlasId and name - the cohorts in your local atlas with the atlasId will be downloaded into the package and given the cohortId cohort_definition_id when the user creates the cohorts.
-- Step 4: Create prediction analysis detail r code that specifies the models, populations, covariates, Ts and Os used in the study (extras/CreatePredictionAnalysisDetails)
-- Step 5: Run package management to extract cohorts (using CohortToCreate.csv) and create json specification (using extras/CreatePredictionAnalysisDetails.R)
+Mammography screening can lead to early detection of cancer but has negative impacts such as causing patients anxiety. Being more informed, such as quantifying your personal risk, can reduce anxiety.  We wish to develop a risk prediction model could be developed to predict future risk of breast cancer at the point in time a patient has a mammography.  This would be implemented at the same time a patient has a screen to not only enable them to know whether they have current breast cancer but to also tell them their 3-year risk.
 
+The objective of this study is to develop and validate patient-level prediction models for patients in 2 target cohort(s) (Target 1: Patients with first mammography in 2 years and no prior neoplasm and Target 2: Patients with first mammography in 2 years and no prior breast cancer) to predict 1 outcome(s) (Outcome: At least two occurrence of Breast cancer in the Time at Risk (TAR Settings: Risk Window Start:  1 day after index, , Risk Window End:  1095 days after index).
+
+The prediction will be implemented using one algorithm (a Lasso Logistic Regression).
+
+Study Milestones
+========================================================
+- **August 09, 2019:** Study Protocol Published
+- **August 09 - Sep 05, 2019:** Call for Sites to Run & Send Results
+- **Sep 16, 2019:** Results Presentation at 2019 US OHDSI Symposium
+- **September onward:** Manuscript preparations
 
 Instructions To Build Package
 ===================
@@ -103,7 +109,7 @@ execute(connectionDetails = connectionDetails,
 
 ```
 
-- To create the shiny app and view run:
+- To create the shiny app locally and view run:
 ```r
   
 populateShinyApp(resultDirectory = outputFolder,
@@ -115,7 +121,3 @@ viewShiny('finalWoo')
   
 
 ```
-
-
-# Development status
-Under development. Do not use
