@@ -6,7 +6,7 @@ Quantifying Bias in Epidemiological Studies on the Association Between Acetamino
 - Study lead: **Martijn Schuemie**
 - Study start date: **September 10, 2019**
 - Study end date: **October 20, 2019**
-- Protocol: [Word file](https://documents/ProtocolForQuanitifyingBiasV12.docx)
+- Protocol: [Word file](https://github.com/OHDSI/StudyProtocols/blob/master/QuantifyingBiasInApapStudies/documents/ProtocolForQuanitifyingBiasV12.docx)
 - Publications: **-**
 
 **Purpose**: To quantify bias in observational study designs used to study the relationship between acetaminophen and cancer.
