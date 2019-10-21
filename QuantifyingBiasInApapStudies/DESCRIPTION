@@ -1,0 +1,29 @@
+Package: QuantifyingBiasInApapStudies
+Type: Package
+Title: Quantifying Bias in Epidemiological Studies on the Association Between Acetaminophen and Cancer
+Version: 1.0.0
+Date: 2019-10-21
+Authors@R: c(
+    person("Martijn", "Schuemie", , "schuemie@ohdsi.org", role = c("aut", "cre"))
+    )
+Maintainer: Martijn Schuemie <schuemie@ohdsi.org>
+Description: Quantifying Bias in Epidemiological Studies on the Association Between Acetaminophen and Cancer.
+License: Apache License 2.0
+Depends:
+    DatabaseConnector
+Imports:
+    SqlRender,
+    CaseControl (>= 2.0.0),
+    CohortMethod,
+    ParallelLogger,
+    Cyclops,
+    FeatureExtraction,
+    EmpiricalCalibration,
+    ff,
+    rmarkdown,
+    ggplot2, 
+    gridExtra,
+    scales
+NeedsCompilation: no
+RoxygenNote: 6.1.1
+Encoding: UTF-8

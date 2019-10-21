@@ -1,0 +1,339 @@
+---
+title: "QuantifyingBiasInApapStudies: Quantifying Bias in Epidemiological Studies on the Association Between Acetaminophen and Cancer"
+author: Martijn Schuemie, Patrick Ryan
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  word_document: 
+    toc: yes
+params: 
+    outputFolder: s:/QuantifyingBiasInApapStudies
+bibliography: report.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# outputFolder <- "s:/QuantifyingBiasInApapStudies"
+outputFolder <- params$outputFolder
+plotsAndTablesFolder <- file.path(outputFolder, "plotsAndTables")
+
+options(knitr.kable.NA = '')
+```
+
+# Introduction
+
+This report describes the results as specified in the protocol for the study "Quantifying Bias in Epidemiological Studies on the Association Between Acetaminophen and Cancer". For full details of the methods, please refer to the protocol.
+
+As described in the protocol, the purpose of this study is to quantify bias in observational study designs used to study the relationship between acetaminophen and cancer. The method is to mimic these study designs including several variants of the case-control design and a cohort design, while including negative control outcomes (outcomes known not to be caused by acetaminophen) in addition to several cancer outcomes. In our analysis we assess to what extent these study designs produce estimates in line with the truth, and to what extent the estimates for the cancer outcomes are distinguishable from those for the negative controls.
+
+
+# Quantification of bias using negative controls
+
+The primary objective of this study is to quantify bias in various study designs by including negative controls. Negative controls are exposure-outcome pairs where we are confident the exposure does not cause the outcome, and where therefore the true effect size (odds ratio or hazard ratio) is 1. In this section we show to what extent the various study designs produce effect size estimates in line with this know effect size of negative controls. For each study variant we show two plots: a forest plot, and a plot showing effect size on the x-axis and standard error on the y-axis as described in @schuemie_2014. Both plots show the estimates for the negative controls as well as the cancer outcomes.
+
+## Quantification of bias in case-control designs
+
+### Negative controls with statistically significant estimates
+
+```{r  echo=FALSE}
+table <- read.csv(file.path(plotsAndTablesFolder, "ccNcsSignificant.csv"), check.names = FALSE)
+table$`Fraction significant (p < 0.05)` <- scales::percent(table$`Fraction significant (p < 0.05)`)
+knitr::kable(table, caption = "Count and fraction of negative controls (for which there was enough data to compute an estimate) having a (two-sided) p < 0.05.")
+```
+
+### Empirical null parameter distribution
+
+Applying the method described in @schuemie_2014, we used the estimates for the negative controls to estimate the parameters of the empirical null distribution.
+
+```{r  echo=FALSE}
+table <- read.csv(file.path(plotsAndTablesFolder, "ccEmpiricalNullParams.csv"), check.names = FALSE)
+knitr::kable(table, digits = 3, caption = "Mean and standard deviation (SD) of the fitted emprical null distributions. The null distribution is modeled as a Gaussian on the log scale. An unbiased method would have mean = 0 and SD = 0.")
+```
+
+```{r  echo=FALSE}
+analysisSummary <- read.csv(file.path(plotsAndTablesFolder, "ccAnalysisSummary.csv"))
+
+
+getHeader <- function(analysisId) {
+  cat(sprintf("### Analysis %s: %s", analysisId, analysisSummary$Description[analysisSummary$Analysis.ID == analysisId][1]))
+}
+
+getForestPlotFileName <- function(analysisId) {
+  file.path(plotsAndTablesFolder, sprintf("forest_a%s.png", analysisId))
+}
+
+getCalibrationPlotFileName <- function(analysisId) {
+  file.path(plotsAndTablesFolder, sprintf("calibration_a%s.png", analysisId))
+}
+
+```
+
+<!--- Analysis 1 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 1
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 2 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 2
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 3 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 3
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 4 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 4
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 5 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 5
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 6 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 6
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 7 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 7
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 8 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 8
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+## Quantification of bias in cohort designs
+
+### Negative controls with statistically significant estimates
+
+```{r  echo=FALSE}
+table <- read.csv(file.path(plotsAndTablesFolder, "cmNcsSignificant.csv"), check.names = FALSE)
+table$`Fraction significant (p < 0.05)` <- scales::percent(table$`Fraction significant (p < 0.05)`)
+knitr::kable(table, caption = "Count and fraction of negative controls (for which there was enough data to compute an estimate) having a (two-sided) p < 0.05.")
+```
+
+### Empirical null parameter distribution
+
+Applying the method described in @schuemie_2014, we used the estimates for the negative controls to estimate the parameters of the empirical null distribution.
+
+```{r  echo=FALSE}
+table <- read.csv(file.path(plotsAndTablesFolder, "cmEmpiricalNullParams.csv"), check.names = FALSE)
+knitr::kable(table, digits = 3, caption = "Mean and standard deviation (SD) of the fitted emprical null distributions. The null distribution is modeled as a Gaussian on the log scale. An unbiased method would have mean = 0 and SD = 0.")
+```
+
+```{r  echo=FALSE}
+analysisSummary <- read.csv(file.path(plotsAndTablesFolder, "cmAnalysisSummary.csv"))
+```
+
+<!--- Analysis 9 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 9
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+<!--- Analysis 10 -->
+```{r  echo=FALSE, results='asis'}
+analysisId <- 10
+```
+
+```{r  echo=FALSE, results='asis'}
+getHeader(analysisId)
+```
+
+```{r fig.cap='Forest plot showing point estimate and 95\\% confidence intervals for all negative controls and outcomes of interest.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getForestPlotFileName(analysisId))
+```
+
+```{r fig.cap='Bias plot, showing effect size on the x-axis, and standard error (related to the width of the confidence interval) on the y-axis. Blue dots indicate negative controls, yellow diamonds indicate outcomes of interest. Estimates below the dashed lines have p < 0.05 using traditional p-value calculation. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\\% credible interval around the boundary of the orange area.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(getCalibrationPlotFileName(analysisId))
+```
+
+
+# Propensity analysis
+
+In our emulation of the @walter_2011 study we also fitted a propensity model to evaluate to what extent the two exposure groups are comparable. This model was fitted by included a large set of covariates (all prior drugs, drug classes, diagnoses, procedures, etc.), and using a regularized logistic regression. 
+
+## Preference score distribution
+
+The figure below shows the preference score distribution. The preference score is a transformation of the propensity score to account for the different sizes of the two exposure groups. [@walker_2013] 
+
+```{r fig.cap='Preference score distributions for the high-use group and the no-use group. Equipoise is the fraction of persons that has a preference score between 0.25 and 0.75.',echo=FALSE, out.width='100%', fig.align='center'}
+
+knitr::include_graphics(file.path(plotsAndTablesFolder, "ps.png"))
+```
+
+## Covariate balance
+
+```{r echo=FALSE}
+balance <- read.csv(file.path(plotsAndTablesFolder, "balance.csv"))
+```
+
+In our emulation of the @walter_2011 study we evaluated whether the two exposure groups were balanced on all the variables also included when fitting the propensity model by computing computed the standardized difference of the mean (DM). Of the `r nrow(balance)` covariates, `r sum(balance$Standardized.difference.of.the.mean > 0.10, na.rm = TRUE)` has a DM > 0.10, which can be considered to be 'unbalanced'. [@rubin_2001]
+
+# Appendices
+
+```{r echo=FALSE}
+table <- data.frame(File = "balance.csv", 
+                    Description = "Covariate balance when comparing high-use to no-use.")
+table <- rbind(table, data.frame(File = "propensityModel.csv", 
+                                 Description = "Fitted propensity model when comparing high-use to no-use."))
+table <- rbind(table, data.frame(File = "ccAnalysisSummary.csv", 
+                                 Description = "Odds ratios and counts for the various case-control analyses."))
+table <- rbind(table, data.frame(File = "cmAnalysisSummary.csv", 
+                                 Description = "Hazard ratios and counts for the various cohort analyses."))
+table <- rbind(table, data.frame(File = "cmCharacteristicsTable.csv", 
+                                 Description = "Characterization of the high-use and no-use cohorts."))
+analysisSummary <- read.csv(file.path(plotsAndTablesFolder, "ccAnalysisSummary.csv"))
+pathToCsv <- system.file("settings", "TosOfInterest.csv", package = "QuantifyingBiasInApapStudies")
+tosOfInterest <- read.csv(pathToCsv, stringsAsFactors = FALSE)
+hois <- unique(as.integer(do.call(c, (strsplit(tosOfInterest$outcomeIds, ";")))))
+pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "QuantifyingBiasInApapStudies")
+cohortsToCreate <- read.csv(pathToCsv)
+
+for (outcomeId in hois) {
+  for (analysisId in unique(analysisSummary$Analysis.ID)) {
+      fileName <- sprintf("ccCharacteristicsTable_a%s_o%s.csv", analysisId, outcomeId)
+      outcomeName <- cohortsToCreate$fullName[cohortsToCreate$cohortId == outcomeId]
+      description <- sprintf("Characterization of cases and controls for analysis %s and outcome %s.", analysisId, outcomeName)
+      table <- rbind(table, data.frame(File = fileName, 
+                                 Description = description))
+  }
+}
+knitr::kable(table)
+```
+
+
+# References
+
