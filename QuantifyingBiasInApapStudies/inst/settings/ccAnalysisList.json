@@ -1,0 +1,808 @@
+[
+  {
+    "analysisId": 1,
+    "description": "Sampling, all time prior, adj. for age, sex & year",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "seed": 123,
+        "attr_class": "samplingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": [
+        {
+          "temporal": false,
+          "DemographicsGender": true,
+          "DemographicsAgeGroup": true,
+          "DemographicsIndexYear": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": 0,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": 8507,
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "useBmi": true,
+          "useAlcohol": true,
+          "useSmoking": true,
+          "useDiabetesMedication": true,
+          "useRheumatoidArthritis": false,
+          "useNonRa": false,
+          "useFatigue": false,
+          "useMigraine": false,
+          "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": 0,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "excludeCovariateIds": [1999, 2999, 3999, 1998, 1997, 1996],
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 2,
+    "description": "Sampling, all time prior, adj. for age, sex, year, BMI, alcohol, smoking & diabetes",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "seed": 123,
+        "attr_class": "samplingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": [
+        {
+          "temporal": false,
+          "DemographicsGender": true,
+          "DemographicsAgeGroup": true,
+          "DemographicsIndexYear": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": 0,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": 8507,
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "useBmi": true,
+          "useAlcohol": true,
+          "useSmoking": true,
+          "useDiabetesMedication": true,
+          "useRheumatoidArthritis": false,
+          "useNonRa": false,
+          "useFatigue": false,
+          "useMigraine": false,
+          "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": 0,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 3,
+    "description": "Sampling, year delay, adj. for age, sex & year",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "seed": 123,
+        "attr_class": "samplingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": [
+        {
+          "temporal": false,
+          "DemographicsGender": true,
+          "DemographicsAgeGroup": true,
+          "DemographicsIndexYear": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": 0,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": 8507,
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "useBmi": true,
+          "useAlcohol": true,
+          "useSmoking": true,
+          "useDiabetesMedication": true,
+          "useRheumatoidArthritis": false,
+          "useNonRa": false,
+          "useFatigue": false,
+          "useMigraine": false,
+          "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": -365,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "excludeCovariateIds": [1999, 2999, 3999, 1998, 1997, 1996],
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 4,
+    "description": "Sampling, year delay, adj. for age, sex, year, BMI, alcohol, smoking & diabetes",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "seed": 123,
+        "attr_class": "samplingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": [
+        {
+          "temporal": false,
+          "DemographicsGender": true,
+          "DemographicsAgeGroup": true,
+          "DemographicsIndexYear": true,
+          "longTermStartDays": -365,
+          "mediumTermStartDays": -180,
+          "shortTermStartDays": -30,
+          "endDays": 0,
+          "includedCovariateConceptIds": [],
+          "addDescendantsToInclude": false,
+          "excludedCovariateConceptIds": 8507,
+          "addDescendantsToExclude": false,
+          "includedCovariateIds": [],
+          "attr_fun": "getDbDefaultCovariateData",
+          "attr_class": "covariateSettings"
+        },
+        {
+          "useBmi": true,
+          "useAlcohol": true,
+          "useSmoking": true,
+          "useDiabetesMedication": true,
+          "useRheumatoidArthritis": false,
+          "useNonRa": false,
+          "useFatigue": false,
+          "useMigraine": false,
+          "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+          "attr_class": "covariateSettings"
+        }
+      ],
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": -365,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 5,
+    "description": "Matching, all time prior",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "matchOnAge": true,
+        "ageCaliper": 2,
+        "matchOnGender": true,
+        "matchOnProvider": false,
+        "matchOnCareSite": true,
+        "matchOnVisitDate": false,
+        "visitDateCaliper": 30,
+        "matchOnTimeInCohort": true,
+        "daysInCohortCaliper": 365,
+        "removedUnmatchedCases": true,
+        "seed": 1,
+        "attr_class": "matchingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": {
+        "useBmi": true,
+        "useAlcohol": true,
+        "useSmoking": true,
+        "useDiabetesMedication": true,
+        "useRheumatoidArthritis": false,
+        "useNonRa": false,
+        "useFatigue": false,
+        "useMigraine": false,
+        "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+        "attr_class": "covariateSettings"
+      },
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": 0,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": false,
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 6,
+    "description": "Matching, all time prior, adj. for BMI, alcohol, smoking & diabetes",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "matchOnAge": true,
+        "ageCaliper": 2,
+        "matchOnGender": true,
+        "matchOnProvider": false,
+        "matchOnCareSite": true,
+        "matchOnVisitDate": false,
+        "visitDateCaliper": 30,
+        "matchOnTimeInCohort": true,
+        "daysInCohortCaliper": 365,
+        "removedUnmatchedCases": true,
+        "seed": 1,
+        "attr_class": "matchingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": {
+        "useBmi": true,
+        "useAlcohol": true,
+        "useSmoking": true,
+        "useDiabetesMedication": true,
+        "useRheumatoidArthritis": false,
+        "useNonRa": false,
+        "useFatigue": false,
+        "useMigraine": false,
+        "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+        "attr_class": "covariateSettings"
+      },
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": 0,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 7,
+    "description": "Matching, year delay",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "matchOnAge": true,
+        "ageCaliper": 2,
+        "matchOnGender": true,
+        "matchOnProvider": false,
+        "matchOnCareSite": true,
+        "matchOnVisitDate": false,
+        "visitDateCaliper": 30,
+        "matchOnTimeInCohort": true,
+        "daysInCohortCaliper": 365,
+        "removedUnmatchedCases": true,
+        "seed": 1,
+        "attr_class": "matchingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": {
+        "useBmi": true,
+        "useAlcohol": true,
+        "useSmoking": true,
+        "useDiabetesMedication": true,
+        "useRheumatoidArthritis": false,
+        "useNonRa": false,
+        "useFatigue": false,
+        "useMigraine": false,
+        "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+        "attr_class": "covariateSettings"
+      },
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": -365,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": false,
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  },
+  {
+    "analysisId": 8,
+    "description": "Matching, year delay, adj. for BMI, alcohol, smoking & diabetes",
+    "getDbCaseDataArgs": {
+      "useNestingCohort": false,
+      "useObservationEndAsNestingEndDate": true,
+      "getVisits": false,
+      "studyStartDate": "",
+      "studyEndDate": "",
+      "maxNestingCohortSize": 10000000,
+      "maxCasesPerOutcome": 500000,
+      "attr_class": "args"
+    },
+    "selectControlsArgs": {
+      "firstOutcomeOnly": true,
+      "washoutPeriod": 730,
+      "controlSelectionCriteria": {
+        "controlsPerCase": 4,
+        "matchOnAge": true,
+        "ageCaliper": 2,
+        "matchOnGender": true,
+        "matchOnProvider": false,
+        "matchOnCareSite": true,
+        "matchOnVisitDate": false,
+        "visitDateCaliper": 30,
+        "matchOnTimeInCohort": true,
+        "daysInCohortCaliper": 365,
+        "removedUnmatchedCases": true,
+        "seed": 1,
+        "attr_class": "matchingCriteria"
+      },
+      "minAge": 30,
+      "attr_class": "args"
+    },
+    "getDbExposureDataArgs": {
+      "covariateSettings": {
+        "useBmi": true,
+        "useAlcohol": true,
+        "useSmoking": true,
+        "useDiabetesMedication": true,
+        "useRheumatoidArthritis": false,
+        "useNonRa": false,
+        "useFatigue": false,
+        "useMigraine": false,
+        "attr_fun": "QuantifyingBiasInApapStudies::getDbCustomCovariatesData",
+        "attr_class": "covariateSettings"
+      },
+      "attr_class": "args"
+    },
+    "createCaseControlDataArgs": {
+      "firstExposureOnly": false,
+      "riskWindowStart": -999990,
+      "riskWindowEnd": -365,
+      "exposureWashoutPeriod": 0,
+      "attr_class": "args"
+    },
+    "fitCaseControlModelArgs": {
+      "useCovariates": true,
+      "prior": {
+        "priorType": "none",
+        "variance": 1,
+        "exclude": null,
+        "graph": null,
+        "neighborhood": null,
+        "useCrossValidation": false,
+        "forceIntercept": false,
+        "attr_class": "cyclopsPrior"
+      },
+      "control": {
+        "maxIterations": 1000,
+        "tolerance": 2e-007,
+        "convergenceType": "gradient",
+        "autoSearch": true,
+        "fold": 10,
+        "lowerLimit": 0.01,
+        "upperLimit": 20,
+        "gridSteps": 10,
+        "minCVData": 100,
+        "cvRepetitions": 10,
+        "noiseLevel": "quiet",
+        "threads": 1,
+        "seed": null,
+        "resetCoefficients": false,
+        "startingVariance": 0.01,
+        "useKKTSwindle": false,
+        "tuneSwindle": 10,
+        "selectorType": "byPid",
+        "initialBound": 2,
+        "maxBoundCount": 5,
+        "algorithm": "ccd",
+        "attr_class": "cyclopsControl"
+      },
+      "attr_class": "args"
+    },
+    "attr_class": "ccAnalysis"
+  }
+]

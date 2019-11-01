@@ -1,0 +1,75 @@
+targetId,comparatorId,outcomeId,outcomeName,type
+1,2,77963,Achilles tendinitis,outcome
+1,2,201078,Atrophic vaginitis,outcome
+1,2,4195873,Breath smells unpleasant,outcome
+1,2,256449,Bronchiectasis,outcome
+1,2,439708,Disorders of initiating and maintaining sleep,outcome
+1,2,4114472,Ear problem,outcome
+1,2,4059015,Falls,outcome
+1,2,4264617,Foot-drop,outcome
+1,2,74729,"Ganglion and cyst of synovium, tendon and bursa",outcome
+1,2,441818,Hemangioma,outcome
+1,2,76737,Hydrocele,outcome
+1,2,4142479,Hyperthyroidism,outcome
+1,2,4311629,Impaired glucose tolerance,outcome
+1,2,4344500,Impingement syndrome of shoulder region,outcome
+1,2,4216771,Impotence,outcome
+1,2,197675,Incontinence of feces,outcome
+1,2,4021807,Interpersonal relationship finding,outcome
+1,2,196168,Irregular periods,outcome
+1,2,4168681,Irritability and anger,outcome
+1,2,72404,Joint stiffness,outcome
+1,2,4185711,Loss of sense of smell,outcome
+1,2,438720,Mixed hyperlipidemia,outcome
+1,2,75910,Osteitis deformans,outcome
+1,2,4021498,Panic attack,outcome
+1,2,375292,Perforation of tympanic membrane,outcome
+1,2,198715,Premature menopause,outcome
+1,2,199876,Prolapse of female genital organs,outcome
+1,2,437827,Pure hypercholesterolemia,outcome
+1,2,313878,Respiratory symptom,outcome
+1,2,73754,Restless legs,outcome
+1,2,4168212,Restlessness and agitation,outcome
+1,2,136773,Rosacea,outcome
+1,2,141825,Simple goiter,outcome
+1,2,137682,Skin sensation disturbance,outcome
+1,2,4176908,Snapping thumb syndrome,outcome
+1,2,437969,Talipes planus,outcome
+1,2,74174,Urinary symptoms,outcome
+11998,,77963,Achilles tendinitis,outcome
+11998,,201078,Atrophic vaginitis,outcome
+11998,,4195873,Breath smells unpleasant,outcome
+11998,,256449,Bronchiectasis,outcome
+11998,,439708,Disorders of initiating and maintaining sleep,outcome
+11998,,4114472,Ear problem,outcome
+11998,,4059015,Falls,outcome
+11998,,4264617,Foot-drop,outcome
+11998,,74729,"Ganglion and cyst of synovium, tendon and bursa",outcome
+11998,,441818,Hemangioma,outcome
+11998,,76737,Hydrocele,outcome
+11998,,4142479,Hyperthyroidism,outcome
+11998,,4311629,Impaired glucose tolerance,outcome
+11998,,4344500,Impingement syndrome of shoulder region,outcome
+11998,,4216771,Impotence,outcome
+11998,,197675,Incontinence of feces,outcome
+11998,,4021807,Interpersonal relationship finding,outcome
+11998,,196168,Irregular periods,outcome
+11998,,4168681,Irritability and anger,outcome
+11998,,72404,Joint stiffness,outcome
+11998,,4185711,Loss of sense of smell,outcome
+11998,,438720,Mixed hyperlipidemia,outcome
+11998,,75910,Osteitis deformans,outcome
+11998,,4021498,Panic attack,outcome
+11998,,375292,Perforation of tympanic membrane,outcome
+11998,,198715,Premature menopause,outcome
+11998,,199876,Prolapse of female genital organs,outcome
+11998,,437827,Pure hypercholesterolemia,outcome
+11998,,313878,Respiratory symptom,outcome
+11998,,73754,Restless legs,outcome
+11998,,4168212,Restlessness and agitation,outcome
+11998,,136773,Rosacea,outcome
+11998,,141825,Simple goiter,outcome
+11998,,137682,Skin sensation disturbance,outcome
+11998,,4176908,Snapping thumb syndrome,outcome
+11998,,437969,Talipes planus,outcome
+11998,,74174,Urinary symptoms,outcome
