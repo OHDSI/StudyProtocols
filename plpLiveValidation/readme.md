@@ -1,5 +1,16 @@
-plpLiveValidation
+Live PLP in a Day Study (as designed at 2018 US OHDSI Symposium)
 ======================
+
+ Executive Summary
+============
+  At the 2018 OHDSI US Symposium, the OHDSI Community embarked on a novel challenge: could we run a full patient-level prediction study in a single day? The day started with symposium attendees submitting their clinical questions. The audience voted on which question they wanted to answer. The rest of the day (less than 6 hours of working time) was spent on defining the study question, building cohort definitions for the target and comparator groups, generating a study protocol and study code, performing clinical validation of the cohorts, internally validating a prediction model and externally validating the model across other OHDSI network sites. The exercise culminated in a final presentation of results at the closing session of the symposium. A video of this presentation can be found here: https://youtu.be/NJ-Ov_RsH2U.
+  
+  Following the 2018 OHDSI US Symposium, a small team of researchers assembled a publication team to move the Live PLP exercise into a formal journal publication. The GitHub repository here is intended to provide a public record of all of the design choices specified in this analysis. Anyone with an OMOP v5+ compliant database may download this study, run on their data set and produce results.
+    
+  Responsible Parties
+============
+  Lead Author: Qiong Wang
+
 
   Introduction
 ============
