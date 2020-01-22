@@ -1,9 +1,20 @@
 Opioid Models
-======================
-
-  Introduction
 ============
-  A package for running the opioid use disorder prediction models on any OMOP CDM
+
+<img src="https://img.shields.io/badge/Study%20Status-Complete-orange.svg" alt="Study Status: Complete">
+
+- Analytics use case(s): **Patient-Level Prediction**
+- Study type: **Clinical Application**
+- Tags: **-**
+- Study lead: **Jenna Reps**
+- Study lead forums tag: **[jreps](https://forums.ohdsi.org/u/jreps)**
+- Study start date: **Jan 1, 2018**
+- Study end date: **Jan 1, 2020**
+- Protocol: **[Protocol](https://github.com/OHDSI/StudyProtocols/OpioidModels/blob/master/documents/Protocol.docx)**
+- Publications: ** accepted to PLOS ONE **
+- Results explorer: **-**
+
+A package for running the opioid use disorder prediction models on any OMOP CDM
 
 
 Features
