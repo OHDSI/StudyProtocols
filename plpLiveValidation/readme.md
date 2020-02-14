@@ -7,7 +7,7 @@ Development and validation of a prognostic model predicting symptomatic hemorrha
 - Study type: **Clinical Application**
 - Tags: **-**
 - Study lead: **Qiong Wang**
-- Study lead forums tag: **[[qiongwang]](https://forums.ohdsi.org/u/qiongwang/)**
+- Study lead forums tag: **[qiongwang](https://forums.ohdsi.org/u/qiongwang/)**
 - Study start date: **October 12, 2018**
 - Study end date: **June 1, 2019**
 - Protocol: **[Protocol](https://github.com/OHDSI/StudyProtocols/tree/master/plpLiveValidation/documents/Qiong PLP-protocol-V5.docx)**
