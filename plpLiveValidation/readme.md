@@ -10,7 +10,7 @@ Development and validation of a prognostic model predicting symptomatic hemorrha
 - Study lead forums tag: **[[qiongwang]](https://forums.ohdsi.org/u/qiongwang/)**
 - Study start date: **October 12, 2018**
 - Study end date: **June 1, 2019**
-- Protocol: **[Protocol](https://github.com/OHDSI/StudyProtocols/tree/master/plpLiveValidation/documents/Qiong PLP-protocol-V5.docx)**
+- Protocol: **[[Protocol]](https://github.com/OHDSI/StudyProtocols/tree/master/plpLiveValidation/documents/Qiong PLP-protocol-V5.docx)**
 - Publications: **[Development and validation of a prognostic model predicting symptomatic hemorrhagic transformation in acute ischemic stroke at scale in the OHDSI network](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0226718)**
 - Results explorer: **[plpLive18Study](https://data.ohdsi.org/plpLive18Study/)**
 
