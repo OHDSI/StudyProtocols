@@ -10,8 +10,8 @@ Development and validation of a prognostic model predicting symptomatic hemorrha
 - Study lead forums tag: **[[qiongwang]](https://forums.ohdsi.org/u/qiongwang/)**
 - Study start date: **October 12, 2018**
 - Study end date: **June 1, 2019**
-- Protocol: **-**
-- Publications: **[[Development and validation of a prognostic model predicting symptomatic hemorrhagic transformation in acute ischemic stroke at scale in the OHDSI network]](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0226718)**
+- Protocol: **[Protocol](https://github.com/OHDSI/StudyProtocols/tree/master/plpLiveValidation/documents/Qiong PLP-protocol-V5.docx)**
+- Publications: **[Development and validation of a prognostic model predicting symptomatic hemorrhagic transformation in acute ischemic stroke at scale in the OHDSI network](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0226718)**
 - Results explorer: **[plpLive18Study](https://data.ohdsi.org/plpLive18Study/)**
 
 Hemorrhagic transformation (HT) after cerebral infarction is a complex and multifactorial phenomenon in the acute stage of ischemic stroke, and often results in a poor prognosis. Thus, identifying risk factors and making an early prediction of HT in acute cerebral infarction contributes not only to the selections of therapeutic regimen but also, more importantly, to the improvement of prognosis of acute cerebral infarction. The purpose of this study was to develop and validate a model to predict a patient’s risk of HT within 30 days of initial ischemic stroke.
