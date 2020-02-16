@@ -1,5 +1,31 @@
-plpLiveValidation
-======================
+Development and validation of a prognostic model predicting symptomatic hemorrhagic transformation in acute ischemic stroke at scale in the OHDSI network
+=======================================================
+
+<img src="https://img.shields.io/badge/Study%20Status-Complete-orange.svg" alt="Study Status: Complete">
+
+- Analytics use case(s): **Patient-Level Prediction**
+- Study type: **Clinical Application**
+- Tags: **-**
+- Study lead: **Qiong Wang**
+- Study lead forums tag: **[qiongwang](https://forums.ohdsi.org/u/qiongwang/)**
+- Study start date: **October 12, 2018**
+- Study end date: **June 1, 2019**
+- Protocol: **[Protocol](https://github.com/OHDSI/StudyProtocols/tree/master/plpLiveValidation/documents/Qiong PLP-protocol-V5.docx)**
+- Publications: **[Development and validation of a prognostic model predicting symptomatic hemorrhagic transformation in acute ischemic stroke at scale in the OHDSI network](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0226718)**
+- Results explorer: **[plpLive18Study](https://data.ohdsi.org/plpLive18Study/)**
+
+Hemorrhagic transformation (HT) after cerebral infarction is a complex and multifactorial phenomenon in the acute stage of ischemic stroke, and often results in a poor prognosis. Thus, identifying risk factors and making an early prediction of HT in acute cerebral infarction contributes not only to the selections of therapeutic regimen but also, more importantly, to the improvement of prognosis of acute cerebral infarction. The purpose of this study was to develop and validate a model to predict a patient’s risk of HT within 30 days of initial ischemic stroke.
+
+ Executive Summary
+============
+  At the 2018 OHDSI US Symposium, the OHDSI Community embarked on a novel challenge: could we run a full patient-level prediction study in a single day? The day started with symposium attendees submitting their clinical questions. The audience voted on which question they wanted to answer. The rest of the day (less than 6 hours of working time) was spent on defining the study question, building cohort definitions for the target and comparator groups, generating a study protocol and study code, performing clinical validation of the cohorts, internally validating a prediction model and externally validating the model across other OHDSI network sites. The exercise culminated in a final presentation of results at the closing session of the symposium. A video of this presentation can be found here: https://youtu.be/NJ-Ov_RsH2U.
+  
+  Following the 2018 OHDSI US Symposium, a small team of researchers assembled a publication team to move the Live PLP exercise into a formal journal publication. The GitHub repository here is intended to provide a public record of all of the design choices specified in this analysis. Anyone with an OMOP v5+ compliant database may download this study, run on their data set and produce results.
+    
+  Responsible Parties
+============
+  Lead Author: Qiong Wang
+
 
   Introduction
 ============
